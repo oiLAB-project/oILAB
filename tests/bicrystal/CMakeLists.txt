@@ -16,7 +16,7 @@ endif()
 
 add_executable(bicrystal main.cpp)
 
-include_directories(/usr/local/include)
+include_directories(${EigenRootDir})
 include_directories(${gbLABrootDir}/include/IO/)
 include_directories(${gbLABrootDir}/include/Utilities/)
 include_directories(${gbLABrootDir}/include/Math/)

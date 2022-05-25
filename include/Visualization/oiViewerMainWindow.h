@@ -17,7 +17,7 @@
 #include <QAction>
 
 
-//#include <oiViewerVTKwidget.h>
+#include <oiViewerVTKwidget.h>
 
 namespace gbLAB
 {

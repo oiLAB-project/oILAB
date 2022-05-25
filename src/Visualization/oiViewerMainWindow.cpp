@@ -37,7 +37,7 @@ namespace gbLAB
     {
         try
         {
-//            tabWidget->addTab(new oiViewerVTKwidget(this), tr(std::string("Viewer "+std::to_string(viewerCount)).c_str()));
+            tabWidget->addTab(new oiViewerVTKwidget(this), tr(std::string("Viewer "+std::to_string(viewerCount)).c_str()));
             viewerCount++;
         }
         catch(const std::exception& e)

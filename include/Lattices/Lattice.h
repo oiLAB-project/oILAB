@@ -22,13 +22,13 @@ namespace gbLAB
         typedef typename LatticeCore<dim>::VectorDimI VectorDimI;
         typedef typename LatticeCore<dim>::MatrixDimI MatrixDimI;
 
-        static MatrixDimD getLatticeBasis(const MatrixDimD& A,const MatrixDimD& Q);
+//        static MatrixDimD getLatticeBasis(const MatrixDimD& A,const MatrixDimD& Q);
         
     public:
         
         const MatrixDimD    latticeBasis;
         const MatrixDimD reciprocalBasis;
-        const MatrixDimD C2G;
+        const MatrixDimD F;
 
         Lattice(const MatrixDimD& A,const MatrixDimD& Q=MatrixDimD::Identity()) ;
         LatticeDirection<dim> latticeDirection(const VectorDimD& d) const;

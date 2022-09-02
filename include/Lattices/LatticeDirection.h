@@ -17,6 +17,9 @@ namespace gbLAB
         typedef typename LatticeCore<dim>::IntScalarType IntScalarType;
         
         LatticeDirection(const LatticeVector<dim>& v) ;
+
+        LatticeDirection(const Eigen::Matrix<IntScalarType,dim,1>& v,
+                         const Lattice<dim>& lat) ;
         
     };
     

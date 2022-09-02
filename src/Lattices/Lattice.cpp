@@ -17,36 +17,36 @@ namespace gbLAB
 {
 
 
-    /**********************************************************************/
-    template <int dim>
-    typename Lattice<dim>::MatrixDimD Lattice<dim>::getLatticeBasis(const MatrixDimD &A, const MatrixDimD &Q)
-    {
-
-        // Check that Q is orthogonal
-        const MatrixDimD QQT(Q * Q.transpose());
-        const double QQTerror((QQT - MatrixDimD::Identity()).norm());
-        if (QQTerror > 10.0 * DBL_EPSILON * dim * dim)
-        {
-            throw std::runtime_error("The rotation matrix Q is not orthogonal: norm(Q*Q^T-I)="+std::to_string(QQTerror)+"\n");
-        }
-
-        const double Qdet(Q.determinant());
-        if (std::fabs(Q.determinant() - 1.0)>FLT_EPSILON)
-        {
-            throw std::runtime_error("The rotation matrix is not proper: det(Q)="+std::to_string(Qdet)+"\n");
-        }
-        
-        return Q * A;
-    }
+//    /**********************************************************************/
+//    template <int dim>
+//    typename Lattice<dim>::MatrixDimD Lattice<dim>::getLatticeBasis(const MatrixDimD &A, const MatrixDimD &Q)
+//    {
+//
+//        // Check that Q is orthogonal
+//        const MatrixDimD QQT(Q * Q.transpose());
+//        const double QQTerror((QQT - MatrixDimD::Identity()).norm());
+//        if (QQTerror > 10.0 * DBL_EPSILON * dim * dim)
+//        {
+//            throw std::runtime_error("The rotation matrix Q is not orthogonal: norm(Q*Q^T-I)="+std::to_string(QQTerror)+"\n");
+//        }
+//
+//        const double Qdet(Q.determinant());
+//        if (std::fabs(Q.determinant() - 1.0)>FLT_EPSILON)
+//        {
+//            throw std::runtime_error("The rotation matrix is not proper: det(Q)="+std::to_string(Qdet)+"\n");
+//        }
+//        
+//        return Q * A;
+//    }
 
 
     /**********************************************************************/
         /**********************************************************************/
     template <int dim>
-    Lattice<dim>::Lattice(const MatrixDimD& A,const MatrixDimD& Q) :
-    /* init */ latticeBasis(getLatticeBasis(A,Q))
+    Lattice<dim>::Lattice(const MatrixDimD& A,const MatrixDimD& Fin) :
+    /* init */ latticeBasis(Fin*A)
     /* init */,reciprocalBasis(latticeBasis.inverse().transpose())
-    /* init */,C2G(Q)
+    /* init */,F(Fin)
     {
 
     }

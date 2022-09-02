@@ -16,9 +16,9 @@ int main(int argc, char** argv)
     switch (dim) {
         case 2:
         {
-            const auto A(TextFileParser("../bycrystal_2d.txt").readMatrix<double,2,2>("A",true));
-            const auto R1(TextFileParser("../bycrystal_2d.txt").readMatrix<double,2,2>("R1",true));
-            const auto R2(TextFileParser("../bycrystal_2d.txt").readMatrix<double,2,2>("R2",true));
+            const auto A(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("A",true));
+            const auto R1(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("R1",true));
+            const auto R2(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("R2",true));
 
             Lattice<2> L1(A,R1);
             Lattice<2> L2(A,R2);
@@ -29,10 +29,10 @@ int main(int argc, char** argv)
             
         case 3:
         {
-            const auto A(TextFileParser("../bycrystal_3d.txt").readMatrix<double,3,3>("A",true));
-            const auto R1(TextFileParser("../bycrystal_3d.txt").readMatrix<double,3,3>("R1",true));
-            const auto R2(TextFileParser("../bycrystal_3d.txt").readMatrix<double,3,3>("R2",true));
-            const auto misAxis(TextFileParser("../bycrystal_3d.txt").readMatrix<double,3,1>("misAxis",true));
+            const auto A(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,3>("A",true));
+            const auto R1(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,3>("R1",true));
+            const auto R2(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,3>("R2",true));
+            const auto misAxis(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,1>("misAxis",true));
 
 
             
@@ -54,9 +54,9 @@ int main(int argc, char** argv)
             
         case 4:
         {
-            const auto A(TextFileParser("../Grimmer1985.txt").readMatrix<double,3,3>("A",true));
-            const auto Tn(TextFileParser("../Grimmer1985.txt").readMatrix<long long int,3,3>("Tn",true));
-            const auto Td(TextFileParser("../Grimmer1985.txt").readScalar<long long int>("Td",true));
+            const auto A(TextFileParser("Grimmer1985.txt").readMatrix<double,3,3>("A",true));
+            const auto Tn(TextFileParser("Grimmer1985.txt").readMatrix<long long int,3,3>("Tn",true));
+            const auto Td(TextFileParser("Grimmer1985.txt").readScalar<long long int>("Td",true));
             RationalMatrix<3> T(Tn,Td);
             
 //            T=inv(A)*R*A

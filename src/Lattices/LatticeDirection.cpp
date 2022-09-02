@@ -18,6 +18,15 @@ namespace gbLAB
     {
     }
         
+    template <int dim>
+    LatticeDirection<dim>::LatticeDirection(const Eigen::Matrix<IntScalarType,dim,1>& v,
+                     const Lattice<dim>& lat) :
+    /* base init */ LatticeVector<dim>(((v.squaredNorm()==0)? v : (v/IntegerMath<IntScalarType>::gcd(v)).eval()),lat)
+    {
+    }
+
+
+
 
     
     template struct LatticeDirection<1>;

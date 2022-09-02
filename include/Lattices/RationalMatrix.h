@@ -22,7 +22,7 @@ namespace gbLAB
         typedef typename LatticeCore<dim>::VectorDimI VectorDimI;
         typedef typename LatticeCore<dim>::MatrixDimI MatrixDimI;
 
-        static constexpr int64_t maxDen=100000;
+        static constexpr int64_t maxDen=10000000;
         static std::pair<MatrixDimI,IntScalarType> compute(const MatrixDimD& R);
         
         const std::pair<MatrixDimI,IntScalarType> returnPair;

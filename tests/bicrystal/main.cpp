@@ -35,7 +35,6 @@ int main(int argc, char** argv)
             const auto misAxis(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,1>("misAxis",true));
 
 
-            
             Lattice<3> L1(A,R1);
             Lattice<3> L2(A,R2);
             BiCrystal<3> bc(L1,L2);

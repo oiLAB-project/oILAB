@@ -10,9 +10,15 @@
 #include <LatticeModule.h>
 #include <StaticID.h>
 #include <BestRationalApproximation.h>
+#include <vector>
+#include <IntegerLattice.h>
 
 namespace gbLAB
 {
+    /*! \brief Lattice class
+     *
+     *  lattice class description
+     * */
     template <int dim>
     class Lattice : public StaticID<Lattice<dim>>
     {
@@ -32,7 +38,45 @@ namespace gbLAB
 
         Lattice(const MatrixDimD& A,const MatrixDimD& Q=MatrixDimD::Identity()) ;
         LatticeDirection<dim> latticeDirection(const VectorDimD& d) const;
-        
+
+        /*! \brief Obtain plane-parallel lattice directions
+         *
+         * \param[in] i Miller indices of a lattice plane
+         *  \returns  dim-1 planar lattice directions
+         *  \f$x=\sqrt{y}\f$
+         * */
+        template<int d=dim>
+        typename std::enable_if< (d>1 && d<4),std::vector<LatticeDirection<d>>> :: type
+        planeParallelLatticeDirections(const ReciprocalLatticeDirection<d>& l) const
+        {
+            auto intLatticeDirections= IntegerLattice<d>::perpendicularDirections(l);
+            std::vector<LatticeDirection<d>> out;
+            for(int ind= 0; ind<d-1; ind++)
+            {
+                out.push_back(LatticeDirection<d>(intLatticeDirections.row(ind),*this));
+            }
+            return out;
+        }
+
+        /*! \brief Obtain plane-parallel lattice directions
+         *
+         * \param[in] i integer coordinates of a lattice direction
+         *  \returns  dim-1 reciprocal lattice directions perpendicular to the input lattice direction
+         *  \f$x=\sqrt{y}\f$
+         * */
+        template<int d=dim>
+        typename std::enable_if< (d>1 && d<4),std::vector<ReciprocalLatticeDirection<d>>> :: type
+        planeParallelLatticeDirections(const LatticeDirection<d>& l) const
+        {
+            auto intReciprocalLatticeDirections= IntegerLattice<d>::perpendicularDirections(l);
+            std::vector<ReciprocalLatticeDirection<d>> out;
+            for(int ind= 0; ind<d-1; ind++)
+            {
+                out.push_back(ReciprocalLatticeDirection<d>(intReciprocalLatticeDirections.row(ind),*this));
+            }
+            return out;
+        }
+
         template<typename OtherDerived>
         LatticeDirection<dim> latticeDirection(const Eigen::MatrixBase<OtherDerived>& other) const
         {

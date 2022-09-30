@@ -112,7 +112,7 @@ namespace gbLAB
 
                     Eigen::Vector<IntScalarType,Eigen::Dynamic> indicesToKeepVector;
                     indicesToKeepVector= Eigen::Map<Eigen::Vector<IntScalarType,Eigen::Dynamic>>(indicesToKeep.data(),i+1);
-                    minor= matrixA(Eigen::all, indicesToKeepVector).template cast<double>();
+                    minor= matrixA(Eigen::indexing::all, indicesToKeepVector).template cast<double>();
                     det(j)= round(minor.determinant());
                 }
 

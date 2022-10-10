@@ -88,6 +88,8 @@ namespace gbLAB
     template class RationalMatrix<1>;
     template class RationalMatrix<2>;
     template class RationalMatrix<3>;
+    template class RationalMatrix<4>;
+    template class RationalMatrix<5>;
 
 } // end namespace
 #endif

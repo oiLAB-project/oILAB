@@ -121,10 +121,53 @@ namespace gbLAB
         return ReciprocalLatticeVector<dim>(p, *this);
     }
 
+    /**********************************************************************/
+    template<int dim>
+    std::vector<LatticeDirection<dim>> Lattice<dim>::planeParallelLatticeBasis(const ReciprocalLatticeDirection<dim>& l) const
+    {
+        assert(this == &l.lattice && "Vectors belong to different Lattices.");
+        auto outOfPlaneVector = IntegerMath<IntScalarType>::solveBezout(l);
+        auto matrix= IntegerMath<IntScalarType>::ccum(outOfPlaneVector);
+        std::vector<LatticeDirection<dim>> out;
+        int columnIndex= -1;
+        for(const auto& column : matrix.colwise())
+        {
+            columnIndex++;
+            if (columnIndex != 0)
+                out.push_back(LatticeDirection<dim>(column-column.dot(l)*matrix.col(0),*this));
+            else
+                out.push_back(LatticeDirection<dim>(column,*this));
+        }
+        return out;
+    }
+
+    /**********************************************************************/
+    template<int dim>
+    std::vector<ReciprocalLatticeDirection<dim>> Lattice<dim>::directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim>& l) const
+    {
+        assert(this == &l.lattice && "Vectors belong to different Lattices.");
+        auto nonOrthogonalReciprocalVector= IntegerMath<IntScalarType>::solveBezout(l);
+        auto matrix= IntegerMath<IntScalarType>::ccum(nonOrthogonalReciprocalVector);
+        std::vector<ReciprocalLatticeDirection<dim>> out;
+        int columnIndex= -1;
+        for(const auto& column : matrix.colwise())
+        {
+            columnIndex++;
+            if (columnIndex != 0)
+                out.push_back(ReciprocalLatticeDirection<dim>(
+                        ReciprocalLatticeVector(column - column.dot(l) * matrix.col(0), *this)));
+            else
+                out.push_back(ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector(column, *this)));
+        }
+        return out;
+    }
+
 
 
     template class Lattice<1>;
     template class Lattice<2>;
     template class Lattice<3>;
+    template class Lattice<4>;
+    template class Lattice<5>;
 }
 #endif

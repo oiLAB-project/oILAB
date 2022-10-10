@@ -123,8 +123,8 @@ namespace gbLAB
         /* init */,B(B_in)
         /* init */,M(getM(*this,*this))
         /* init */,N(getN(*this,*this))
-        /* init */,sigmaA(M.determinant())
-        /* init */,sigmaB(N.determinant())
+        /* init */,sigmaA(round(M.template cast<double>().determinant()))
+        /* init */,sigmaB(round(N.template cast<double>().determinant()))
         /* init */,sigma(std::abs(sigmaA)==std::abs(sigmaB)? std::abs(sigmaA) : 0)
         /* init */, csl(getCSLBasis (A,B,*this,M,N,useRLLL),MatrixDimD::Identity())
         /* init */,dscl(getDSCLBasis(A,B,*this,M,N,useRLLL),MatrixDimD::Identity())
@@ -182,6 +182,8 @@ namespace gbLAB
 //    template class BiCrystal<1>;
     template class BiCrystal<2>;
     template class BiCrystal<3>;
+    template class BiCrystal<4>;
+    template class BiCrystal<5>;
 
 } // end namespace
 #endif

@@ -224,11 +224,18 @@ template class ReciprocalLatticeVectorBase<1>;
 template ReciprocalLatticeVectorBase<1> operator*(const typename ReciprocalLatticeVectorBase<1>::IntScalarType& scalar, const ReciprocalLatticeVectorBase<1> &L);
 template class ReciprocalLatticeVectorBase<2>;
 template ReciprocalLatticeVectorBase<2> operator*(const typename ReciprocalLatticeVectorBase<2>::IntScalarType&scalar, const ReciprocalLatticeVectorBase<2> &L);
-    template class ReciprocalLatticeVectorBase<3>;
-    template ReciprocalLatticeVectorBase<3> operator*(const typename ReciprocalLatticeVectorBase<3>::IntScalarType& scalar, const ReciprocalLatticeVectorBase<3> &L);
+template class ReciprocalLatticeVectorBase<3>;
+template ReciprocalLatticeVectorBase<3> operator*(const typename ReciprocalLatticeVectorBase<3>::IntScalarType& scalar, const ReciprocalLatticeVectorBase<3> &L);
+template class ReciprocalLatticeVectorBase<4>;
+template ReciprocalLatticeVectorBase<4> operator*(const typename ReciprocalLatticeVectorBase<4>::IntScalarType& scalar, const ReciprocalLatticeVectorBase<4> &L);
+template class ReciprocalLatticeVectorBase<5>;
+template ReciprocalLatticeVectorBase<5> operator*(const typename ReciprocalLatticeVectorBase<5>::IntScalarType& scalar, const ReciprocalLatticeVectorBase<5> &L);
 
 template class ReciprocalLatticeVector<1>;
 template class ReciprocalLatticeVector<2>;
+
+template class ReciprocalLatticeVector<4>;
+template class ReciprocalLatticeVector<5>;
 
 } // end namespace
 #endif

@@ -33,12 +33,16 @@ int main()
     mat.block(1,0,dim-1,dim)= out;
     mat.row(0)= in;
     std::cout << "Dot products:" << std::endl;
-    for (int i=1; i<dim; i++)
-    {
-        std::cout << mat.row(0).dot(mat.row(i)) << std::endl;
-        if(mat.row(0).dot(mat.row(i)) !=0)
-            throw std::runtime_error("Output directions are not perpendicular to the given direction\n");
+    try {
+        for (int i = 1; i < dim; i++) {
+            std::cout << mat.row(0).dot(mat.row(i)) << std::endl;
+            if (mat.row(0).dot(mat.row(i)) != 0)
+                throw std::runtime_error("Output directions are not perpendicular to the given direction\n");
+        }
     }
-    std::cout << "determinant = " << mat.template cast<double>().determinant()/in.squaredNorm() << std::endl;
+    catch (std::runtime_error& e){
+        std::cout << e.what() << std::endl;
+        return -1;
+    }
     return 0;
 }

@@ -69,5 +69,7 @@ typename LatticeCore<dim>::VectorDimI LatticeCore<dim>::integerCoordinates(const
     template struct LatticeCore<1>;
     template struct LatticeCore<2>;
     template struct LatticeCore<3>;
+    template struct LatticeCore<4>;
+    template struct LatticeCore<5>;
 } // end namespace
 #endif

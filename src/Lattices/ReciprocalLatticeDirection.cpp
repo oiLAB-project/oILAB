@@ -21,6 +21,8 @@ namespace gbLAB
     template struct ReciprocalLatticeDirection<1>;
     template struct ReciprocalLatticeDirection<2>;
     template struct ReciprocalLatticeDirection<3>;
+    template struct ReciprocalLatticeDirection<4>;
+    template struct ReciprocalLatticeDirection<5>;
 
 } // end namespace
 #endif

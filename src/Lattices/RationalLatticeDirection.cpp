@@ -123,6 +123,10 @@ namespace gbLAB
     template RationalLatticeDirection<2> operator*(const typename RationalLatticeDirection<2>::IntScalarType& scalar, const RationalLatticeDirection<2>& L);
     template struct RationalLatticeDirection<3>;
     template RationalLatticeDirection<3> operator*(const typename RationalLatticeDirection<3>::IntScalarType& scalar, const RationalLatticeDirection<3>& L);
+    template struct RationalLatticeDirection<4>;
+    template RationalLatticeDirection<4> operator*(const typename RationalLatticeDirection<4>::IntScalarType& scalar, const RationalLatticeDirection<4>& L);
+    template struct RationalLatticeDirection<5>;
+    template RationalLatticeDirection<5> operator*(const typename RationalLatticeDirection<5>::IntScalarType& scalar, const RationalLatticeDirection<5>& L);
 
 } // end namespace
 #endif

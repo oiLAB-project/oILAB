@@ -166,9 +166,16 @@ ReciprocalLatticeDirection<3> LatticeVector<3>::cross(const LatticeVector<3> &ot
     template LatticeVectorBase<2>operator*(const typename LatticeVectorBase<2>::IntScalarType& scalar, const LatticeVectorBase<2>& L);
     template class LatticeVectorBase<3>;
     template LatticeVectorBase<3>operator*(const typename LatticeVectorBase<3>::IntScalarType& scalar, const LatticeVectorBase<3>& L);
+    template class LatticeVectorBase<4>;
+    template LatticeVectorBase<4>operator*(const typename LatticeVectorBase<4>::IntScalarType& scalar, const LatticeVectorBase<4>& L);
+    template class LatticeVectorBase<5>;
+    template LatticeVectorBase<5>operator*(const typename LatticeVectorBase<5>::IntScalarType& scalar, const LatticeVectorBase<5>& L);
 
     template class LatticeVector<1>;
     template class LatticeVector<2>;
+
+    template class LatticeVector<4>;
+    template class LatticeVector<5>;
 
 } // end namespace
 #endif

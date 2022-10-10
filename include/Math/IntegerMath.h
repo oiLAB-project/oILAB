@@ -31,8 +31,8 @@ namespace gbLAB
             return absB > 0 ? gcd(absB, absA % absB) : (absA > 0 ? absA : 1);
         }
         
-        template<typename ArrayType>
-        static IntScalarType gcd(const ArrayType& a)
+        template<typename T>
+        static IntScalarType gcd(const Eigen::MatrixBase<T>& a)
         {
             switch (a.size())
             {
@@ -45,25 +45,25 @@ namespace gbLAB
                     
                 case 1:
                 {
-                    return a[0];
+                    return a(0);
                     break;
                 }
                     
                 case 2:
                 {
-                    return gcd(a[0],a[1]);
+                    return gcd(a(0),a(1));
                     break;
                 }
                     
                 default:
                 {
-                    IntScalarType temp(a[0]);
+                    IntScalarType temp(a(0));
                     for(long k=1;k<a.size();++k)
                     {
-                        if (temp==0 && a[k]==0 && k!=a.size()-1)
+                        if (temp==0 && a(k)==0 && k!=a.size()-1)
                             temp= 0;
                         else
-                            temp=gcd(temp,a[k]);
+                            temp=gcd(temp,a(k));
                     }
                     return temp;
                     break;
@@ -134,6 +134,218 @@ namespace gbLAB
 
             return matrixA.block(1,0,dim-1,dim);
         }
+
+        // Finds such x and y, that a  x + b  y = gcd(a, b)
+        //https://github.com/ADJA/algos/blob/master/NumberTheory/DiophantineEquation.cpp
+        static IntScalarType extended_gcd(IntScalarType a, IntScalarType b, IntScalarType &x, IntScalarType &y)
+        {
+            if (b == 0)
+            {
+                x = 1;
+                y = 0;
+                return a;
+            }
+            IntScalarType x1, y1;
+            IntScalarType g = extended_gcd(b, a % b, x1, y1);
+            x = y1;
+            y = x1 - (a / b) * y1;
+            return g;
+        }
+
+        // Solves equation a  x + b  y = c, writes answer to x and y
+        static void solveDiophantine2vars(IntScalarType a, IntScalarType b, IntScalarType c, IntScalarType &x, IntScalarType &y)
+        {
+
+            IntScalarType g = extended_gcd(a, b, x, y);
+
+            if (c % g != 0)
+            {
+                std::cout << a << "  " << b << "  " << c << "   " << g << std::endl;
+                puts("Impossible");
+                exit(0);
+            }
+
+            c /= g;
+
+            x = x * c ;
+            y = y * c ;
+        }
+
+        // Find u such that a_1 u_1 + a_2 u_2 + .... + a_n u_n = 1
+        // Method 0:
+        // "A fast algorithm to find reduced hyperplane unit cells and solve N-dimensional Bézout's identities."
+        //  Acta Crystallographica Section A: Foundations and Advances 77.5 (2021).
+        // template<typename ArrayType>
+        // static ArrayType solveBezout(const ArrayType& a)
+        template<typename T>
+        static Eigen::Vector<IntScalarType,Eigen::Dynamic> solveBezout(const Eigen::MatrixBase<T>& a)
+        {
+            int n= a.size();
+            if (n<2) throw std::runtime_error("the size of arrays should be at least two");
+            if (abs(IntegerMath<IntScalarType>::gcd(a)) != 1 || a.isZero())
+                throw std::runtime_error("No solution since the gcd is not 1 or -1.");
+
+            Eigen::Vector<IntScalarType,Eigen::Dynamic> u(n);
+
+            IntScalarType p,q;
+            IntScalarType g12= extended_gcd(a(0),a(1),p,q); // g12 - gcd of a(0) and a(1)
+
+            // form the n-1 sized vector na= {g,a2,...,a_{n-1}}
+            Eigen::Vector<IntScalarType,Eigen::Dynamic> na(n-1);
+            na(0)= g12; na(Eigen::seq(1,n-2))= a(Eigen::seq(2,n-1));
+
+            Eigen::Vector<IntScalarType,Eigen::Dynamic> k(n-1);
+            if (n==2)
+            {
+                IntScalarType g= extended_gcd(a(0),a(1),u(0),u(1));
+                if (g<0) u= -u;
+                return u;
+            }
+            else
+            {
+                k = solveBezout(na);
+                // {p*k0,q*k0,k1,..,k_{n-2}}
+                u(0) = p * k(0);
+                u(1) = q * k(0);
+                u(Eigen::seq(2, n - 1)) = k(Eigen::seq(1, n - 2));
+                return u;
+            }
+        }
+
+        template<typename T>
+        static Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic> ccum(const Eigen::MatrixBase<T>& qin)
+        //static Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic>
+        //ccum(const Eigen::Vector<IntScalarType,Eigen::Dynamic>& qin)
+        {
+            int n= qin.size();
+            Eigen::Vector<IntScalarType,Eigen::Dynamic> q(n);
+            q= qin;
+
+            try
+            {
+                if (n==1)
+                    throw std::runtime_error("Size of the input matrix for CCUM should be >1.");
+                if (abs(gcd(qin)) != 1)
+                    throw std::runtime_error("The absolute gcd of the input array is not 1.");
+            }
+            catch(std::runtime_error& e)
+            {
+                std::cerr << e.what();
+            }
+
+            Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic> Q=
+                    Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic>::Identity(n,n);
+
+            // first ensure that q(0) is non-zero; otherwise swap
+            bool swapFirst= false;
+            int swapFirstElementWith;
+            if (q(0)==0)
+            {
+                int elementIndex= -1;
+                for (auto element : q)
+                {
+                    elementIndex++;
+                    if (element !=0) {
+                        // swap
+                        IntScalarType temp= q(0);
+                        q(0)= element;
+                        q(elementIndex)= temp;
+                        swapFirst = true;
+                        swapFirstElementWith= elementIndex;
+                        break;
+                    }
+                }
+            }
+            Q.col(0)= q;
+
+            int elementIndex= -1;
+            IntScalarType y;
+            // ensure q(0) and q(1) are co-prime; otherwise swap
+            for (const IntScalarType& element : q)
+            {
+                elementIndex++;
+                if (elementIndex == 0) continue;
+                if (!(q(0)==0 && element==0))
+                    y= gcd(q(0),element);
+                else
+                    continue;
+                if (abs(y)==1)
+                {
+                    // swap rows
+                    int temp= Q(1,0);
+                    Q(1,0)= Q(elementIndex,0);
+                    Q(elementIndex,0)= temp;
+
+                    IntScalarType u,v;
+                    IntegerMath<IntScalarType>::solveDiophantine2vars(q(0),element,1,u,v);
+                    //Q(0,elementIndex)=-v; Q(elementIndex,elementIndex)= u;
+                    Q(0,1)=-v; Q(1,1)= u;
+                    // unswap
+                    Q.row(1).swap(Q.row(elementIndex));
+
+                    if(swapFirst) Q.row(0).swap(Q.row(swapFirstElementWith));
+                    return Q;
+                }
+            }
+
+            // At this point, q(0) is not co-prime with any other elements of q
+            if (!(q(0) ==0 && q(1) == 0))
+                y= gcd(q(0),q(1));
+            else
+                y= 0;
+            IntScalarType u,v;
+            IntegerMath<IntScalarType>::solveDiophantine2vars(q(0),q(1),y,u,v);
+
+            IntScalarType alpha,beta;
+            IntegerMath<IntScalarType>::solveDiophantine2vars(u,v,1,alpha,beta);
+            Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic> M=
+                    Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic>::Identity(n,n);
+            M.block(0,0,2,2) << u,     v,
+                               -beta, alpha;
+
+            Eigen::Vector<IntScalarType,Eigen::Dynamic> t;
+            t= M*q;
+            elementIndex= -1;
+            int swappedElementIndex;
+            bool swapped= false;
+            for (IntScalarType& element : t)
+            {
+                elementIndex++;
+                if (elementIndex<2) continue;
+                // Find a element in {t(2),...,} that y:=gcd(q(0), q(1)) does not divide
+                // We are guaranteed to find such an element since gcd(q)=1
+                if (element%y != 0)
+                {
+                    // swap the found element with t(1)
+                    int temp= t(elementIndex);
+                    t(elementIndex)= t(1);
+                    t(1)= temp;
+                    swappedElementIndex= elementIndex;
+                    swapped= true;
+                    break;
+                }
+                assert(elementIndex!=t.size());
+            }
+
+            Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic> tempMatrix(n,n) ;
+            tempMatrix= ccum(t);
+
+            // inv(P)*ccum(t)
+            // swap rows 0 and swappedElementIndex
+            if (swapped) tempMatrix.row(1).swap(tempMatrix.row(swappedElementIndex));
+
+            // inv(M)*inv(P)*ccum(t)
+            Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic> invM=
+                    Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic>::Identity(n,n);
+            invM.block(0,0,2,2) << alpha, -v,
+                                   beta,   u;
+            Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic> output(n,n);
+            output= invM*tempMatrix;
+            if(swapFirst) output.row(0).swap(output.row(swapFirstElementWith));
+            return output;
+        }
+
+
     };
 }
 #endif

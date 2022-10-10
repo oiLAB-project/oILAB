@@ -63,7 +63,7 @@ namespace gbLAB
                 //truncated_in= truncated_in/IntegerMath<IntScalarType>::gcd(truncated_in);
 
                 IntScalarType x,y;
-                DiophantineSolver::solveDiophantine2vars(truncated_in(0),
+                DiophantineSolver<IntScalarType>::solveDiophantine2vars(truncated_in(0),
                                                          truncated_in(1),
                                                          -truncated_in(2)*IntegerMath<IntScalarType>::gcd(truncated_in(0),truncated_in(1)),x,y);
 

@@ -25,13 +25,11 @@ namespace gbLAB
     {
     }
 
-
-
-
-    
     template struct LatticeDirection<1>;
     template struct LatticeDirection<2>;
     template struct LatticeDirection<3>;
+    template struct LatticeDirection<4>;
+    template struct LatticeDirection<5>;
 
 } // end namespace
 #endif

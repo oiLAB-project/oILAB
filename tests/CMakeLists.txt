@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 enable_testing()
-add_subdirectory(bicrystal)
 add_subdirectory(testSNF)
 add_subdirectory(testSNF_cubic)
 add_subdirectory(testPerpendicularDirections)

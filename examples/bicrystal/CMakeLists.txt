@@ -13,5 +13,3 @@ configure_file(bicrystal_3d.txt bicrystal_3d.txt)
 add_executable(bicrystal main.cpp)
 target_link_libraries(bicrystal oILAB)
 
-add_test(Bicrystal bicrystal)
-

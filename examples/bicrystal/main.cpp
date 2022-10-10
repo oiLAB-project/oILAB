@@ -43,7 +43,7 @@ int main(int argc, char** argv)
             const auto a1(L1.latticeDirection(misAxis));
 //            const auto ac(bc.AtoCSLvector(a1));
 
-            std::cout<<"a1="<<a1.transpose()<<std::endl;
+            std::cout<<"Integer coordinates of misorientation axis = "<<a1.transpose()<<std::endl;
 //            std::cout<<"ac="<<ac.transpose()<<std::endl;
             
             

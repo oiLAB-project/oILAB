@@ -41,5 +41,5 @@ build
 /.vscode
 /.idea
 /cmake-build-debug
-/doxygen/HTML
-/doxygen/latex
+/HTML
+/latex

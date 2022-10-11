@@ -40,19 +40,23 @@ namespace gbLAB
         Lattice(const MatrixDimD& A,const MatrixDimD& Q=MatrixDimD::Identity()) ;
         LatticeDirection<dim> latticeDirection(const VectorDimD& d) const;
 
-        /*! \brief Obtain plane-parallel lattice directions
+        /*! \brief Given a reciprocal lattice direction \f$\textbf l\f$, this function returns a plane-parallel lattice basis
+         * \f$[\textbf b_1,\cdots,\textbf b_{dim}]\f$, with the property
+         *  \f$\textbf b_1 \cdot \textbf l=1\f$ and the remaining basis vectors lie in the lattice plane represented by
+         *  \f$\textbf l\f$, i.e. \f$\textbf b_i \cdot \textbf l = 0\f$ for \f$i=2,\cdots,dim\f$.
          *
-         * \param[in] i Miller indices of a lattice plane
-         *  \returns  dim-1 planar lattice directions
-         *  \f$x=\sqrt{y}\f$
+         * \param[in] l Reciprocal lattice direction
+         * \returns   A lattice basis \f$[\textbf b_1,\cdots,\textbf b_{dim}]\f$
          * */
         std::vector<LatticeDirection<dim>> planeParallelLatticeBasis(const ReciprocalLatticeDirection<dim>& l) const;
 
-        /*! \brief Obtain plane-parallel lattice directions
+        /*! \brief Given a lattice direction \f$\textbf l\f$, this function returns a direction-orthogonal reciprocal
+         * lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$, with the property
+         *  \f$\textbf r_1 \cdot \textbf l=1\f$ and the remaining reciprocal basis vectors are orthogonal to \f$\textbf l\f$, i.e.,
+         *  \f$\boldsymbol r_i \cdot \textbf l = 0\f$ for \f$i=2,\cdots,dim\f$.
          *
-         * \param[in] i integer coordinates of a lattice direction
-         *  \returns  dim-1 reciprocal lattice directions perpendicular to the input lattice direction
-         *  \f$x=\sqrt{y}\f$
+         * \param[in] l Lattice direction
+         *  \returns  a reciprocal lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$
          * */
         std::vector<ReciprocalLatticeDirection<dim>> directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim>& l) const;
 
@@ -62,6 +66,7 @@ namespace gbLAB
 
         LatticeVector<dim> latticeVector(const VectorDimD& p) const;
         ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
+//        std::vector<Eigen::Matrix<double,3,3>> transformations(const LatticeDirection<3>& d, const double& maxStrain=0.0) const;
 
 };
 }

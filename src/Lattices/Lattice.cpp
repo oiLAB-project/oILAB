@@ -162,6 +162,12 @@ namespace gbLAB
         return out;
     }
 
+    /**********************************************************************/
+  //  std::vector<Eigen::Matrix<double,3,3>> Lattice<3>::transformations(const LatticeDirection<3>& d, const double& maxStrain=0.0) const
+  //  {
+  //      std::vector<Eigen::Matrix<double,3,3>> output;
+  //      return output;
+  //  }
 
 
     template class Lattice<1>;

@@ -41,5 +41,4 @@ build
 /.vscode
 /.idea
 /cmake-build-debug
-/HTML
 /latex

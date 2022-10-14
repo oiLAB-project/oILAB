@@ -10,7 +10,7 @@ addons:
       - doxygen
 
 script:
-  - echo "" > .nojekyll
+  - echo "" > docs/html/.nojekyll
   - doxygen Doxyfile
 
 deploy:

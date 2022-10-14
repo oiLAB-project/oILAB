@@ -10,8 +10,8 @@ addons:
       - doxygen
 
 script:
-  - echo "" > docs/html/.nojekyll
   - doxygen Doxyfile
+  - echo "" > docs/html/.nojekyll
 
 deploy:
   provider: pages

@@ -163,11 +163,30 @@ namespace gbLAB
     }
 
     /**********************************************************************/
-  //  std::vector<Eigen::Matrix<double,3,3>> Lattice<3>::transformations(const LatticeDirection<3>& d, const double& maxStrain=0.0) const
-  //  {
-  //      std::vector<Eigen::Matrix<double,3,3>> output;
-  //      return output;
-  //  }
+/*
+    template<int dim>
+    template<int dm>
+    typename std::enable_if<dm==3,std::vector<Lattice<dm>>>::type
+    Lattice<dim>::generateCoincidentLattices(const LatticeDirection<dim>& d, const double& maxStrain) const
+    {
+        std::vector<Lattice<dim>> output;
+        return output;
+    }
+    template<int dim>
+    template<int dm>
+    typename std::enable_if<dm==2,std::vector<Lattice<dm>>>::type Lattice<dim>::generateCoincidentLattices(const double& maxStrain) const
+    {
+        std::vector<Lattice<dim>> output;
+        return output;
+    }
+    template<int dim>
+    template<int dm>
+    typename std::enable_if<(dm!=2) && (dm!=3),std::vector<Lattice<dm>>>::type Lattice<dim>::generateCoincidentLattices(const double& maxStrain) const
+    {
+        std::vector<Lattice<dim>> output;
+        return output;
+    }
+*/
 
 
     template class Lattice<1>;

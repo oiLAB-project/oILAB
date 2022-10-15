@@ -10,7 +10,7 @@
 namespace gbLAB
 {
 
-template <int dim>
+    template <int dim>
     class Lattice;
 
     template <int dim>

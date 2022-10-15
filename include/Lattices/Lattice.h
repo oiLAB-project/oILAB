@@ -12,6 +12,9 @@
 #include <StaticID.h>
 #include <BestRationalApproximation.h>
 #include <vector>
+#include <range.h>
+#include <map>
+#include <RLLL.h>
 
 namespace gbLAB
 {
@@ -66,8 +69,57 @@ namespace gbLAB
 
         LatticeVector<dim> latticeVector(const VectorDimD& p) const;
         ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
-//        std::vector<Eigen::Matrix<double,3,3>> transformations(const LatticeDirection<3>& d, const double& maxStrain=0.0) const;
 
+        template<int dm=dim>
+        typename std::enable_if<dm==3,std::vector<Lattice<dm>>>::type
+        generateCoincidentLattices(const ReciprocalLatticeDirection<dim>& rd, const double& maxStrain=0.0) const
+        {
+            std::vector<Lattice<dim>> output;
+            auto basis= planeParallelLatticeBasis(rd);
+            const int N=100;
+            const int maxDen=100;
+            double epsilon=1e-8;
+
+            auto b1= basis[1].cartesian();
+            auto b2= basis[2].cartesian();
+            Eigen::Matrix<double,3,2> b;
+            b.col(0)= b1; b.col(1)= b2;
+            //RLLL(b,0.75).reducedBasis();
+            //b1= b.col(0);
+            //b2= b.col(1);
+
+            for(IntScalarType i : range<IntScalarType>(-N,N))
+            {
+                for(IntScalarType j : range<IntScalarType>(-N,N))
+                {
+                    auto vec = i*b1+j*b2;
+                    if (abs(vec.norm())<epsilon ) continue;
+                    double ratio= vec.norm()/b1.norm();
+                    BestRationalApproximation bra(ratio,maxDen);
+                    double error= ratio-static_cast<double>(bra.num)/bra.den;
+                    if (abs(error) > epsilon)
+                        continue;
+                    else
+                    {
+                        double cosTheta= b1.dot(vec)/(b1.norm()*vec.norm());
+                        if (cosTheta-1>0) cosTheta= 1.0;
+                        if (cosTheta+1<0) cosTheta= -1.0;
+                        double theta= acos(cosTheta);
+                        Eigen::Matrix3d rotation;
+                        rotation= Eigen::AngleAxis<double>(theta,rd.cartesian().normalized());
+                        output.push_back(Lattice<dim>(this->latticeBasis,rotation));
+                    }
+                }
+            }
+            return output;
+        }
+
+        template<int dm=dim>
+        typename std::enable_if<dm==2,std::vector<Lattice<dm>>>::type generateCoincidentLattices(const double& maxStrain=0.0) const
+        {
+            std::vector<Lattice<dim>> output;
+            return output;
+        }
 };
 }
 #endif

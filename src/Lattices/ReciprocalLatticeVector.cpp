@@ -181,7 +181,7 @@ namespace gbLAB
         return L * scalar;
     }
 
-
+/*  Constructors for ReciprocalLatticeVector<dim> */
 template <int dim>
 ReciprocalLatticeVector<dim>::ReciprocalLatticeVector(const Lattice<dim> &lat) :
 /* init base */ ReciprocalLatticeVectorBase<dim>(lat)
@@ -199,6 +199,7 @@ ReciprocalLatticeVector<dim>::ReciprocalLatticeVector(const VectorDimD &d,
       */
 }
 
+/*  Constructors for ReciprocalLatticeVector<3> */
 ReciprocalLatticeVector<3>::ReciprocalLatticeVector(const Lattice<3> &lat) :
 /* init base */ ReciprocalLatticeVectorBase<3>(lat)
 { /*!@param[in] d vector in real space

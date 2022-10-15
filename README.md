@@ -1,5 +1,9 @@
 # oILAB
 
+Documentation
+-------------
+https://oilab-project.github.io/oILAB/
+
 To install
 
 1) mkdir build

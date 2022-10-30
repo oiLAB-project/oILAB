@@ -71,14 +71,15 @@ namespace gbLAB
         ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
 
         template<int dm=dim>
-        typename std::enable_if<dm==3,std::vector<Lattice<dm>>>::type
+        typename std::enable_if<dm==3,std::map<IntScalarType ,Lattice<dm>>>::type
         generateCoincidentLattices(const ReciprocalLatticeDirection<dim>& rd, const double& maxStrain=0.0) const
         {
-            std::vector<Lattice<dim>> output;
+            std::map<IntScalarType,Lattice<dim>> output;
             auto basis= planeParallelLatticeBasis(rd);
             const int N=100;
             const int maxDen=100;
             double epsilon=1e-8;
+            IntScalarType keyScale= 1e6;
 
             auto b1= basis[1].cartesian();
             auto b2= basis[2].cartesian();
@@ -102,12 +103,13 @@ namespace gbLAB
                     else
                     {
                         double cosTheta= b1.dot(vec)/(b1.norm()*vec.norm());
-                        if (cosTheta-1>0) cosTheta= 1.0;
-                        if (cosTheta+1<0) cosTheta= -1.0;
+                        if (cosTheta-1>-epsilon) cosTheta= 1.0;
+                        if (cosTheta+1<epsilon) cosTheta= -1.0;
                         double theta= acos(cosTheta);
                         Eigen::Matrix3d rotation;
                         rotation= Eigen::AngleAxis<double>(theta,rd.cartesian().normalized());
-                        output.push_back(Lattice<dim>(this->latticeBasis,rotation));
+                        IntScalarType key= theta*keyScale;
+                        output.insert(std::pair<IntScalarType,Lattice<dim>>(key,Lattice<dim>(this->latticeBasis,rotation)));
                     }
                 }
             }

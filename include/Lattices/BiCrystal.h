@@ -16,8 +16,8 @@
 
 namespace gbLAB
 {
-    /*!Class template that computes the Coincident Site Lattice (CSL) of two
-     * parent lattices using the Smith decomposition method [1].
+    /*!Class template that computes the coincident-site-lattice (CSL) of two
+     * parent lattices using the Smith Normal Form [1].
      *
      * [1] Coincidence Lattices and Associated Shear Transformations
      */

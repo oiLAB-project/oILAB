@@ -116,7 +116,7 @@ namespace gbLAB
         template <int dim>
         BiCrystal<dim>::BiCrystal(const Lattice<dim>& A_in,
                   const Lattice<dim>& B_in,
-                  const bool& useRLLL) :
+                  const bool& useRLLL) try :
         /* init */ RationalMatrix<dim>(A_in.reciprocalBasis.transpose()*B_in.latticeBasis)
         /* init */,SmithDecomposition<dim>(this->integerMatrix)
         /* init */,A(A_in)
@@ -138,14 +138,14 @@ namespace gbLAB
                 const MatrixDimD tempA(A.reciprocalBasis.transpose()*csl.latticeBasis);
                 if ((tempA-tempA.array().round().matrix()).norm()/tempA.norm()>FLT_EPSILON)
                 {
-                    std::cout << (tempA-tempA.array().round().matrix()).norm()/tempA.norm() << std::endl;
-                    throw std::runtime_error("CSL is not a multiple of lattice A\n");
+                    //std::cout << (tempA-tempA.array().round().matrix()).norm()/tempA.norm() << std::endl;
+                    throw std::runtime_error("CSL is not a multiple of lattice A.\n");
                 }
                 
                 const MatrixDimD tempB(B.reciprocalBasis.transpose()*csl.latticeBasis);
                 if ((tempB-tempB.array().round().matrix()).norm()/tempB.norm()>FLT_EPSILON)
                 {
-                    std::cout << (tempB-tempB.array().round().matrix()).norm()/tempB.norm() << std::endl;
+                    //std::cout << (tempB-tempB.array().round().matrix()).norm()/tempB.norm() << std::endl;
                     throw std::runtime_error("CSL is not a multiple of lattice B\n");
                 }
             }
@@ -156,14 +156,14 @@ namespace gbLAB
                 const MatrixDimD tempA(dscl.reciprocalBasis.transpose()*A.latticeBasis);
                 if ((tempA-tempA.array().round().matrix()).norm()/tempA.norm()>FLT_EPSILON)
                 {
-                    std::cout << (tempA-tempA.array().round().matrix()).norm()/tempA.norm() << std::endl;
+                    //std::cout << (tempA-tempA.array().round().matrix()).norm()/tempA.norm() << std::endl;
                     throw std::runtime_error("Lattice A is not a multiple of the DSCL\n");
                 }
                 
                 const MatrixDimD tempB(dscl.reciprocalBasis.transpose()*B.latticeBasis);
                 if ((tempB-tempB.array().round().matrix()).norm()/tempB.norm()>FLT_EPSILON)
                 {
-                    std::cout << (tempB-tempB.array().round().matrix()).norm()/tempB.norm() << std::endl;
+                    //std::cout << (tempB-tempB.array().round().matrix()).norm()/tempB.norm() << std::endl;
                     throw std::runtime_error("Lattice B is not a multiple of the DSCL\n");
                 }
             }
@@ -171,7 +171,12 @@ namespace gbLAB
             //            update(useRLLL);
             
         }
-        
+
+        catch(std::runtime_error& e)
+        {
+            std::cout << e.what() << std::endl;
+            throw(std::runtime_error("Bicrystal construction failed. "));
+        }
 //        template<int dim>
 //        LatticeDirection<dim> BiCrystal<dim>::AtoCSLvector(const LatticeVector<dim>& n) const
 //        {

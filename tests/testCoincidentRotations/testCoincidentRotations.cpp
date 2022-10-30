@@ -14,11 +14,20 @@ int main()
 
     ReciprocalLatticeVector<3> rv(axis,lattice);
     ReciprocalLatticeDirection<3> rd(rv);
-    auto coincidentLattices= lattice.generateCoincidentLattices(rv);
+    const auto& coincidentLattices= lattice.generateCoincidentLattices(rv);
     for (const auto& rotatedLattice : coincidentLattices)
     {
-        BiCrystal<3> bc(lattice,rotatedLattice,false);
-        std::cout << bc.sigma << std::endl;
+        try
+        {
+            double theta= acos((rotatedLattice.second.F.trace()-1.0)/2.0)*180/M_PI;
+            std::cout << "angle = " << theta << "; ";
+            BiCrystal<3> bc(lattice,rotatedLattice.second,false);
+            std::cout << "Sigma = " << bc.sigma << std::endl;
+        }
+        catch(std::runtime_error& e)
+        {
+            std::cout << e.what() << "Moving on ..." << std::endl;
+        }
     }
     return 0;
 }

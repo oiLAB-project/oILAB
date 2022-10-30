@@ -10,12 +10,19 @@ int main()
 
     Lattice<2> L1(A);
     Lattice<2> L2(B,F);
-    BiCrystal<2> bc(L1,L2);
-    std::cout<<"sigma_A="<<bc.sigmaA<<std::endl;
-    std::cout<<"sigma_B="<<bc.sigmaB<<std::endl;
-    if (std::fabs(bc.sigmaA) != 34 || std::fabs(bc.sigmaB) != 40)
+    try
     {
-        throw std::runtime_error("SNF error in sigma calculation \n");
+        BiCrystal<2> bc(L1, L2);
+        std::cout << "sigma_A=" << bc.sigmaA << std::endl;
+        std::cout << "sigma_B=" << bc.sigmaB << std::endl;
+        if (std::fabs(bc.sigmaA) != 34 || std::fabs(bc.sigmaB) != 40) {
+            throw std::runtime_error("SNF error in sigma calculation \n");
+        }
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << e.what() << std::endl;
+        return -1;
     }
     return 0;
 }

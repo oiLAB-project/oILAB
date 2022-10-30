@@ -1,3 +1,5 @@
 /*! \mainpage oILAB - open Interface Lab
 \image html Bicrystal_graph_abstract.pdf width=500px
+@author Nikhil Admal (University of Illinois at Urbana-Champaign)
+@author Giacomo Po (University of Miami)
 */

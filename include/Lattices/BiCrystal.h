@@ -85,11 +85,11 @@ namespace gbLAB
          */
         const Lattice<dim> dscl;
 
-        /*! \brief Lattice \f$\mathcal A\f$ with basis \f$\textbf A^\f$
+        /*! \brief Lattice \f$\mathcal A\f$ with basis \f$\textbf A^\|\f$
          */
         const Lattice<dim> Ap;
 
-        /*! \brief Lattice \f$\mathcal B\f$ with basis \f$\textbf B^\f$
+        /*! \brief Lattice \f$\mathcal B\f$ with basis \f$\textbf B^\|\f$
          */
         const Lattice<dim> Bp;
         

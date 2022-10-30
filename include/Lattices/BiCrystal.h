@@ -51,23 +51,53 @@ namespace gbLAB
 
         const Lattice<dim>& A;
         const Lattice<dim>& B;
+
         /*! \brief Integer matrix that connects the bases \f$ \textbf A^{\|} \f$ and \f$ \textbf C^{\|} \f$ of
-         * lattices \f$\mathcal A\f$ and the CSL \f$\mathcal C\f$, respectively.
+         * lattices \f$\mathcal A\f$ and the CSL \f$\mathcal C\f$, respectively: \f$ \textbf C^{\|} = \textbf A^{\|} \textbf M\f$.
          */
         const MatrixDimI M;
+
+        /*! \brief Integer matrix that connects the bases \f$ \textbf B^{\|} \f$ and \f$ \textbf C^{\|} \f$ of
+         * lattices \f$\mathcal B\f$ and the CSL \f$\mathcal C\f$, respectively: \f$ \textbf C^{\|} = \textbf B^{\|} \textbf N\f$.
+         */
         const MatrixDimI N;
+
+        /*! \brief Signed ratio of the unit cell volume of \f$\mathcal C\f$ to that of \f$\mathcal A\f$.
+         *  \f$ \Sigma_{\mathcal A} = \det(\textbf M)\f$.
+         */
         const int sigmaA;
+
+        /*! \brief Signed ratio of the unit cell volume of \f$\mathcal C\f$ to that of \f$\mathcal B\f$:
+         *  \f$ \Sigma_{\mathcal B} = \det(\textbf N)\f$.
+         */
         const int sigmaB;
+
+        /*! \brief \f$ \Sigma = |\Sigma_{\mathcal A}|\f$ if \f$ \Sigma_{\mathcal A} = \Sigma_{\mathcal B}\f$, else
+         *  \f$ \Sigma = 0 \f$
+         */
         const int sigma;
+
+        /*! \brief CSL lattice \f$\mathcal C\f$.
+         */
         const Lattice<dim> csl;
+
+        /*! \brief DCSL lattice \f$\mathcal D\f$.
+         */
         const Lattice<dim> dscl;
+
+        /*! \brief Lattice \f$\mathcal A\f$ with basis \f$\textbf A^\f$
+         */
         const Lattice<dim> Ap;
+
+        /*! \brief Lattice \f$\mathcal B\f$ with basis \f$\textbf B^\f$
+         */
         const Lattice<dim> Bp;
         
         /**********************************************************************/
-        /*! \brief Constructs a bicrystal from two lattices \f$\textbf A \f$ and \f$\textbf B \f$ by computing the
-         *  parallel bases Ap and Bp, CSL, and the DSCL.
-         *  If the flass useRLLL is .true., then the bases of CSL and DSCL are reduced using the LLL algorithm.
+        /*! \brief Constructs a bicrystal from two lattices \f$\mathcal A \f$ and \f$\mathcal B \f$ by computing the
+         *  parallel bases \f$\textbf A^\|, \textbf B^\|, \textbf C^\|, \textbf D^\|\f$ for lattices
+         *  \f$\mathcal A, \mathcal B, \mathcal C, \mathcal D\f$, respectively.
+         *  If the flag useRLLL is .true., then the bases of CSL and DSCL are reduced using the LLL algorithm.
          *
          * \param[in] Lattices  \f$\mathcal A \f$ and \f$\mathcal B \f$, and useRLLL flag
          * \returns   A bicrystal object

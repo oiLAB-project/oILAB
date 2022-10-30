@@ -1,2 +1,3 @@
-/*! \mainpage oILAB- open Interface Lab
+/*! \mainpage oILAB - open Interface Lab
+\image html Bicrystal_graph_abstract.pdf width=500px
 */

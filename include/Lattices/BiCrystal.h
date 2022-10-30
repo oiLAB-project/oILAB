@@ -51,6 +51,9 @@ namespace gbLAB
 
         const Lattice<dim>& A;
         const Lattice<dim>& B;
+        /*! \brief Integer matrix that connects the bases \f$ \textbf A^{\|} \f$ and \f$ \textbf C^{\|} \f$ of
+         * lattices \f$\mathcal A\f$ and the CSL \f$\mathcal C\f$, respectively.
+         */
         const MatrixDimI M;
         const MatrixDimI N;
         const int sigmaA;
@@ -62,6 +65,13 @@ namespace gbLAB
         const Lattice<dim> Bp;
         
         /**********************************************************************/
+        /*! \brief Constructs a bicrystal from two lattices \f$\textbf A \f$ and \f$\textbf B \f$ by computing the
+         *  parallel bases Ap and Bp, CSL, and the DSCL.
+         *  If the flass useRLLL is .true., then the bases of CSL and DSCL are reduced using the LLL algorithm.
+         *
+         * \param[in] Lattices  \f$\mathcal A \f$ and \f$\mathcal B \f$, and useRLLL flag
+         * \returns   A bicrystal object
+         * */
         BiCrystal(const Lattice<dim>& A,
                   const Lattice<dim>& B,
                   const bool& useRLLL=true);

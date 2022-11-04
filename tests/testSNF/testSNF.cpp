@@ -4,12 +4,16 @@
 using namespace gbLAB;
 int main()
 {
+    /*! [Lattice] */
     const auto A(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("A",true));
     const auto B(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("B",true));
     const auto F(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("F",true));
 
     Lattice<2> L1(A);
     Lattice<2> L2(B,F);
+    /*! [Lattice] */
+
+    /*! [SNF] */
     try
     {
         BiCrystal<2> bc(L1, L2);
@@ -23,6 +27,7 @@ int main()
             throw std::runtime_error("SNF error in sigma calculation \n");
         }
     }
+    /*! [SNF] */
     catch(std::runtime_error& e)
     {
         std::cout << e.what() << std::endl;

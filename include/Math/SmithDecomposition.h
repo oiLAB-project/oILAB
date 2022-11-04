@@ -396,6 +396,18 @@ namespace gbLAB
             return Y;
         }
     };
+    /*!
+     * @example testSNF.cpp
+     * This example demonstrates the SNF bicrystallography of two 2D lattices
+     *
+     * -# Instantiate the two lattices
+     * @snippet testSNF.cpp Lattice
+     *
+     * -# SNF bicrystallography of the two lattices
+     * @snippet testSNF.cpp SNF
+     *
+     * Full code:
+     */
     
 }
 #endif

@@ -71,7 +71,7 @@ namespace gbLAB
         ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
 
         /*! This function generates lattices that share a coincidence relation with the current
-         * lattice using rotations about a given axis.
+         * lattice using rotations about a given axis. It is specialized to dim=3
          *
          * @tparam dm dimension (int)
          * @param rd axis (Reciprocal lattice direction)
@@ -171,7 +171,8 @@ namespace gbLAB
  * -# Specify an axis in the form of a reciprocal lattice direction
  * @snippet testCoincidentRotations.cpp Axis
  *
- * -# Generate all rotations \f$\mathbf R\f$ about the given axis that result in a coincidence between \f$\mathcal A\f$ and \f$\mathbf R\mathcal A\f$
+ * -# Generate all rotations \f$\mathbf R\f$ about the given axis that result in a coincidence relation between
+ * \f$\mathcal A\f$ and \f$\mathbf R\mathcal A\f$
  * @snippet testCoincidentRotations.cpp Test
  *
  * -# SNF bicrystallography of the resulting bicrystals

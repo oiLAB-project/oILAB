@@ -6,15 +6,27 @@ using namespace gbLAB;
 
 int main()
 {
+    /*! [Types] */
     using VectorDimI = LatticeCore<3>::VectorDimI;
     using IntScalarType = LatticeCore<3>::IntScalarType;
-    const auto A(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,3>("A",true));
-    const auto axis (TextFileParser("bicrystal_3d.txt").readMatrix<IntScalarType,3,1>("axis",true));
-    Lattice<3> lattice(A);
+    /*! [Types] */
 
+    /*! [Lattice] */
+    const auto A(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,3>("A",true));
+    Lattice<3> lattice(A);
+    /*! [Lattice] */
+
+    /*! [Axis] */
+    const auto axis (TextFileParser("bicrystal_3d.txt").readMatrix<IntScalarType,3,1>("axis",true));
     ReciprocalLatticeVector<3> rv(axis,lattice);
     ReciprocalLatticeDirection<3> rd(rv);
+    /*! [Axis] */
+
+    /*! [Test] */
     const auto& coincidentLattices= lattice.generateCoincidentLattices(rv);
+    /*! [Test] */
+
+    /*! [SNF] */
     for (const auto& rotatedLattice : coincidentLattices)
     {
         try
@@ -29,5 +41,6 @@ int main()
             std::cout << e.what() << "Moving on ..." << std::endl;
         }
     }
+    /*! [SNF] */
     return 0;
 }

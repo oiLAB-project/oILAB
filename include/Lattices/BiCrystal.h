@@ -34,6 +34,8 @@ namespace gbLAB
         
         static MatrixDimI getM(const RationalMatrix<dim>& rm, const SmithDecomposition<dim>& sd);
         static MatrixDimI getN(const RationalMatrix<dim>& rm, const SmithDecomposition<dim>& sd);
+        static MatrixDimI getLambdaA(const MatrixDimI& M, const MatrixDimI& N);
+        static MatrixDimI getLambdaB(const MatrixDimI& M, const MatrixDimI& N);
         static MatrixDimD getCSLBasis(const Lattice<dim>& A,
                                       const Lattice<dim>& B,
                                       const SmithDecomposition<dim>& sd,
@@ -92,7 +94,17 @@ namespace gbLAB
         /*! \brief Lattice \f$\mathcal B\f$ with basis \f$\textbf B^\|\f$
          */
         const Lattice<dim> Bp;
-        
+
+        /*! \brief Shift tensor \f$\textbf \lambda:\mathbb Z_{\mathcal D} \to \mathbb Z_{\mathcal D}\f$ describes the
+         * shift in the CSL when lattice \f$\mathcal A\f$ is shifted.
+         */
+        const MatrixDimI LambdaA;
+
+        /*! \brief Shift tensor \f$\textbf \lambda:\mathbb Z_{\mathcal D} \to \mathbb Z_{\mathcal D}\f$ describes the
+         * shift in the CSL when lattice \f$\mathcal B\f$ is shifted.
+         */
+        const MatrixDimI LambdaB;
+
         /**********************************************************************/
         /*! \brief Constructs a bicrystal from two lattices \f$\mathcal A \f$ and \f$\mathcal B \f$ by computing the
          *  parallel bases \f$\textbf A^\|, \textbf B^\|, \textbf C^\|, \textbf D^\|\f$ for lattices
@@ -104,7 +116,7 @@ namespace gbLAB
          * */
         BiCrystal(const Lattice<dim>& A,
                   const Lattice<dim>& B,
-                  const bool& useRLLL=true);
+                  const bool& useRLLL=false);
         
 //        LatticeDirection<dim> AtoCSLvector(const LatticeVector<dim>& v) const;
         

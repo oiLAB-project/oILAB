@@ -7,39 +7,42 @@ int main()
 {
     using IntScalarType= long long int;
 
-    const int dim= 5;
-    Eigen::Matrix<double,dim,dim> A;
-    A.setIdentity();
-
-    // set up the random number distribution for generating random input reciprocal and lattice directions
+    /*! [Random] */
     std::random_device rd; // obtain a random number from hardware
     std::mt19937 gen(rd()); // seed the generator
     std::uniform_int_distribution<> distr(-10, 10); // define the range
+    /*! [Random] */
 
-    // instantiate a lattice
+    /*! [Lattice] */
+    const int dim= 5;
+    Eigen::Matrix<double,dim,dim> A;
+    A.setIdentity();
     std::cout << "Testing in dimension = " << dim << std::endl;
     Lattice<dim> lat(A);
+    /*! [Lattice] */
 
+    /*! [Directions] */
     Eigen::Vector<IntScalarType,dim> millerIndices;
-    Eigen::Vector<IntScalarType,dim> latticeCoordinates;
-
-    // construct a random reciprocal lattice direction
     for (auto& element : millerIndices)
         element= distr(gen);
     ReciprocalLatticeDirection<dim> rDir(ReciprocalLatticeVector<dim>(millerIndices,lat));
-    // construct a random lattice direction
+
+    Eigen::Vector<IntScalarType,dim> latticeCoordinates;
     for (auto& element : latticeCoordinates)
         element= distr(gen);
     LatticeDirection<dim> lDir(LatticeVector<dim>(latticeCoordinates,lat));
+    /*! [Directions] */
 
-    // test the member function planeParallelLatticeBasis function
     std::cout << "Input Miller index:" << rDir.transpose() << std::endl;
+    /*! [Basis1] */
     auto directions=  lat.planeParallelLatticeBasis(rDir);
     std::cout << "Plane parallel lattice basis: " << std::endl;
     for (auto it= directions.begin(); it!=directions.end(); ++it)
     {
         std::cout << it->transpose() << std::endl;
     }
+    /*! [Basis1] */
+    /*! [Test1] */
     try {
         for (auto it = directions.begin(); it != directions.end(); ++it) {
             if (it == directions.begin())
@@ -55,6 +58,7 @@ int main()
             }
         }
     }
+    /*! [Test1] */
     catch (std::runtime_error& e){
         std::cout << e.what() << std::endl;
         return -1;
@@ -64,12 +68,15 @@ int main()
 
     // test the member function directionOrthogonalReciprocalLatticeBasis function
     std::cout << "Input lattice direction :" << lDir.transpose() << std::endl;
+    /*! [Basis2] */
     auto reciprocalDirections=  lat.directionOrthogonalReciprocalLatticeBasis(lDir);
     std::cout << "Direction orthogonal reciprocal basis: " << std::endl;
     for (auto it= reciprocalDirections.begin(); it!=reciprocalDirections.end(); ++it)
     {
         std::cout << it->transpose() << std::endl;
     }
+    /*! [Basis2] */
+    /*! [Test2] */
     try {
         for (auto it = reciprocalDirections.begin(); it != reciprocalDirections.end(); ++it) {
             if (it == reciprocalDirections.begin())
@@ -85,6 +92,7 @@ int main()
             }
         }
     }
+    /*! [Test2] */
     catch (std::runtime_error& e){
         std::cout << e.what() << std::endl;
         return -1;

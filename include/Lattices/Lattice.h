@@ -70,6 +70,14 @@ namespace gbLAB
         LatticeVector<dim> latticeVector(const VectorDimD& p) const;
         ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
 
+        /*! This function generates lattices that share a coincidence relation with the current
+         * lattice using rotations about a given axis.
+         *
+         * @tparam dm dimension (int)
+         * @param rd axis (Reciprocal lattice direction)
+         * @param maxStrain
+         * @return A set of rotated lattices that are coincident with the current lattice.
+         */
         template<int dm=dim>
         typename std::enable_if<dm==3,std::map<IntScalarType ,Lattice<dm>>>::type
         generateCoincidentLattices(const ReciprocalLatticeDirection<dim>& rd, const double& maxStrain=0.0) const
@@ -123,5 +131,53 @@ namespace gbLAB
             return output;
         }
 };
+/*! @example testPlaneParallelLatticeDirections.cpp
+ *  This example demonstrates the computation of plane-parallel lattice basis and direction-orthogonal reciprocal
+ *  lattice basis for a random reciprocal lattice direction and a random lattice direction, respectively.
+ *
+ *  -# Set up the random number distribution for generating random input reciprocal and lattice directions
+ *  @snippet testPlaneParallelLatticeDirections.cpp Random
+ *
+ *  -# Instantiate a lattice
+ *  @snippet testPlaneParallelLatticeDirections.cpp Lattice
+ *
+ *  -# Form random reciprocal lattice and lattice directions
+ *  @snippet testPlaneParallelLatticeDirections.cpp Directions
+ *
+ *  -# Compute the plane-parallel lattice basis
+ *  @snippet testPlaneParallelLatticeDirections.cpp Basis1
+ *
+ *  -# Test the plane-parallel lattice basis
+ *  @snippet testPlaneParallelLatticeDirections.cpp Test1
+ *
+ *  -# Compute the direction-orthogonal reciprocal lattice basis
+ *  @snippet testPlaneParallelLatticeDirections.cpp Basis2
+ *
+ *  -# Test the direction-orthogonal reciprocal lattice basis
+ *  @snippet testPlaneParallelLatticeDirections.cpp Test2
+ *
+ *  Full Code:
+*/
+
+/*! @example testCoincidentRotations.cpp
+ *  This example demonstrates the generation of CSLs using rotations about an axis of a 3D lattice
+ *
+ * -# Define types
+ * @snippet testCoincidentRotations.cpp Types
+ *
+ * -# Instantiate a lattice \f$\mathcal A\f$
+ * @snippet testCoincidentRotations.cpp Lattice
+ *
+ * -# Specify an axis in the form of a reciprocal lattice direction
+ * @snippet testCoincidentRotations.cpp Axis
+ *
+ * -# Generate all rotations \f$\mathbf R\f$ about the given axis that result in a coincidence between \f$\mathcal A\f$ and \f$\mathbf R\mathcal A\f$
+ * @snippet testCoincidentRotations.cpp Test
+ *
+ * -# SNF bicrystallography of the resulting bicrystals
+ * @snippet testCoincidentRotations.cpp SNF
+ *
+ * Full code:
+ */
 }
 #endif

@@ -37,7 +37,47 @@ namespace gbLAB
             }
             return N;
         }
-        
+
+        template <int dim>
+        typename BiCrystal<dim>::MatrixDimI BiCrystal<dim>::getLambdaA(const typename BiCrystal<dim>::MatrixDimI& M,
+                                                                       const typename BiCrystal<dim>::MatrixDimI& N)
+        {
+            BiCrystal<dim>::MatrixDimI LambdaA;
+            for(int col=0; col<dim; ++col)
+            {
+                BiCrystal<dim>::VectorDimI x,y;
+                for (int i = 0; i < dim; ++i)
+                {
+                    IntScalarType a = N(i, i);
+                    IntScalarType b = -M(i, i);
+                    IntScalarType c = -(i==col);
+                    IntegerMath<IntScalarType>::solveDiophantine2vars(a, b, c, x(i), y(i));
+                }
+                LambdaA.col(col)= M*y;
+            }
+            return LambdaA;
+        }
+
+        template <int dim>
+        typename BiCrystal<dim>::MatrixDimI BiCrystal<dim>::getLambdaB(const typename BiCrystal<dim>::MatrixDimI& M,
+                                                                       const typename BiCrystal<dim>::MatrixDimI& N)
+        {
+            typename BiCrystal<dim>::MatrixDimI LambdaB;
+            for(int col=0; col<dim; ++col)
+            {
+                BiCrystal<dim>::VectorDimI x,y;
+                for (int i = 0; i < dim; ++i)
+                {
+                    IntScalarType a = N(i, i);
+                    IntScalarType b = -M(i, i);
+                    IntScalarType c = (i==col);
+                    IntegerMath<IntScalarType>::solveDiophantine2vars(a, b, c, x(i), y(i));
+                }
+                LambdaB.col(col)= N*x;
+            }
+            return LambdaB;
+        }
+
         template <int dim>
         typename BiCrystal<dim>::MatrixDimD BiCrystal<dim>::getCSLBasis(const Lattice<dim>& A,
                                                                                  const Lattice<dim>& B,
@@ -130,6 +170,8 @@ namespace gbLAB
         /* init */,dscl(getDSCLBasis(A,B,*this,M,N,useRLLL),MatrixDimD::Identity())
         /* init */,Ap(A.latticeBasis*this->matrixX().template cast<double>())
         /* init */,Bp(B.latticeBasis*this->matrixV().template cast<double>())
+        /* init */,LambdaA(getLambdaA(M,N))
+        /* init */,LambdaB(getLambdaB(M,N))
         {
             
             if(true)
@@ -168,8 +210,14 @@ namespace gbLAB
                 }
             }
 
-            //            update(useRLLL);
-            
+            if(true)
+            {//verify LambdaA + LambdaB = I
+                if (!(LambdaA+LambdaB).isIdentity())
+                {
+                    throw std::runtime_error("LambdaA + LambdaB != I\n");
+                }
+            }
+
         }
 
         catch(std::runtime_error& e)

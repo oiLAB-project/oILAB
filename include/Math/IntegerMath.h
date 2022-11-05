@@ -345,7 +345,6 @@ namespace gbLAB
             return output;
         }
 
-
     };
 }
 #endif

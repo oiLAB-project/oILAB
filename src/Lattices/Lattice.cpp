@@ -123,7 +123,8 @@ namespace gbLAB
 
     /**********************************************************************/
     template<int dim>
-    std::vector<LatticeDirection<dim>> Lattice<dim>::planeParallelLatticeBasis(const ReciprocalLatticeDirection<dim>& l) const
+    std::vector<LatticeDirection<dim>> Lattice<dim>::planeParallelLatticeBasis(const ReciprocalLatticeDirection<dim>& l,
+                                                                               const bool& useRLLL) const
     {
         assert(this == &l.lattice && "Vectors belong to different Lattices.");
         auto outOfPlaneVector = IntegerMath<IntScalarType>::solveBezout(l);
@@ -138,12 +139,31 @@ namespace gbLAB
             else
                 out.push_back(LatticeDirection<dim>(column,*this));
         }
+
+        if(!useRLLL) return out;
+
+        Eigen::MatrixXd planeParallelLatticeBasisCartesian(dim,dim-1);
+        int index= 0;
+        for(auto it=std::next(out.begin()); it!=out.end(); ++it)
+        {
+            planeParallelLatticeBasisCartesian.col(index)= (*it).cartesian();
+            index++;
+        }
+
+        planeParallelLatticeBasisCartesian= RLLL(planeParallelLatticeBasisCartesian,0.75).reducedBasis();
+        index= 1;
+        for(const auto& column : planeParallelLatticeBasisCartesian.colwise())
+        {
+            out[index]= this->latticeDirection(column);
+            index++;
+        }
         return out;
     }
 
     /**********************************************************************/
     template<int dim>
-    std::vector<ReciprocalLatticeDirection<dim>> Lattice<dim>::directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim>& l) const
+    std::vector<ReciprocalLatticeDirection<dim>> Lattice<dim>::directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim>& l,
+                                                                                                         const bool& useRLLL) const
     {
         assert(this == &l.lattice && "Vectors belong to different Lattices.");
         auto nonOrthogonalReciprocalVector= IntegerMath<IntScalarType>::solveBezout(l);
@@ -158,6 +178,23 @@ namespace gbLAB
                         ReciprocalLatticeVector(column - column.dot(l) * matrix.col(0), *this)));
             else
                 out.push_back(ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector(column, *this)));
+        }
+        if (!useRLLL) return out;
+
+        Eigen::MatrixXd directionOrthogonalReciprocalLatticeBasisCartesian(dim,dim-1);
+        int index= 0;
+        for(auto it=std::next(out.begin()); it!=out.end(); ++it)
+        {
+            directionOrthogonalReciprocalLatticeBasisCartesian.col(index)= (*it).cartesian();
+            index++;
+        }
+
+        directionOrthogonalReciprocalLatticeBasisCartesian= RLLL(directionOrthogonalReciprocalLatticeBasisCartesian,0.75).reducedBasis();
+        index= 1;
+        for(const auto& column : directionOrthogonalReciprocalLatticeBasisCartesian.colwise())
+        {
+            out[index]= this->reciprocalLatticeDirection(column);
+            index++;
         }
         return out;
     }

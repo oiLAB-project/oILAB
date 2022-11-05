@@ -51,7 +51,9 @@ namespace gbLAB
          * \param[in] l Reciprocal lattice direction
          * \returns   A lattice basis \f$[\textbf b_1,\cdots,\textbf b_{dim}]\f$
          * */
-        std::vector<LatticeDirection<dim>> planeParallelLatticeBasis(const ReciprocalLatticeDirection<dim>& l) const;
+        std::vector<LatticeDirection<dim>> planeParallelLatticeBasis(const ReciprocalLatticeDirection<dim>& l,
+                                                                     const bool& useRLLL=false) const;
+
 
         /*! \brief Given a lattice direction \f$\textbf l\f$, this function returns a direction-orthogonal reciprocal
          * lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$, with the property
@@ -61,7 +63,8 @@ namespace gbLAB
          * \param[in] l Lattice direction
          *  \returns  a reciprocal lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$
          * */
-        std::vector<ReciprocalLatticeDirection<dim>> directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim>& l) const;
+        std::vector<ReciprocalLatticeDirection<dim>> directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim>& l,
+                                                                                               const bool& useRLLL=false) const;
 
         ReciprocalLatticeDirection<dim> reciprocalLatticeDirection(const VectorDimD& d) const;
         RationalLatticeDirection<dim> rationalLatticeDirection(const VectorDimD& d,

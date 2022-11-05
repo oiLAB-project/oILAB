@@ -1,5 +1,8 @@
 /*! \mainpage oILAB - open Interface Lab
 \image html Bicrystal_graph_abstract.pdf width=500px
-@author Nikhil Admal (University of Illinois at Urbana-Champaign)
-@author Giacomo Po (University of Miami)
+For citing the oILAB project, consider the reference
+    - Admal, Nikhil Chandra, Tusher Ahmed, Enrique Martinez, and Giacomo Po. "Interface dislocations and grain boundary disconnections using Smith normal bicrystallography." <em> Acta Materialia </em> \b 240 (2022): 118340. doi:<a href="https://doi.org/10.1016/j.actamat.2022.118340">10.1016/j.actamat.2022.118340</a>.
+
+@authors Nikhil Admal (University of Illinois at Urbana-Champaign)
+@authors Giacomo Po (University of Miami)
 */

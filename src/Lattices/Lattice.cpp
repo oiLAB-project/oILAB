@@ -108,6 +108,27 @@ namespace gbLAB
     }
 
     /**********************************************************************/
+
+    template <int dim>
+    RationalReciprocalLatticeDirection<dim> Lattice<dim>::rationalReciprocalLatticeDirection(const VectorDimD &d,
+                                                                         const typename BestRationalApproximation::LongIntType &maxDen ) const
+    {
+        const ReciprocalLatticeDirection<dim> rld(reciprocalLatticeDirection(d));
+        const BestRationalApproximation bra(d.norm() / rld.cartesian().norm(), maxDen);
+        const Rational rat(bra.num, bra.den);
+        const RationalReciprocalLatticeDirection<dim> rrld(rat, rld);
+        if ((rrld.cartesian() - d).squaredNorm() > FLT_EPSILON)
+        {
+            std::cout << "input reciprocal vector=" << d.transpose() << std::endl;
+            std::cout << "reciprocal lattice direction=" << rld.cartesian().transpose() << std::endl;
+            std::cout << "rational=" << rat << std::endl;
+            std::cout << "d.norm()/rld.cartesian().norm()=" << d.norm() / rld.norm() << std::endl;
+            throw std::runtime_error("Rational Reciprocal Lattice DirectionType NOT FOUND\n");
+        }
+        return rrld;
+    }
+
+    /**********************************************************************/
     template <int dim>
     LatticeVector<dim> Lattice<dim>::latticeVector(const VectorDimD &p) const
     {
@@ -200,6 +221,13 @@ namespace gbLAB
     }
 
     /**********************************************************************/
+    template<int dim>
+    double Lattice<dim>::interPlanarSpacing(const ReciprocalLatticeDirection<dim>& r) const
+    {
+        if(&(r.lattice) != this)
+            throw(std::runtime_error("The input reciprocal lattice vectors does not belong to the current lattice."));
+        return 1.0/r.cartesian().norm();
+    }
 /*
     template<int dim>
     template<int dm>

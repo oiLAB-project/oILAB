@@ -18,7 +18,7 @@ namespace gbLAB
         typedef typename LatticeCore<dim>::IntScalarType IntScalarType;
 
 
-        ReciprocalLatticeDirection(const ReciprocalLatticeVector<dim>& v) ;
+        ReciprocalLatticeDirection(const ReciprocalLatticeVectorBase<dim>& v) ;
                 
     };
     

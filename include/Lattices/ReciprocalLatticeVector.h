@@ -59,7 +59,7 @@ namespace gbLAB
     
     template<int dim>
     ReciprocalLatticeVectorBase<dim> operator*(const typename ReciprocalLatticeVectorBase<dim>::IntScalarType& scalar, const ReciprocalLatticeVectorBase<dim>& L);
-    
+
 
 
 template <int dim>
@@ -84,7 +84,7 @@ public:
        * Constructs *this by mapping d to the lattice
        */
     }
-    
+
 };
 
 
@@ -112,7 +112,7 @@ public:
        * Constructs *this by mapping d to the lattice
        */
     }
-    
+
     LatticeDirection<3> cross(const ReciprocalLatticeVectorBase<3>& other) const;
 
 };

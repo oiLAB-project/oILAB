@@ -68,10 +68,19 @@ namespace gbLAB
 
         ReciprocalLatticeDirection<dim> reciprocalLatticeDirection(const VectorDimD& d) const;
         RationalLatticeDirection<dim> rationalLatticeDirection(const VectorDimD& d,
-                                                              const typename BestRationalApproximation::LongIntType& maxDen=1000) const;
+                                                               const typename BestRationalApproximation::LongIntType& maxDen=1000) const;
+        RationalReciprocalLatticeDirection<dim> rationalReciprocalLatticeDirection(const VectorDimD& d,
+                                                               const typename BestRationalApproximation::LongIntType& maxDen=1000) const;
 
         LatticeVector<dim> latticeVector(const VectorDimD& p) const;
         ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
+
+        /*!
+         * \brief Computes the interplaar spacing
+         * @param r Reciprocal lattice direction
+         * @return interPlanarSpacing
+         */
+        double interPlanarSpacing(const ReciprocalLatticeDirection<dim>& r) const;
 
         /*! This function generates lattices that share a coincidence relation with the current
          * lattice using rotations about a given axis. It is specialized to dim=3

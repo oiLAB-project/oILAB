@@ -35,8 +35,14 @@ namespace gbLAB
     struct RationalLatticeDirection;
 
     template <int dim>
+    struct RationalReciprocalLatticeDirection;
+
+    template <int dim>
     class BiCrystal ;
-        
+
+    template <int dim>
+    class Gb;
+
 //    struct LatticePlane;
 //    struct LatticeLine;
 
@@ -51,8 +57,10 @@ namespace gbLAB
 #include <LatticeDirection.h>
 #include <ReciprocalLatticeDirection.h>
 #include <RationalLatticeDirection.h>
+#include <RationalReciprocalLatticeDirection.h>
 #include <RationalMatrix.h>
 #include <SmithDecomposition.h>
 #include <BiCrystal.h>
+#include <Gb.h>
 
 #endif

@@ -225,6 +225,59 @@ namespace gbLAB
             std::cout << e.what() << std::endl;
             throw(std::runtime_error("Bicrystal construction failed. "));
         }
+        template<int dim>
+        LatticeDirection<dim> BiCrystal<dim>::getLatticeDirectionInA(const LatticeVector<dim> &v) const
+        {
+           return LatticeDirection<dim>(v);
+        }
+        template<int dim>
+        ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInA(const ReciprocalLatticeVectorBase<dim>& rv) const
+        {
+            if(&(rv.lattice) == &(this->A))
+                return ReciprocalLatticeDirection<dim>(rv);
+            else if (&(rv.lattice) == &(this->B))
+            {
+                RationalReciprocalLatticeDirection<dim> rd= A.rationalReciprocalLatticeDirection(rv.cartesian());
+                return rd.dir;
+            }
+           // else if (&(rv.lattice) == &(this->csl))
+           // {
+
+//            }
+            else
+                throw std::runtime_error("error");
+
+        }
+    template<int dim>
+    ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInB(const ReciprocalLatticeVectorBase<dim> &rv) const
+    {
+        if(&(rv.lattice) == &(this->B))
+            return ReciprocalLatticeDirection<dim>(rv);
+        else if (&(rv.lattice) == &(this->A))
+        {
+            RationalReciprocalLatticeDirection<dim> rd= B.rationalReciprocalLatticeDirection(rv.cartesian());
+            return rd.dir;
+        }
+        else
+            throw std::runtime_error("error");
+    }
+
+    template<int dim>
+    LatticeVector<dim> BiCrystal<dim>::shiftTensorA(const LatticeVector<dim>& d) const
+    {
+        if(&d.lattice != &this->dscl)
+            throw(std::runtime_error("Input vector is not a DSCL vectors"));
+        return LatticeVector<dim>(LambdaA*d,d.lattice);
+    }
+
+    template<int dim>
+    LatticeVector<dim> BiCrystal<dim>::shiftTensorB(const LatticeVector<dim>& d) const
+    {
+        if(&d.lattice != &this->dscl)
+            throw(std::runtime_error("Input vector is not a DSCL vectors"));
+        return LatticeVector<dim>(LambdaB*d,d.lattice);
+    }
+
 //        template<int dim>
 //        LatticeDirection<dim> BiCrystal<dim>::AtoCSLvector(const LatticeVector<dim>& n) const
 //        {

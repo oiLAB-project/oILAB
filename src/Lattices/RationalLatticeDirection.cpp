@@ -68,7 +68,7 @@ namespace gbLAB
     template <int dim>
     RationalLatticeDirection<dim> RationalLatticeDirection<dim>::operator+(const RationalLatticeDirection<dim> &other) const
     {
-        assert(&dir.lattice == &other.dir.lattice && "ReciprocalLatticeVectorType belong to different Lattices.");
+        assert(&dir.lattice == &other.dir.lattice && "Rational Lattice Vector Type belong to different Lattices.");
         const VectorDimI temp(rat.n * other.rat.d * dir + other.rat.n * rat.d * other.dir);
         const IntScalarType gcd(IntegerMath<IntScalarType>::gcd(temp));
         const LatticeVector<dim> v(temp / gcd, dir.lattice);

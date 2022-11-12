@@ -48,7 +48,7 @@ namespace gbLAB
                                        const MatrixDimI& M,
                                        const MatrixDimI& N,
                                        const bool& useRLLL);
-        
+
     public:
 
         const Lattice<dim>& A;
@@ -105,6 +105,10 @@ namespace gbLAB
          */
         const MatrixDimI LambdaB;
 
+
+        LatticeVector<dim> shiftTensorA(const LatticeVector<dim>& d) const;
+        LatticeVector<dim> shiftTensorB(const LatticeVector<dim>& d) const;
+
         /**********************************************************************/
         /*! \brief Constructs a bicrystal from two lattices \f$\mathcal A \f$ and \f$\mathcal B \f$ by computing the
          *  parallel bases \f$\textbf A^\|, \textbf B^\|, \textbf C^\|, \textbf D^\|\f$ for lattices
@@ -117,9 +121,16 @@ namespace gbLAB
         BiCrystal(const Lattice<dim>& A,
                   const Lattice<dim>& B,
                   const bool& useRLLL=false);
-        
+
+        LatticeDirection<dim> getLatticeDirectionInA(const LatticeVector<dim>& v) const;
+//        LatticeDirection<dim> getLatticeDirectionInB(const LatticeVector<dim>& v) const;
+//        LatticeDirection<dim> getLatticeDirectionInC(const LatticeVector<dim>& v) const;
+//        LatticeDirection<dim> getLatticeDirectionInD(const LatticeVector<dim>& v) const;
+
+        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInA(const ReciprocalLatticeVectorBase<dim>& v) const;
+        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInB(const ReciprocalLatticeVectorBase<dim>& v) const;
 //        LatticeDirection<dim> AtoCSLvector(const LatticeVector<dim>& v) const;
-        
+
     };
     
     

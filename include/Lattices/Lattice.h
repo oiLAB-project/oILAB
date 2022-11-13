@@ -167,6 +167,7 @@ namespace gbLAB
  *  -# Test the direction-orthogonal reciprocal lattice basis
  *  @snippet testPlaneParallelLatticeDirections.cpp Test2
  *
+ *
  *  Full Code:
 */
 
@@ -188,6 +189,7 @@ namespace gbLAB
  *
  * -# SNF bicrystallography of the resulting bicrystals
  * @snippet testCoincidentRotations.cpp SNF
+ *
  *
  * Full code:
  */

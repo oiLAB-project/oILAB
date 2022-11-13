@@ -406,6 +406,7 @@ namespace gbLAB
      * -# SNF bicrystallography of the two lattices
      *  @snippet testSNF.cpp SNF
      *
+     *
      * Full code:
      */
     

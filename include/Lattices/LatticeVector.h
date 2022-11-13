@@ -67,6 +67,8 @@ namespace gbLAB
         
     template<int dim>
     LatticeVector<dim> operator*(const typename LatticeVector<dim>::IntScalarType& scalar, const LatticeVector<dim>& L);
-    
+
+    template<int dim>
+    LatticeVector<dim> operator*(const int& scalar, const LatticeVector<dim>& L);
 } // end namespace
 #endif

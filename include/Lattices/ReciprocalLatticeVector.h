@@ -60,6 +60,8 @@ namespace gbLAB
     
     template<int dim>
     ReciprocalLatticeVector<dim> operator*(const typename ReciprocalLatticeVector<dim>::IntScalarType& scalar, const ReciprocalLatticeVector<dim>& L);
+    template<int dim>
+    ReciprocalLatticeVector<dim> operator*(const int& scalar, const ReciprocalLatticeVector<dim>& L);
 
 } // end namespace
 #endif

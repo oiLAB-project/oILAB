@@ -267,8 +267,7 @@ namespace gbLAB
     {
         if(&d.lattice != &this->dscl)
             throw(std::runtime_error("Input vector is not a DSCL vectors"));
-        VectorDimI temp= LambdaA*d;
-        return LatticeVector<dim>(temp,d.lattice);
+        return LatticeVector<dim>((LambdaA*d).eval(),d.lattice);
     }
 
     template<int dim>
@@ -276,8 +275,7 @@ namespace gbLAB
     {
         if(&d.lattice != &this->dscl)
             throw(std::runtime_error("Input vector is not a DSCL vectors"));
-        VectorDimI temp= LambdaB*d;
-        return LatticeVector<dim>(temp,d.lattice);
+        return LatticeVector<dim>((LambdaB*d).eval(),d.lattice);
     }
 
 //        template<int dim>

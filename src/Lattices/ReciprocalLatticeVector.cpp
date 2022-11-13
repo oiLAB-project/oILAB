@@ -165,17 +165,27 @@ namespace gbLAB
     {
         return L * scalar;
     }
+    template <int dim>
+    ReciprocalLatticeVector<dim> operator*(const int& scalar, const ReciprocalLatticeVector<dim> &L)
+    {
+        return L * scalar;
+    }
 
 
 template class ReciprocalLatticeVector<1>;
 template ReciprocalLatticeVector<1> operator*(const typename ReciprocalLatticeVector<1>::IntScalarType& scalar, const ReciprocalLatticeVector<1> &L);
+template ReciprocalLatticeVector<1> operator*(const int& scalar, const ReciprocalLatticeVector<1> &L);
 template class ReciprocalLatticeVector<2>;
 template ReciprocalLatticeVector<2> operator*(const typename ReciprocalLatticeVector<2>::IntScalarType&scalar, const ReciprocalLatticeVector<2> &L);
+template ReciprocalLatticeVector<2> operator*(const int& scalar, const ReciprocalLatticeVector<2> &L);
 template class ReciprocalLatticeVector<3>;
 template ReciprocalLatticeVector<3> operator*(const typename ReciprocalLatticeVector<3>::IntScalarType& scalar, const ReciprocalLatticeVector<3> &L);
+template ReciprocalLatticeVector<3> operator*(const int& scalar, const ReciprocalLatticeVector<3> &L);
 template class ReciprocalLatticeVector<4>;
 template ReciprocalLatticeVector<4> operator*(const typename ReciprocalLatticeVector<4>::IntScalarType& scalar, const ReciprocalLatticeVector<4> &L);
+template ReciprocalLatticeVector<4> operator*(const int& scalar, const ReciprocalLatticeVector<4> &L);
 template class ReciprocalLatticeVector<5>;
 template ReciprocalLatticeVector<5> operator*(const typename ReciprocalLatticeVector<5>::IntScalarType& scalar, const ReciprocalLatticeVector<5> &L);
+template ReciprocalLatticeVector<5> operator*(const int& scalar, const ReciprocalLatticeVector<5> &L);
 } // end namespace
 #endif

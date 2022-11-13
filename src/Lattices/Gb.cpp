@@ -11,8 +11,8 @@ namespace gbLAB
     template<int dim>
     Gb<dim>::Gb(const BiCrystal<dim>& bc, const ReciprocalLatticeDirection<dim>& n) :
     /* init */ bc(bc)
-    /* init */,nA(&n.lattice == &(bc.A) ? bc.getReciprocalLatticeDirectionInA(n) : bc.getReciprocalLatticeDirectionInA(n*(-1)))
-    /* init */,nB(&n.lattice == &(bc.B) ? bc.getReciprocalLatticeDirectionInB(n) : bc.getReciprocalLatticeDirectionInB(n*(-1)))
+    /* init */,nA(&n.lattice == &(bc.A) ? bc.getReciprocalLatticeDirectionInA(n) : bc.getReciprocalLatticeDirectionInA(-1*n))
+    /* init */,nB(&n.lattice == &(bc.B) ? bc.getReciprocalLatticeDirectionInB(n) : bc.getReciprocalLatticeDirectionInB(-1*n))
     {
     }
 

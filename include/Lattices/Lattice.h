@@ -202,13 +202,15 @@ namespace gbLAB
  * -# Initializing a lattice vector
  *  @snippet testLattice.cpp Lattice vector
  *
- *      -# Modifying its integer coordinates
- *      @snippet testLattice.cpp Integer coordinates
- *      -# Initializing using Cartesian coordinates
- *      @snippet testLattice.cpp Cartesian coordinates
+ *  -# Modifying its integer coordinates
+ *   @snippet testLattice.cpp Integer coordinates
+ *
+ *  -# Initializing using Cartesian coordinates
+ *   @snippet testLattice.cpp Cartesian coordinates
  *
  * -# Lattice vector algebra
  *  @snippet testLattice.cpp Lattice vector algebra
+ *
  *
  * Full code:
  */

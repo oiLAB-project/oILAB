@@ -1,5 +1,12 @@
 /*! \mainpage oILAB - open Interface Lab
 \image html Bicrystal_graph_abstract.pdf width=500px
+
+oILAB is an open source C++ library to explore the crystallography of lattices and bicrystallography of interfaces. Some of its key features are
+    -# Dimension-independent algorithms implemented using C++ templates
+    -# Bicrystallography is explored using the Smith normal form for integer matrices
+    -# Generates bicrystals with coincident relation, and calculates the coincident site- and displacement shift complete-lattices
+    -# Generates arbitrary rational grain and phase boundaries, and characterizes disconnections by calculating the Burgers vectors and step heights
+
 For citing the oILAB project, consider the reference
     - Nikhil Chandra Admal, Tusher Ahmed, Enrique Martinez, and Giacomo Po. "Interface dislocations and grain boundary disconnections using Smith normal bicrystallography." <em> Acta Materialia </em> \b 240 (2022): 118340. doi:<a target="_blank" rel="noopener noreferrer" href="https://doi.org/10.1016/j.actamat.2022.118340">10.1016/j.actamat.2022.118340</a>.
 

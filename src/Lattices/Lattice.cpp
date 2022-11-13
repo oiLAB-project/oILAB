@@ -101,7 +101,7 @@ namespace gbLAB
             std::cout << "input vector=" << d.transpose() << std::endl;
             std::cout << "lattice direction=" << ld.cartesian().transpose() << std::endl;
             std::cout << "rational=" << rat << std::endl;
-            std::cout << "d.norm()/ld.cartesian().norm()=" << d.norm() / ld.norm() << std::endl;
+            std::cout << "d.norm()/ld.cartesian().norm()=" << d.norm() / ld.latticeVector().norm() << std::endl;
             throw std::runtime_error("Rational Lattice DirectionType NOT FOUND\n");
         }
         return rld;
@@ -122,7 +122,7 @@ namespace gbLAB
             std::cout << "input reciprocal vector=" << d.transpose() << std::endl;
             std::cout << "reciprocal lattice direction=" << rld.cartesian().transpose() << std::endl;
             std::cout << "rational=" << rat << std::endl;
-            std::cout << "d.norm()/rld.cartesian().norm()=" << d.norm() / rld.norm() << std::endl;
+            std::cout << "d.norm()/rld.cartesian().norm()=" << d.norm() / rld.reciprocalLatticeVector().norm() << std::endl;
             throw std::runtime_error("Rational Reciprocal Lattice DirectionType NOT FOUND\n");
         }
         return rrld;
@@ -148,7 +148,7 @@ namespace gbLAB
                                                                                const bool& useRLLL) const
     {
         assert(this == &l.lattice && "Vectors belong to different Lattices.");
-        auto outOfPlaneVector = IntegerMath<IntScalarType>::solveBezout(l);
+        auto outOfPlaneVector = IntegerMath<IntScalarType>::solveBezout(l.reciprocalLatticeVector());
         auto matrix= IntegerMath<IntScalarType>::ccum(outOfPlaneVector);
         std::vector<LatticeDirection<dim>> out;
         int columnIndex= -1;
@@ -156,7 +156,7 @@ namespace gbLAB
         {
             columnIndex++;
             if (columnIndex != 0)
-                out.push_back(LatticeDirection<dim>(column-column.dot(l)*matrix.col(0),*this));
+                out.push_back(LatticeDirection<dim>(column-column.dot(l.reciprocalLatticeVector())*matrix.col(0),*this));
             else
                 out.push_back(LatticeDirection<dim>(column,*this));
         }
@@ -187,7 +187,7 @@ namespace gbLAB
                                                                                                          const bool& useRLLL) const
     {
         assert(this == &l.lattice && "Vectors belong to different Lattices.");
-        auto nonOrthogonalReciprocalVector= IntegerMath<IntScalarType>::solveBezout(l);
+        auto nonOrthogonalReciprocalVector= IntegerMath<IntScalarType>::solveBezout(l.latticeVector());
         auto matrix= IntegerMath<IntScalarType>::ccum(nonOrthogonalReciprocalVector);
         std::vector<ReciprocalLatticeDirection<dim>> out;
         int columnIndex= -1;
@@ -195,7 +195,7 @@ namespace gbLAB
         {
             columnIndex++;
             if (columnIndex != 0) {
-                VectorDimI temp= column - column.dot(l) * matrix.col(0);
+                VectorDimI temp= column - column.dot(l.latticeVector()) * matrix.col(0);
                 out.push_back(ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector<dim>(temp, *this)));
             }
             else {

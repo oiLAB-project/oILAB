@@ -10,9 +10,7 @@ int main()
     const auto A(TextFileParser("cubic_lattice.txt").readMatrix<double,3,3>("A",true));
     Lattice<3> L1(A);
 
-    //LatticeDirection<3> axis(TextFileParser("cubic_lattice.txt").readMatrix<long long,3,1>("axis",true),L1);
     const auto axis(L1.latticeDirection(TextFileParser("cubic_lattice.txt").readMatrix<double,3,1>("axis",true)));
-    //const auto unit_axis(axis.cartesian().normalized());
     const auto unit_axis(axis.cartesian().normalized());
     std::cout << unit_axis << std::endl;
 
@@ -24,8 +22,8 @@ int main()
             n = n/IntegerMath<int>::gcd(m,n);
             // rotation that guarantees coincidence 
             // RANGANATHAN, S. (1966). Acta Cryst. A21, 197-199.
-            double theta = 2.0*atan(axis.template cast<double>().norm()*n/m);
-            int S = pow(m,2)+axis.squaredNorm() * pow(n,2);
+            double theta = 2.0*atan(axis.latticeVector().template cast<double>().norm()*n/m);
+            int S = pow(m,2)+axis.latticeVector().squaredNorm() * pow(n,2);
             std::cout<<"(m,n)=("<<m<<","<<n<<"): "
                      <<", S="<<S
                      <<", theta="<<theta*180/M_PI << std::flush;

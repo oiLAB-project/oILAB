@@ -33,13 +33,13 @@ int main()
     LatticeDirection<dim> lDir(LatticeVector<dim>(latticeCoordinates,lat));
     /*! [Directions] */
 
-    std::cout << "Input Miller index:" << rDir.transpose() << std::endl;
+    std::cout << "Input Miller index:" << rDir << std::endl;
     /*! [Basis1] */
     auto directions=  lat.planeParallelLatticeBasis(rDir,true);
     std::cout << "Plane parallel lattice basis: " << std::endl;
     for (auto it= directions.begin(); it!=directions.end(); ++it)
     {
-        std::cout << it->transpose() << std::endl;
+        std::cout << it->latticeVector().transpose() << std::endl;
     }
     /*! [Basis1] */
     /*! [Test1] */
@@ -67,13 +67,13 @@ int main()
     std::cout << "----------------------------------------------------" << std::endl;
 
     // test the member function directionOrthogonalReciprocalLatticeBasis function
-    std::cout << "Input lattice direction :" << lDir.transpose() << std::endl;
+    std::cout << "Input lattice direction :" << lDir.latticeVector().transpose() << std::endl;
     /*! [Basis2] */
     auto reciprocalDirections=  lat.directionOrthogonalReciprocalLatticeBasis(lDir,true);
     std::cout << "Direction orthogonal reciprocal basis: " << std::endl;
     for (auto it= reciprocalDirections.begin(); it!=reciprocalDirections.end(); ++it)
     {
-        std::cout << it->transpose() << std::endl;
+        std::cout << *it << std::endl;
     }
     /*! [Basis2] */
     /*! [Test2] */

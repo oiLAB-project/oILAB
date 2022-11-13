@@ -41,6 +41,7 @@ namespace gbLAB
         ReciprocalLatticeVector<dim>& operator-=(const ReciprocalLatticeVector<dim>& other);
         ReciprocalLatticeVector<dim> operator*(const IntScalarType& scalar) const;
         IntScalarType dot(const LatticeVector<dim>& other) const;
+        IntScalarType dot(const LatticeDirection<dim>& other) const;
         VectorDimD cartesian() const;
         double planeSpacing() const;
         VectorDimD interplaneVector() const;

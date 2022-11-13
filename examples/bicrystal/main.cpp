@@ -43,7 +43,7 @@ int main(int argc, char** argv)
             const auto a1(L1.latticeDirection(misAxis));
 //            const auto ac(bc.AtoCSLvector(a1));
 
-            std::cout<<"Integer coordinates of misorientation axis = "<<a1.transpose()<<std::endl;
+            std::cout<<"Integer coordinates of misorientation axis = "<<a1.latticeVector().transpose()<<std::endl;
 //            std::cout<<"ac="<<ac.transpose()<<std::endl;
             
             
@@ -87,9 +87,9 @@ int main(int argc, char** argv)
             
             Lattice<3> L1(A);
             const auto axisDir(L1.latticeDirection(axis));
-            std::cout<<"axisDir="<<axisDir.transpose()<<std::endl;
+            std::cout<<"axisDir="<<axisDir.latticeVector().transpose()<<std::endl;
             const auto axisRec(L1.reciprocalLatticeDirection(axis));
-            std::cout<<"axisRec="<<axisRec.transpose()<<std::endl;
+            std::cout<<"axisRec="<<axisRec.reciprocalLatticeVector().transpose()<<std::endl;
 
             
             Lattice<3> L2(A,R);
@@ -105,27 +105,6 @@ int main(int argc, char** argv)
             const Eigen::Matrix< long long,3,3> Y(bc.matrixY());
             const Eigen::Matrix< long long,3,3> adjX(X.adjoint());
             const Eigen::Matrix< long long,3,3> adjY(Y.adjoint());
-            
-//            std::cout<<"X=\n"<<X<<std::endl;
-//            std::cout<<"Y=\n"<<Y<<std::endl;
-//            std::cout<<"adjX=\n"<<adjX<<std::endl;
-//            std::cout<<"adjY=\n"<<adjY<<std::endl;
-//
-//            std::cout<<"X*Y=\n"<<X*Y<<std::endl;
-//            std::cout<<"X*Y'=\n"<<X*Y.transpose()<<std::endl;
-//            std::cout<<"X*inv(Y)=\n"<<X*Y.adjoint()<<std::endl;
-//            std::cout<<"X*inv(Y')=\n"<<X*Y.adjoint().transpose()<<std::endl;
-//
-//            std::cout<<"X*X'=\n"<<X*X.adjoint()<<std::endl;
-//            std::cout<<"Y*Y'=\n"<<Y*Y.adjoint()<<std::endl;
-
-            
-//
-//            const auto a1(L1.latticeDirection(misAxis));
-//            const auto ac(bc.AtoCSLvector(a1));
-//
-//            std::cout<<"a1="<<a1.transpose()<<std::endl;
-//            std::cout<<"ac="<<ac.transpose()<<std::endl;
             
             Lattice<3> L3(A,R.transpose());
             BiCrystal<3> bcT(L1,L3);

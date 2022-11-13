@@ -191,5 +191,26 @@ namespace gbLAB
  *
  * Full code:
  */
+
+/*!
+ * @example testLattice.cpp
+ * This example demonstrates the use of Lattice class
+ *
+ * -# Initializing a lattice
+ *  @snippet testLattice.cpp Lattice
+ *
+ * -# Initializing a lattice vector
+ *  @snippet testLattice.cpp Lattice vector
+ *
+ *      -# Modifying its integer coordinates
+ *      @snippet testLattice.cpp Integer coordinates
+ *      -# Initializing using Cartesian coordinates
+ *      @snippet testLattice.cpp Cartesian coordinates
+ *
+ * -# Lattice vector algebra
+ *  @snippet testLattice.cpp Lattice vector algebra
+ *
+ * Full code:
+ */
 }
 #endif

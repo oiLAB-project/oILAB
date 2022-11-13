@@ -116,6 +116,14 @@ namespace gbLAB
 
     /**********************************************************************/
     template <int dim>
+    typename LatticeVector<dim>::IntScalarType LatticeVector<dim>::dot(const ReciprocalLatticeDirection<dim> &other) const
+    {
+        assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
+        return dot(other.reciprocalLatticeVector());
+    }
+
+    /**********************************************************************/
+    template <int dim>
     typename LatticeVector<dim>::VectorDimD LatticeVector<dim>::cartesian() const
     {
         return lattice.latticeBasis * this->template cast<double>();

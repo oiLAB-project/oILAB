@@ -105,6 +105,13 @@ namespace gbLAB
         return static_cast<VectorDimI>(*this).dot(static_cast<VectorDimI>(other));
     }
 
+    template <int dim>
+    typename ReciprocalLatticeVector<dim>::IntScalarType ReciprocalLatticeVector<dim>::dot(const LatticeDirection<dim> &other) const
+    {
+        assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
+        return dot(other.latticeVector());
+    }
+
     
 
     template <int dim>

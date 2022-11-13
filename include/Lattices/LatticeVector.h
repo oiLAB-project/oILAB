@@ -53,6 +53,7 @@ namespace gbLAB
             return LatticeVector<dim>(temp, lattice);
         }
         IntScalarType dot(const ReciprocalLatticeVector<dim>& other) const;
+        IntScalarType dot(const ReciprocalLatticeDirection<dim>& other) const;
         VectorDimD cartesian() const;
 
         template<int dm=dim>

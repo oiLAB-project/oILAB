@@ -12,16 +12,30 @@
 namespace gbLAB
 {
     template <int dim>
-    struct LatticeDirection : public LatticeVector<dim>
+    struct LatticeDirection : protected LatticeVector<dim>
     {
-        typedef typename LatticeCore<dim>::IntScalarType IntScalarType;
+        using IntScalarType = typename LatticeCore<dim>::IntScalarType ;
+        using VectorDimI = typename LatticeCore<dim>::VectorDimI;
+
         
         LatticeDirection(const LatticeVector<dim>& v) ;
 
-        LatticeDirection(const Eigen::Matrix<IntScalarType,dim,1>& v,
+        LatticeDirection(const VectorDimI& v,
                          const Lattice<dim>& lat) ;
-        
+
+        using LatticeVector<dim>::cartesian;
+        using LatticeVector<dim>::lattice;
+        using LatticeVector<dim>::dot;
+
+        const LatticeVector<dim>& latticeVector() const
+        {
+            return static_cast<const LatticeVector<dim>&>(*this);
+        }
     };
-    
+
+    template<int dim>
+    basic_ostream<char> &operator<<(basic_ostream<char> &s, const LatticeDirection<dim>& m);
+
+
 } // end namespace
 #endif

@@ -22,9 +22,9 @@ int main()
         ReciprocalLatticeDirection<2> n(rvec);
         Gb<2> gb(bc,n);
         std::cout << "Miller indices w.r.t A: ";
-        std::cout << gb.nA.transpose() << std::endl;
+        std::cout << gb.nA << std::endl;
         std::cout << "Miller indices w.r.t B: ";
-        std::cout << gb.nB.transpose() << std::endl;
+        std::cout << gb.nB << std::endl;
 
         LatticeVector<2> b(bc.dscl);
         b << 1,1;

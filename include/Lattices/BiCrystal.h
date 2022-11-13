@@ -127,8 +127,8 @@ namespace gbLAB
 //        LatticeDirection<dim> getLatticeDirectionInC(const LatticeVector<dim>& v) const;
 //        LatticeDirection<dim> getLatticeDirectionInD(const LatticeVector<dim>& v) const;
 
-        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInA(const ReciprocalLatticeVectorBase<dim>& v) const;
-        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInB(const ReciprocalLatticeVectorBase<dim>& v) const;
+        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInA(const ReciprocalLatticeVector<dim>& v) const;
+        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInB(const ReciprocalLatticeVector<dim>& v) const;
 //        LatticeDirection<dim> AtoCSLvector(const LatticeVector<dim>& v) const;
 
     };

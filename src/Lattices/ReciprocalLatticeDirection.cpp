@@ -12,7 +12,7 @@
 namespace gbLAB
 {
     template <int dim>
-    ReciprocalLatticeDirection<dim>::ReciprocalLatticeDirection(const ReciprocalLatticeVectorBase<dim>& v) :
+    ReciprocalLatticeDirection<dim>::ReciprocalLatticeDirection(const ReciprocalLatticeVector<dim>& v) :
     /* init */ ReciprocalLatticeVector<dim>(((v.squaredNorm()==0)? v : (v/IntegerMath<IntScalarType>::gcd(v)).eval()),v.lattice)
     {
     }

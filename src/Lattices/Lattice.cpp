@@ -194,11 +194,14 @@ namespace gbLAB
         for(const auto& column : matrix.colwise())
         {
             columnIndex++;
-            if (columnIndex != 0)
-                out.push_back(ReciprocalLatticeDirection<dim>(
-                        ReciprocalLatticeVector(column - column.dot(l) * matrix.col(0), *this)));
-            else
-                out.push_back(ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector(column, *this)));
+            if (columnIndex != 0) {
+                VectorDimI temp= column - column.dot(l) * matrix.col(0);
+                out.push_back(ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector<dim>(temp, *this)));
+            }
+            else {
+                VectorDimI temp = column;
+                out.push_back(ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector<dim>(temp, *this)));
+            }
         }
         if (!useRLLL) return out;
 

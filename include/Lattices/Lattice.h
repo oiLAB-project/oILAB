@@ -32,8 +32,7 @@ namespace gbLAB
         typedef typename LatticeCore<dim>::MatrixDimI MatrixDimI;
         typedef typename LatticeCore<dim>::IntScalarType IntScalarType;
 
-//        static MatrixDimD getLatticeBasis(const MatrixDimD& A,const MatrixDimD& Q);
-        
+
     public:
         
         const MatrixDimD    latticeBasis;

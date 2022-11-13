@@ -14,13 +14,7 @@ namespace gbLAB
     class Lattice;
 
     template <int dim>
-    class LatticeVectorBase;
-
-    template <int dim>
     class LatticeVector;
-
-    template <int dim>
-    class ReciprocalLatticeVectorBase;
 
     template <int dim>
     class ReciprocalLatticeVector;

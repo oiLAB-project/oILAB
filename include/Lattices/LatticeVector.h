@@ -11,7 +11,7 @@
 namespace gbLAB
 {
     template <int dim>
-    class LatticeVectorBase : public Eigen::Matrix<typename LatticeCore<dim>::IntScalarType,dim,1>
+    class LatticeVector: public Eigen::Matrix<typename LatticeCore<dim>::IntScalarType,dim,1>
     {
         typedef Eigen::Matrix<typename LatticeCore<dim>::IntScalarType,dim,1> BaseType;
         BaseType& base();
@@ -28,101 +28,45 @@ namespace gbLAB
         
         const Lattice<dim>& lattice;
         
-        LatticeVectorBase(const Lattice<dim>& lat) ;
-        LatticeVectorBase(const VectorDimD& d, const Lattice<dim>& lat) ;
+        LatticeVector(const Lattice<dim>& lat) ;
+        LatticeVector(const VectorDimD& d, const Lattice<dim>& lat) ;
+        LatticeVector(const VectorDimI& d, const Lattice<dim>& lat) ;
+        /*
         template<typename OtherDerived>
-        LatticeVectorBase(const Eigen::MatrixBase<OtherDerived>& other, const Lattice<dim>& lat) :
-        /* init base */ BaseType(other),
-        /* init      */ lattice(lat)
-        { /*!@param[in] d vector in real space
-           * Constructs *this by mapping d to the lattice
-           */
-        }
-        LatticeVectorBase(const LatticeVectorBase<dim>& other) = default;
-        LatticeVectorBase(LatticeVectorBase<dim>&& other) =default;
-        LatticeVectorBase<dim>& operator=(const LatticeVectorBase<dim>& other);
-        LatticeVectorBase<dim>& operator=(LatticeVectorBase<dim>&& other);
-        LatticeVectorBase<dim> operator+(const LatticeVectorBase<dim>& other) const;
-        LatticeVectorBase<dim>& operator+=(const LatticeVectorBase<dim>& other);
-        LatticeVectorBase<dim> operator-(const LatticeVectorBase<dim>& other) const;
-        LatticeVectorBase<dim>& operator-=(const LatticeVectorBase<dim>& other);
-        LatticeVectorBase<dim> operator*(const IntScalarType& scalar) const
+        LatticeVector(const Eigen::MatrixBase<OtherDerived>& other, const Lattice<dim>& lat) :
+        BaseType(other),
+        lattice(lat)
         {
-            return LatticeVectorBase<dim>(static_cast<VectorDimI>(*this) * scalar, lattice);
         }
-        IntScalarType dot(const ReciprocalLatticeVectorBase<dim>& other) const;
+        */
+        LatticeVector(const LatticeVector<dim>& other) = default;
+        LatticeVector(LatticeVector<dim>&& other) =default;
+        LatticeVector<dim>& operator=(const LatticeVector<dim>& other);
+        LatticeVector<dim>& operator=(LatticeVector<dim>&& other);
+        LatticeVector<dim> operator+(const LatticeVector<dim>& other) const;
+        LatticeVector<dim>& operator+=(const LatticeVector<dim>& other);
+        LatticeVector<dim> operator-(const LatticeVector<dim>& other) const;
+        LatticeVector<dim>& operator-=(const LatticeVector<dim>& other);
+        LatticeVector<dim> operator*(const IntScalarType& scalar) const
+        {
+            VectorDimI temp= static_cast<VectorDimI>(*this) * scalar;
+            return LatticeVector<dim>(temp, lattice);
+        }
+        IntScalarType dot(const ReciprocalLatticeVector<dim>& other) const;
         VectorDimD cartesian() const;
-        
+
+        template<int dm=dim>
+        typename std::enable_if<dm==3,std::map<IntScalarType ,ReciprocalLatticeDirection<dm>>>::type
+        cross(const LatticeVector<dm>& other) const
+        {
+            assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
+            return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>(static_cast<VectorDimI>(*this).cross(static_cast<VectorDimI>(other)), lattice));
+        }
+
     };
         
     template<int dim>
-    LatticeVectorBase<dim> operator*(const typename LatticeVectorBase<dim>::IntScalarType& scalar, const LatticeVectorBase<dim>& L);
-    
-
-template <int dim>
-class LatticeVector : public LatticeVectorBase<dim>
-{
-    
-public:
-
-    typedef typename LatticeCore<dim>::VectorDimD VectorDimD;
-    typedef typename LatticeCore<dim>::MatrixDimD MatrixDimD;
-    typedef typename LatticeCore<dim>::VectorDimI VectorDimI;
-    typedef typename LatticeCore<dim>::MatrixDimI MatrixDimI;
-
-    
-    LatticeVector(const Lattice<dim>& lat) ;
-    
-    
-    LatticeVector(const VectorDimD& d,
-                  const Lattice<dim>& lat) ;
-    
-    
-    template<typename OtherDerived>
-    LatticeVector(const Eigen::MatrixBase<OtherDerived>& other,
-                  const Lattice<dim>& lat) :
-    /* init base */ LatticeVectorBase<dim>(other,lat)
-    { /*!@param[in] d vector in real space
-       * Constructs *this by mapping d to the lattice
-       */
-    }
-    
-};
-
-
-template <>
-class LatticeVector<3> : public LatticeVectorBase<3>
-{
-    
-public:
-    
-    typedef typename LatticeCore<3>::VectorDimD VectorDimD;
-    typedef typename LatticeCore<3>::MatrixDimD MatrixDimD;
-    typedef typename LatticeCore<3>::VectorDimI VectorDimI;
-    typedef typename LatticeCore<3>::MatrixDimI MatrixDimI;
-    
-    
-    LatticeVector(const Lattice<3>& lat) ;
-    
-    
-    LatticeVector(const VectorDimD& d,
-                  const Lattice<3>& lat) ;
-    
-    
-    template<typename OtherDerived>
-    LatticeVector(const Eigen::MatrixBase<OtherDerived>& other,
-                  const Lattice<3>& lat) :
-    /* init base */ LatticeVectorBase<3>(other,lat)
-    { /*!@param[in] d vector in real space
-       * Constructs *this by mapping d to the lattice
-       */
-    }
-    
-    ReciprocalLatticeDirection<3> cross(const LatticeVector<3>& other) const;
-
-    
-};
-
+    LatticeVector<dim> operator*(const typename LatticeVector<dim>::IntScalarType& scalar, const LatticeVector<dim>& L);
     
 } // end namespace
 #endif

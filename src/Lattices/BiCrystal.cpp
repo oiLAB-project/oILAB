@@ -231,7 +231,7 @@ namespace gbLAB
            return LatticeDirection<dim>(v);
         }
         template<int dim>
-        ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInA(const ReciprocalLatticeVectorBase<dim>& rv) const
+        ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInA(const ReciprocalLatticeVector<dim>& rv) const
         {
             if(&(rv.lattice) == &(this->A))
                 return ReciprocalLatticeDirection<dim>(rv);
@@ -249,7 +249,7 @@ namespace gbLAB
 
         }
     template<int dim>
-    ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInB(const ReciprocalLatticeVectorBase<dim> &rv) const
+    ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInB(const ReciprocalLatticeVector<dim> &rv) const
     {
         if(&(rv.lattice) == &(this->B))
             return ReciprocalLatticeDirection<dim>(rv);
@@ -267,7 +267,8 @@ namespace gbLAB
     {
         if(&d.lattice != &this->dscl)
             throw(std::runtime_error("Input vector is not a DSCL vectors"));
-        return LatticeVector<dim>(LambdaA*d,d.lattice);
+        VectorDimI temp= LambdaA*d;
+        return LatticeVector<dim>(temp,d.lattice);
     }
 
     template<int dim>
@@ -275,7 +276,8 @@ namespace gbLAB
     {
         if(&d.lattice != &this->dscl)
             throw(std::runtime_error("Input vector is not a DSCL vectors"));
-        return LatticeVector<dim>(LambdaB*d,d.lattice);
+        VectorDimI temp= LambdaB*d;
+        return LatticeVector<dim>(temp,d.lattice);
     }
 
 //        template<int dim>

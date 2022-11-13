@@ -14,14 +14,14 @@ namespace gbLAB
 
     /**********************************************************************/
     template <int dim>
-    typename LatticeVectorBase<dim>::BaseType& LatticeVectorBase<dim>::base()
+    typename LatticeVector<dim>::BaseType& LatticeVector<dim>::base()
     {
         return *this;
     }
 
     /**********************************************************************/
     template <int dim>
-    const typename LatticeVectorBase<dim>::BaseType& LatticeVectorBase<dim>::base() const
+    const typename LatticeVector<dim>::BaseType& LatticeVector<dim>::base() const
     {
         return *this;
     }
@@ -29,18 +29,15 @@ namespace gbLAB
 
     /**********************************************************************/
     template <int dim>
-    LatticeVectorBase<dim>::LatticeVectorBase(const Lattice<dim> &lat) :
+    LatticeVector<dim>::LatticeVector(const Lattice<dim> &lat) :
     /* init */ BaseType(VectorDimI::Zero()),
     /* init */ lattice(lat)
-    ///* base init */ BaseType(LatticeBaseType::d2contra(d))
-    { /*!@param[in] d vector in real space
-          * Constructs *this by mapping d to the lattice
-          */
+    {
     }
 
     /**********************************************************************/
     template <int dim>
-    LatticeVectorBase<dim>::LatticeVectorBase(const VectorDimD &d,
+    LatticeVector<dim>::LatticeVector(const VectorDimD &d,
                   const Lattice<dim> &lat) :
     /* init */ BaseType(LatticeCore<dim>::integerCoordinates(d,lat.reciprocalBasis.transpose())),
     /* init */ lattice(lat)
@@ -50,8 +47,23 @@ namespace gbLAB
     }
 
     /**********************************************************************/
+    template<int dim>
+    LatticeVector<dim>::LatticeVector(const VectorDimI& other, const Lattice<dim>& lat) :
+            /* init base */ BaseType(other),
+            /* init      */ lattice(lat)
+    { }
+
+    /**********************************************************************/
     template <int dim>
-    LatticeVectorBase<dim>& LatticeVectorBase<dim>::operator=(const LatticeVectorBase<dim> &other)
+    LatticeVector<dim>& LatticeVector<dim>::operator=(const LatticeVector<dim> &other)
+    {
+        assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
+        base() = other.base();
+        return *this;
+    }
+    /**********************************************************************/
+    template <int dim>
+    LatticeVector<dim>& LatticeVector<dim>::operator=(LatticeVector<dim> &&other)
     {
         assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
         base() = other.base();
@@ -60,24 +72,16 @@ namespace gbLAB
 
     /**********************************************************************/
     template <int dim>
-    LatticeVectorBase<dim>& LatticeVectorBase<dim>::operator=(LatticeVectorBase<dim> &&other)
+    LatticeVector<dim> LatticeVector<dim>::operator+(const LatticeVector<dim> &other) const
     {
         assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
-        base() = other.base();
-        return *this;
+        VectorDimI temp= static_cast<VectorDimI>(*this) + static_cast<VectorDimI>(other);
+        return LatticeVector<dim>(temp, lattice);
     }
 
     /**********************************************************************/
     template <int dim>
-    LatticeVectorBase<dim> LatticeVectorBase<dim>::operator+(const LatticeVectorBase<dim> &other) const
-    {
-        assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
-        return LatticeVectorBase<dim>(static_cast<VectorDimI>(*this) + static_cast<VectorDimI>(other), lattice);
-    }
-
-    /**********************************************************************/
-    template <int dim>
-    LatticeVectorBase<dim>& LatticeVectorBase<dim>::operator+=(const LatticeVectorBase<dim> &other)
+    LatticeVector<dim>& LatticeVector<dim>::operator+=(const LatticeVector<dim> &other)
     {
         assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
         base() += other.base();
@@ -86,15 +90,16 @@ namespace gbLAB
 
     /**********************************************************************/
     template <int dim>
-    LatticeVectorBase<dim> LatticeVectorBase<dim>::operator-(const LatticeVectorBase<dim> &other) const
+    LatticeVector<dim> LatticeVector<dim>::operator-(const LatticeVector<dim> &other) const
     {
         assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
-        return LatticeVectorBase<dim>(static_cast<VectorDimI>(*this) - static_cast<VectorDimI>(other), lattice);
+        VectorDimI temp= static_cast<VectorDimI>(*this) - static_cast<VectorDimI>(other);
+        return LatticeVector<dim>(temp, lattice);
     }
 
     /**********************************************************************/
     template <int dim>
-    LatticeVectorBase<dim>& LatticeVectorBase<dim>::operator-=(const LatticeVectorBase<dim> &other)
+    LatticeVector<dim>& LatticeVector<dim>::operator-=(const LatticeVector<dim> &other)
     {
         assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
         base() -= other.base();
@@ -103,7 +108,7 @@ namespace gbLAB
 
     /**********************************************************************/
     template <int dim>
-    typename LatticeVectorBase<dim>::IntScalarType LatticeVectorBase<dim>::dot(const ReciprocalLatticeVectorBase<dim> &other) const
+    typename LatticeVector<dim>::IntScalarType LatticeVector<dim>::dot(const ReciprocalLatticeVector<dim> &other) const
     {
         assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
         return static_cast<VectorDimI>(*this).dot(static_cast<VectorDimI>(other));
@@ -111,71 +116,27 @@ namespace gbLAB
 
     /**********************************************************************/
     template <int dim>
-    typename LatticeVectorBase<dim>::VectorDimD LatticeVectorBase<dim>::cartesian() const
+    typename LatticeVector<dim>::VectorDimD LatticeVector<dim>::cartesian() const
     {
         return lattice.latticeBasis * this->template cast<double>();
     }
     
     template<int dim>
-    LatticeVectorBase<dim> operator*(const typename LatticeVectorBase<dim>::IntScalarType& scalar, const LatticeVectorBase<dim>& L)
+    LatticeVector<dim> operator*(const typename LatticeVector<dim>::IntScalarType& scalar, const LatticeVector<dim>& L)
     {
         return L*scalar;
     }
 
-template <int dim>
-LatticeVector<dim>::LatticeVector(const Lattice<dim> &lat) :
-/* init base */ LatticeVectorBase<dim>(lat)
-{ /*!@param[in] d vector in real space
-      * Constructs *this by mapping d to the lattice
-      */
-}
-
-template <int dim>
-LatticeVector<dim>::LatticeVector(const VectorDimD &d,
-              const Lattice<dim> &lat) :
-/* init base */ LatticeVectorBase<dim>(d,lat)
-{ /*!@param[in] d vector in real space
-      * Constructs *this by mapping d to the lattice
-      */
-}
-
-LatticeVector<3>::LatticeVector(const Lattice<3> &lat) :
-/* init base */ LatticeVectorBase<3>(lat)
-{ /*!@param[in] d vector in real space
-      * Constructs *this by mapping d to the lattice
-      */
-}
-
-LatticeVector<3>::LatticeVector(const VectorDimD &d,
-              const Lattice<3> &lat) :
-/* init base */ LatticeVectorBase<3>(d,lat)
-{ /*!@param[in] d vector in real space
-      * Constructs *this by mapping d to the lattice
-      */
-}
-
-ReciprocalLatticeDirection<3> LatticeVector<3>::cross(const LatticeVector<3> &other) const
-{
-    assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
-    return ReciprocalLatticeDirection<3>(ReciprocalLatticeVector<3>(static_cast<VectorDimI>(*this).cross(static_cast<VectorDimI>(other)), lattice));
-}
-
-    template class LatticeVectorBase<1>;
-    template LatticeVectorBase<1>operator*(const typename LatticeVectorBase<1>::IntScalarType& scalar, const LatticeVectorBase<1>& L);
-    template class LatticeVectorBase<2>;
-    template LatticeVectorBase<2>operator*(const typename LatticeVectorBase<2>::IntScalarType& scalar, const LatticeVectorBase<2>& L);
-    template class LatticeVectorBase<3>;
-    template LatticeVectorBase<3>operator*(const typename LatticeVectorBase<3>::IntScalarType& scalar, const LatticeVectorBase<3>& L);
-    template class LatticeVectorBase<4>;
-    template LatticeVectorBase<4>operator*(const typename LatticeVectorBase<4>::IntScalarType& scalar, const LatticeVectorBase<4>& L);
-    template class LatticeVectorBase<5>;
-    template LatticeVectorBase<5>operator*(const typename LatticeVectorBase<5>::IntScalarType& scalar, const LatticeVectorBase<5>& L);
 
     template class LatticeVector<1>;
+    template LatticeVector<1>operator*(const typename LatticeVector<1>::IntScalarType& scalar, const LatticeVector<1>& L);
     template class LatticeVector<2>;
-
+    template LatticeVector<2>operator*(const typename LatticeVector<2>::IntScalarType& scalar, const LatticeVector<2>& L);
+    template class LatticeVector<3>;
+    template LatticeVector<3>operator*(const typename LatticeVector<3>::IntScalarType& scalar, const LatticeVector<3>& L);
     template class LatticeVector<4>;
+    template LatticeVector<4>operator*(const typename LatticeVector<4>::IntScalarType& scalar, const LatticeVector<4>& L);
     template class LatticeVector<5>;
-
+    template LatticeVector<5>operator*(const typename LatticeVector<5>::IntScalarType& scalar, const LatticeVector<5>& L);
 } // end namespace
 #endif

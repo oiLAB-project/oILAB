@@ -40,7 +40,26 @@ namespace gbLAB
         const MatrixDimD F;
 
         Lattice(const MatrixDimD& A,const MatrixDimD& Q=MatrixDimD::Identity()) ;
+        LatticeVector<dim> latticeVector(const VectorDimD& p) const;
         LatticeDirection<dim> latticeDirection(const VectorDimD& d) const;
+        ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
+        ReciprocalLatticeDirection<dim> reciprocalLatticeDirection(const VectorDimD& d) const;
+
+        /*! \brief Given a lattice direction \f$\textbf l\f$, this function returns a direction-orthogonal reciprocal
+         * lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$, with the property
+         *  \f$\textbf r_1 \cdot \textbf l=1\f$ and the remaining reciprocal basis vectors are orthogonal to \f$\textbf l\f$, i.e.,
+         *  \f$\boldsymbol r_i \cdot \textbf l = 0\f$ for \f$i=2,\cdots,dim\f$.
+         *
+         * \param[in] l Lattice direction
+         *  \returns  a reciprocal lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$
+         * */
+        std::vector<ReciprocalLatticeDirection<dim>> directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim>& l,
+                                                                                               const bool& useRLLL=false) const;
+
+        RationalLatticeDirection<dim> rationalLatticeDirection(const VectorDimD& d,
+                                                               const typename BestRationalApproximation::LongIntType& maxDen=1000) const;
+        RationalReciprocalLatticeDirection<dim> rationalReciprocalLatticeDirection(const VectorDimD& d,
+                                                                                   const typename BestRationalApproximation::LongIntType& maxDen=1000) const;
 
         /*! \brief Given a reciprocal lattice direction \f$\textbf l\f$, this function returns a plane-parallel lattice basis
          * \f$[\textbf b_1,\cdots,\textbf b_{dim}]\f$, with the property
@@ -54,25 +73,6 @@ namespace gbLAB
                                                                      const bool& useRLLL=false) const;
 
 
-        /*! \brief Given a lattice direction \f$\textbf l\f$, this function returns a direction-orthogonal reciprocal
-         * lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$, with the property
-         *  \f$\textbf r_1 \cdot \textbf l=1\f$ and the remaining reciprocal basis vectors are orthogonal to \f$\textbf l\f$, i.e.,
-         *  \f$\boldsymbol r_i \cdot \textbf l = 0\f$ for \f$i=2,\cdots,dim\f$.
-         *
-         * \param[in] l Lattice direction
-         *  \returns  a reciprocal lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$
-         * */
-        std::vector<ReciprocalLatticeDirection<dim>> directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim>& l,
-                                                                                               const bool& useRLLL=false) const;
-
-        ReciprocalLatticeDirection<dim> reciprocalLatticeDirection(const VectorDimD& d) const;
-        RationalLatticeDirection<dim> rationalLatticeDirection(const VectorDimD& d,
-                                                               const typename BestRationalApproximation::LongIntType& maxDen=1000) const;
-        RationalReciprocalLatticeDirection<dim> rationalReciprocalLatticeDirection(const VectorDimD& d,
-                                                               const typename BestRationalApproximation::LongIntType& maxDen=1000) const;
-
-        LatticeVector<dim> latticeVector(const VectorDimD& p) const;
-        ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
 
         /*!
          * \brief Computes the interplaar spacing
@@ -210,8 +210,25 @@ namespace gbLAB
  *  -# Initializing using Cartesian coordinates
  *   @snippet testLattice.cpp Cartesian coordinates
  *
+ *  -# Initializing using Cartesian coordinates may fail if they don't describe a lattice point
+ *   @snippet testLattice.cpp Cartesian coordinates fail
+ *
  * -# Lattice vector algebra
  *  @snippet testLattice.cpp Lattice vector algebra
+ *
+ * -# Lattice direction from a lattice vector
+ *  @snippet testLattice.cpp Lattice direction
+ *
+ * -# Creating a reciprocal lattice vector
+ *  @snippet testLattice.cpp Reciprocal lattice vector
+ *
+ * -# Reciprocal lattice direction from a reciprocal lattice vector
+ *  @snippet testLattice.cpp Reciprocal lattice direction
+ *
+ * -# The cross product of two lattice vectors is a reciprocal lattice direction.
+ * Similarly, the cross product of two reciprocal lattice vectors is a lattice direction.
+ * The cross product is enabled only for dim=3
+ *  @snippet testLattice.cpp Cross product
  *
  *
  * Full code:

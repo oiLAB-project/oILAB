@@ -57,7 +57,7 @@ namespace gbLAB
         VectorDimD cartesian() const;
 
         template<int dm=dim>
-        typename std::enable_if<dm==3,std::map<IntScalarType ,ReciprocalLatticeDirection<dm>>>::type
+        typename std::enable_if<dm==3,ReciprocalLatticeDirection<dm>>::type
         cross(const LatticeVector<dm>& other) const
         {
             assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");

@@ -27,29 +27,62 @@ int main()
     std::cout << u << std::endl;
     std::cout << "Cartesian coordinates of u:" << std::endl;
     std::cout << u.cartesian() << std::endl;
+    std::cout << "Recover lattice vector from its cartesian components:";
+    std::cout << L.latticeVector(u.cartesian()) << std::endl;
     /*! [Integer coordinates] */
     /*! [Cartesian coordinates] */
     std::cout << "Create a lattice vector using cartesian coordinates: 1.5,2,3.5" << std::endl;
     Eigen::Vector3d vCoords; vCoords << 1.5,2,3.5;
-    LatticeVector<3> v(vCoords,L);
+    LatticeVector<3> v(vCoords, L);
     std::cout << "Integer coordinates of v:" << std::endl;
     std::cout << v << std::endl;
     /*! [Cartesian coordinates] */
+    /*! [Cartesian coordinates fail] */
+    try{
+        // This fails
+        Eigen::Vector3d wCoords; wCoords << 1.8,2,3.5;
+        LatticeVector<3> w(wCoords, L);
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    /*! [Cartesian coordinates fail] */
 
     /*! [Lattice vector algebra] */
     v << 1,1,2;
-    LatticeVector<3> w= 2*u + 3*v;
-    std::cout << "Cartesian coordinates of the lattice vector w:" << std::endl;
+    LatticeVector<3> w= 2*u + 6*v;
+    std::cout << "Integer coordinates of w:" << std::endl;
+    std::cout << w << std::endl;
+    std::cout << "Cartesian coordinates of w:" << std::endl;
     std::cout << w.cartesian() << std::endl;
     /*! [Lattice vector algebra] */
 
-    /*! [Reciprocal lattice vector ] */
-    // Reciprocal lattice vector
-    std::cout << "Creating a zero reciprocal lattice vector u:" << std::endl;
+    /*! [Lattice direction] */
+    std::cout << "Lattice direction along w:" << std::endl;
+    LatticeDirection<3> wDir(w);
+    std::cout << wDir << std::endl;
+    /*! [Lattice direction] */
+
+
+    /*! [Reciprocal lattice vector] */
+    std::cout << "Creating a reciprocal lattice vector r:" << std::endl;
     ReciprocalLatticeVector<3> r(L);
+    r << 3,6,9;
     std::cout << r << std::endl;
-    std::cout << "Cartesian coordinates of the reciprocal lattice vector u:" << std::endl;
+    std::cout << "Cartesian coordinates of the reciprocal lattice vector r:" << std::endl;
     std::cout << r.cartesian() << std::endl;
-    /*! [Reciprocal lattice vector ] */
+    /*! [Reciprocal lattice vector] */
+
+    /*! [Reciprocal lattice direction] */
+    std::cout << "Reciprocal lattice direction along r:" << std::endl;
+    ReciprocalLatticeDirection<3> s(r);
+    std::cout << s <<  std::endl;
+    /*! [Reciprocal lattice direction] */
+
+    /*! [Cross product] */
+   ReciprocalLatticeDirection<3> uxv(u.cross(v));
+   LatticeDirection<3> rxs(r.cross(s.reciprocalLatticeVector()));
+    /*! [Cross product] */
     return 0;
 }

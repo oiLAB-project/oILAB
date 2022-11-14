@@ -18,7 +18,8 @@ namespace gbLAB
         using VectorDimI = typename LatticeCore<dim>::VectorDimI;
 
         
-        LatticeDirection(const LatticeVector<dim>& v) ;
+        LatticeDirection(const LatticeVector<dim>& v);
+        LatticeDirection(const LatticeDirection<dim>& other) = default;
 
         LatticeDirection(const VectorDimI& v,
                          const Lattice<dim>& lat) ;

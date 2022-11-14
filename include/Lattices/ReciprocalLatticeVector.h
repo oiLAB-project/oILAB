@@ -50,7 +50,7 @@ namespace gbLAB
         IntScalarType planeIndexOfPoint(const LatticeVector<dim>& P) const;
 
         template<int dm=dim>
-        typename std::enable_if<dm==3,std::map<IntScalarType,LatticeDirection<dm>>>::type
+        typename std::enable_if<dm==3,LatticeDirection<dm>>::type
         cross(const ReciprocalLatticeVector<dm>& other) const
         {
             assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");

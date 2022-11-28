@@ -13,19 +13,23 @@ int main()
     Lattice<2> L2(B,F);
     /*! [Lattice] */
 
-    /*! [GB] */
     try
     {
+        /*! [Bicrystal] */
         BiCrystal<2> bc(L1, L2);
+        /*! [Bicrystal] */
+        /*! [GB] */
         ReciprocalLatticeVector<2> rvec(L2);
         rvec << 1,1;
         ReciprocalLatticeDirection<2> n(rvec);
         Gb<2> gb(bc,n);
+        /*! [GB] */
         std::cout << "Miller indices w.r.t A: ";
         std::cout << gb.nA << std::endl;
         std::cout << "Miller indices w.r.t B: ";
         std::cout << gb.nB << std::endl;
 
+        /*! [Step Height] */
         LatticeVector<2> b(bc.dscl);
         b << 1,1;
         std::cout << "Step height A: ";
@@ -34,7 +38,14 @@ int main()
         std::cout << "Step height B: ";
         double stepHeightB= gb.stepHeightB(b);
         std::cout << stepHeightB << std::endl;
-        double cslPlaneSpacing= (gb.bc.getReciprocalLatticeDirectionInC(n.reciprocalLatticeVector())).planeSpacing();
+        /*! [Step Height] */
+
+        /*! [Plane Spacing] */
+        auto dir= gb.bc.getReciprocalLatticeDirectionInC(n.reciprocalLatticeVector());
+        double cslPlaneSpacing= dir.planeSpacing();
+        /*! [Plane Spacing] */
+
+        /*! [Check] */
         double error= abs(stepHeightA-stepHeightB - b.cartesian().dot(gb.nA.cartesian().normalized()));
         error= std::remainder(error,cslPlaneSpacing);
 
@@ -42,8 +53,8 @@ int main()
             throw std::runtime_error("Cartesian coordinates of normalized nA and nB are not anti-parallel");
         if(error > 1e-6)
             throw std::runtime_error("Error in step height calculation");
+        /*! [Check] */
     }
-    /*! [GB] */
     catch(std::runtime_error& e)
     {
         std::cout << e.what() << std::endl;

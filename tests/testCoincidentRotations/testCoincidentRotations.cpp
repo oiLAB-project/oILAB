@@ -19,7 +19,6 @@ int main()
     /*! [Axis] */
     const auto axis (TextFileParser("bicrystal_3d.txt").readMatrix<IntScalarType,3,1>("axis",true));
     ReciprocalLatticeVector<3> rv(axis,lattice);
-    ReciprocalLatticeDirection<3> rd(rv);
     std::cout << rv;
     /*! [Axis] */
 

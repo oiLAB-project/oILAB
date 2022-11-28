@@ -80,6 +80,12 @@ int main()
     std::cout << s <<  std::endl;
     /*! [Reciprocal lattice direction] */
 
+    /*! [Direction to vector] */
+    std::cout << "Get reciprocal lattice vector from reciprocal lattice direction:" << std::endl;
+    ReciprocalLatticeVector<3> t= s.reciprocalLatticeVector();
+    std::cout << t <<  std::endl;
+    /*! [Direction to vector] */
+
     /*! [Cross product] */
    ReciprocalLatticeDirection<3> uxv(u.cross(v));
    LatticeDirection<3> rxs(r.cross(s.reciprocalLatticeVector()));

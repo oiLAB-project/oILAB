@@ -250,6 +250,10 @@ namespace gbLAB
  * -# Reciprocal lattice direction from a reciprocal lattice vector
  *  @snippet testLattice.cpp Reciprocal lattice direction
  *
+ * -# Get reciprocal lattice vector from a reciprocal lattice direction. This
+ * may be required to access functions that accept a vector as an input.
+ *  @snippet testLattice.cpp Direction to vector
+ *
  * -# The cross product of two lattice vectors is a reciprocal lattice direction.
  * Similarly, the cross product of two reciprocal lattice vectors is a lattice direction.
  * The cross product is enabled only for dim=3

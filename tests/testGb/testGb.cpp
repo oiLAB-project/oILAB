@@ -34,10 +34,13 @@ int main()
         std::cout << "Step height B: ";
         double stepHeightB= gb.stepHeightB(b);
         std::cout << stepHeightB << std::endl;
+        double cslPlaneSpacing= (gb.bc.getReciprocalLatticeDirectionInC(n.reciprocalLatticeVector())).planeSpacing();
+        double error= abs(stepHeightA-stepHeightB - b.cartesian().dot(gb.nA.cartesian().normalized()));
+        error= std::remainder(error,cslPlaneSpacing);
 
-        if((gb.nA.cartesian().normalized()+gb.nB.cartesian().normalized()).norm() > 1e-6)
+        if((gb.nA.cartesian().normalized()+gb.nB.cartesian().normalized()).norm() > 1e-5)
             throw std::runtime_error("Cartesian coordinates of normalized nA and nB are not anti-parallel");
-        if(abs(stepHeightA-stepHeightB - b.cartesian().dot(gb.nA.cartesian().normalized())) > 1e-6)
+        if(error > 1e-6)
             throw std::runtime_error("Error in step height calculation");
     }
     /*! [GB] */

@@ -95,13 +95,13 @@ namespace gbLAB
          */
         const Lattice<dim> Bp;
 
-        /*! \brief Shift tensor \f$\textbf \lambda:\mathbb Z_{\mathcal D} \to \mathbb Z_{\mathcal D}\f$ describes the
-         * shift in the CSL when lattice \f$\mathcal A\f$ is shifted.
+        /*! \brief Shift tensor \f$\Lambda_{\mathcal A}:\mathbb Z_{\mathcal D} \to \mathbb Z_{\mathcal D}\f$ describes the
+         * shift in the CSL when lattice \f$\mathcal A\f$ is shifted by a DSCL vector.
          */
         const MatrixDimI LambdaA;
 
-        /*! \brief Shift tensor \f$\textbf \lambda:\mathbb Z_{\mathcal D} \to \mathbb Z_{\mathcal D}\f$ describes the
-         * shift in the CSL when lattice \f$\mathcal B\f$ is shifted.
+        /*! \brief Shift tensor \f$\Lambda_{\mathcal B}:\mathbb Z_{\mathcal D} \to \mathbb Z_{\mathcal D}\f$ describes the
+         * shift in the CSL when lattice \f$\mathcal B\f$ is shifted by a DSCL vector.
          */
         const MatrixDimI LambdaB;
 
@@ -122,14 +122,11 @@ namespace gbLAB
                   const Lattice<dim>& B,
                   const bool& useRLLL=false);
 
-        LatticeDirection<dim> getLatticeDirectionInA(const LatticeVector<dim>& v) const;
-//        LatticeDirection<dim> getLatticeDirectionInB(const LatticeVector<dim>& v) const;
-//        LatticeDirection<dim> getLatticeDirectionInC(const LatticeVector<dim>& v) const;
-//        LatticeDirection<dim> getLatticeDirectionInD(const LatticeVector<dim>& v) const;
+        LatticeDirection<dim> getLatticeDirectionInC(const LatticeVector<dim>& v) const;
+        LatticeDirection<dim> getLatticeDirectionInD(const LatticeVector<dim>& v) const;
 
-        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInA(const ReciprocalLatticeVector<dim>& v) const;
-        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInB(const ReciprocalLatticeVector<dim>& v) const;
-//        LatticeDirection<dim> AtoCSLvector(const LatticeVector<dim>& v) const;
+        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInC(const ReciprocalLatticeVector<dim>& v) const;
+        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInD(const ReciprocalLatticeVector<dim>& v) const;
 
     };
     

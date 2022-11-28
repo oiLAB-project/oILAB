@@ -11,21 +11,27 @@ namespace gbLAB
     template<int dim>
     Gb<dim>::Gb(const BiCrystal<dim>& bc, const ReciprocalLatticeDirection<dim>& n) :
     /* init */ bc(bc)
-    /* init */,nA(&n.lattice == &(bc.A) ? bc.getReciprocalLatticeDirectionInA(n.reciprocalLatticeVector()) : bc.getReciprocalLatticeDirectionInA(-1*n.reciprocalLatticeVector()))
-    /* init */,nB(&n.lattice == &(bc.B) ? bc.getReciprocalLatticeDirectionInB(n.reciprocalLatticeVector()) : bc.getReciprocalLatticeDirectionInB(-1*n.reciprocalLatticeVector()))
+    /* init */,nA(&n.lattice == &(bc.A) ? bc.A.reciprocalLatticeDirection(n.cartesian()) : bc.A.reciprocalLatticeDirection(-n.cartesian()))
+    /* init */,nB(&n.lattice == &(bc.B) ? bc.B.reciprocalLatticeDirection(n.cartesian()) : bc.B.reciprocalLatticeDirection(-n.cartesian()))
     {
     }
 
     template<int dim>
     double Gb<dim>::stepHeightA(const LatticeVector<dim>& d) const
     {
-        return bc.shiftTensorA(d).cartesian().dot(nA.cartesian().normalized());
+        ReciprocalLatticeDirection<dim> dir= bc.getReciprocalLatticeDirectionInC(nA.reciprocalLatticeVector());
+        double cslPlaneSpacing= dir.planeSpacing();
+        double step= bc.shiftTensorA(d).cartesian().dot(nA.cartesian().normalized());
+        return std::remainder(step,cslPlaneSpacing);
     }
 
     template<int dim>
     double Gb<dim>::stepHeightB(const LatticeVector<dim>& d) const
     {
-        return bc.shiftTensorB(d).cartesian().dot(nB.cartesian().normalized());
+        ReciprocalLatticeDirection<dim> dir= bc.getReciprocalLatticeDirectionInC(nA.reciprocalLatticeVector());
+        double cslPlaneSpacing= dir.planeSpacing();
+        double step= bc.shiftTensorB(d).cartesian().dot(nB.cartesian().normalized());
+        return std::remainder(step,cslPlaneSpacing);
     }
 
     template class Gb<2>;

@@ -25,6 +25,15 @@ namespace gbLAB
         using ReciprocalLatticeVector<dim>::lattice;
         using ReciprocalLatticeVector<dim>::dot;
 
+        /*! \brief Returns the spacing between two consecutive lattice planes
+         *
+         * @return (double) spacing between two consecutive lattice planes
+         */
+        double planeSpacing() const;
+
+        /*! \brief Returns a constant reference to the base class (ReciprocalLatticeVector)
+         *
+         */
         const ReciprocalLatticeVector<dim>& reciprocalLatticeVector() const
         {
             return static_cast<const ReciprocalLatticeVector<dim>&>(*this);

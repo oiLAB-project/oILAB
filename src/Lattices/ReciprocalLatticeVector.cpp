@@ -121,12 +121,6 @@ namespace gbLAB
     }
     
     template <int dim>
-    double ReciprocalLatticeVector<dim>::planeSpacing() const
-    {
-        return 1.0 / cartesian().norm();
-    }
-
-    template <int dim>
     typename ReciprocalLatticeVector<dim>::VectorDimD ReciprocalLatticeVector<dim>::interplaneVector() const
     {
         const VectorDimD c(cartesian());

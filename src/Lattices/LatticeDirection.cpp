@@ -15,7 +15,7 @@ namespace gbLAB
     /* base init */ LatticeVector<dim>(((v.squaredNorm()==0)? v : (v/IntegerMath<IntScalarType>::gcd(v)).eval()),v.lattice)
     {
     }
-        
+
     template <int dim>
     LatticeDirection<dim>::LatticeDirection(const VectorDimI& v,
                      const Lattice<dim>& lat) :

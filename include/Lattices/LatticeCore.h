@@ -26,8 +26,21 @@ namespace gbLAB
         typedef long long int IntScalarType;
         typedef Eigen::Matrix<IntScalarType,dim,1> VectorDimI;
         typedef Eigen::Matrix<IntScalarType,dim,dim> MatrixDimI;
-        
+
+        /*!
+         * \brief Approximates a direction in terms of integer coordinates
+         * @param v input direction
+         * @return direction with integer coordinates
+         */
         static VectorDimI rationalApproximation(VectorDimD v);
+
+        /*!
+         * \brief Returns the integer coordinates of a vector \f$d\f$ with respect to a lattices with
+         * structure matrix \f$\textbf A\f$.
+         * @param v input direction
+         * @param invA \f$\textbf A^{-1}\f$
+         * @return integer coordinates
+         */
         static VectorDimI integerCoordinates(const VectorDimD& d,const MatrixDimD& invA);
     };
 }

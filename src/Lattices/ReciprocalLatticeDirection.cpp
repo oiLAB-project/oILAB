@@ -23,6 +23,12 @@ namespace gbLAB
         return s<<m.reciprocalLatticeVector().transpose();
     }
 
+    template <int dim>
+    double ReciprocalLatticeDirection<dim>::planeSpacing() const
+    {
+        return 1.0 / cartesian().norm();
+    }
+
 
     template struct ReciprocalLatticeDirection<1>;
     template basic_ostream<char>& operator<<(basic_ostream<char>& s, const ReciprocalLatticeDirection<1>& m);

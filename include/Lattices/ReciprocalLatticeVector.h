@@ -43,7 +43,6 @@ namespace gbLAB
         IntScalarType dot(const LatticeVector<dim>& other) const;
         IntScalarType dot(const LatticeDirection<dim>& other) const;
         VectorDimD cartesian() const;
-        double planeSpacing() const;
         VectorDimD interplaneVector() const;
         IntScalarType closestPlaneIndexOfPoint(const VectorDimD& P) const;
         IntScalarType planeIndexOfPoint(const VectorDimD& P) const ;

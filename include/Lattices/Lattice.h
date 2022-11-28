@@ -40,9 +40,34 @@ namespace gbLAB
         const MatrixDimD F;
 
         Lattice(const MatrixDimD& A,const MatrixDimD& Q=MatrixDimD::Identity()) ;
+
+
+        /*! \brief Returns a lattice vector (in the current lattice) with Cartesian coordinates p
+         *
+         * @param[in] d cartesian coordinates of a vector
+         * @return Lattice vector
+         */
         LatticeVector<dim> latticeVector(const VectorDimD& p) const;
+
+        /*! \brief Returns the lattice direction along a vector
+         *
+         * @param[in] d cartesian coordinates of a vector
+         * @return Lattice direction along d
+         */
         LatticeDirection<dim> latticeDirection(const VectorDimD& d) const;
+
+        /*! \brief Returns a reciprocal lattice vector (in the dual of the current lattice) with Cartesian coordinates p
+         *
+         * @param[in] p cartesian coordinates of a vector
+         * @return Reciprocal lattice vector
+         */
         ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
+
+        /*! \brief Returns the reciprocal lattice direction along a vector
+         *
+         * @param[in] d cartesian coordinates of a vector
+         * @return Reciprocal lattice direction along d
+         */
         ReciprocalLatticeDirection<dim> reciprocalLatticeDirection(const VectorDimD& d) const;
 
         /*! \brief Given a lattice direction \f$\textbf l\f$, this function returns a direction-orthogonal reciprocal
@@ -75,7 +100,7 @@ namespace gbLAB
 
 
         /*!
-         * \brief Computes the interplaar spacing
+         * \brief Computes the interplanar spacing
          * @param r Reciprocal lattice direction
          * @return interPlanarSpacing
          */

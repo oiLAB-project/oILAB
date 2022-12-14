@@ -16,15 +16,39 @@ namespace gbLAB
     using VectorDimI = typename LatticeCore<dim>::VectorDimI ;
 
     public:
+        /*!
+         * Bicrystal formed by two lattices, say \f$\mathcal A\f$ and \f$\mathcal B\f$
+         */
         const BiCrystal<dim>& bc;
+        /*!
+         * GB normal described with respect to lattice \f$\mathcal A\f$
+         */
         const ReciprocalLatticeDirection<dim> nA;
+        /*!
+         * GB normal described with respect to lattice \f$\mathcal B\f$
+         */
         const ReciprocalLatticeDirection<dim> nB;
-//        const double cslPlaneSpacing;
-//        const double dsclPlaneSpacing;
 
+        /*!
+         * \brief Computes the step height of a disconnection formed by displacing lattice \f$\mathcal A\f$
+         * by a Burgers vector \f$\textbf d\f$.
+         * @param d - Burgers vector that belongs to the DSCL of the bicrystal
+         * @return step height
+         */
         double stepHeightA(const LatticeVector<dim>& d) const;
+        /*!
+         * \brief Computes the step height of a disconnection formed by displacing lattice \f$\mathcal B\f$
+         * by a Burgers vector \f$\textbf d\f$.
+         * @param d - Burgers vector that belongs to the DSCL of the bicrystal
+         * @return step height
+         */
         double stepHeightB(const LatticeVector<dim>& d) const;
 
+        /*!
+         * \brief Constructs a grain boundary of a given orientation in a bicrystal
+         * @param bc - Bicrystal formed by two lattices \f$\mathcal A\f$ and \f$\mathcal B\f$.
+         * @param n - Reciprocal lattice direction in dual lattices \f$\mathcal A^*\f$ or \f$\mathcal B^*\f$.
+         */
         Gb(const BiCrystal<dim>& bc, const ReciprocalLatticeDirection<dim>& n);
 
     };

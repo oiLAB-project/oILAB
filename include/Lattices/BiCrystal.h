@@ -123,19 +123,68 @@ namespace gbLAB
                   const Lattice<dim>& B,
                   const bool& useRLLL=false);
 
+        /*!
+         * Outputs lattice direction in the CSL \f$\mathcal C\f$ that is parallel to the inputted vector \f$\textbf v\f$
+         * that belongs to one of the four lattices, \f$\mathcal A\f$, \f$\mathcal B\f$, \f$\mathcal C\f$, or \f$\mathcal D\f$,
+         * @param v - lattice vector
+         * @return LatticeDirection in \f$\mathcal C\f$
+         */
         LatticeDirection<dim> getLatticeDirectionInC(const LatticeVector<dim>& v) const;
+        /*!
+         * Outputs lattice direction in the DSCL \f$\mathcal D\f$ that is parallel to the inputted vector \f$\textbf v\f$
+         * that belongs to one of the four lattices, \f$\mathcal A\f$, \f$\mathcal B\f$, \f$\mathcal C\f$, or \f$\mathcal D\f$,
+         * @param v - lattice vector
+         * @return LatticeDirection in \f$\mathcal D\f$
+         */
         LatticeDirection<dim> getLatticeDirectionInD(const LatticeVector<dim>& v) const;
 
+        /*!
+         * Outputs reciprocal lattice direction in the dual lattice \f$\mathcal A^*\f$ that is parallel to the inputted
+         * reciprocal vector \f$\textbf v\f$ that belongs to one of the four dual lattices, \f$\mathcal A^*\f$, \f$\mathcal B^*\f$,
+         * \f$\mathcal C^*\f$, or \f$\mathcal D^*\f$,
+         * @param v - lattice vector
+         * @return ReciprocalLatticeDirection in \f$\mathcal A^*\f$
+         */
         ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInA(const ReciprocalLatticeVector<dim>& v) const;
+        /*!
+         * Outputs reciprocal lattice direction in the dual lattice \f$\mathcal B^*\f$ that is parallel to the inputted
+         * reciprocal vector \f$\textbf v\f$ that belongs to one of the four dual lattices, \f$\mathcal A^*\f$, \f$\mathcal B^*\f$,
+         * \f$\mathcal C^*\f$, or \f$\mathcal D^*\f$,
+         * @param v - lattice vector
+         * @return ReciprocalLatticeDirection in \f$\mathcal B^*\f$
+         */
         ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInB(const ReciprocalLatticeVector<dim>& v) const;
+        /*!
+         * Outputs reciprocal lattice direction in the dual lattice \f$\mathcal C^*\f$ that is parallel to the inputted
+         * reciprocal vector \f$\textbf v\f$ that belongs to one of the four dual lattices, \f$\mathcal A^*\f$, \f$\mathcal B^*\f$,
+         * \f$\mathcal C^*\f$, or \f$\mathcal D^*\f$,
+         * @param v - lattice vector
+         * @return ReciprocalLatticeDirection in \f$\mathcal C^*\f$
+         */
         ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInC(const ReciprocalLatticeVector<dim>& v) const;
+        /*!
+         * Outputs reciprocal lattice direction in the dual lattice \f$\mathcal D^*\f$ that is parallel to the inputted
+         * reciprocal vector \f$\textbf v\f$ that belongs to one of the four dual lattices, \f$\mathcal A^*\f$, \f$\mathcal B^*\f$,
+         * \f$\mathcal C^*\f$, or \f$\mathcal D^*\f$,
+         * @param v - lattice vector
+         * @return ReciprocalLatticeDirection in \f$\mathcal D^*\f$
+         */
         ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInD(const ReciprocalLatticeVector<dim>& v) const;
 
+        /*!
+         * \brief Given a tilt axis \f$\textbf d\f$, that belongs to lattices \f$\mathcal A\f$ or \f$\mathcal B\f$, this
+         * function generate a set of tilt GBs. CURRENTLY ONLY WORDS FOR DIMENSION 3
+         * @tparam dm
+         * @param d - LatticeDirection that describes the tilt axis
+         * @param div - parameter to span the GBs
+         * @return A data structure that stores GBs sorted in increasing order of their inclination angle.
+         */
         template<int dm=dim>
         typename std::enable_if<dm==2 || dim==3,std::map<IntScalarType,Gb<dm>>>::type
         generateGrainBoundaries(const LatticeDirection<dim>& d, int div=30) const
         {
-            // asert that d should be a lattice vector of A or B
+            if (&d.lattice != &A && &d.lattice != &B)
+                throw std::runtime_error("The tilt axis does not belong to lattices A and B  \n");
             std::vector<Gb<dm>> gbVec;
             double epsilon=1e-8;
             bool stgbExists= false;

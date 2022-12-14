@@ -54,6 +54,7 @@ int main()
         if(error > 1e-6)
             throw std::runtime_error("Error in step height calculation");
         /*! [Check] */
+
     }
     catch(std::runtime_error& e)
     {

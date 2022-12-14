@@ -12,6 +12,7 @@
 #include <RationalMatrix.h>
 #include <LLL.h>
 #include <RLLL.h>
+#include <unordered_set>
 
 
 namespace gbLAB
@@ -125,9 +126,80 @@ namespace gbLAB
         LatticeDirection<dim> getLatticeDirectionInC(const LatticeVector<dim>& v) const;
         LatticeDirection<dim> getLatticeDirectionInD(const LatticeVector<dim>& v) const;
 
+        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInA(const ReciprocalLatticeVector<dim>& v) const;
+        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInB(const ReciprocalLatticeVector<dim>& v) const;
         ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInC(const ReciprocalLatticeVector<dim>& v) const;
         ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInD(const ReciprocalLatticeVector<dim>& v) const;
 
+        template<int dm=dim>
+        typename std::enable_if<dm==2 || dim==3,std::map<IntScalarType,Gb<dm>>>::type
+        generateGrainBoundaries(const LatticeDirection<dim>& d, int div=30) const
+        {
+            // asert that d should be a lattice vector of A or B
+            std::vector<Gb<dm>> gbVec;
+            double epsilon=1e-8;
+            bool stgbExists= false;
+            int count= -1;
+            int stgbCount= 0;
+            IntScalarType keyScale= 1e6;
+            auto basis= d.lattice.directionOrthogonalReciprocalLatticeBasis(d,true);
+            if (dm==3)
+            {
+                for (int i = -div; i <= div; ++i)
+                {
+                    for (int j = -div; j <= div; ++j)
+                    {
+                        if (i==0 && j==0) continue;
+                        count++;
+                        ReciprocalLatticeVector<dm> rv = i * basis[1].reciprocalLatticeVector() + j * basis[2].reciprocalLatticeVector();
+                        try
+                        {
+                            Gb<dm> gb(*this, rv);
+                            gbVec.push_back(gb);
+
+                            VectorDimI nAintegerCoords = gb.nA.reciprocalLatticeVector();
+                            VectorDimI nBintegerCoords = gb.nB.reciprocalLatticeVector();
+
+                            nAintegerCoords = nAintegerCoords.cwiseAbs();
+                            nBintegerCoords = nBintegerCoords.cwiseAbs();
+                            std::sort(nAintegerCoords.data(), nAintegerCoords.data() + dm);
+                            std::sort(nBintegerCoords.data(), nBintegerCoords.data() + dm);
+                            if (nAintegerCoords == nBintegerCoords) {
+                                stgbExists = true;
+                                stgbCount = count;
+                            }
+                        }
+                        catch(std::runtime_error& e)
+                        {
+                            std::cout << e.what() << std::endl;
+                            std::cout << "Unable to form GB with normal = " << rv << std::endl;
+                            std::cout << "moving on to next inclination" << std::endl;
+                        }
+                    }
+                }
+            }
+            else if(dm==2)
+            {
+                auto rv= basis[0].reciprocalLatticeVector();
+                gbVec.push_back(Gb<dm>(*this, rv));
+            }
+            std::map<IntScalarType,Gb<dm>> gbSet;
+            for(const Gb<dim>& gb:gbVec)
+            {
+                double cosAngle;
+                if (stgbExists)
+                    cosAngle= gb.nA.cartesian().normalized().dot(gbVec[stgbCount].nA.cartesian().normalized());
+                else
+                    cosAngle= gb.nA.cartesian().normalized().dot(gbVec[0].nA.cartesian().normalized());
+                if (cosAngle-1>-epsilon) cosAngle= 1.0;
+                if (cosAngle+1<epsilon) cosAngle= -1.0;
+
+                double angle= acos(cosAngle);
+                IntScalarType key= angle*keyScale;
+                gbSet.insert(std::pair<IntScalarType,Gb<dm>>(key,gb));
+            }
+            return gbSet;
+        }
     };
     
     

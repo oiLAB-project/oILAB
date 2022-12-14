@@ -18,7 +18,7 @@ namespace gbLAB
     {
     public:
         typedef int64_t LongIntType;
-        
+
     private:
         static std::pair<LongIntType,LongIntType> rat_approx(double f, LongIntType md)
         {

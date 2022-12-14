@@ -34,7 +34,8 @@ typename LatticeCore<dim>::VectorDimI LatticeCore<dim>::rationalApproximation(Ve
 
         for (int k = 0; k < dim; ++k)
         {
-            BestRationalApproximation bra(nd(k), 10000);
+            //BestRationalApproximation bra(nd(k), 10000);
+            BestRationalApproximation bra(nd(k), 1000);
 
             nums(k) = bra.num;
             dens(k) = bra.den;

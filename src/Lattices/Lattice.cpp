@@ -76,7 +76,7 @@ namespace gbLAB
         const VectorDimD nd(latticeBasis.transpose()*d);
         const ReciprocalLatticeVector<dim> temp(LatticeCore<dim>::rationalApproximation(nd),*this);
         const GramMatrix<double,2> G(std::array<VectorDimD,2>{temp.cartesian().normalized(),d.normalized()});
-        const double crossNorm(sqrt(G.determinant()));
+        const double crossNorm(sqrt(abs(G.determinant())));
         if(crossNorm>FLT_EPSILON)
         {
             std::cout<<"input direction="<<std::setprecision(15)<<std::scientific<<d.normalized().transpose()<<std::endl;

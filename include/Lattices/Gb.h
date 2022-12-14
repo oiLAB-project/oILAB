@@ -56,6 +56,45 @@ namespace gbLAB
  *
  * Full code:
 */
+
+
+/*! @example testGenerateGBs.cpp
+ * Given a tilt-axis of a 3D lattice, this example demonstrates the construction of multiple tilt GBs of varying
+ * misorientations and inclinations
+ *
+ * -# Define types
+ * @snippet testGenerateGBs.cpp Types
+ *
+ * -# Instantiate a lattice \f$\mathcal A\f$
+ * @snippet testGenerateGBs.cpp Lattice
+ *
+ * -# Specify an axis in the form of a reciprocal lattice direction
+ * @snippet testGenerateGBs.cpp Axis
+ *
+ * -# Generate all rotations \f$\mathbf R\f$ about the given axis that result in a coincidence relation between
+ * \f$\mathcal A\f$ and \f$\mathbf R\mathcal A\f$, and form the corresponding bicrystals
+ * @snippet testGenerateGBs.cpp Generate bicrystal
+ *
+ * -# Loop over the generated bicrystals, i.e., loop over misorientation angles
+ * @snippet testGenerateGBs.cpp Misorientation
+ *
+ *  -# Generate grain boundaries of varying inclinations
+ *  @snippet testGenerateGBs.cpp  Generate GBs
+ *
+ *  -# Loop over inclination angles
+ *  @snippet testGenerateGBs.cpp Inclination
+ *
+ *   -# For each GB, compute its period and the Burgers vector of the glide disconnection
+ *   @snippet testGenerateGBs.cpp Glide
+ *
+ *   -# Note the reference GB with respect to which inclination angles are measured
+ *   @snippet testGenerateGBs.cpp Reference
+ *
+ *   -# Output GB properties
+ *   @snippet testGenerateGBs.cpp Output
+ *
+ * Full code:
+ */
 }
 
 #endif //OILAB_GB_H

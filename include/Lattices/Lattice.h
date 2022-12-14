@@ -209,7 +209,7 @@ namespace gbLAB
  * @snippet testCoincidentRotations.cpp Axis
  *
  * -# Generate all rotations \f$\mathbf R\f$ about the given axis that result in a coincidence relation between
- * \f$\mathcal A\f$ and \f$\mathbf R\mathcal A\f$
+ * \f$\mathcal A\f$ and \f$\mathbf R\mathcal A\f$, and form the corresponding bicrystals
  * @snippet testCoincidentRotations.cpp Test
  *
  * -# SNF bicrystallography of the resulting bicrystals

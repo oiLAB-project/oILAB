@@ -191,7 +191,7 @@ namespace gbLAB
             int count= -1;
             int stgbCount= 0;
             IntScalarType keyScale= 1e6;
-            auto basis= d.lattice.directionOrthogonalReciprocalLatticeBasis(d,true);
+            auto basis= d.lattice.directionOrthogonalReciprocalLatticeBasis(d,false);
             if (dm==3)
             {
                 for (int i = -div; i <= div; ++i)

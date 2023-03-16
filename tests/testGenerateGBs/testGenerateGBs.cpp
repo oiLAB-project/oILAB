@@ -68,8 +68,12 @@ int main()
                     /*! [Reference] */
 
                     /*! [Output] */
+                    double epsilon=1e-8;
                     if (gbCount==0 || periodVector.cartesian().norm() < 100) {
-                        std::cout << gbCount+1 << ") Inclination = " << acos(refnA.cartesian().normalized().dot(gb.second.nA.cartesian().normalized()))*180/M_PI << std::endl;
+                        double cosAngle= refnA.cartesian().normalized().dot(gb.second.nA.cartesian().normalized());
+                        if (cosAngle-1>-epsilon) cosAngle= 1.0;
+                        if (cosAngle+1<epsilon) cosAngle= -1.0;
+                        std::cout << gbCount+1 << ") Inclination = " << acos(cosAngle)*180/M_PI << std::endl;
                         std::cout << "nA = " << gb.second.nA << std::endl;
                         std::cout << "nB = " << gb.second.nB << std::endl;
                         std::cout << "GB period = " << periodVector.cartesian().norm() << std::endl;

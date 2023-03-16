@@ -92,7 +92,8 @@ namespace gbLAB
  * -# Instantiate a lattice \f$\mathcal A\f$
  * @snippet testGenerateGBs.cpp Lattice
  *
- * -# Specify an axis in the form of a reciprocal lattice direction
+ * -# Specify the Cartesian coordinates of an axis. This should be parallel to a reciprocal lattice vector of
+ * \f$\mathcal A\f$
  * @snippet testGenerateGBs.cpp Axis
  *
  * -# Generate all rotations \f$\mathbf R\f$ about the given axis that result in a coincidence relation between
@@ -114,8 +115,10 @@ namespace gbLAB
  *   -# Note the reference GB with respect to which inclination angles are measured
  *   @snippet testGenerateGBs.cpp Reference
  *
- *   -# Output GB properties
+ *   -# Output properties of GBs whose period is less than 100 Angstrom
  *   @snippet testGenerateGBs.cpp Output
+ *
+ *
  *
  * Full code:
  */

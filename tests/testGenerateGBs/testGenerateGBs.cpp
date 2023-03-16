@@ -19,10 +19,10 @@ int main()
     /*! [Lattice] */
 
     /*! [Axis] */
-    const auto axis (TextFileParser("bicrystal_3d.txt").readMatrix<IntScalarType,3,1>("axis",true));
-    ReciprocalLatticeVector<3> rv(axis,lattice);
-    std::cout << "Integer coordinates of axis (reciprocal vector w.r.t lattice A) = " << std::endl;
-    std::cout << rv << std::endl;
+    const auto axis (TextFileParser("bicrystal_3d.txt").readMatrix<double,3,1>("axis",true));
+    ReciprocalLatticeVector<3> rv(lattice.reciprocalLatticeDirection(axis).reciprocalLatticeVector());
+    std::cout << "Cartesian coordinates of axis = " << std::endl;
+    std::cout << rv.cartesian().transpose() << std::endl;
     /*! [Axis] */
 
     /*! [Generate bicrystal] */

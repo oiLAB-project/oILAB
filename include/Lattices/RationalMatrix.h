@@ -24,7 +24,8 @@ namespace gbLAB
 
         static constexpr int64_t maxDen=10000000;
         static std::pair<MatrixDimI,IntScalarType> compute(const MatrixDimD& R);
-        
+        static std::pair<MatrixDimI,IntScalarType> reduce(const MatrixDimI& Rn, const MatrixDimI& Rd);
+
         const std::pair<MatrixDimI,IntScalarType> returnPair;
         
     public:
@@ -34,6 +35,7 @@ namespace gbLAB
         
         RationalMatrix(const MatrixDimD& R) ;
         RationalMatrix(const MatrixDimI& Rn,const IntScalarType& Rd);
+        RationalMatrix(const MatrixDimI& Rn, const MatrixDimI& Rd);
         MatrixDimD asMatrix() const;
 
     };

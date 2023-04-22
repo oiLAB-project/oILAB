@@ -11,5 +11,6 @@ add_library(oILAB SHARED    BiCrystal.cpp
                             LatticeDirection.cpp
                             RationalLatticeDirection.cpp
                             RationalReciprocalLatticeDirection.cpp
-                            ReciprocalLatticeVector.cpp)
+                            ReciprocalLatticeVector.cpp
+                            Farey.cpp)
 

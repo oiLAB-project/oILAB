@@ -68,12 +68,12 @@ namespace gbLAB
         /*! \brief Signed ratio of the unit cell volume of \f$\mathcal C\f$ to that of \f$\mathcal A\f$.
          *  \f$ \Sigma_{\mathcal A} = \det(\textbf M)\f$.
          */
-        const int sigmaA;
+        const IntScalarType sigmaA;
 
         /*! \brief Signed ratio of the unit cell volume of \f$\mathcal C\f$ to that of \f$\mathcal B\f$:
          *  \f$ \Sigma_{\mathcal B} = \det(\textbf N)\f$.
          */
-        const int sigmaB;
+        const IntScalarType sigmaB;
 
         /*! \brief \f$ \Sigma = |\Sigma_{\mathcal A}|\f$ if \f$ \Sigma_{\mathcal A} = \Sigma_{\mathcal B}\f$, else
          *  \f$ \Sigma = 0 \f$

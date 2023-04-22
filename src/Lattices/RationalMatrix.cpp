@@ -60,6 +60,44 @@ namespace gbLAB
         return std::make_pair(im, sigma);
     }
 
+    template <int dim>
+    std::pair<typename RationalMatrix<dim>::MatrixDimI, typename RationalMatrix<dim>::IntScalarType>
+            RationalMatrix<dim>::reduce(const MatrixDimI& Rn, const MatrixDimI& Rd)
+    {
+        if(Rd.any()==0)
+            throw std::runtime_error("Rational Matrix construction failed: denominator matrix has zeros");
+        MatrixDimI im(MatrixDimI::Zero());
+        MatrixDimI RnReduced(Rn);
+        MatrixDimI RdReduced(Rd);
+
+        // reduce the ratios
+        for (int i = 0; i < dim; ++i)
+        {
+            for (int j = 0; j < dim; ++j)
+            {
+                RnReduced(i,j) = Rn(i,j) / IntegerMath<IntScalarType>::gcd(Rn(i,j),Rd(i,j));
+                RdReduced(i,j) = Rd(i,j) / IntegerMath<IntScalarType>::gcd(Rn(i,j),Rd(i,j));
+            }
+        }
+        IntScalarType sigma= IntegerMath<IntScalarType>::lcm(RdReduced.cwiseAbs());
+        for (int i = 0; i < dim; ++i)
+        {
+            for (int j = 0; j < dim; ++j)
+            {
+                im(i, j) = RnReduced(i, j) * sigma / RdReduced(i, j);
+            }
+        }
+        if (IntegerMath<IntScalarType>::gcd(IntegerMath<IntScalarType>::gcd(im.cwiseAbs()), sigma) != 1) {
+            std::cout << Rn << std::endl;
+            std::cout << Rd << std::endl;
+            std::cout << RnReduced << std::endl;
+            std::cout << RdReduced << std::endl;
+            std::cout << im << std::endl;
+            std::cout << sigma <<std::endl;
+        }
+        assert(IntegerMath<IntScalarType>::gcd(IntegerMath<IntScalarType>::gcd(im.cwiseAbs()), sigma) == 1);
+        return std::make_pair(im, sigma);
+    }
     /**********************************************************************/
     template <int dim>
     RationalMatrix<dim>::RationalMatrix(const MatrixDimD &R) :
@@ -69,6 +107,18 @@ namespace gbLAB
     {
     }
 
+    template <int dim>
+    RationalMatrix<dim>::RationalMatrix(const MatrixDimI& Rn, const MatrixDimI& Rd) try:
+    /* init */ returnPair(reduce(Rn,Rd)),
+            /* init */ integerMatrix(returnPair.first),
+            /* init */ mu(returnPair.second)
+    {
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << e.what() << std::endl;
+        throw(std::runtime_error("Rational Matrix construction failed. "));
+    }
     template <int dim>
     RationalMatrix<dim>::RationalMatrix(const MatrixDimI& Rn,const IntScalarType& Rd) :
     /* init */ returnPair(std::make_pair(Rn, Rd)),

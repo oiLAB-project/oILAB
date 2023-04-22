@@ -75,7 +75,47 @@ namespace gbLAB
         {
             return a * b / gcd(a, b);
         }
-        
+
+        template<typename T>
+        static IntScalarType lcm(const Eigen::MatrixBase<T>& a)
+        {
+            switch (a.size())
+            {
+                case 0:
+                {
+                    throw std::runtime_error("lcm: array size is zero\n");
+                    return 0;
+                    break;
+                }
+
+                case 1:
+                {
+                    return a(0);
+                    break;
+                }
+
+                case 2:
+                {
+                    return lcm(a(0),a(1));
+                    break;
+                }
+
+                default:
+                {
+                    IntScalarType temp(a(0));
+                    for(long k=1;k<a.size();++k)
+                    {
+                        if (temp==0 && a(k)==0 && k!=a.size()-1)
+                            temp= 0;
+                        else
+                            temp=lcm(temp,a(k));
+                    }
+                    return temp;
+                    break;
+                }
+            }
+
+        }
 
         static Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic>
         integerGramSchmidt(const Eigen::Vector<IntScalarType,Eigen::Dynamic>& a)

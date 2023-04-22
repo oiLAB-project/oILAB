@@ -30,18 +30,18 @@ int main()
     /*! [Generate bicrystal] */
 
     /*! [Misorientation] */
-    for (const auto& rotatedLattice : coincidentLattices)
+    for (const auto& rotation : coincidentLattices)
     {
         // Loop over misorientation angles
         std::cout << "###################################################" << std::endl;
         try
         {
-            double theta= acos((rotatedLattice.second.F.trace()-1.0)/2.0)*180/M_PI;
+            double theta= acos((rotation.trace()-1.0)/2.0)*180/M_PI;
             std::cout << "Misorientation angle = " << theta << "; ";
-            BiCrystal<3> bc(lattice,rotatedLattice.second,false);
+            BiCrystal<3> bc(lattice,Lattice<3>(lattice.latticeBasis,rotation),false);
             std::cout << "Sigma = " << bc.sigma << std::endl;
             std::cout << "Lattice B = " << std::endl;
-            std::cout << rotatedLattice.second.latticeBasis << std::endl;
+            std::cout << rotation*lattice.latticeBasis << std::endl;
             /*! [Misorientation] */
             /*! [Generate GBs] */
             auto gbSet(bc.generateGrainBoundaries(bc.A.latticeDirection(rv.cartesian())));

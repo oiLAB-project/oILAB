@@ -23,17 +23,17 @@ int main()
     /*! [Axis] */
 
     /*! [Test] */
-    const auto& coincidentLattices= lattice.generateCoincidentLattices(rv);
+    const auto& coincidentRotations= lattice.generateCoincidentLattices(rv);
     /*! [Test] */
 
     /*! [SNF] */
-    for (const auto& rotatedLattice : coincidentLattices)
+    for (const auto& rotation : coincidentRotations)
     {
         try
         {
-            double theta= acos((rotatedLattice.second.F.trace()-1.0)/2.0)*180/M_PI;
+            double theta= acos((rotation.trace()-1.0)/2.0)*180/M_PI;
             std::cout << "angle = " << theta << "; ";
-            BiCrystal<3> bc(lattice,rotatedLattice.second,false);
+            BiCrystal<3> bc(lattice,Lattice<3>(lattice.latticeBasis,rotation),false);
             std::cout << "Sigma = " << bc.sigma << std::endl;
         }
         catch(std::runtime_error& e)

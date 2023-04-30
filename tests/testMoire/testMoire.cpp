@@ -23,6 +23,7 @@ int main()
 
     /*! [Test] */
     const auto& coincidentLattices= lattice.generateCoincidentLattices(1e-3,10,15);
+    //const auto& coincidentLattices= lattice.generateCoincidentLattices(1e-2,30,15);
     /*! [Test] */
 
     /*! [SNF] */
@@ -31,14 +32,24 @@ int main()
         try
         {
             BiCrystal<2> bc(lattice,Lattice<2>(lattice.latticeBasis,deformationGradient),false);
-            if (abs(bc.sigmaA) > 100000 || abs(bc.sigmaB) > 100000)
+            if (abs(bc.sigmaA) > 20000 || abs(bc.sigmaB) > 20000)
                 continue;
+            std::cout << "------------------ SNF ----------------------" << std::endl;
             std::cout << "sigmaA = " << bc.sigmaA << "; sigmaB = " << bc.sigmaB << std::endl;
+            std::cout << "Ap= " << std::endl;
+            std::cout << std::setprecision(12) << bc.Ap.latticeBasis << std::endl;
+            std::cout << "Bp= " << std::endl;
+            std::cout << std::setprecision(12) << bc.Bp.latticeBasis << std::endl;
+            std::cout << "CSL= " << std::endl;
+            std::cout << std::setprecision(12) << bc.csl.latticeBasis << std::endl;
+            std::cout << "DCSL= " << std::endl;
+            std::cout << std::setprecision(12) << bc.dscl.latticeBasis << std::endl;
 
+            std::cout << "------------------ Deformation ----------------------" << std::endl;
             Eigen::Matrix2d F= deformationGradient;
             std::cout << endl;
             std::cout << "Deformation gradient, F=" << std::endl;
-            std::cout << F << std::endl;
+            std::cout << std::setprecision(12) << F << std::endl;
             Eigen::Matrix2d C= F.transpose()*F;
             Eigen::Matrix2d E= (C-Eigen::Matrix2d::Identity())/2.0;
 
@@ -48,14 +59,14 @@ int main()
             double t= sqrt(C(0,0)+C(1,1)+2*s);
             Eigen::Matrix2d U= (C+s*Eigen::Matrix2d::Identity())/t;
             Eigen::Matrix2d R= F*U.inverse();
-            std::cout << "R(" << atan2(R(1,0),R(0,0))*180/M_PI << ")= " << std::endl;
+            std::cout << "R(" << std::setprecision(12) << atan2(R(1,0),R(0,0))*180/M_PI << ")= " << std::endl;
             std::cout << R << std::endl;
             std::cout << "U= " << std::endl;
-            std::cout << U << std::endl;
+            std::cout << std::setprecision(12) << U << std::endl;
 
             std::cout << endl;
             std::cout << "Elastic strain:" << std::endl;
-            std::cout << E << std::endl;
+            std::cout << std::setprecision(12) << E << std::endl;
             std::cout << "---------------------------------------------" << std::endl;
         }
         catch(std::runtime_error& e)

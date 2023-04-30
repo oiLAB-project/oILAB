@@ -16,7 +16,7 @@ int main()
     /*! [SNF] */
     try
     {
-        BiCrystal<2> bc(L1, L2);
+        BiCrystal<2> bc(L1, L2,false);
         std::cout << "sigma_A=" << bc.sigmaA << std::endl;
         std::cout << "sigma_B=" << bc.sigmaB << std::endl;
         std::cout << "Lambda_A=" << std::endl;

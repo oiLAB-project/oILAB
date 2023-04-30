@@ -4,7 +4,11 @@ Documentation
 -------------
 https://oilab-project.github.io/oILAB/
 
+
+Requirements: Eigen 3.4 or later versions
+
 To install
+----------
 
 1) mkdir build
 2) cd build

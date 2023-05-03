@@ -25,6 +25,7 @@ int main()
     Eigen::Vector<IntScalarType,dim> millerIndices;
     for (auto& element : millerIndices)
         element= distr(gen);
+    millerIndices<< -3, 10,  9, -1, -9;
     ReciprocalLatticeDirection<dim> rDir(ReciprocalLatticeVector<dim>(millerIndices,lat));
 
     Eigen::Vector<IntScalarType,dim> latticeCoordinates;
@@ -35,7 +36,7 @@ int main()
 
     std::cout << "Input Miller index:" << rDir << std::endl;
     /*! [Basis1] */
-    auto directions=  lat.planeParallelLatticeBasis(rDir,true);
+    auto directions=  lat.planeParallelLatticeBasis(rDir,false);
     std::cout << "Plane parallel lattice basis: " << std::endl;
     for (auto it= directions.begin(); it!=directions.end(); ++it)
     {
@@ -69,7 +70,7 @@ int main()
     // test the member function directionOrthogonalReciprocalLatticeBasis function
     std::cout << "Input lattice direction :" << lDir.latticeVector().transpose() << std::endl;
     /*! [Basis2] */
-    auto reciprocalDirections=  lat.directionOrthogonalReciprocalLatticeBasis(lDir,true);
+    auto reciprocalDirections=  lat.directionOrthogonalReciprocalLatticeBasis(lDir,false);
     std::cout << "Direction orthogonal reciprocal basis: " << std::endl;
     for (auto it= reciprocalDirections.begin(); it!=reciprocalDirections.end(); ++it)
     {

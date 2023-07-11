@@ -18,3 +18,7 @@ add_subdirectory(testGenerateGBs)
 add_subdirectory(testMoire)
 add_subdirectory(testSpectra)
 add_subdirectory(testFFT)
+add_subdirectory(testEVP)
+add_subdirectory(testOperator)
+add_subdirectory(testPeriodicFunction)
+

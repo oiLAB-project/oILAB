@@ -230,42 +230,42 @@ namespace gbLAB
     LatticeDirection<dim> BiCrystal<dim>::getLatticeDirectionInC(const LatticeVector<dim> &v) const
     {
         VectorDimI integerCoordinates;
-        VectorDimD doubleCoordinates;
+
+        MatrixDimI adjX= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixX());
+        MatrixDimI adjV= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixV());
+        MatrixDimI adjM= MatrixDimIExt<IntScalarType,dim>::adjoint(M);
+        MatrixDimI adjN= MatrixDimIExt<IntScalarType,dim>::adjoint(N);
+        MatrixDimI adjMN= MatrixDimIExt<IntScalarType,dim>::adjoint(M*N);
+
         if(&(v.lattice) == &(this->A))
             // inv(M)*inv(U)*v
-            doubleCoordinates=  (M.template cast<double>()).inverse() *
-                                (this->matrixX().template cast<double>()).inverse() *
-                                (v.template cast<double>());
+            integerCoordinates = adjM * adjX * v;
         else if(&(v.lattice) == &(this->B))
             // inv(N)*inv(V)*v
-            doubleCoordinates=  (N.template cast<double>()).inverse() *
-                                (this->matrixV().template cast<double>()).inverse() *
-                                (v.template cast<double>());
+            integerCoordinates = adjN * adjV * v;
         else if(&(v.lattice) == &(this->csl))
             return LatticeDirection<dim>(v);
         else if(&(v.lattice) == &(this->dscl))
-            doubleCoordinates=  ((M*N).template cast<double>()).inverse() * (v.template cast<double>());
+            integerCoordinates = adjMN* v;
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
 
-        integerCoordinates= LatticeCore<dim>::rationalApproximation(doubleCoordinates);
         return LatticeDirection<dim>(LatticeVector<dim>(integerCoordinates,csl));
     }
     template<int dim>
     LatticeDirection<dim> BiCrystal<dim>::getLatticeDirectionInD(const LatticeVector<dim> &v) const
     {
         VectorDimI integerCoordinates;
-        VectorDimD doubleCoordinates;
+
+        MatrixDimI adjX= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixX());
+        MatrixDimI adjV= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixV());
+
         if(&(v.lattice) == &(this->A))
             // N*inv(U)*v
-            doubleCoordinates=  N.template cast<double>() *
-                                (this->matrixX().template cast<double>()).inverse() *
-                                (v.template cast<double>());
+            integerCoordinates = N * adjX * v;
         else if(&(v.lattice) == &(this->B))
             // M*inv(V)*v
-            doubleCoordinates=  M.template cast<double>() *
-                                (this->matrixV().template cast<double>()).inverse() *
-                                (v.template cast<double>());
+            integerCoordinates = M * adjV * v;
         else if(&(v.lattice) == &(this->csl))
             // N*M*v
             return LatticeDirection<dim>(LatticeVector<dim>((VectorDimI) (N*M*v),dscl));
@@ -274,7 +274,6 @@ namespace gbLAB
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
 
-        integerCoordinates= LatticeCore<dim>::rationalApproximation(doubleCoordinates);
         return LatticeDirection<dim>(LatticeVector<dim>(integerCoordinates,dscl));
     }
 
@@ -282,58 +281,48 @@ namespace gbLAB
     ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInA(const ReciprocalLatticeVector<dim>& rv) const
     {
         VectorDimI integerCoordinates;
-        VectorDimD doubleCoordinates;
+
+        MatrixDimI adjX = MatrixDimIExt<IntScalarType, dim>::adjoint(this->matrixX());
+        MatrixDimI adjM= MatrixDimIExt<IntScalarType,dim>::adjoint(M);
+
         if(&(rv.lattice) == &(this->A))
             return ReciprocalLatticeDirection<dim>(rv);
         else if(&(rv.lattice) == &(this->B))
             // U^-T*inverse(M)*N*V^T
-            doubleCoordinates= (this->matrixX().template cast<double>()).inverse().transpose()*
-                               (M.template cast<double>()).inverse() *
-                               (N.template cast<double>())*
-                               (this->matrixV().template cast<double>()).transpose()*
-                               (rv.template cast<double>());
+            integerCoordinates= adjX.transpose() * adjM * N * (this->matrixV()).transpose() * rv;
         else if(&(rv.lattice) == &(this->csl))
             // U^-T*inverse(M)
-            doubleCoordinates= (this->matrixX().template cast<double>()).inverse().transpose()*
-                               (M.template cast<double>()).inverse() *
-                               (rv.template cast<double>());
+            integerCoordinates= adjX.transpose() * adjM * rv;
         else if(&(rv.lattice) == &(this->dscl))
             // U^-T*N*rv
-            doubleCoordinates= (this->matrixX().template cast<double>()).inverse().transpose()*
-                               (N.template cast<double>()) *
-                               (rv.template cast<double>());
+            integerCoordinates = adjX.transpose() * N * rv;
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
-        integerCoordinates= LatticeCore<dim>::rationalApproximation(doubleCoordinates);
         return ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector<dim>(integerCoordinates,A));
     }
     template<int dim>
     ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInB(const ReciprocalLatticeVector<dim>& rv) const
     {
         VectorDimI integerCoordinates;
-        VectorDimD doubleCoordinates;
+
+        MatrixDimI adjX= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixX());
+        MatrixDimI adjV= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixV());
+        MatrixDimI adjM= MatrixDimIExt<IntScalarType,dim>::adjoint(M);
+        MatrixDimI adjN= MatrixDimIExt<IntScalarType,dim>::adjoint(N);
+
         if(&(rv.lattice) == &(this->A))
             // V^-T*inverse(N)*M*U^T
-            doubleCoordinates= (this->matrixV().template cast<double>()).inverse().transpose()*
-                               (N.template cast<double>()).inverse() *
-                               (M.template cast<double>())*
-                               (this->matrixX().template cast<double>()).transpose()*
-                               (rv.template cast<double>());
+            integerCoordinates= adjV.transpose() * adjN * M * (this->matrixX()).transpose() * rv;
         else if(&(rv.lattice) == &(this->B))
             return ReciprocalLatticeDirection<dim>(rv);
         else if(&(rv.lattice) == &(this->csl))
             // V^-T*inverse(N)*rv
-            doubleCoordinates= (this->matrixV().template cast<double>()).inverse().transpose()*
-                               (N.template cast<double>()).inverse() *
-                               (rv.template cast<double>());
+            integerCoordinates= adjV.transpose() * adjN * rv;
         else if(&(rv.lattice) == &(this->dscl))
             // V^-T*M*rv
-            doubleCoordinates= (this->matrixV().template cast<double>()).inverse().transpose()*
-                               (M.template cast<double>()) *
-                               (rv.template cast<double>());
+            integerCoordinates= adjV.transpose() * M * rv;
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
-            integerCoordinates= LatticeCore<dim>::rationalApproximation(doubleCoordinates);
         return ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector<dim>(integerCoordinates,B));
     }
     template<int dim>
@@ -357,15 +346,17 @@ namespace gbLAB
     ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInD(const ReciprocalLatticeVector<dim> &rv) const
     {
         VectorDimI integerCoordinates;
-        VectorDimD doubleCoordinates;
+
+        MatrixDimI adjM= MatrixDimIExt<IntScalarType,dim>::adjoint(M);
+        MatrixDimI adjN= MatrixDimIExt<IntScalarType,dim>::adjoint(N);
+
         if(&(rv.lattice) == &(this->A))
-            doubleCoordinates=  (N.template cast<double>()).inverse() * (rv.template cast<double>());
+            integerCoordinates= adjN * rv;
         else if(&(rv.lattice) == &(this->B))
-            doubleCoordinates=  (M.template cast<double>()).inverse() * (rv.template cast<double>());
+            integerCoordinates= adjM * rv;
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
 
-        integerCoordinates= LatticeCore<dim>::rationalApproximation(doubleCoordinates);
         return ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector<dim>(integerCoordinates,dscl));
     }
 

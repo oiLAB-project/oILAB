@@ -2,60 +2,88 @@
 #include <LatticeModule.h>
 #include <PeriodicFunction.h>
 #include <fstream>
+#include "Mayer.h"
 
 using namespace gbLAB;
 
-#define MY_ERROR(message)                                                \
-  {                                                                      \
-    std::cout << "* Error : \"" << message << "\" : " << __LINE__ << ":" \
-              << __FILE__ << std::endl;                                  \
-    exit(1);                                                             \
-  }
-
 int main()
 {
+    const int dim= 3;
+    const int nx= 12;
+    const int ny= 12;
+    const int nz= 12;
+    Eigen::array<Eigen::Index,dim> n{nx,ny,nz};
+    double tol= 1e-10;
+    double maxError= 0;
     // Read the kernel function data
-    std::map<double,dcomplex> values;
-    double tmp1; dcomplex tmp2;
-    std::ifstream file3D("meyer.txt");
-    if(!file3D) MY_ERROR(std::string("ERROR: meyer.txt could not be opened for reading!"));
-    for (int i=0; i<16001;i++) {
-        file3D >> tmp1 >> tmp2;
-        values[tmp1]= tmp2;
-    }
 
-    // create the kernel function
-    PiecewisePolynomial<dcomplex,2> kernelFunction(values);
+    std::string kernelFilename= "meyer.txt";
+    double kernelFunctionDomain= 16.0;
+    std::cout << "Domain of the kernel function = " << kernelFunctionDomain << std::endl;
 
     // Lattice system
-    Eigen::array<Eigen::Index,2> n{32,32};
-    Eigen::Matrix2d A;
-    A << -1.23,          2.46,
-         -2.13042249331, 0.00;
-    Lattice<2> L(A);
-    Eigen::Matrix<double,2,2> basisAtoms;
-    basisAtoms.col(0).setZero();
-    basisAtoms.col(1)= A.col(0)/3 + 2*A.col(1)/3;
-    MultiLattice<2> M(A,basisAtoms);
+    Eigen::Matrix<double,dim,dim> A;
+    A << 0.0,   -2.13042249331,   0.0,
+         2.46,  -1.23,            0.0,
+         0.0,    0.0,             16.0;
+    A= A/0.5291772109;
+    Lattice<dim> L(A);
+    Eigen::Matrix<double,dim,2> basisAtoms;
+    Eigen::Vector<double,dim> offset;
+    //offset << 0,0;
+    offset << 0,0,0;
+    basisAtoms.col(0)= offset;
+    basisAtoms.col(1)= A.col(0)/3 + 2*A.col(1)/3+offset;
+    MultiLattice<dim> M(A,basisAtoms);
 
     // Generate potential V
-    PeriodicFunction<dcomplex ,2> V2D= PeriodicFunction<dcomplex,2>::kernelConvolution(n,M,kernelFunction);
-    std::cout << V2D.values << std::endl;
 
-    Eigen::Vector2d center= A.colwise().sum()/2.0;
-    double potential= 0;
-    for (int i=-8; i<8; i++)
-    {
-        for (int j=-8; j<8; j++)
-        {
-            for (const auto& atom : basisAtoms.colwise()) {
-                Eigen::Vector2d position = i * A.col(0) + j * A.col(1) + atom;
-                potential+= kernelFunction(center-position).real();
+    Mayer<dim> mayer(kernelFunctionDomain);
+
+    // Generate potential V
+    PeriodicFunction<double,dim> V= PeriodicFunction<double,dim>::kernelConvolution(n,M,mayer);
+
+    // Check for error
+    std::cout << "checking for error" << std::endl;
+    for (int p=0; p<nz; p++){
+        for (int l= 0; l<nx; l++) {
+            for (int m = 0; m < ny; m++) {
+                Eigen::Vector<double, dim> center = A.col(0) * l / nx +
+                                                    A.col(1) * m / ny +
+                                                    A.col(2) * p / nz;
+                double potential = 0;
+
+                for (int i = -10; i < 10; i++) {
+                    for (int j = -10; j < 10; j++) {
+                        for (int k = -3; k < 3; k++) {
+                            for (const auto &atom: basisAtoms.colwise()) {
+                                Eigen::Vector<double, dim> position = i * A.col(0) +
+                                                                      j * A.col(1) +
+                                                                      k * A.col(2) +
+                                                                      atom;
+                                //potential += mayer(center - position).real();
+                                potential += mayer(center - position);
+                            }
+                        }
+                    }
+                }
+
+                double error = abs(V.values(l, m, p) - potential);
+                maxError = max(error, maxError);
+                try {
+                    if (error > tol) {
+                        std::cout << "error = " << error << std::endl;
+                        throw std::runtime_error("TestPeriodicFunction failed");
+                    }
+                }
+                catch (std::runtime_error &e) {
+                    std::cout << e.what() << std::endl;
+                    return -1;
+                }
             }
         }
     }
-    std::cout << potential << std::endl;
-    std::cout << V2D.values(16,16)<< std::endl;
+    std::cout << "Maximum error = " << maxError << std::endl;
 
 
     return 0;

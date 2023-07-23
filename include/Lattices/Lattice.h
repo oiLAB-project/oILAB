@@ -137,7 +137,7 @@ namespace gbLAB
             // Following the notation in Algorithm 3 of
             // "Interface dislocations and grain boundary disconnections using Smith normal bicrystallography"
             auto q1= b1;
-            std::vector<std::pair<int,int>> coPrimePairs= farey(N);
+            std::vector<std::pair<int,int>> coPrimePairs= farey(N,false);
             for(const auto& pair : coPrimePairs)
             {
                 VectorDimI pIndices;

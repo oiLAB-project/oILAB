@@ -13,4 +13,5 @@ add_library(oILAB SHARED    BiCrystal.cpp
                             RationalReciprocalLatticeDirection.cpp
                             ReciprocalLatticeVector.cpp
                             Farey.cpp)
+target_link_libraries(oILAB PRIVATE OpenMP::OpenMP_CXX)
 

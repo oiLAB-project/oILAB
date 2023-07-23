@@ -1,23 +1,32 @@
 #include <Eigen/Core>
 #include <Spectra/GenEigsSolver.h>
 #include <iostream>
-#include <Laplacian.h>
 #include <LatticeModule.h>
+#include <Diff.h>
 
 using namespace Spectra;
 using namespace gbLAB;
 
 int main()
 {
-    const Eigen::array<Eigen::Index,2> n{32,32};
-    Eigen::Matrix2d A;
-    A << 1.0, 0.0,
-            0.0, 1.0;
+    const int dim=3;
+    //const Eigen::array<Eigen::Index,2> n{32,32};
+    const Eigen::array<Eigen::Index,3> n{5,5,5};
+    Eigen::Matrix<double,dim,dim> A;
+    //A << 1.0, 0.0,
+    //        0.0, 1.0;
+    A << 1.0, 0.0, 0.0,
+         0.0, 0.5, 0.0,
+         0.0, 0.0, 0.25;
     A=2*M_PI*A;
-    Lattice<2> L(A);
-    Laplacian<2> op(A,n);
+    Lattice<dim> L(A);
+    Diff<dim> dx2({2,0,0},A,n);
+    Diff<dim> dy2({0,2,0},A,n);
+    Diff<dim> dz2({0,0,2},A,n);
+    auto op= dx2+dy2+dz2;
+    auto oop= 1*op + (-2)*op + 2*op;
 
-    GenEigsSolver<decltype(op)> eigs(op, 51, 65);
+    GenEigsSolver<decltype(oop)> eigs(oop, 20, 45);
 
     // Initialize and compute
     eigs.init();

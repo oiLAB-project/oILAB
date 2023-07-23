@@ -1,0 +1,1709 @@
+## This file contains all the build statements describing the
+# compilation DAG.
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# 
+# Which is the root file.
+# =============================================================================
+
+# =============================================================================
+# Project: oILAB
+# Configurations: Debug
+# =============================================================================
+
+#############################################
+# Minimal version of Ninja required by this file
+
+ninja_required_version = 1.5
+
+
+#############################################
+# Set configuration variable for custom commands.
+
+CONFIGURATION = Debug
+# =============================================================================
+# Include auxiliary files.
+
+
+#############################################
+# Include rules file.
+
+include CMakeFiles/rules.ninja
+
+# =============================================================================
+
+#############################################
+# Logical path to working directory; prefix for absolute paths.
+
+cmake_ninja_workdir = /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/
+
+#############################################
+# Utility command for edit_cache
+
+build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build edit_cache: phony CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build rebuild_cache: phony CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for SHARED_LIBRARY target oILAB
+
+
+#############################################
+# Order-only phony target for oILAB
+
+build cmake_object_order_depends_target_oILAB: phony || src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/BiCrystal.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/BiCrystal.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/BiCrystal.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/Gb.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/Gb.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/Gb.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/Lattice.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/Lattice.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/Lattice.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/LatticeVector.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/LatticeVector.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/LatticeVector.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/RationalMatrix.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/RationalMatrix.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/RationalMatrix.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/LatticeCore.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/LatticeCore.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/LatticeCore.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/RLLL.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/RLLL.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/RLLL.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/ReciprocalLatticeDirection.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/ReciprocalLatticeDirection.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/ReciprocalLatticeDirection.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/LLL.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/LLL.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/LLL.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/LatticeDirection.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/LatticeDirection.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/LatticeDirection.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/RationalLatticeDirection.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/RationalLatticeDirection.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/RationalLatticeDirection.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/RationalReciprocalLatticeDirection.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/RationalReciprocalLatticeDirection.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/RationalReciprocalLatticeDirection.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/ReciprocalLatticeVector.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/ReciprocalLatticeVector.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/ReciprocalLatticeVector.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+build src/Lattices/CMakeFiles/oILAB.dir/Farey.cpp.o: CXX_COMPILER__oILAB_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/src/Lattices/Farey.cpp || cmake_object_order_depends_target_oILAB
+  DEFINES = -DoILAB_EXPORTS
+  DEP_FILE = src/Lattices/CMakeFiles/oILAB.dir/Farey.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -fPIC -Xpreprocessor -fopenmp -std=gnu++2a
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  OBJECT_FILE_DIR = src/Lattices/CMakeFiles/oILAB.dir
+
+
+# =============================================================================
+# Link build statements for SHARED_LIBRARY target oILAB
+
+
+#############################################
+# Link the shared library src/Lattices/liboILAB.dylib
+
+build src/Lattices/liboILAB.dylib: CXX_SHARED_LIBRARY_LINKER__oILAB_Debug src/Lattices/CMakeFiles/oILAB.dir/BiCrystal.cpp.o src/Lattices/CMakeFiles/oILAB.dir/Gb.cpp.o src/Lattices/CMakeFiles/oILAB.dir/Lattice.cpp.o src/Lattices/CMakeFiles/oILAB.dir/LatticeVector.cpp.o src/Lattices/CMakeFiles/oILAB.dir/RationalMatrix.cpp.o src/Lattices/CMakeFiles/oILAB.dir/LatticeCore.cpp.o src/Lattices/CMakeFiles/oILAB.dir/RLLL.cpp.o src/Lattices/CMakeFiles/oILAB.dir/ReciprocalLatticeDirection.cpp.o src/Lattices/CMakeFiles/oILAB.dir/LLL.cpp.o src/Lattices/CMakeFiles/oILAB.dir/LatticeDirection.cpp.o src/Lattices/CMakeFiles/oILAB.dir/RationalLatticeDirection.cpp.o src/Lattices/CMakeFiles/oILAB.dir/RationalReciprocalLatticeDirection.cpp.o src/Lattices/CMakeFiles/oILAB.dir/ReciprocalLatticeVector.cpp.o src/Lattices/CMakeFiles/oILAB.dir/Farey.cpp.o
+  ARCH_FLAGS = -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  INSTALLNAME_DIR = @rpath/
+  LANGUAGE_COMPILE_FLAGS = -Xpreprocessor -fopenmp -g
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib  -lomp
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = src/Lattices/CMakeFiles/oILAB.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  SONAME = liboILAB.dylib
+  SONAME_FLAG = -install_name
+  TARGET_FILE = src/Lattices/liboILAB.dylib
+  TARGET_PDB = oILAB.dylib.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build src/Lattices/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build src/Lattices/edit_cache: phony src/Lattices/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build src/Lattices/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build src/Lattices/rebuild_cache: phony src/Lattices/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/edit_cache: phony tests/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/rebuild_cache: phony tests/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testSNF
+
+
+#############################################
+# Order-only phony target for testSNF
+
+build cmake_object_order_depends_target_testSNF: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testSNF/CMakeFiles/testSNF.dir/testSNF.cpp.o: CXX_COMPILER__testSNF_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testSNF/testSNF.cpp || cmake_object_order_depends_target_testSNF
+  DEP_FILE = tests/testSNF/CMakeFiles/testSNF.dir/testSNF.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testSNF/CMakeFiles/testSNF.dir
+  OBJECT_FILE_DIR = tests/testSNF/CMakeFiles/testSNF.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testSNF
+
+
+#############################################
+# Link the executable tests/testSNF/testSNF
+
+build tests/testSNF/testSNF: CXX_EXECUTABLE_LINKER__testSNF_Debug tests/testSNF/CMakeFiles/testSNF.dir/testSNF.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testSNF/CMakeFiles/testSNF.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testSNF/testSNF
+  TARGET_PDB = testSNF.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testSNF/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSNF && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testSNF/edit_cache: phony tests/testSNF/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testSNF/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSNF && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testSNF/rebuild_cache: phony tests/testSNF/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testSNF_cubic
+
+
+#############################################
+# Order-only phony target for testSNF_cubic
+
+build cmake_object_order_depends_target_testSNF_cubic: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testSNF_cubic/CMakeFiles/testSNF_cubic.dir/testSNF_cubic.cpp.o: CXX_COMPILER__testSNF_cubic_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testSNF_cubic/testSNF_cubic.cpp || cmake_object_order_depends_target_testSNF_cubic
+  DEP_FILE = tests/testSNF_cubic/CMakeFiles/testSNF_cubic.dir/testSNF_cubic.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testSNF_cubic/CMakeFiles/testSNF_cubic.dir
+  OBJECT_FILE_DIR = tests/testSNF_cubic/CMakeFiles/testSNF_cubic.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testSNF_cubic
+
+
+#############################################
+# Link the executable tests/testSNF_cubic/testSNF_cubic
+
+build tests/testSNF_cubic/testSNF_cubic: CXX_EXECUTABLE_LINKER__testSNF_cubic_Debug tests/testSNF_cubic/CMakeFiles/testSNF_cubic.dir/testSNF_cubic.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testSNF_cubic/CMakeFiles/testSNF_cubic.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testSNF_cubic/testSNF_cubic
+  TARGET_PDB = testSNF_cubic.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testSNF_cubic/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSNF_cubic && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testSNF_cubic/edit_cache: phony tests/testSNF_cubic/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testSNF_cubic/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSNF_cubic && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testSNF_cubic/rebuild_cache: phony tests/testSNF_cubic/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testPerpendicularDirections
+
+
+#############################################
+# Order-only phony target for testPerpendicularDirections
+
+build cmake_object_order_depends_target_testPerpendicularDirections: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testPerpendicularDirections/CMakeFiles/testPerpendicularDirections.dir/testPerpendicularDirections.cpp.o: CXX_COMPILER__testPerpendicularDirections_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testPerpendicularDirections/testPerpendicularDirections.cpp || cmake_object_order_depends_target_testPerpendicularDirections
+  DEP_FILE = tests/testPerpendicularDirections/CMakeFiles/testPerpendicularDirections.dir/testPerpendicularDirections.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testPerpendicularDirections/CMakeFiles/testPerpendicularDirections.dir
+  OBJECT_FILE_DIR = tests/testPerpendicularDirections/CMakeFiles/testPerpendicularDirections.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testPerpendicularDirections
+
+
+#############################################
+# Link the executable tests/testPerpendicularDirections/testPerpendicularDirections
+
+build tests/testPerpendicularDirections/testPerpendicularDirections: CXX_EXECUTABLE_LINKER__testPerpendicularDirections_Debug tests/testPerpendicularDirections/CMakeFiles/testPerpendicularDirections.dir/testPerpendicularDirections.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testPerpendicularDirections/CMakeFiles/testPerpendicularDirections.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testPerpendicularDirections/testPerpendicularDirections
+  TARGET_PDB = testPerpendicularDirections.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testPerpendicularDirections/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testPerpendicularDirections && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testPerpendicularDirections/edit_cache: phony tests/testPerpendicularDirections/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testPerpendicularDirections/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testPerpendicularDirections && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testPerpendicularDirections/rebuild_cache: phony tests/testPerpendicularDirections/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testPlaneParallelLatticeDirections
+
+
+#############################################
+# Order-only phony target for testPlaneParallelLatticeDirections
+
+build cmake_object_order_depends_target_testPlaneParallelLatticeDirections: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testPlaneParallelLatticeDirections/CMakeFiles/testPlaneParallelLatticeDirections.dir/testPlaneParallelLatticeDirections.cpp.o: CXX_COMPILER__testPlaneParallelLatticeDirections_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testPlaneParallelLatticeDirections/testPlaneParallelLatticeDirections.cpp || cmake_object_order_depends_target_testPlaneParallelLatticeDirections
+  DEP_FILE = tests/testPlaneParallelLatticeDirections/CMakeFiles/testPlaneParallelLatticeDirections.dir/testPlaneParallelLatticeDirections.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testPlaneParallelLatticeDirections/CMakeFiles/testPlaneParallelLatticeDirections.dir
+  OBJECT_FILE_DIR = tests/testPlaneParallelLatticeDirections/CMakeFiles/testPlaneParallelLatticeDirections.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testPlaneParallelLatticeDirections
+
+
+#############################################
+# Link the executable tests/testPlaneParallelLatticeDirections/testPlaneParallelLatticeDirections
+
+build tests/testPlaneParallelLatticeDirections/testPlaneParallelLatticeDirections: CXX_EXECUTABLE_LINKER__testPlaneParallelLatticeDirections_Debug tests/testPlaneParallelLatticeDirections/CMakeFiles/testPlaneParallelLatticeDirections.dir/testPlaneParallelLatticeDirections.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testPlaneParallelLatticeDirections/CMakeFiles/testPlaneParallelLatticeDirections.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testPlaneParallelLatticeDirections/testPlaneParallelLatticeDirections
+  TARGET_PDB = testPlaneParallelLatticeDirections.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testPlaneParallelLatticeDirections/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testPlaneParallelLatticeDirections && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testPlaneParallelLatticeDirections/edit_cache: phony tests/testPlaneParallelLatticeDirections/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testPlaneParallelLatticeDirections/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testPlaneParallelLatticeDirections && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testPlaneParallelLatticeDirections/rebuild_cache: phony tests/testPlaneParallelLatticeDirections/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testBezout
+
+
+#############################################
+# Order-only phony target for testBezout
+
+build cmake_object_order_depends_target_testBezout: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testBezout/CMakeFiles/testBezout.dir/testBezout.cpp.o: CXX_COMPILER__testBezout_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testBezout/testBezout.cpp || cmake_object_order_depends_target_testBezout
+  DEP_FILE = tests/testBezout/CMakeFiles/testBezout.dir/testBezout.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testBezout/CMakeFiles/testBezout.dir
+  OBJECT_FILE_DIR = tests/testBezout/CMakeFiles/testBezout.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testBezout
+
+
+#############################################
+# Link the executable tests/testBezout/testBezout
+
+build tests/testBezout/testBezout: CXX_EXECUTABLE_LINKER__testBezout_Debug tests/testBezout/CMakeFiles/testBezout.dir/testBezout.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testBezout/CMakeFiles/testBezout.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testBezout/testBezout
+  TARGET_PDB = testBezout.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testBezout/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testBezout && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testBezout/edit_cache: phony tests/testBezout/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testBezout/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testBezout && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testBezout/rebuild_cache: phony tests/testBezout/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testCCUM
+
+
+#############################################
+# Order-only phony target for testCCUM
+
+build cmake_object_order_depends_target_testCCUM: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testCCUM/CMakeFiles/testCCUM.dir/testCCUM.cpp.o: CXX_COMPILER__testCCUM_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testCCUM/testCCUM.cpp || cmake_object_order_depends_target_testCCUM
+  DEP_FILE = tests/testCCUM/CMakeFiles/testCCUM.dir/testCCUM.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testCCUM/CMakeFiles/testCCUM.dir
+  OBJECT_FILE_DIR = tests/testCCUM/CMakeFiles/testCCUM.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testCCUM
+
+
+#############################################
+# Link the executable tests/testCCUM/testCCUM
+
+build tests/testCCUM/testCCUM: CXX_EXECUTABLE_LINKER__testCCUM_Debug tests/testCCUM/CMakeFiles/testCCUM.dir/testCCUM.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testCCUM/CMakeFiles/testCCUM.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testCCUM/testCCUM
+  TARGET_PDB = testCCUM.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testCCUM/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testCCUM && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testCCUM/edit_cache: phony tests/testCCUM/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testCCUM/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testCCUM && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testCCUM/rebuild_cache: phony tests/testCCUM/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testCoincidentRotations
+
+
+#############################################
+# Order-only phony target for testCoincidentRotations
+
+build cmake_object_order_depends_target_testCoincidentRotations: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testCoincidentRotations/CMakeFiles/testCoincidentRotations.dir/testCoincidentRotations.cpp.o: CXX_COMPILER__testCoincidentRotations_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testCoincidentRotations/testCoincidentRotations.cpp || cmake_object_order_depends_target_testCoincidentRotations
+  DEP_FILE = tests/testCoincidentRotations/CMakeFiles/testCoincidentRotations.dir/testCoincidentRotations.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testCoincidentRotations/CMakeFiles/testCoincidentRotations.dir
+  OBJECT_FILE_DIR = tests/testCoincidentRotations/CMakeFiles/testCoincidentRotations.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testCoincidentRotations
+
+
+#############################################
+# Link the executable tests/testCoincidentRotations/testCoincidentRotations
+
+build tests/testCoincidentRotations/testCoincidentRotations: CXX_EXECUTABLE_LINKER__testCoincidentRotations_Debug tests/testCoincidentRotations/CMakeFiles/testCoincidentRotations.dir/testCoincidentRotations.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testCoincidentRotations/CMakeFiles/testCoincidentRotations.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testCoincidentRotations/testCoincidentRotations
+  TARGET_PDB = testCoincidentRotations.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testCoincidentRotations/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testCoincidentRotations && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testCoincidentRotations/edit_cache: phony tests/testCoincidentRotations/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testCoincidentRotations/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testCoincidentRotations && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testCoincidentRotations/rebuild_cache: phony tests/testCoincidentRotations/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testGb
+
+
+#############################################
+# Order-only phony target for testGb
+
+build cmake_object_order_depends_target_testGb: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testGb/CMakeFiles/testGb.dir/testGb.cpp.o: CXX_COMPILER__testGb_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testGb/testGb.cpp || cmake_object_order_depends_target_testGb
+  DEP_FILE = tests/testGb/CMakeFiles/testGb.dir/testGb.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testGb/CMakeFiles/testGb.dir
+  OBJECT_FILE_DIR = tests/testGb/CMakeFiles/testGb.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testGb
+
+
+#############################################
+# Link the executable tests/testGb/testGb
+
+build tests/testGb/testGb: CXX_EXECUTABLE_LINKER__testGb_Debug tests/testGb/CMakeFiles/testGb.dir/testGb.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testGb/CMakeFiles/testGb.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testGb/testGb
+  TARGET_PDB = testGb.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testGb/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testGb && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testGb/edit_cache: phony tests/testGb/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testGb/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testGb && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testGb/rebuild_cache: phony tests/testGb/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testLattice
+
+
+#############################################
+# Order-only phony target for testLattice
+
+build cmake_object_order_depends_target_testLattice: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testLattice/CMakeFiles/testLattice.dir/testLattice.cpp.o: CXX_COMPILER__testLattice_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testLattice/testLattice.cpp || cmake_object_order_depends_target_testLattice
+  DEP_FILE = tests/testLattice/CMakeFiles/testLattice.dir/testLattice.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testLattice/CMakeFiles/testLattice.dir
+  OBJECT_FILE_DIR = tests/testLattice/CMakeFiles/testLattice.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testLattice
+
+
+#############################################
+# Link the executable tests/testLattice/testLattice
+
+build tests/testLattice/testLattice: CXX_EXECUTABLE_LINKER__testLattice_Debug tests/testLattice/CMakeFiles/testLattice.dir/testLattice.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testLattice/CMakeFiles/testLattice.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testLattice/testLattice
+  TARGET_PDB = testLattice.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testLattice/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testLattice && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testLattice/edit_cache: phony tests/testLattice/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testLattice/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testLattice && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testLattice/rebuild_cache: phony tests/testLattice/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testGenerateGBs
+
+
+#############################################
+# Order-only phony target for testGenerateGBs
+
+build cmake_object_order_depends_target_testGenerateGBs: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testGenerateGBs/CMakeFiles/testGenerateGBs.dir/testGenerateGBs.cpp.o: CXX_COMPILER__testGenerateGBs_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testGenerateGBs/testGenerateGBs.cpp || cmake_object_order_depends_target_testGenerateGBs
+  DEP_FILE = tests/testGenerateGBs/CMakeFiles/testGenerateGBs.dir/testGenerateGBs.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testGenerateGBs/CMakeFiles/testGenerateGBs.dir
+  OBJECT_FILE_DIR = tests/testGenerateGBs/CMakeFiles/testGenerateGBs.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testGenerateGBs
+
+
+#############################################
+# Link the executable tests/testGenerateGBs/testGenerateGBs
+
+build tests/testGenerateGBs/testGenerateGBs: CXX_EXECUTABLE_LINKER__testGenerateGBs_Debug tests/testGenerateGBs/CMakeFiles/testGenerateGBs.dir/testGenerateGBs.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testGenerateGBs/CMakeFiles/testGenerateGBs.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testGenerateGBs/testGenerateGBs
+  TARGET_PDB = testGenerateGBs.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testGenerateGBs/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testGenerateGBs && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testGenerateGBs/edit_cache: phony tests/testGenerateGBs/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testGenerateGBs/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testGenerateGBs && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testGenerateGBs/rebuild_cache: phony tests/testGenerateGBs/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testMoire
+
+
+#############################################
+# Order-only phony target for testMoire
+
+build cmake_object_order_depends_target_testMoire: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testMoire/CMakeFiles/testMoire.dir/testMoire.cpp.o: CXX_COMPILER__testMoire_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testMoire/testMoire.cpp || cmake_object_order_depends_target_testMoire
+  DEP_FILE = tests/testMoire/CMakeFiles/testMoire.dir/testMoire.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testMoire/CMakeFiles/testMoire.dir
+  OBJECT_FILE_DIR = tests/testMoire/CMakeFiles/testMoire.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testMoire
+
+
+#############################################
+# Link the executable tests/testMoire/testMoire
+
+build tests/testMoire/testMoire: CXX_EXECUTABLE_LINKER__testMoire_Debug tests/testMoire/CMakeFiles/testMoire.dir/testMoire.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testMoire/CMakeFiles/testMoire.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testMoire/testMoire
+  TARGET_PDB = testMoire.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testMoire/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testMoire && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testMoire/edit_cache: phony tests/testMoire/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testMoire/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testMoire && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testMoire/rebuild_cache: phony tests/testMoire/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testSpectra
+
+
+#############################################
+# Order-only phony target for testSpectra
+
+build cmake_object_order_depends_target_testSpectra: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testSpectra/CMakeFiles/testSpectra.dir/testSpectra.cpp.o: CXX_COMPILER__testSpectra_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testSpectra/testSpectra.cpp || cmake_object_order_depends_target_testSpectra
+  DEP_FILE = tests/testSpectra/CMakeFiles/testSpectra.dir/testSpectra.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testSpectra/CMakeFiles/testSpectra.dir
+  OBJECT_FILE_DIR = tests/testSpectra/CMakeFiles/testSpectra.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testSpectra
+
+
+#############################################
+# Link the executable tests/testSpectra/testSpectra
+
+build tests/testSpectra/testSpectra: CXX_EXECUTABLE_LINKER__testSpectra_Debug tests/testSpectra/CMakeFiles/testSpectra.dir/testSpectra.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testSpectra/CMakeFiles/testSpectra.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testSpectra/testSpectra
+  TARGET_PDB = testSpectra.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testSpectra/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSpectra && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testSpectra/edit_cache: phony tests/testSpectra/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testSpectra/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSpectra && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testSpectra/rebuild_cache: phony tests/testSpectra/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testFFT
+
+
+#############################################
+# Order-only phony target for testFFT
+
+build cmake_object_order_depends_target_testFFT: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testFFT/CMakeFiles/testFFT.dir/testFFT.cpp.o: CXX_COMPILER__testFFT_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testFFT/testFFT.cpp || cmake_object_order_depends_target_testFFT
+  DEP_FILE = tests/testFFT/CMakeFiles/testFFT.dir/testFFT.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testFFT/CMakeFiles/testFFT.dir
+  OBJECT_FILE_DIR = tests/testFFT/CMakeFiles/testFFT.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testFFT
+
+
+#############################################
+# Link the executable tests/testFFT/testFFT
+
+build tests/testFFT/testFFT: CXX_EXECUTABLE_LINKER__testFFT_Debug tests/testFFT/CMakeFiles/testFFT.dir/testFFT.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testFFT/CMakeFiles/testFFT.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testFFT/testFFT
+  TARGET_PDB = testFFT.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testFFT/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testFFT && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testFFT/edit_cache: phony tests/testFFT/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testFFT/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testFFT && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testFFT/rebuild_cache: phony tests/testFFT/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testEVP
+
+
+#############################################
+# Order-only phony target for testEVP
+
+build cmake_object_order_depends_target_testEVP: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testEVP/CMakeFiles/testEVP.dir/testEVP.cpp.o: CXX_COMPILER__testEVP_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testEVP/testEVP.cpp || cmake_object_order_depends_target_testEVP
+  DEP_FILE = tests/testEVP/CMakeFiles/testEVP.dir/testEVP.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testEVP/CMakeFiles/testEVP.dir
+  OBJECT_FILE_DIR = tests/testEVP/CMakeFiles/testEVP.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testEVP
+
+
+#############################################
+# Link the executable tests/testEVP/testEVP
+
+build tests/testEVP/testEVP: CXX_EXECUTABLE_LINKER__testEVP_Debug tests/testEVP/CMakeFiles/testEVP.dir/testEVP.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testEVP/CMakeFiles/testEVP.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testEVP/testEVP
+  TARGET_PDB = testEVP.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testEVP/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testEVP && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testEVP/edit_cache: phony tests/testEVP/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testEVP/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testEVP && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testEVP/rebuild_cache: phony tests/testEVP/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testDiff
+
+
+#############################################
+# Order-only phony target for testDiff
+
+build cmake_object_order_depends_target_testDiff: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testDiff/CMakeFiles/testDiff.dir/testDiff.cpp.o: CXX_COMPILER__testDiff_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testDiff/testDiff.cpp || cmake_object_order_depends_target_testDiff
+  DEP_FILE = tests/testDiff/CMakeFiles/testDiff.dir/testDiff.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testDiff/CMakeFiles/testDiff.dir
+  OBJECT_FILE_DIR = tests/testDiff/CMakeFiles/testDiff.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testDiff
+
+
+#############################################
+# Link the executable tests/testDiff/testDiff
+
+build tests/testDiff/testDiff: CXX_EXECUTABLE_LINKER__testDiff_Debug tests/testDiff/CMakeFiles/testDiff.dir/testDiff.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testDiff/CMakeFiles/testDiff.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testDiff/testDiff
+  TARGET_PDB = testDiff.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testDiff/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testDiff && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testDiff/edit_cache: phony tests/testDiff/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testDiff/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testDiff && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testDiff/rebuild_cache: phony tests/testDiff/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testPeriodicFunction
+
+
+#############################################
+# Order-only phony target for testPeriodicFunction
+
+build cmake_object_order_depends_target_testPeriodicFunction: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testPeriodicFunction/CMakeFiles/testPeriodicFunction.dir/testPeriodicFunction.cpp.o: CXX_COMPILER__testPeriodicFunction_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testPeriodicFunction/testPeriodicFunction.cpp || cmake_object_order_depends_target_testPeriodicFunction
+  DEP_FILE = tests/testPeriodicFunction/CMakeFiles/testPeriodicFunction.dir/testPeriodicFunction.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testPeriodicFunction/CMakeFiles/testPeriodicFunction.dir
+  OBJECT_FILE_DIR = tests/testPeriodicFunction/CMakeFiles/testPeriodicFunction.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testPeriodicFunction
+
+
+#############################################
+# Link the executable tests/testPeriodicFunction/testPeriodicFunction
+
+build tests/testPeriodicFunction/testPeriodicFunction: CXX_EXECUTABLE_LINKER__testPeriodicFunction_Debug tests/testPeriodicFunction/CMakeFiles/testPeriodicFunction.dir/testPeriodicFunction.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testPeriodicFunction/CMakeFiles/testPeriodicFunction.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testPeriodicFunction/testPeriodicFunction
+  TARGET_PDB = testPeriodicFunction.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testPeriodicFunction/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testPeriodicFunction && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testPeriodicFunction/edit_cache: phony tests/testPeriodicFunction/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testPeriodicFunction/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testPeriodicFunction && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testPeriodicFunction/rebuild_cache: phony tests/testPeriodicFunction/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testSchrodinger3
+
+
+#############################################
+# Order-only phony target for testSchrodinger3
+
+build cmake_object_order_depends_target_testSchrodinger3: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testSchrodinger3/CMakeFiles/testSchrodinger3.dir/testSchrodinger3.cpp.o: CXX_COMPILER__testSchrodinger3_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testSchrodinger3/testSchrodinger3.cpp || cmake_object_order_depends_target_testSchrodinger3
+  DEP_FILE = tests/testSchrodinger3/CMakeFiles/testSchrodinger3.dir/testSchrodinger3.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -Xpreprocessor -fopenmp -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testSchrodinger3/CMakeFiles/testSchrodinger3.dir
+  OBJECT_FILE_DIR = tests/testSchrodinger3/CMakeFiles/testSchrodinger3.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testSchrodinger3
+
+
+#############################################
+# Link the executable tests/testSchrodinger3/testSchrodinger3
+
+build tests/testSchrodinger3/testSchrodinger3: CXX_EXECUTABLE_LINKER__testSchrodinger3_Debug tests/testSchrodinger3/CMakeFiles/testSchrodinger3.dir/testSchrodinger3.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib  -lomp
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testSchrodinger3/CMakeFiles/testSchrodinger3.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testSchrodinger3/testSchrodinger3
+  TARGET_PDB = testSchrodinger3.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testSchrodinger3/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSchrodinger3 && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testSchrodinger3/edit_cache: phony tests/testSchrodinger3/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testSchrodinger3/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSchrodinger3 && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testSchrodinger3/rebuild_cache: phony tests/testSchrodinger3/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/tests/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target testComplexOperator
+
+
+#############################################
+# Order-only phony target for testComplexOperator
+
+build cmake_object_order_depends_target_testComplexOperator: phony || cmake_object_order_depends_target_oILAB
+
+build tests/testComplexOperator/CMakeFiles/testComplexOperator.dir/testComplexOperator.cpp.o: CXX_COMPILER__testComplexOperator_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/tests/testComplexOperator/testComplexOperator.cpp || cmake_object_order_depends_target_testComplexOperator
+  DEP_FILE = tests/testComplexOperator/CMakeFiles/testComplexOperator.dir/testComplexOperator.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = tests/testComplexOperator/CMakeFiles/testComplexOperator.dir
+  OBJECT_FILE_DIR = tests/testComplexOperator/CMakeFiles/testComplexOperator.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target testComplexOperator
+
+
+#############################################
+# Link the executable tests/testComplexOperator/testComplexOperator
+
+build tests/testComplexOperator/testComplexOperator: CXX_EXECUTABLE_LINKER__testComplexOperator_Debug tests/testComplexOperator/CMakeFiles/testComplexOperator.dir/testComplexOperator.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = tests/testComplexOperator/CMakeFiles/testComplexOperator.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = tests/testComplexOperator/testComplexOperator
+  TARGET_PDB = testComplexOperator.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build tests/testComplexOperator/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testComplexOperator && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build tests/testComplexOperator/edit_cache: phony tests/testComplexOperator/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build tests/testComplexOperator/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testComplexOperator && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build tests/testComplexOperator/rebuild_cache: phony tests/testComplexOperator/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build examples/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/examples && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build examples/edit_cache: phony examples/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build examples/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/examples && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build examples/rebuild_cache: phony examples/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/Nikhil/Documents/Academic/Software/oILAB/examples/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target bicrystal
+
+
+#############################################
+# Order-only phony target for bicrystal
+
+build cmake_object_order_depends_target_bicrystal: phony || cmake_object_order_depends_target_oILAB
+
+build examples/bicrystal/CMakeFiles/bicrystal.dir/main.cpp.o: CXX_COMPILER__bicrystal_Debug /Users/Nikhil/Documents/Academic/Software/oILAB/examples/bicrystal/main.cpp || cmake_object_order_depends_target_bicrystal
+  DEP_FILE = examples/bicrystal/CMakeFiles/bicrystal.dir/main.cpp.o.d
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2 -std=gnu++14
+  INCLUDES = -I/opt/Homebrew/Cellar/libomp/16.0.6/include -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/IO -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Lattices -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Math -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Utilities -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/Visualization -I/Users/Nikhil/Documents/Academic/Software/oILAB/include/eigen-3.4.0
+  OBJECT_DIR = examples/bicrystal/CMakeFiles/bicrystal.dir
+  OBJECT_FILE_DIR = examples/bicrystal/CMakeFiles/bicrystal.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target bicrystal
+
+
+#############################################
+# Link the executable examples/bicrystal/bicrystal
+
+build examples/bicrystal/bicrystal: CXX_EXECUTABLE_LINKER__bicrystal_Debug examples/bicrystal/CMakeFiles/bicrystal.dir/main.cpp.o | src/Lattices/liboILAB.dylib || src/Lattices/liboILAB.dylib
+  FLAGS = -Xpreprocessor -fopenmp -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=11.2
+  LINK_LIBRARIES = -Wl,-rpath,/opt/Homebrew/Cellar/libomp/16.0.6/lib -Wl,-rpath,/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices  src/Lattices/liboILAB.dylib
+  LINK_PATH = -L/opt/Homebrew/Cellar/libomp/16.0.6/lib
+  OBJECT_DIR = examples/bicrystal/CMakeFiles/bicrystal.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = examples/bicrystal/bicrystal
+  TARGET_PDB = bicrystal.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build examples/bicrystal/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/examples/bicrystal && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build examples/bicrystal/edit_cache: phony examples/bicrystal/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build examples/bicrystal/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/examples/bicrystal && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/Nikhil/Documents/Academic/Software/oILAB -B/Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build examples/bicrystal/rebuild_cache: phony examples/bicrystal/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Target aliases.
+
+build bicrystal: phony examples/bicrystal/bicrystal
+
+build liboILAB.dylib: phony src/Lattices/liboILAB.dylib
+
+build oILAB: phony src/Lattices/liboILAB.dylib
+
+build testBezout: phony tests/testBezout/testBezout
+
+build testCCUM: phony tests/testCCUM/testCCUM
+
+build testCoincidentRotations: phony tests/testCoincidentRotations/testCoincidentRotations
+
+build testComplexOperator: phony tests/testComplexOperator/testComplexOperator
+
+build testDiff: phony tests/testDiff/testDiff
+
+build testEVP: phony tests/testEVP/testEVP
+
+build testFFT: phony tests/testFFT/testFFT
+
+build testGb: phony tests/testGb/testGb
+
+build testGenerateGBs: phony tests/testGenerateGBs/testGenerateGBs
+
+build testLattice: phony tests/testLattice/testLattice
+
+build testMoire: phony tests/testMoire/testMoire
+
+build testPeriodicFunction: phony tests/testPeriodicFunction/testPeriodicFunction
+
+build testPerpendicularDirections: phony tests/testPerpendicularDirections/testPerpendicularDirections
+
+build testPlaneParallelLatticeDirections: phony tests/testPlaneParallelLatticeDirections/testPlaneParallelLatticeDirections
+
+build testSNF: phony tests/testSNF/testSNF
+
+build testSNF_cubic: phony tests/testSNF_cubic/testSNF_cubic
+
+build testSchrodinger3: phony tests/testSchrodinger3/testSchrodinger3
+
+build testSpectra: phony tests/testSpectra/testSpectra
+
+# =============================================================================
+# Folder targets.
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+
+build all: phony src/Lattices/all tests/all examples/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/examples
+
+build examples/all: phony examples/bicrystal/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/examples/bicrystal
+
+build examples/bicrystal/all: phony examples/bicrystal/bicrystal
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/src/Lattices
+
+build src/Lattices/all: phony src/Lattices/liboILAB.dylib
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests
+
+build tests/all: phony tests/testSNF/all tests/testSNF_cubic/all tests/testPerpendicularDirections/all tests/testPlaneParallelLatticeDirections/all tests/testBezout/all tests/testCCUM/all tests/testCoincidentRotations/all tests/testGb/all tests/testLattice/all tests/testGenerateGBs/all tests/testMoire/all tests/testSpectra/all tests/testFFT/all tests/testEVP/all tests/testDiff/all tests/testPeriodicFunction/all tests/testSchrodinger3/all tests/testComplexOperator/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testBezout
+
+build tests/testBezout/all: phony tests/testBezout/testBezout
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testCCUM
+
+build tests/testCCUM/all: phony tests/testCCUM/testCCUM
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testCoincidentRotations
+
+build tests/testCoincidentRotations/all: phony tests/testCoincidentRotations/testCoincidentRotations
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testComplexOperator
+
+build tests/testComplexOperator/all: phony tests/testComplexOperator/testComplexOperator
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testDiff
+
+build tests/testDiff/all: phony tests/testDiff/testDiff
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testEVP
+
+build tests/testEVP/all: phony tests/testEVP/testEVP
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testFFT
+
+build tests/testFFT/all: phony tests/testFFT/testFFT
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testGb
+
+build tests/testGb/all: phony tests/testGb/testGb
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testGenerateGBs
+
+build tests/testGenerateGBs/all: phony tests/testGenerateGBs/testGenerateGBs
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testLattice
+
+build tests/testLattice/all: phony tests/testLattice/testLattice
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testMoire
+
+build tests/testMoire/all: phony tests/testMoire/testMoire
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testPeriodicFunction
+
+build tests/testPeriodicFunction/all: phony tests/testPeriodicFunction/testPeriodicFunction
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testPerpendicularDirections
+
+build tests/testPerpendicularDirections/all: phony tests/testPerpendicularDirections/testPerpendicularDirections
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testPlaneParallelLatticeDirections
+
+build tests/testPlaneParallelLatticeDirections/all: phony tests/testPlaneParallelLatticeDirections/testPlaneParallelLatticeDirections
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSNF
+
+build tests/testSNF/all: phony tests/testSNF/testSNF
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSNF_cubic
+
+build tests/testSNF_cubic/all: phony tests/testSNF_cubic/testSNF_cubic
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSchrodinger3
+
+build tests/testSchrodinger3/all: phony tests/testSchrodinger3/testSchrodinger3
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release/tests/testSpectra
+
+build tests/testSpectra/all: phony tests/testSpectra/testSpectra
+
+# =============================================================================
+# Built-in targets
+
+
+#############################################
+# Re-run CMake if any of its inputs changed.
+
+build build.ninja: RERUN_CMAKE | ../CMakeLists.txt ../examples/CMakeLists.txt ../examples/bicrystal/CMakeLists.txt ../examples/bicrystal/Grimmer1985.txt ../examples/bicrystal/bicrystal_2d.txt ../examples/bicrystal/bicrystal_3d.txt ../src/Lattices/CMakeLists.txt ../tests/CMakeLists.txt ../tests/testBezout/CMakeLists.txt ../tests/testCCUM/CMakeLists.txt ../tests/testCoincidentRotations/CMakeLists.txt ../tests/testCoincidentRotations/bicrystal_3d.txt ../tests/testComplexOperator/CMakeLists.txt ../tests/testComplexOperator/complexMatrix.txt ../tests/testComplexOperator/evalues.txt ../tests/testComplexOperator/realMatrix.txt ../tests/testDiff/CMakeLists.txt ../tests/testEVP/CMakeLists.txt ../tests/testFFT/CMakeLists.txt ../tests/testFFT/fft_m2D.txt ../tests/testFFT/fft_m3D.txt ../tests/testFFT/m2D.txt ../tests/testFFT/m3D.txt ../tests/testGb/CMakeLists.txt ../tests/testGb/bicrystal_2d.txt ../tests/testGenerateGBs/CMakeLists.txt ../tests/testGenerateGBs/bicrystal_3d.txt ../tests/testLattice/CMakeLists.txt ../tests/testMoire/CMakeLists.txt ../tests/testMoire/bicrystal_2d.txt ../tests/testPeriodicFunction/CMakeLists.txt ../tests/testPeriodicFunction/meyer.txt ../tests/testPerpendicularDirections/CMakeLists.txt ../tests/testPlaneParallelLatticeDirections/CMakeLists.txt ../tests/testPlaneParallelLatticeDirections/bicrystal_2d.txt ../tests/testPlaneParallelLatticeDirections/bicrystal_3d.txt ../tests/testSNF/CMakeLists.txt ../tests/testSNF/bicrystal_2d.txt ../tests/testSNF_cubic/CMakeLists.txt ../tests/testSNF_cubic/cubic_lattice.txt ../tests/testSchrodinger3/CMakeLists.txt ../tests/testSchrodinger3/kurokawa.txt ../tests/testSchrodinger3/meyer.txt ../tests/testSpectra/CMakeLists.txt /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeParseImplicitLinkInfo.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/FindOpenMP.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/FindPackageHandleStandardArgs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/FindPackageMessage.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.23.2/CMakeCCompiler.cmake CMakeFiles/3.23.2/CMakeCXXCompiler.cmake CMakeFiles/3.23.2/CMakeSystem.cmake CMakeFiles/FindOpenMP/OpenMPCheckVersion.c CMakeFiles/FindOpenMP/OpenMPCheckVersion.cpp
+  pool = console
+
+
+#############################################
+# A missing CMake input file is not an error.
+
+build ../CMakeLists.txt ../examples/CMakeLists.txt ../examples/bicrystal/CMakeLists.txt ../examples/bicrystal/Grimmer1985.txt ../examples/bicrystal/bicrystal_2d.txt ../examples/bicrystal/bicrystal_3d.txt ../src/Lattices/CMakeLists.txt ../tests/CMakeLists.txt ../tests/testBezout/CMakeLists.txt ../tests/testCCUM/CMakeLists.txt ../tests/testCoincidentRotations/CMakeLists.txt ../tests/testCoincidentRotations/bicrystal_3d.txt ../tests/testComplexOperator/CMakeLists.txt ../tests/testComplexOperator/complexMatrix.txt ../tests/testComplexOperator/evalues.txt ../tests/testComplexOperator/realMatrix.txt ../tests/testDiff/CMakeLists.txt ../tests/testEVP/CMakeLists.txt ../tests/testFFT/CMakeLists.txt ../tests/testFFT/fft_m2D.txt ../tests/testFFT/fft_m3D.txt ../tests/testFFT/m2D.txt ../tests/testFFT/m3D.txt ../tests/testGb/CMakeLists.txt ../tests/testGb/bicrystal_2d.txt ../tests/testGenerateGBs/CMakeLists.txt ../tests/testGenerateGBs/bicrystal_3d.txt ../tests/testLattice/CMakeLists.txt ../tests/testMoire/CMakeLists.txt ../tests/testMoire/bicrystal_2d.txt ../tests/testPeriodicFunction/CMakeLists.txt ../tests/testPeriodicFunction/meyer.txt ../tests/testPerpendicularDirections/CMakeLists.txt ../tests/testPlaneParallelLatticeDirections/CMakeLists.txt ../tests/testPlaneParallelLatticeDirections/bicrystal_2d.txt ../tests/testPlaneParallelLatticeDirections/bicrystal_3d.txt ../tests/testSNF/CMakeLists.txt ../tests/testSNF/bicrystal_2d.txt ../tests/testSNF_cubic/CMakeLists.txt ../tests/testSNF_cubic/cubic_lattice.txt ../tests/testSchrodinger3/CMakeLists.txt ../tests/testSchrodinger3/kurokawa.txt ../tests/testSchrodinger3/meyer.txt ../tests/testSpectra/CMakeLists.txt /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeParseImplicitLinkInfo.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/FindOpenMP.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/FindPackageHandleStandardArgs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/FindPackageMessage.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.23.2/CMakeCCompiler.cmake CMakeFiles/3.23.2/CMakeCXXCompiler.cmake CMakeFiles/3.23.2/CMakeSystem.cmake CMakeFiles/FindOpenMP/OpenMPCheckVersion.c CMakeFiles/FindOpenMP/OpenMPCheckVersion.cpp: phony
+
+
+#############################################
+# Clean all the built files.
+
+build clean: CLEAN
+
+
+#############################################
+# Print all primary targets available.
+
+build help: HELP
+
+
+#############################################
+# Make the all target the default.
+
+default all

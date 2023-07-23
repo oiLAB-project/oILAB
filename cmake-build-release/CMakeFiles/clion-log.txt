@@ -1,0 +1,4 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja -S /Users/Nikhil/Documents/Academic/Software/oILAB -B /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/Nikhil/Documents/Academic/Software/oILAB/cmake-build-release

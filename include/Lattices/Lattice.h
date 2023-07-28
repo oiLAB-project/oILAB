@@ -320,7 +320,8 @@ namespace gbLAB
  */
 
 /*! @example testMoire.cpp
- *  This example demonstrates the generation of strained moire superlattices from a 2D homostructure
+ *  This example demonstrates the generation of strained moire superlattices from a 2D homostructure and calculation
+ *  of the translational invariance of a moire
  *
  * -# Define types
  * @snippet testMoire.cpp Types

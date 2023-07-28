@@ -84,7 +84,7 @@ namespace gbLAB
 
 /*! @example testGenerateGBs.cpp
  * Given a tilt-axis of a 3D lattice, this example demonstrates the construction of multiple tilt GBs of varying
- * misorientations and inclinations
+ * misorientations and inclinations, and the calculation of grain boundaries' disconnection modes
  *
  * -# Define types
  * @snippet testGenerateGBs.cpp Types

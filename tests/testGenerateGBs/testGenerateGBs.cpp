@@ -34,8 +34,10 @@ int main()
     {
         // Loop over misorientation angles
         std::cout << "###################################################" << std::endl;
+        /*! [Misorientation] */
         try
         {
+            /*! [SNF] */
             double theta= acos((rotation.trace()-1.0)/2.0)*180/M_PI;
             std::cout << "Misorientation angle = " << std::setprecision(20) << theta << "; ";
             BiCrystal<3> bc(lattice,Lattice<3>(lattice.latticeBasis,rotation),false);
@@ -50,8 +52,9 @@ int main()
             std::cout << "Parallel DSCL basis Dp = " << std::endl;
             std::cout << std::setprecision(20) << bc.dscl.latticeBasis <<  std::endl;
             std::cout << std::endl;
+            /*! [SNF] */
 
-            // reduce DSCL basis vectors
+            /*! [Invariance] */
             auto reducedDsclBasis= RLLL(bc.dscl.latticeBasis,0.75);
             auto U_Dscl= reducedDsclBasis.unimodularMatrix();
 
@@ -88,16 +91,16 @@ int main()
             std::cout << "s2 = ";
             std::cout << std::setprecision(20) << (reducedCsl.latticeBasis * s2_coordinates_modulo).transpose() << std::endl;
             std::cout << std::endl;
+            /*! [Invariance] */
 
 
-            /*! [Misorientation] */
             /*! [Generate GBs] */
             auto gbSet(    bc.generateGrainBoundaries(bc.A.latticeDirection(rv.cartesian()),60) );
             /*! [Generate GBs] */
             /*! [Inclination] */
             int gbCount= 0;
             ReciprocalLatticeVector<3> refnA(bc.A);
-            std::cout << "GBs of varying inclination (measured with respect to the first grain boundary" << std::endl;
+            std::cout << "GBs of varying inclination (measured with respect to the first grain boundary)" << std::endl;
             std::cout << "-----------------------------------------------------------------------------" << std::endl;
             for (const auto& gb : gbSet)
             {
@@ -128,11 +131,16 @@ int main()
                         std::cout << "nA = " << gb.second.nA << std::endl;
                         std::cout << "nB = " << gb.second.nB << std::endl;
                         std::cout << "GB period = " << std::setprecision(20) << periodVector.cartesian().norm() << std::endl;
-                        std::cout << "CSL plane distance (Height)= " << std::setprecision(20) << 1.0/rvInCsl.cartesian().norm() << std::endl;
-                        std::cout << "Glide disconnection Burgers vector = " << std::setprecision(20) << burgersVector.cartesian().transpose() << "; norm = " << burgersVector.cartesian().norm() << std::endl;
-                        std::cout << "Step height of glide disconnection = " << std::setprecision(20) << gb.second.stepHeightA(burgersVector) << std::endl;
-                        std::cout << "Step height of non-glide disconnection 1= " << std::setprecision(20) << gb.second.stepHeightA(d1) << std::endl;
-                        std::cout << "Step height of non-glide disconnection 2= " << std::setprecision(20) << gb.second.stepHeightA(d2) << std::endl;
+                        std::cout << "CSL plane distance (Height)= " << std::setprecision(20)
+                                  << 1.0/rvInCsl.cartesian().norm() << std::endl;
+                        std::cout << "Glide disconnection Burgers vector = " << std::setprecision(20)
+                                  << burgersVector.cartesian().transpose() << "; norm = " << burgersVector.cartesian().norm() << std::endl;
+                        std::cout << "Step height of glide disconnection = " << std::setprecision(20)
+                                  << gb.second.stepHeightA(burgersVector) << std::endl;
+                        std::cout << "Step height of non-glide disconnection 1= " << std::setprecision(20)
+                                  << gb.second.stepHeightA(d1) << std::endl;
+                        std::cout << "Step height of non-glide disconnection 2= " << std::setprecision(20)
+                                  << gb.second.stepHeightA(d2) << std::endl;
                         std::cout << "-----------------------------------------------------------------------------" << std::endl;
                         gbCount++;
                     }

@@ -336,7 +336,14 @@ namespace gbLAB
  * out SNF bicrystallography
  * @snippet testMoire.cpp SNF
  *
+ * -# Output the heterodeformation, its polar decomposition, and the corresponding elastic strain
+ * @snippet testMoire.cpp Heterodeform
  *
+ * -# Output the invariance property of the moire in the following steps:
+ * 1) compute reduced basis vectors \f$\mathbf d_1\f$ and \f$\mathbf d_2\f$ for the DSCL,
+ * 2) compute the moire shifts \f$\mathbf s_1\f$ and \f$\mathbf s_2\f$ when lattice \f$\mathcal A\f$ is
+ * displaced by \f$\mathbf d_1\f$ and \f$\mathbf d_2\f$, respectively.
+ * @snippet testMoire.cpp Invariance
  * Full code:
  */
 

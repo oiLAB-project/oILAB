@@ -103,6 +103,15 @@ namespace gbLAB
  * -# Loop over the generated bicrystals, i.e., loop over misorientation angles
  * @snippet testGenerateGBs.cpp Misorientation
  *
+ * -# SNF output for each misorientation
+ * @snippet testGenerateGBs.cpp SNF
+ *
+ * -# Output the invariance property of the CSL in the following steps:
+ * 1) compute reduced basis vectors \f$\mathbf d_1\f$ and \f$\mathbf d_2\f$ for the DSCL,
+ * 2) compute the CSL shifts \f$\mathbf s_1\f$ and \f$\mathbf s_2\f$ when lattice \f$\mathcal A\f$ is
+ * displaced by \f$\mathbf d_1\f$ and \f$\mathbf d_2\f$, respectively.
+ * @snippet testGenerateGBs.cpp Invariance
+ *
  *  -# Generate grain boundaries of varying inclinations
  *  @snippet testGenerateGBs.cpp  Generate GBs
  *

@@ -144,13 +144,15 @@ namespace gbLAB
             if (err > FLT_EPSILON) {
                 std::cout << "RLLL relative error= " << std::setprecision(15) << std::scientific << err << " > "
                           << FLT_EPSILON << std::endl;
-                assert(false && "Relative error too large. RLLL failed.");
+                throw std::runtime_error("Relative error too large. RLLL failed.\n");
+                //assert(false && "Relative error too large. RLLL failed.");
             }
 
             const double absDetU(fabs(U.cast<double>().determinant()));
             if (fabs(absDetU - 1.0) > FLT_EPSILON) {
                 std::cout << "|det(U)|= " << std::setprecision(15) << std::scientific << absDetU << std::endl;
-                assert(false && "U is not unimodular. RLLL failed.");
+                throw std::runtime_error("U is not unimodular. RLLL failed.\n");
+                //assert(false && "U is not unimodular. RLLL failed.");
             }
         }
     }

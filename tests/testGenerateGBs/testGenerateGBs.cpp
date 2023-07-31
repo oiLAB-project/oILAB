@@ -102,6 +102,9 @@ int main()
             ReciprocalLatticeVector<3> refnA(bc.A);
             std::cout << "GBs of varying inclination (measured with respect to the first grain boundary)" << std::endl;
             std::cout << "-----------------------------------------------------------------------------" << std::endl;
+            std::cout << "-- CAUTION: The integer coordinates of GB normals are w.r.t the reciprocal --" << std::endl;
+            std::cout << "--          basis of the primitive unit cell.                              --" << std::endl;
+            std::cout << "-----------------------------------------------------------------------------" << std::endl;
             for (const auto& gb : gbSet)
             {
                 /*! [Inclination] */
@@ -130,6 +133,10 @@ int main()
                         std::cout << gbCount+1 << ") Inclination = " << std::setprecision(20) << acos(cosAngle)*180/M_PI << std::endl;
                         std::cout << "nA = " << gb.second.nA << std::endl;
                         std::cout << "nB = " << gb.second.nB << std::endl;
+                        /* Change the above two lines as follows if you need the cartesian coordinates of the GB normals
+                        std::cout << "nA = " << gb.second.nA.cartesian().transpose() << std::endl;
+                        std::cout << "nB = " << gb.second.nB.cartesian().transpose() << std::endl;
+                         */
                         std::cout << "GB period = " << std::setprecision(20) << periodVector.cartesian().norm() << std::endl;
                         std::cout << "CSL plane distance (Height)= " << std::setprecision(20)
                                   << 1.0/rvInCsl.cartesian().norm() << std::endl;

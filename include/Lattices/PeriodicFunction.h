@@ -27,6 +27,21 @@ namespace gbLAB {
         {
             values.setZero();
         }
+
+        template<typename T, typename=T,typename=T, int dm=dim, typename = std::enable_if_t<dm==1>>
+        LatticeFunction(const Eigen::array<Eigen::Index,dim>& n,
+                        const Lattice<dim>& _lattice,
+                        const Function<T,Scalar,dim>& fun) :
+                values(n), lattice(_lattice)
+        {
+            for (int i = 0; i < n[0]; i++)
+            {
+                LatticeVector<dm> x(lattice);
+                x << i;
+                values(i)= fun(x.cartesian());
+            }
+        }
+
         template<typename T, typename=T, int dm=dim, typename = std::enable_if_t<dm==2>>
         LatticeFunction(const Eigen::array<Eigen::Index,dim>& n,
                          const Lattice<dim>& _lattice,
@@ -73,6 +88,21 @@ namespace gbLAB {
                 values(n), lattice(_lattice)
         {
             values.setZero();
+        }
+
+        template<typename T, typename = T, typename=T, int dm=dim, typename = std::enable_if_t<dm==1>>
+        //template<typename T, int dm=dim, typename = std::enable_if_t<dm==2>>
+        PeriodicFunction(const Eigen::array<Eigen::Index,dim>& n,
+                         const Lattice<dim>& _lattice,
+                         const Function<T,Scalar,dim>& fun) :
+                values(n), lattice(_lattice)
+        {
+            Eigen::Vector<double,dim> center= lattice.latticeBasis.col(0)/2;
+            for (int i = 0; i < n[0]; i++)
+            {
+                Eigen::Vector<double,dim> x=i*lattice.latticeBasis.col(0)/n[0];
+                values(i)= fun(x-center);
+            }
         }
 
         template<typename T, typename = T, int dm=dim, typename = std::enable_if_t<dm==2>>
@@ -150,9 +180,12 @@ namespace gbLAB {
 
             // Correct pkfkhat as the kernel function was centered w.r.t the scaled lattice
             LatticeFunction<dcomplex,dim> temp(nRefined,scaledReciprocalLattice);
+            /*
             Eigen::Vector<double,dim> center= scaledLattice.latticeBasis.col(0)/2 +
                                               scaledLattice.latticeBasis.col(1)/2 +
                                               scaledLattice.latticeBasis.col(2)/2;
+                                              */
+           Eigen::Vector<double,dim> center= scaledLattice.latticeBasis.rowwise().sum()/2;
 
             Exponential<dim> exp_function(center);
             LatticeFunction<dcomplex,dim> exp_factor(nRefined,scaledReciprocalLattice,exp_function);

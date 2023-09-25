@@ -46,7 +46,8 @@ namespace gbLAB {
              *
              * D = [B   -C]
              *     [C    B]
-             * A and D have the same eigenvalues
+             * A and D have the same eigenvalues. If v is an eigenvector of A,
+             * (v,-iv) and (v*,iv*) are eigenvectors of D.
              *
              */
             int nx = rows();

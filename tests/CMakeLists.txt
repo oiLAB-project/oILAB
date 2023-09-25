@@ -22,5 +22,6 @@ add_subdirectory(testEVP)
 add_subdirectory(testDiff)
 add_subdirectory(testPeriodicFunction)
 add_subdirectory(testSchrodinger3)
+add_subdirectory(testKP)
 add_subdirectory(testComplexOperator)
 

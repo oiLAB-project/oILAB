@@ -22,7 +22,7 @@ int main()
     /*! [Lattice] */
 
     /*! [Test] */
-    const auto& coincidentLattices= lattice.generateCoincidentLattices(1e-3,10,15);
+    const auto& coincidentLattices= lattice.generateCoincidentLattices(1e-9,250,5000);
     //const auto& coincidentLattices= lattice.generateCoincidentLattices(1e-2,30,15);
     /*! [Test] */
 

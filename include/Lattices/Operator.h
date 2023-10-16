@@ -39,8 +39,8 @@ namespace gbLAB {
 
     template<typename E1, typename E2, int dim>
     class OperatorSum : public Operator<OperatorSum<E1,E2,dim>,dim> {
-        const E1& o1;
-        const E2& o2;
+        const E1 o1;
+        const E2 o2;
     public:
         OperatorSum(const E1 &o1_, const E2 &o2_) : Operator<OperatorSum<E1,E2,dim>,dim>(o1_.L.latticeBasis,o1_.n),
                                                     o1(o1_), o2(o2_)
@@ -69,7 +69,7 @@ namespace gbLAB {
     template<typename T, typename E, int dim>
     class OperatorScalarProduct : public Operator<OperatorScalarProduct<T,E,dim>,dim> {
         double s;
-        const E &op;
+        const E op;
     public:
         OperatorScalarProduct(const T& s_, const E& op_) : Operator<OperatorScalarProduct<T,E,dim>,dim>(op_.L.latticeBasis,op_.n),
                                                            s(s_), op(op_)

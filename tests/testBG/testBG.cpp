@@ -17,9 +17,9 @@ using namespace gbLAB;
 int main()
 {
     const int dim=3;
-    const int nx= 6;
-    const int ny= 6;
-    const int nz= 6;
+    const int nx= 12;
+    const int ny= 12;
+    const int nz= 12;
     Eigen::array<Eigen::Index,dim> n{nx,ny,nz};
     // Lattice system
     Eigen::Matrix<double,dim,dim> A;
@@ -27,12 +27,16 @@ int main()
          2.46,  -1.23,            0.0,
          0.0,    0.0,             16.0;
     A= A/0.5291772109;
+    double interlayerSpacing= 3.34;
     Lattice<dim> L(A);
-    Eigen::Matrix<double,dim,2> basisAtoms;
-    Eigen::Vector<double,dim> offset;
-    offset << 0,0,0;
-    basisAtoms.col(0)= offset;
-    basisAtoms.col(1)= A.col(0)/3 + 2*A.col(1)/3+offset;
+    Eigen::Matrix<double,dim,4> basisAtoms;
+    basisAtoms(0,0)= 0; basisAtoms(1,0)= 0; basisAtoms(2,0)= -interlayerSpacing/2.0;
+    basisAtoms.col(1)= A.col(0)/3 + 2*A.col(1)/3; basisAtoms(2,1)= -interlayerSpacing/2.0;
+    basisAtoms(0,2)= 0; basisAtoms(1,2)= 0; basisAtoms(2,2)=  interlayerSpacing/2.0;
+    Eigen::Matrix<double,dim,dim> R;
+    R= Eigen::AngleAxis<double>(M_PI/3,Eigen::Vector3d::UnitZ());
+    basisAtoms.col(3)= R*basisAtoms.col(1); basisAtoms(2,3)= interlayerSpacing/2.0;
+
     MultiLattice<dim> M(A,basisAtoms);
     Diff<dim> dx1({1,0,0},A,n);
     Diff<dim> dy1({0,1,0},A,n);
@@ -42,31 +46,6 @@ int main()
     Diff<dim> dz2({0,0,2},A,n);
     auto laplacian= dx2+dy2+dz2;
 
-    /*
-    //std::string kernelFilename= "kurokawa.txt";
-    std::cout << "Reading the kernel file " << kernelFilename << std::endl;
-    std::ifstream file(kernelFilename);
-    std::map<double,dcomplex> values;
-    double tmp1; dcomplex tmp2;
-    if(!file)
-    {
-        // Print an error and exit
-        std::cerr << "ERROR: " << kernelFilename << " could not be opened for reading!" << std::endl;
-        exit(1);
-    }
-    int i= 0;
-    while (true) {
-        file >> tmp1 >> tmp2;
-        if (file.eof()) break;
-        i++;
-        if ((i-1)%50 != 0) continue;
-        values[tmp1]= tmp2;
-    }
-    double kernelFunctionDomain= values.rbegin()->first;
-    std::cout << "Domain of the kernel function = " << kernelFunctionDomain << std::endl;
-    // create the kernel function
-    PiecewisePolynomial<dcomplex,dim> kernelFunction(values,kernelFunctionDomain);
-     */
 
     Mayer<dim> mayer(16.0);
 
@@ -107,7 +86,7 @@ int main()
         ComplexOperator<decltype(schrodingerReal), decltype(schrodingerComplex),dim> schrodinger(schrodingerReal,
                                                                                              schrodingerComplex);
 
-        GenEigsSolver<decltype(schrodinger)> eigs(schrodinger, 40, 100);
+        GenEigsSolver<decltype(schrodinger)> eigs(schrodinger, 5, 100);
 
         eigs.init();
         auto nconv = eigs.compute(SortRule::SmallestReal);

@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # add the executable
 add_executable(testCCUM testCCUM.cpp)
-target_link_libraries(testCCUM oILAB)
+#target_link_libraries(testCCUM oILAB)
 
 add_test(TestCCUM testCCUM)
 

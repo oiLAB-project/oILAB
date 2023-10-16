@@ -7,23 +7,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # set the project name
 project(oILAB VERSION 1.0)
+set(CMAKE_CXX_COMPILER g++-mp-12)
+set(CMAKE_C_COMPILER gcc-mp-12)
 
-OPTION (USE_OpenMP "Use OpenMP to enamble <omp.h>" ON)
-if (APPLE AND USE_OpenMP)
-    if(CMAKE_C_COMPILER_ID MATCHES "Clang\$")
-        set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp")
-        set(OpenMP_C_LIB_NAMES "omp")
-        set(OpenMP_omp_LIBRARY omp)
-    endif()
-
-    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang\$")
-        set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp")
-        set(OpenMP_CXX_LIB_NAMES "omp")
-        set(OpenMP_omp_LIBRARY omp)
-    endif()
-endif()
-
+OPTION (USE_OpenMP "Use OpenMP to enable <omp.h>" ON)
 if (USE_OpenMP)
+    set(OpenMP_C_FLAGS "-fopenmp")
+    set(OpenMP_CXX_FLAGS "-fopenmp")
+    set(OpenMP_C_LIB_NAMES "omp")
+    set(OpenMP_CXX_LIB_NAMES "omp")
+    set(OpenMP_omp_LIBRARY omp)
     find_package(OpenMP REQUIRED)
 endif(USE_OpenMP)
 

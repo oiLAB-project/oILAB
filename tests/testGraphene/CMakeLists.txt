@@ -8,7 +8,7 @@ configure_file(meyer.txt meyer.txt)
 configure_file(kurokawa.txt kurokawa.txt)
 
 # add the executable
-add_executable(testSchrodinger3 testSchrodinger3.cpp)
-target_link_libraries(testSchrodinger3 oILAB OpenMP::OpenMP_CXX)
-add_test(TestSchrodinger3 testSchrodinger3)
+add_executable(testGraphene testGraphene.cpp)
+target_link_libraries(testGraphene oILAB OpenMP::OpenMP_CXX)
+add_test(TestGraphene testGraphene)
 

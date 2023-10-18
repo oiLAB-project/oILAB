@@ -93,6 +93,7 @@ int main()
     LatticeDirection<3> directionAlongReciprocalDirection(integerCoordinates,L);
     std::cout << directionAlongReciprocalDirection <<  std::endl;
     std::cout << "Stacking for the above plane = " << directionAlongReciprocalDirection.dot(s) << std::endl;
+    /*! [Direction along a reciprocal direction] */
 
     /*! [Cross product] */
    ReciprocalLatticeDirection<3> uxv(u.cross(v));

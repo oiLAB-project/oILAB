@@ -8,7 +8,6 @@ configure_file(meyer.txt meyer.txt)
 configure_file(kurokawa.txt kurokawa.txt)
 
 # add the executable
-add_executable(testGraphene testGraphene.cpp)
-target_link_libraries(testGraphene oILAB OpenMP::OpenMP_CXX)
-add_test(TestGraphene testGraphene)
+add_executable(graphene graphene.cpp)
+target_link_libraries(graphene oILAB OpenMP::OpenMP_CXX)
 

@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 configure_file(meyer.txt meyer.txt)
 
 # add the executable
-add_executable(testBG testBG.cpp)
-target_link_libraries(testBG oILAB OpenMP::OpenMP_CXX)
-add_test(TestBG testBG)
+add_executable(bg bg.cpp)
+target_link_libraries(bg oILAB OpenMP::OpenMP_CXX)
 

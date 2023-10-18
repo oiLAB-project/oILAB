@@ -20,8 +20,6 @@ add_subdirectory(testSpectra)
 add_subdirectory(testFFT)
 add_subdirectory(testEVP)
 add_subdirectory(testPeriodicFunction)
-add_subdirectory(testGraphene)
-add_subdirectory(testBG)
 add_subdirectory(testKP)
 add_subdirectory(testComplexOperator)
 

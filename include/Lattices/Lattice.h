@@ -383,6 +383,10 @@ namespace gbLAB
  * may be required to access functions that accept a vector as an input.
  *  @snippet testLattice.cpp Direction to vector
  *
+ * -# Get a lattice direction along a given reciprocal lattice direction. This
+ *  can be used to calculate the stacking sequence.
+ *  @snippet testLattice.cpp Direction along a reciprocal direction
+ *
  * -# The cross product of two lattice vectors is a reciprocal lattice direction.
  * Similarly, the cross product of two reciprocal lattice vectors is a lattice direction.
  * The cross product is enabled only for dim=3

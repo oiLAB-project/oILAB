@@ -169,8 +169,26 @@ namespace gbLAB
             return output;
         }
 
-        /*! This function generates deformations of a 2D lattice that result in a moire superlattice.
-         *  It is specialized to dim=2
+        template<int dm=dim>
+        typename std::enable_if<dm==2,std::vector<MatrixDimD>>::type
+        generateCoincidentLattices(const double& maxStrain,
+                                   const int& maxDen=50,
+                                   const int& N=30) const
+        {
+            std::vector<MatrixDimD> output(generateCoincidentLattices(*this,maxStrain,maxDen,N));
+            return output;
+        }
+        /*! This function generates deformations of a 2D lattice that result in a moire superlattice with
+         *  and undeformed 2D lattice. It is specialized to dim=2.
+         *
+         *  The current algorithm betters the one given in Algorithm 2 of
+         *
+         *  [1] Admal, Nikhil Chandra, et al. "Interface dislocations and grain boundary
+         *      disconnections using Smith normal bicrystallography."
+         *      Acta materialia 240 (2022): 118340.
+         *
+         *  Note: There was a typo in Algorithm 2 in [1] - \f$\mathfrak q_1\f$ and \f$\mathfrak r_1\f$ should
+         *  be replaced by the basis vectors \f$\mathbf q_1\f$ and \f$\mathbf r_1\f$ of lattice \f$mathcal B\f$.
          *
          * @tparam dm dimension (int)
          * @param maxStrain maximum strain
@@ -180,7 +198,10 @@ namespace gbLAB
          */
         template<int dm=dim>
         typename std::enable_if<dm==2,std::vector<MatrixDimD>>::type
-        generateCoincidentLattices(const double& maxStrain,const int& maxDen=50, const int& N=30) const
+        generateCoincidentLattices(const Lattice<dim>& undeformedLattice,
+                                   const double& maxStrain,
+                                   const int& maxDen=50,
+                                   const int& N=30) const
         {
             std::vector<MatrixDimD> output;
             std::map<IntScalarType,MatrixDimD> temp;
@@ -194,7 +215,7 @@ namespace gbLAB
             {
                 VectorDimI pIndices;
                 pIndices << pair1.first, pair1.second;
-                LatticeVector<dm> q2(pIndices,*this);
+                LatticeVector<dm> q2(pIndices,undeformedLattice);
                 double ratio= q2.cartesian().norm() / latticeBasis.col(0).norm();
 
 
@@ -233,7 +254,7 @@ namespace gbLAB
                         for (const auto &pair2: coPrimePairs) {
                             VectorDimI qIndices;
                             qIndices << pair2.first, pair2.second;
-                            LatticeVector<dm> r2(qIndices, *this);
+                            LatticeVector<dm> r2(qIndices, undeformedLattice);
                             double ratio2= r2.cartesian().norm() / latticeBasis.col(1).norm();
                             RationalApproximations<IntScalarType> betaSequence(ratio2, maxDen,maxStrain*ratio2);
                             for(const auto& beta : betaSequence.approximations) {

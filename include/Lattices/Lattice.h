@@ -182,8 +182,7 @@ namespace gbLAB
             return output;
         }
         /*! This function generates deformations \f$\mathbf F\f$ such that the deformations of *this lattice share moire supercells
-         *  with a given undeformed 2D lattice
-         * with the deformed lattice. It is specialized to dim=2.
+         *  with a given undeformed 2D lattice. It is specialized to dim=2.
          *
          *  The current algorithm betters the one given in Algorithm 2 of
          *

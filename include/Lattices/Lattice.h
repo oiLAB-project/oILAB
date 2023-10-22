@@ -169,6 +169,9 @@ namespace gbLAB
             return output;
         }
 
+        /*! This function generates deformations \f$\mathbf F\f$ such that the deformations of *this lattice share moire supercells
+         *  with the undeformed *this lattice
+         */
         template<int dm=dim>
         typename std::enable_if<dm==2,std::vector<MatrixDimD>>::type
         generateCoincidentLattices(const double& maxStrain,
@@ -178,8 +181,9 @@ namespace gbLAB
             std::vector<MatrixDimD> output(generateCoincidentLattices(*this,maxStrain,maxDen,N));
             return output;
         }
-        /*! This function generates deformations of a 2D lattice that result in a moire superlattice with
-         *  and undeformed 2D lattice. It is specialized to dim=2.
+        /*! This function generates deformations \f$\mathbf F\f$ such that the deformations of *this lattice share moire supercells
+         *  with a given undeformed 2D lattice
+         * with the deformed lattice. It is specialized to dim=2.
          *
          *  The current algorithm betters the one given in Algorithm 2 of
          *
@@ -188,13 +192,15 @@ namespace gbLAB
          *      Acta materialia 240 (2022): 118340.
          *
          *  Note: There was a typo in Algorithm 2 in [1] - \f$\mathfrak q_1\f$ and \f$\mathfrak r_1\f$ should
-         *  be replaced by the basis vectors \f$\mathbf q_1\f$ and \f$\mathbf r_1\f$ of lattice \f$mathcal B\f$.
+         *  be replaced by the basis vectors \f$\mathbf q_1\f$ and \f$\mathbf r_1\f$ of lattice \f$\mathcal B\f$.
          *
+         * @tparam undeformedLattice underformed lattice
          * @tparam dm dimension (int)
          * @param maxStrain maximum strain
          * @param maxDen  integer parameter that determines the resolution for the search of rotations
          * @param N integer parameter that determines the maximum size of the CSL
-         * @return A set of deformation gradients that result in moire supercells.
+         * @return A set of deformation gradients of *this lattice that result in moire superlattices with the undeformed
+         *         lattice
          */
         template<int dm=dim>
         typename std::enable_if<dm==2,std::vector<MatrixDimD>>::type

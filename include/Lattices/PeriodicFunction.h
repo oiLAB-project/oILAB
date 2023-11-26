@@ -217,6 +217,25 @@ namespace gbLAB {
         }
     };
 
+    template<typename Scalar, int dim>
+    basic_ostream<char>& operator<<(basic_ostream<char>& s, const PeriodicFunction<Scalar, dim>& fun)
+    {
+        s << "x coord, y coord, z coord, scalar" << std::endl;
+        LatticeVector<dim> x(fun.lattice);
+        auto n= fun.values.dimensions();
+        for (int i = 0; i < n[0]; i++) {
+            for (int j = 0; j < n[1]; j++) {
+                for (int k = 0; k < n[2]; k++) {
+                    Eigen::Vector<double,dim> x= i*fun.lattice.latticeBasis.col(0)/n[0] +
+                                                 j*fun.lattice.latticeBasis.col(1)/n[1] +
+                                                 k*fun.lattice.latticeBasis.col(2)/n[2];
+                    const Eigen::IOFormat fmt(15, 0, ", ", "", "\t", "", "", "");
+                    s << x.transpose().format(fmt) << ", " << std::setw(25) << std::setprecision(15) << fun.values(i,j,k) << std::endl;
+                }
+            }
+        }
+        return s;
+    }
 
 }
 

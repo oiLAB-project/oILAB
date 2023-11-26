@@ -17,25 +17,41 @@ using namespace gbLAB;
 int main()
 {
     const int dim=3;
-    const int nx= 12;
-    const int ny= 12;
-    const int nz= 12;
+    const int nev= 30;
+    const int ncv= 100;
+    const int nx= 36;
+    const int ny= 36;
+    const int nz= 36;
+    const int div= 8;
     Eigen::array<Eigen::Index,dim> n{nx,ny,nz};
     // Lattice system
     Eigen::Matrix<double,dim,dim> A;
+    double interlayerSpacing= 3.335;
     A << 0.0,   -2.13042249331,   0.0,
          2.46,  -1.23,            0.0,
-         0.0,    0.0,             16.0;
+         0.0,    0.0,             2*interlayerSpacing;
     A= A/0.5291772109;
-    double interlayerSpacing= 3.34;
     Lattice<dim> L(A);
     Eigen::Matrix<double,dim,4> basisAtoms;
-    basisAtoms(0,0)= 0; basisAtoms(1,0)= 0; basisAtoms(2,0)= -interlayerSpacing/2.0;
-    basisAtoms.col(1)= A.col(0)/3 + 2*A.col(1)/3; basisAtoms(2,1)= -interlayerSpacing/2.0;
-    basisAtoms(0,2)= 0; basisAtoms(1,2)= 0; basisAtoms(2,2)=  interlayerSpacing/2.0;
+
+    double interlayerSpacingBohr= interlayerSpacing/0.5291772109;
+    basisAtoms.col(0).setZero();
+    //basisAtoms(2,0)= -interlayerSpacingBohr/2.0;
+    basisAtoms(2,0)= 0.0;
+    basisAtoms.col(1)= A.col(0)/3 + 2*A.col(1)/3;
+    //basisAtoms(2,1)= -interlayerSpacingBohr/2.0;
+    basisAtoms(2,1)= 0.0;
+
+    basisAtoms.col(2).setZero();
+    //basisAtoms(2,2)= interlayerSpacingBohr/2.0;
+    basisAtoms(2,2)= interlayerSpacingBohr;
+
     Eigen::Matrix<double,dim,dim> R;
-    R= Eigen::AngleAxis<double>(M_PI/3,Eigen::Vector3d::UnitZ());
-    basisAtoms.col(3)= R*basisAtoms.col(1); basisAtoms(2,3)= interlayerSpacing/2.0;
+    //R= Eigen::AngleAxis<double>(M_PI/3,Eigen::Vector3d::UnitZ());
+    R= Eigen::AngleAxis<double>(0.0,Eigen::Vector3d::UnitZ());
+    basisAtoms.col(3)= R*basisAtoms.col(1);
+    //basisAtoms(2,3)= interlayerSpacingBohr/2.0;
+    basisAtoms(2,3)= interlayerSpacingBohr;
 
     MultiLattice<dim> M(A,basisAtoms);
     Diff<dim> dx1({1,0,0},A,n);
@@ -51,6 +67,9 @@ int main()
 
     // Generate potential V
     PeriodicFunction<double,dim> V= PeriodicFunction<double,dim>::kernelConvolution(n,M,mayer);
+    ofstream potential("potential.csv");
+    potential << V << std::endl;
+    potential.close();
     Multiplication<dim> mop_V(V);
 
 
@@ -62,7 +81,6 @@ int main()
     std::cout << "point K: " << pointK.transpose() << std::endl;
     std::cout << "point M: " << pointM.transpose() << std::endl;
     std::vector<Eigen::Vector<double,dim>> etaPoints;
-    const int div= 8;
     std::cout << "number of divisions = " << div << std::endl;
     // G - K - M - G
     for (int j=0; j < div; j++){
@@ -82,11 +100,13 @@ int main()
     #pragma omp parallel for
     for (int i=0; i < etaPoints.size(); i++) {
         auto schrodingerReal = -0.5 * laplacian + mop_V;
-        auto schrodingerComplex = 2.0 * M_PI * (etaPoints[i](0) * dx1 + etaPoints[i](1) * dy1);
+        auto schrodingerComplex = 2.0 * M_PI * (etaPoints[i](0) * dx1 +
+                                                                      etaPoints[i](1) * dy1 +
+                                                                      etaPoints[i](2) * dz1);
         ComplexOperator<decltype(schrodingerReal), decltype(schrodingerComplex),dim> schrodinger(schrodingerReal,
                                                                                              schrodingerComplex);
 
-        GenEigsSolver<decltype(schrodinger)> eigs(schrodinger, 5, 100);
+        GenEigsSolver<decltype(schrodinger)> eigs(schrodinger, nev, ncv);
 
         eigs.init();
         auto nconv = eigs.compute(SortRule::SmallestReal);

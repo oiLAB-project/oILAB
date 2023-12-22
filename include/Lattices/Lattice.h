@@ -26,7 +26,7 @@ namespace gbLAB
 {
     /*! \brief Lattice class
      *
-     *  lattice class description
+     *  The Lattice<dim> class describes a lattice in dim dimensions
      * */
     template <int dim>
     class Lattice : public StaticID<Lattice<dim>>
@@ -409,8 +409,8 @@ namespace gbLAB
  * may be required to access functions that accept a vector as an input.
  *  @snippet testLattice.cpp Direction to vector
  *
- * -# Get a lattice direction along a given reciprocal lattice direction. This
- *  can be used to calculate the stacking sequence.
+ * -# Get a lattice direction along a given cartesian vector.
+ *  CAUTION: This will fail if the cartesian vector is not a lattice vector.
  *  @snippet testLattice.cpp Direction along a reciprocal direction
  *
  * -# The cross product of two lattice vectors is a reciprocal lattice direction.

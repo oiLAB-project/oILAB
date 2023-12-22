@@ -411,8 +411,11 @@ namespace gbLAB
  *
  * -# Get a lattice direction along a given cartesian vector.
  *  CAUTION: This will fail if the cartesian vector is not a lattice vector.
- *  @snippet testLattice.cpp Direction along a reciprocal direction
+ *  @snippet testLattice.cpp Lattice direction along a cartesian vector
  *
+ * -# Get the stacking along a lattice plane
+ *  @snippet testLattice.cpp Stacking of a lattice plane
+
  * -# The cross product of two lattice vectors is a reciprocal lattice direction.
  * Similarly, the cross product of two reciprocal lattice vectors is a lattice direction.
  * The cross product is enabled only for dim=3

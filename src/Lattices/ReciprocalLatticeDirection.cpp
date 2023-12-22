@@ -29,6 +29,15 @@ namespace gbLAB
         return 1.0 / cartesian().norm();
     }
 
+    template <int dim>
+    int ReciprocalLatticeDirection<dim>::stacking() const
+    {
+        VectorDimD doubleCoordinates= lattice.reciprocalBasis.transpose()*cartesian();
+        VectorDimI integerCoordinates= LatticeCore<dim>::rationalApproximation(doubleCoordinates);
+        LatticeDirection<dim> directionAlongReciprocalDirection(integerCoordinates,lattice);
+        return dot(directionAlongReciprocalDirection);
+return 1;
+    }
 
     template struct ReciprocalLatticeDirection<1>;
     template basic_ostream<char>& operator<<(basic_ostream<char>& s, const ReciprocalLatticeDirection<1>& m);

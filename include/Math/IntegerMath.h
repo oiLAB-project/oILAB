@@ -18,7 +18,10 @@ namespace gbLAB
     template <typename IntScalarType>
     struct IntegerMath
     {
-        
+        inline static IntScalarType positive_modulo(IntScalarType i, IntScalarType n) {
+            return (i % n + n) % n;
+        }
+
         static IntScalarType sgn(const IntScalarType& a)
         {
             return a<0? -1 : 1;

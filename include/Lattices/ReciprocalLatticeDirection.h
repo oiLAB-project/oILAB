@@ -16,6 +16,8 @@ namespace gbLAB
     /* inherits */ protected ReciprocalLatticeVector<dim>
     {
         typedef typename LatticeCore<dim>::IntScalarType IntScalarType;
+        typedef typename LatticeCore<dim>::VectorDimD VectorDimD;
+        typedef typename LatticeCore<dim>::VectorDimI VectorDimI;
 
 
         ReciprocalLatticeDirection(const ReciprocalLatticeDirection<dim>& other) = default;
@@ -30,6 +32,12 @@ namespace gbLAB
          * @return (double) spacing between two consecutive lattice planes
          */
         double planeSpacing() const;
+
+        /*! \brief Returns the number of planes in the stacking sequence
+         *
+         * @return (integer) number of planes in the staking sequence
+         */
+        int stacking() const;
 
         /*! \brief Returns a constant reference to the base class (ReciprocalLatticeVector)
          *

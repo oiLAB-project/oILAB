@@ -88,9 +88,7 @@ int main()
 
     /*! [Direction along a reciprocal direction] */
     std::cout << "Get a lattice direction along the reciprocal lattice direction " << s << std::endl;
-    Eigen::Vector3d doubleCoordinates= L.reciprocalBasis.transpose()*s.cartesian();
-    auto integerCoordinates= LatticeCore<3>::rationalApproximation(doubleCoordinates);
-    LatticeDirection<3> directionAlongReciprocalDirection(integerCoordinates,L);
+    LatticeDirection<3> directionAlongReciprocalDirection(L.latticeDirection(s.cartesian()));
     std::cout << directionAlongReciprocalDirection <<  std::endl;
     std::cout << "Stacking for the above plane = " << directionAlongReciprocalDirection.dot(s) << std::endl;
     /*! [Direction along a reciprocal direction] */

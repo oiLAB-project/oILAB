@@ -55,8 +55,16 @@ namespace gbLAB
     template <int dim>
     LatticeDirection<dim> Lattice<dim>::latticeDirection(const VectorDimD &d) const
     {
-        const VectorDimD nd(reciprocalBasis.transpose()*d);
-        const LatticeVector<dim> temp(LatticeCore<dim>::rationalApproximation(nd),*this);
+        RLLL rlll(latticeBasis,0.75);
+        auto structureMatrix= rlll.reducedBasis();
+        auto U= rlll.unimodularMatrix();
+        Lattice<dim> reducedLattice(structureMatrix);
+        VectorDimD nd;
+        nd= reducedLattice.reciprocalBasis.transpose()*d;
+        LatticeVector<dim> tempReduced(LatticeCore<dim>::rationalApproximation(nd),reducedLattice);
+        VectorDimI tempRecovered= U*tempReduced;
+        LatticeVector<dim> temp(tempRecovered, *this);
+
         const GramMatrix<double,2> G(std::array<VectorDimD,2>{temp.cartesian().normalized(),d.normalized()});
         const double crossNorm(sqrt(G.determinant()));
         if(crossNorm>FLT_EPSILON)
@@ -73,8 +81,16 @@ namespace gbLAB
     template <int dim>
     ReciprocalLatticeDirection<dim> Lattice<dim>::reciprocalLatticeDirection(const VectorDimD &d) const
     {
-        const VectorDimD nd(latticeBasis.transpose()*d);
-        const ReciprocalLatticeVector<dim> temp(LatticeCore<dim>::rationalApproximation(nd),*this);
+        RLLL rlll(latticeBasis,0.75);
+        auto structureMatrix= rlll.reducedBasis();
+        MatrixDimI U= rlll.unimodularMatrix();
+        Lattice<dim> reducedLattice(structureMatrix);
+        VectorDimD nd;
+        nd= reducedLattice.latticeBasis.transpose()*d;
+        ReciprocalLatticeVector<dim> tempReduced(LatticeCore<dim>::rationalApproximation(nd),reducedLattice);
+        VectorDimI tempRecovered(MatrixDimIExt<IntScalarType,dim>::adjoint(U.matrix()).transpose()* tempReduced);
+        ReciprocalLatticeVector<dim> temp(tempRecovered, *this);
+
         const GramMatrix<double,2> G(std::array<VectorDimD,2>{temp.cartesian().normalized(),d.normalized()});
         const double crossNorm(sqrt(abs(G.determinant())));
         if(crossNorm>FLT_EPSILON)
@@ -171,13 +187,28 @@ namespace gbLAB
             index++;
         }
 
-        planeParallelLatticeBasisCartesian= RLLL(planeParallelLatticeBasisCartesian,0.75).reducedBasis();
-        index= 1;
-        for(const auto& column : planeParallelLatticeBasisCartesian.colwise())
-        {
-            out[index]= this->latticeDirection(column);
-            index++;
+        if(dim>2) {
+            planeParallelLatticeBasisCartesian = RLLL(planeParallelLatticeBasisCartesian, 0.75).reducedBasis();
+            index = 1;
+            for (const auto &column: planeParallelLatticeBasisCartesian.colwise()) {
+                out[index] = this->latticeDirection(column);
+                index++;
+            }
         }
+
+        // (A^T A)^{-1} A^T
+        Eigen::MatrixXd pseudoInverse(dim-1,dim);
+        pseudoInverse= (planeParallelLatticeBasisCartesian.transpose() * planeParallelLatticeBasisCartesian).inverse() *
+                       (planeParallelLatticeBasisCartesian.transpose());
+
+        LatticeVector<dim> temp(*this);
+        for(int i=0;i<dim-1;i++)
+        {
+            temp= temp + round(out[0].cartesian().dot(pseudoInverse.row(i)))*out[i+1].latticeVector();
+        }
+        out[0]= LatticeDirection<dim>(out[0].latticeVector()-temp);
+
+
         return out;
     }
 

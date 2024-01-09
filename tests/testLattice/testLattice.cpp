@@ -1,4 +1,6 @@
 #include <LatticeModule.h>
+#include <fstream>
+#include<vector>
 
 using namespace gbLAB;
 int main()
@@ -107,5 +109,31 @@ int main()
     LatticeDirection<3> qxr(q.cross(r));
     std::cout << "The cross product of two reciprocal lattice vectors q and r is a lattice direction: " << qxr<< std::endl;
     /*! [Cross product] */
+
+
+    /*! [Box3] */
+    std::vector<LatticeVector<3>> boxVectors;
+    boxVectors.push_back(LatticeVector<3>(u,L));
+    boxVectors.push_back(LatticeVector<3>(v,L));
+    boxVectors.push_back(LatticeVector<3>(latticeDirectionAlong_s.latticeVector(),L));
+    std::cout << "Outputting a configuration of lattice points bounded by three box vectors: " << std::endl;
+    for (const auto& vector : boxVectors)
+        std::cout << vector.cartesian().transpose() << std::endl;
+    L.box(boxVectors,"lattice.txt");
+    /*! [Box3] */
+
+    /*! [Box2] */
+    Eigen::Matrix2d B;
+    B << 1.0, 0.0,
+         0.5, 1.0;
+    Lattice<2> L2(B);
+    LatticeVector<2> b1(L2); b1 << 1,13;
+    LatticeVector<2> b2(L2); b2 << 2,7;
+    std::cout << "Outputting a configuration of lattice points bounded by two box vectors: " << std::endl;
+    std::cout << b1.cartesian().transpose() << std::endl;
+    std::cout << b2.cartesian().transpose() << std::endl;
+    L2.box(std::vector<LatticeVector<2>>{-1*b1,b2},"lattice2.txt");
+    /*! [Box2] */
+
     return 0;
 }

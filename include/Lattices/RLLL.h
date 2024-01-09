@@ -26,7 +26,7 @@ namespace gbLAB
         
         
         MatrixType B;
-        Eigen::Matrix<long int,Eigen::Dynamic,Eigen::Dynamic> U;
+        Eigen::Matrix<long long int,Eigen::Dynamic,Eigen::Dynamic> U;
         
         /**********************************************************************/
         void update(VectorType& H,
@@ -46,7 +46,7 @@ namespace gbLAB
         /**********************************************************************/
         const MatrixType& reducedBasis() const;
         /**********************************************************************/
-        const Eigen::Matrix<long int,Eigen::Dynamic,Eigen::Dynamic>& unimodularMatrix() const;
+        const Eigen::Matrix<long long int,Eigen::Dynamic,Eigen::Dynamic>& unimodularMatrix() const;
         
     };
     

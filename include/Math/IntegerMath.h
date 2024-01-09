@@ -18,7 +18,10 @@ namespace gbLAB
     template <typename IntScalarType>
     struct IntegerMath
     {
-        
+        inline static IntScalarType positive_modulo(IntScalarType i, IntScalarType n) {
+            return (i % n + n) % n;
+        }
+
         static IntScalarType sgn(const IntScalarType& a)
         {
             return a<0? -1 : 1;
@@ -413,5 +416,19 @@ namespace gbLAB
             return output.transpose();
         }
     };
+
+    template<typename IntScalarType>
+    class MatrixDimIExt<IntScalarType,1> : public Eigen::Matrix<IntScalarType,1,1>
+    {
+    public:
+        static Eigen::Matrix<IntScalarType,1,1> adjoint(const Eigen::Matrix<IntScalarType,1,1>& input)
+        {
+            Eigen::Matrix<IntScalarType,1,1> output;
+            output << 1;
+            return output;
+        }
+
+    };
+
 }
 #endif

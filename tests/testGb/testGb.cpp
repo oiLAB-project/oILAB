@@ -16,7 +16,7 @@ int main()
     try
     {
         /*! [Bicrystal] */
-        BiCrystal<2> bc(L1, L2);
+        BiCrystal<2> bc(L1,L2);
         /*! [Bicrystal] */
         /*! [GB] */
         ReciprocalLatticeVector<2> rvec(L2);
@@ -54,6 +54,13 @@ int main()
         if(error > 1e-6)
             throw std::runtime_error("Error in step height calculation");
         /*! [Check] */
+
+        auto nC= gb.bc.getReciprocalLatticeDirectionInC(gb.nA.reciprocalLatticeVector());
+        auto planeParallelBasis= bc.csl.planeParallelLatticeBasis(nC,true);
+        std::vector<LatticeVector<2>> boxVectors;
+        boxVectors.push_back(planeParallelBasis[0].latticeVector());
+        boxVectors.push_back(planeParallelBasis[1].latticeVector());
+        gb.box(boxVectors,0.9,1,"gb.txt", true);
 
     }
     catch(std::runtime_error& e)

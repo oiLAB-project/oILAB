@@ -22,7 +22,8 @@ int main()
     /*! [Lattice] */
 
     /*! [Test] */
-    const auto& coincidentLattices= lattice.generateCoincidentLattices(1e-3,10,15);
+    //const auto& coincidentLattices= lattice.generateCoincidentLattices(1e-3,10,15);
+    const auto& coincidentLattices= lattice.generateCoincidentLattices(0,300,30000);
     //const auto& coincidentLattices= lattice.generateCoincidentLattices(1e-2,30,15);
     /*! [Test] */
 
@@ -32,7 +33,7 @@ int main()
         try
         {
             BiCrystal<2> bc(lattice,Lattice<2>(lattice.latticeBasis,deformationGradient),false);
-            if (abs(bc.sigmaA) > 20000 || abs(bc.sigmaB) > 20000)
+            if (abs(bc.sigmaA) > 60000 || abs(bc.sigmaB) > 60000)
                 continue;
             std::cout << std::endl;
             std::cout << "--------------------------------- SNF -------------------------------------" << std::endl;

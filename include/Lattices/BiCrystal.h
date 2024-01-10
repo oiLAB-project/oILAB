@@ -202,9 +202,7 @@ namespace gbLAB
                 throw std::runtime_error("The tilt axis does not belong to lattices A and B  \n");
             std::vector<Gb<dm>> gbVec;
             double epsilon=1e-8;
-            bool stgbExists= false;
             int count= -1;
-            int stgbCount= 0;
             IntScalarType keyScale= 1e6;
             auto basis= d.lattice.directionOrthogonalReciprocalLatticeBasis(d,true);
             if (dm==3)
@@ -239,10 +237,7 @@ namespace gbLAB
             for(const Gb<dim>& gb:gbVec)
             {
                 double cosAngle;
-                if (stgbExists)
-                    cosAngle= gb.nA.cartesian().normalized().dot(gbVec[stgbCount].nA.cartesian().normalized());
-                else
-                    cosAngle= gb.nA.cartesian().normalized().dot(gbVec[0].nA.cartesian().normalized());
+                cosAngle= gb.nA.cartesian().normalized().dot(gbVec[0].nA.cartesian().normalized());
                 if (cosAngle-1>-epsilon) cosAngle= 1.0;
                 if (cosAngle+1<epsilon) cosAngle= -1.0;
 

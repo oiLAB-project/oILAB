@@ -206,7 +206,7 @@ namespace gbLAB
             int count= -1;
             int stgbCount= 0;
             IntScalarType keyScale= 1e6;
-            auto basis= d.lattice.directionOrthogonalReciprocalLatticeBasis(d,false);
+            auto basis= d.lattice.directionOrthogonalReciprocalLatticeBasis(d,true);
             if (dm==3)
             {
                 for (int i = -div; i <= div; ++i)
@@ -220,18 +220,6 @@ namespace gbLAB
                         {
                             Gb<dm> gb(*this, rv);
                             gbVec.push_back(gb);
-
-                            VectorDimI nAintegerCoords = gb.nA.reciprocalLatticeVector();
-                            VectorDimI nBintegerCoords = gb.nB.reciprocalLatticeVector();
-
-                            nAintegerCoords = nAintegerCoords.cwiseAbs();
-                            nBintegerCoords = nBintegerCoords.cwiseAbs();
-                            std::sort(nAintegerCoords.data(), nAintegerCoords.data() + dm);
-                            std::sort(nBintegerCoords.data(), nBintegerCoords.data() + dm);
-                            if (nAintegerCoords == nBintegerCoords) {
-                                stgbExists = true;
-                                stgbCount = count;
-                            }
                         }
                         catch(std::runtime_error& e)
                         {

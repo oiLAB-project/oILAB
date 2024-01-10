@@ -58,23 +58,24 @@ namespace gbLAB
         /*! This function outputs/prints a grain boundary (two lattices that form the GB,
          * CSL, and the DSCL) bounded by a box defined using
          * input box vectors. The box vectors have to be linearly independent lattice
-         * vectors. The @param boxVectors[0] is not parallel to the boundary plane while the
-         * remaining box vectors lie on the GB plane. The function optimizes boxVectors[0]
-         * to make the box as orthogonal as possible depending on the @param orthogonality parameter.
-         * The length of the box along boxVectors[0] is equal to 2*boxVectors[0].norm,
+         * vectors. The \p boxVectors[0] is not parallel to the boundary plane while the
+         * remaining box vectors should lie in the GB plane. The function optimizes boxVectors[0]
+         * to make the box as orthogonal as possible depending on the \p orthogonality parameter.
+         * The length of the box along \p boxVectors[0] is equal to \p 2*boxVectors[0].norm,
          * while the lengths along the remaining box vectors are equal to their norms.
          *
-         * The function outputs only those DSCL lattice points in a neighborhood of the GB.
-         * The parameter @param dsclFactor can be used to increase the number of outputted DSCL planes.
+         * The function outputs DSCL lattice points in the GBs neighborhood, which can be controlled
+         * by the \p dsclFactor parameter.
          *
          * @tparam dm dimension (int)
          * @param boxVectors three linearly independent lattice vectors. The first box vector
          * is not parallel to the boundary plane, while the remaining box vectors span the GB plane.
          * @param orthogonality (double) a value in the interval \f$[0,1]\f$.
-         * @param dsclFactor (int) a factor>1 to increase the number of outputted DSCL planes
+         * @param dsclFactor (int) a factor\f$ \ge 1\f$ to increase the number of outputted DSCL planes
          * @param filename (optional) name of the output file
          * @param orient (optional) While printing to a file, orient the system such that the box sides are along
-         * the global x, y, and z axes. The box vectors have to be orthogonal if orient==true. This flag does not
+         * the global x, y, and z axes. The box vectors spanning the grain boundary have to be orthogonal
+         * if orient==true. This flag does not
          * influence the returning configuration, only the configuration printed to the file.
          * @return lattice points of the grain boundary bounded by the box (std::vector<LatticeVector<dim>>).
          */
@@ -298,7 +299,9 @@ namespace gbLAB
 
 /*!
  * @example testGb3d.cpp
- * This example demonstrates the computation of step heights and the use of Gb class
+ * This examples demonstrates the construction of a grain boundary in a 3D bicrystal.
+ * We will construct a [111] tilt \f$\Sigma 273\f$ - STGB (5 6 -11) and an
+ * ATGB (17  23 -40)(145  136 -281).
  *
  * -# Initialize the first lattice L1
  *  @snippet testGb3d.cpp lattice1

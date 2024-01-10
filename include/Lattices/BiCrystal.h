@@ -249,6 +249,22 @@ namespace gbLAB
         }
 
 
+        /*! This function outputs/prints a 2D bicrystal (two lattices that form the GB and
+         * the CSL) bounded by a box defined using
+         * two input box vectors. The box vectors have to be linearly independent lattice
+         * vectors. The function optimizes boxVectors[0]
+         * to make the box as orthogonal as possible depending on the \p orthogonality parameter.
+         *
+         *
+         * @tparam dm dimension (int)
+         * @param boxVectors two linearly independent lattice vectors.
+         * @param orthogonality (double) a value in the interval \f$[0,1]\f$.
+         * @param filename (optional) name of the output file
+         * @param orient (optional) While printing to a file, orient the system such that one of the box sides
+         * is along the global x axis. This flag does not
+         * influence the returning configuration, only the configuration printed to the file.
+         * @return lattice points of the bicrystal (along with the CSL) bounded by the box (std::vector<LatticeVector<2>>).
+         */
         template<int dm=dim>
         typename std::enable_if<dm==2,std::vector<LatticeVector<dim>>>::type
         box(std::vector<LatticeVector<dim>> boxVectors, double const& orthogonality, std::string filename= "", bool orient=false) const

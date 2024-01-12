@@ -26,7 +26,7 @@ int main()
     /*! [Axis] */
 
     /*! [Generate bicrystal] */
-    const auto& coincidentLattices= lattice.generateCoincidentLattices(rv);
+    const auto& coincidentLattices= lattice.generateCoincidentLattices(rv,150,150);
     /*! [Generate bicrystal] */
 
     /*! [Misorientation] */
@@ -34,22 +34,76 @@ int main()
     {
         // Loop over misorientation angles
         std::cout << "###################################################" << std::endl;
+        /*! [Misorientation] */
         try
         {
+            /*! [SNF] */
             double theta= acos((rotation.trace()-1.0)/2.0)*180/M_PI;
-            std::cout << "Misorientation angle = " << theta << "; ";
+            std::cout << "Misorientation angle = " << std::setprecision(20) << theta << "; ";
             BiCrystal<3> bc(lattice,Lattice<3>(lattice.latticeBasis,rotation),false);
-            std::cout << "Sigma = " << bc.sigma << std::endl;
+            std::cout << "Sigma = " << std::setprecision(20) << bc.sigma << std::endl;
+            std::cout << std::endl;
             std::cout << "Lattice B = " << std::endl;
-            std::cout << rotation*lattice.latticeBasis << std::endl;
-            /*! [Misorientation] */
+            std::cout << std::setprecision(20) << rotation*lattice.latticeBasis << std::endl;
+            std::cout << std::endl;
+            std::cout << "Parallel CSL basis Cp= " << std::endl;
+            std::cout << std::setprecision(20) << bc.csl.latticeBasis <<  std::endl;
+            std::cout << std::endl;
+            std::cout << "Parallel DSCL basis Dp = " << std::endl;
+            std::cout << std::setprecision(20) << bc.dscl.latticeBasis <<  std::endl;
+            std::cout << std::endl;
+            /*! [SNF] */
+
+            /*! [Invariance] */
+            auto reducedDsclBasis= RLLL(bc.dscl.latticeBasis,0.75);
+            auto U_Dscl= reducedDsclBasis.unimodularMatrix();
+
+            std::cout << "Reduced DSCL basis vectors:" << std::endl;
+            std::cout << "d1 = ";
+            std::cout << std::setprecision(20) << reducedDsclBasis.reducedBasis().col(0).transpose() << std::endl;
+            std::cout << "Integer coordinates of d1:";
+            LatticeVector<3> d1(bc.dscl);
+            d1 << U_Dscl.col(0).template cast<IntScalarType>();
+            std::cout << std::setprecision(20) << d1.transpose() << std::endl;
+            std::cout << std::endl;
+
+            LatticeVector<3> d2(bc.dscl);
+            std::cout << "d2 = ";
+            std::cout << std::setprecision(20) << reducedDsclBasis.reducedBasis().col(1).transpose() << std::endl;
+            std::cout << "Integer coordinates of d2:";
+            d2 << U_Dscl.col(1).template cast<IntScalarType>();
+            std::cout << std::setprecision(20) << d2.transpose() << std::endl;
+            std::cout << std::endl;
+
+            // shift vectors corresponding to d1 and d2
+            LatticeVector<3> s1(bc.dscl), s2(bc.dscl);
+            s1 << bc.LambdaA * d1;
+            s2 << bc.LambdaA * d2;
+            Lattice<3> reducedCsl(RLLL(bc.csl.latticeBasis,0.75).reducedBasis());
+            std::cout << "Reduced shift vectors: " << std::endl;
+
+            Eigen::Vector3d s1_coordinates_in_reduced_csl= reducedCsl.latticeBasis.inverse()*s1.cartesian();
+            Eigen::Vector3d s2_coordinates_in_reduced_csl= reducedCsl.latticeBasis.inverse()*s2.cartesian();
+            Eigen::Vector3d s1_coordinates_modulo= s1_coordinates_in_reduced_csl.array()-s1_coordinates_in_reduced_csl.array().round();
+            Eigen::Vector3d s2_coordinates_modulo= s2_coordinates_in_reduced_csl.array()-s2_coordinates_in_reduced_csl.array().round();
+            std::cout << "s1 = ";
+            std::cout << std::setprecision(20) << (reducedCsl.latticeBasis * s1_coordinates_modulo).transpose() << std::endl;
+            std::cout << "s2 = ";
+            std::cout << std::setprecision(20) << (reducedCsl.latticeBasis * s2_coordinates_modulo).transpose() << std::endl;
+            std::cout << std::endl;
+            /*! [Invariance] */
+
+
             /*! [Generate GBs] */
-            auto gbSet(bc.generateGrainBoundaries(bc.A.latticeDirection(rv.cartesian())));
+            auto gbSet(    bc.generateGrainBoundaries(bc.A.latticeDirection(rv.cartesian()),60) );
             /*! [Generate GBs] */
             /*! [Inclination] */
             int gbCount= 0;
             ReciprocalLatticeVector<3> refnA(bc.A);
-            std::cout << "GBs of varying inclination (measured with respect to the first grain boundary" << std::endl;
+            std::cout << "GBs of varying inclination (measured with respect to the first grain boundary)" << std::endl;
+            std::cout << "-----------------------------------------------------------------------------" << std::endl;
+            std::cout << "-- CAUTION: The integer coordinates of GB normals are w.r.t the reciprocal --" << std::endl;
+            std::cout << "--          basis of the primitive unit cell.                              --" << std::endl;
             std::cout << "-----------------------------------------------------------------------------" << std::endl;
             for (const auto& gb : gbSet)
             {
@@ -61,6 +115,9 @@ int main()
                     LatticeVector<3> glide(rv.cross(gb.second.nA.reciprocalLatticeVector()).latticeVector());
                     LatticeVector<3> burgersVector(bc.getLatticeDirectionInD(glide).latticeVector());
                     LatticeVector<3> periodVector(bc.getLatticeDirectionInC(glide).latticeVector());
+
+                    ReciprocalLatticeVector<3> rvInA= gb.second.nA.reciprocalLatticeVector();
+                    ReciprocalLatticeVector<3> rvInCsl= bc.getReciprocalLatticeDirectionInC(rvInA).reciprocalLatticeVector();
                     /*! [Glide] */
 
                     /*! [Reference] */
@@ -73,13 +130,36 @@ int main()
                         double cosAngle= refnA.cartesian().normalized().dot(gb.second.nA.cartesian().normalized());
                         if (cosAngle-1>-epsilon) cosAngle= 1.0;
                         if (cosAngle+1<epsilon) cosAngle= -1.0;
-                        std::cout << gbCount+1 << ") Inclination = " << acos(cosAngle)*180/M_PI << std::endl;
+                        std::cout << gbCount+1 << ") Inclination = " << std::setprecision(20) << acos(cosAngle)*180/M_PI << std::endl;
+
+                        Eigen::Vector3d nAglobalCoords= gb.second.nA.cartesian();
+                        Eigen::Vector3d nBglobalCoords= rotation.transpose()*gb.second.nB.cartesian();
+                        std::cout << "nA = " <<  std::setprecision(20) << nAglobalCoords.transpose() << std::endl;
+                        std::cout << "nB = " <<  std::setprecision(20) << nBglobalCoords.transpose() << std::endl;
+                        /* Change the above two lines as follows if you need the GB normals in the coordinate system of A */
+                        /*
                         std::cout << "nA = " << gb.second.nA << std::endl;
                         std::cout << "nB = " << gb.second.nB << std::endl;
-                        std::cout << "GB period = " << periodVector.cartesian().norm() << std::endl;
-                        std::cout << "Burgers vector = " << burgersVector.cartesian().transpose() << "; norm = " << burgersVector.cartesian().norm() << std::endl;
-                        std::cout << "Step height of glide dislocation = " << gb.second.stepHeightA(burgersVector)
-                                  << std::endl;
+                         */
+
+                        nAglobalCoords= nAglobalCoords.array().round().cwiseAbs();
+                        nBglobalCoords= nBglobalCoords.array().round().cwiseAbs();
+                        std::sort(nAglobalCoords.data(), nAglobalCoords.data() + 3);
+                        std::sort(nBglobalCoords.data(), nBglobalCoords.data() + 3);
+                        if ((nAglobalCoords-nBglobalCoords).norm() < FLT_EPSILON)
+                            std::cout << "STGB" <<  std::endl;
+
+                        std::cout << "GB period = " << std::setprecision(20) << periodVector.cartesian().norm() << std::endl;
+                        std::cout << "CSL plane distance (Height)= " << std::setprecision(20)
+                                  << 1.0/rvInCsl.cartesian().norm() << std::endl;
+                        std::cout << "Glide disconnection Burgers vector = " << std::setprecision(20)
+                                  << burgersVector.cartesian().transpose() << "; norm = " << burgersVector.cartesian().norm() << std::endl;
+                        std::cout << "Step height of glide disconnection = " << std::setprecision(20)
+                                  << gb.second.stepHeightA(burgersVector) << std::endl;
+                        std::cout << "Step height of non-glide disconnection 1= " << std::setprecision(20)
+                                  << gb.second.stepHeightA(d1) << std::endl;
+                        std::cout << "Step height of non-glide disconnection 2= " << std::setprecision(20)
+                                  << gb.second.stepHeightA(d2) << std::endl;
                         std::cout << "-----------------------------------------------------------------------------" << std::endl;
                         gbCount++;
                     }

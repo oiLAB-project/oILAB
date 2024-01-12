@@ -11,6 +11,10 @@
 
 namespace gbLAB
 {
+    /*! \brief LatticeDirection class
+     *
+     *  The LatticeDirection<dim> class describes the smallest lattice vector in its direction
+     * */
     template <int dim>
     struct LatticeDirection : protected LatticeVector<dim>
     {

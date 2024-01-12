@@ -18,7 +18,10 @@ namespace gbLAB
     template <typename IntScalarType>
     struct IntegerMath
     {
-        
+        inline static IntScalarType positive_modulo(IntScalarType i, IntScalarType n) {
+            return (i % n + n) % n;
+        }
+
         static IntScalarType sgn(const IntScalarType& a)
         {
             return a<0? -1 : 1;
@@ -386,5 +389,46 @@ namespace gbLAB
         }
 
     };
+
+    template <typename IntScalarType, int dim>
+    class MatrixDimIExt : public Eigen::Matrix<IntScalarType,dim,dim>
+    {
+    public:
+        static Eigen::Matrix<IntScalarType,dim,dim> adjoint(const Eigen::Matrix<IntScalarType,dim,dim>& input)
+        {
+            Eigen::Matrix<IntScalarType,dim,dim> output;
+            for (int i=0; i<dim; i++)
+            {
+                // remove i-th row
+                Eigen::Matrix<IntScalarType,dim-1,dim> temp1 ;
+                temp1 << input(Eigen::seq(0,i-1),Eigen::all),
+                         input(Eigen::seq(i+1,dim-1),Eigen::all);
+                for (int j=0; j<dim; j++)
+                {
+                    // remove jth column
+                    Eigen::Matrix<IntScalarType,dim-1,dim-1> temp2 ;
+                    temp2 << temp1(Eigen::all,Eigen::seq(0,j-1)), temp1(Eigen::all,Eigen::seq(j+1,dim-1));
+
+                    output(i,j)=(IntScalarType) std::pow(-1,i+j+2)*temp2.template cast<double>().determinant();
+                }
+            }
+
+            return output.transpose();
+        }
+    };
+
+    template<typename IntScalarType>
+    class MatrixDimIExt<IntScalarType,1> : public Eigen::Matrix<IntScalarType,1,1>
+    {
+    public:
+        static Eigen::Matrix<IntScalarType,1,1> adjoint(const Eigen::Matrix<IntScalarType,1,1>& input)
+        {
+            Eigen::Matrix<IntScalarType,1,1> output;
+            output << 1;
+            return output;
+        }
+
+    };
+
 }
 #endif

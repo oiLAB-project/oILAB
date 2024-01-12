@@ -20,13 +20,14 @@
 #include <Farey.h>
 #include <RationalApproximations.h>
 #include <algorithm>
+#include <fstream>
 
 
 namespace gbLAB
 {
     /*! \brief Lattice class
      *
-     *  lattice class description
+     *  The Lattice<dim> class describes a lattice in dim dimensions
      * */
     template <int dim>
     class Lattice : public StaticID<Lattice<dim>>
@@ -169,23 +170,49 @@ namespace gbLAB
             return output;
         }
 
-        /*! This function generates deformations of a 2D lattice that result in a moire superlattice.
-         *  It is specialized to dim=2
+        /*! This function generates deformations \f$\mathbf F\f$ such that the deformations of *this lattice share moire supercells
+         *  with the undeformed *this lattice
+         */
+        template<int dm=dim>
+        typename std::enable_if<dm==2,std::vector<MatrixDimD>>::type
+        generateCoincidentLattices(const double& maxStrain,
+                                   const int& maxDen=50,
+                                   const int& N=30) const
+        {
+            std::vector<MatrixDimD> output(generateCoincidentLattices(*this,maxStrain,maxDen,N));
+            return output;
+        }
+        /*! This function generates deformations \f$\mathbf F\f$ such that the deformations of *this lattice share moire supercells
+         *  with a given undeformed 2D lattice. It is specialized to dim=2.
          *
+         *  The current algorithm betters the one given in Algorithm 2 of
+         *
+         *  [1] Admal, Nikhil Chandra, et al. "Interface dislocations and grain boundary
+         *      disconnections using Smith normal bicrystallography."
+         *      Acta materialia 240 (2022): 118340.
+         *
+         *  Note: There was a typo in Algorithm 2 in [1] - \f$\mathfrak q_1\f$ and \f$\mathfrak r_1\f$ should
+         *  be replaced by the basis vectors \f$\mathbf q_1\f$ and \f$\mathbf r_1\f$ of lattice \f$\mathcal B\f$.
+         *
+         * @tparam undeformedLattice underformed lattice
          * @tparam dm dimension (int)
          * @param maxStrain maximum strain
          * @param maxDen  integer parameter that determines the resolution for the search of rotations
          * @param N integer parameter that determines the maximum size of the CSL
-         * @return A set of deformation gradients that result in moire supercells.
+         * @return A set of deformation gradients of *this lattice that result in moire superlattices with the undeformed
+         *         lattice
          */
         template<int dm=dim>
         typename std::enable_if<dm==2,std::vector<MatrixDimD>>::type
-        generateCoincidentLattices(const double& maxStrain,const int& maxDen=50, const int& N=30) const
+        generateCoincidentLattices(const Lattice<dim>& undeformedLattice,
+                                   const double& maxStrain,
+                                   const int& maxDen=50,
+                                   const int& N=30) const
         {
             std::vector<MatrixDimD> output;
             std::map<IntScalarType,MatrixDimD> temp;
             MatrixDimI mn(MatrixDimI::Zero());
-            MatrixDimI md(MatrixDimI::Ones());;
+            MatrixDimI md(MatrixDimI::Ones());
             std::vector<std::pair<int,int>> coPrimePairs= farey(N,false);
             double epsilon=1e-8;
             IntScalarType keyScale= 1e6;
@@ -194,7 +221,7 @@ namespace gbLAB
             {
                 VectorDimI pIndices;
                 pIndices << pair1.first, pair1.second;
-                LatticeVector<dm> q2(pIndices,*this);
+                LatticeVector<dm> q2(pIndices,undeformedLattice);
                 double ratio= q2.cartesian().norm() / latticeBasis.col(0).norm();
 
 
@@ -233,7 +260,7 @@ namespace gbLAB
                         for (const auto &pair2: coPrimePairs) {
                             VectorDimI qIndices;
                             qIndices << pair2.first, pair2.second;
-                            LatticeVector<dm> r2(qIndices, *this);
+                            LatticeVector<dm> r2(qIndices, undeformedLattice);
                             double ratio2= r2.cartesian().norm() / latticeBasis.col(1).norm();
                             RationalApproximations<IntScalarType> betaSequence(ratio2, maxDen,maxStrain*ratio2);
                             for(const auto& beta : betaSequence.approximations) {
@@ -263,6 +290,226 @@ namespace gbLAB
                                [](const std::pair<IntScalarType,MatrixDimD>& p) {
                                    return p.second;
                                });
+            return output;
+        }
+        /*! This function outputs/prints lattice points within a box bounded by the
+         * input box vectors. The box vectors have to be linearly independent lattice
+         * vectors. This function is specialized to dim=3.
+         *
+         * @tparam dm dimension (int)
+         * @param boxVectors three linearly independent lattice vectors
+         * @param filename (optional) name of the output file
+         * @return Lattice points bounded by the box vectors
+         */
+        template<int dm=dim>
+        typename std::enable_if<dm==3,std::vector<LatticeVector<dim>>>::type
+        box(std::vector<LatticeVector<dim>> boxVectors, const std::string& filename= "") const
+        {
+            for(const LatticeVector<dim>& boxVector : boxVectors)
+            {
+                assert(this == &boxVector.lattice && "Box vectors belong to different lattice.");
+            }
+
+            // Form the box lattice
+            MatrixDimD C;
+            for (int i=0; i<dim; ++i) {
+                C.col(i) = boxVectors[i].cartesian();
+            }
+            assert(C.determinant() != 0);
+            Lattice<dim> boxLattice(C);
+
+            auto planeParallelBasis= planeParallelLatticeBasis(boxVectors[1].cross(boxVectors[2]),true);
+            MatrixDimD A;
+            MatrixDimI mat;
+            for(int i=0; i<dim; ++i) {
+                A.col(i) = planeParallelBasis[i].cartesian();
+                mat.col(i)=planeParallelBasis[i].latticeVector();
+            }
+
+            // l - lattice with plane parallel basis, where the second and third basis vectors
+            //     lie on the plane spanned by boxVectors[1] and boxVectors[2]
+            Lattice<dim> l(A);
+
+            // Form plane parallel vectors v1 and v2
+            // v1 is along boxVector[1]
+            LatticeDirection<dim> v1(MatrixDimIExt<IntScalarType,dim>::adjoint(mat)*boxVectors[1],l);
+            assert(v1.latticeVector()(0)==0);
+            IntScalarType x,y;
+            IntegerMath<IntScalarType>::extended_gcd(v1.latticeVector()(1),-v1.latticeVector()(2),x,y);
+            LatticeVector<dim> temp(l);
+            temp << 0,y,x;
+            LatticeDirection<dim> v2(temp);
+
+            int areaRatio= round((boxLattice.latticeBasis.col(1).cross(boxLattice.latticeBasis.col(2))).norm()/
+                                (l.latticeBasis.col(1).cross(l.latticeBasis.col(2))).norm());
+            int scale1= abs(IntegerMath<IntScalarType>::gcd(boxVectors[1]));
+            int scale2= round(areaRatio/scale1);
+            int scale0= round(abs(C.determinant()/latticeBasis.determinant()/areaRatio));
+
+            std::vector<LatticeVector<dim>> output;
+
+            // r0, r1, and r2 are reciprocal vectors perpendicular to areas spanned by boxVectors[0],
+            // boxVectors[1], and boxVectors[2]
+            ReciprocalLatticeVector<dim> r0_temp(*this), r1_temp(*this), r2_temp(*this);
+            r0_temp= (boxVectors[1].cross(boxVectors[2])).reciprocalLatticeVector();
+            if (r0_temp.dot(boxVectors[0]) < 0)
+                r0_temp=-1*r0_temp;
+            r1_temp= (boxVectors[2].cross(boxVectors[0])).reciprocalLatticeVector();
+            if (r1_temp.dot(boxVectors[1]) < 0)
+                r1_temp=-1*r1_temp;
+            r2_temp= (boxVectors[0].cross(boxVectors[1])).reciprocalLatticeVector();
+            if (r2_temp.dot(boxVectors[2]) < 0)
+                r2_temp=-1*r2_temp;
+            assert(r0_temp.dot(boxVectors[1])==0 && r0_temp.dot(boxVectors[2])==0);
+            assert(r1_temp.dot(boxVectors[0])==0 && r1_temp.dot(boxVectors[2])==0);
+            assert(r2_temp.dot(boxVectors[0])==0 && r2_temp.dot(boxVectors[1])==0);
+            ReciprocalLatticeDirection<dim> r0(r0_temp), r1(r1_temp), r2(r2_temp);
+
+            for(int i=0; i<scale0; ++i)
+            {
+                for(int j=0; j<scale1; ++j)
+                {
+                    for(int k=0; k<scale2; ++k) {
+                        LatticeVector<dim> vectorIn_l(l);
+                        vectorIn_l << i, 0, 0;
+                        vectorIn_l= vectorIn_l + j*v1.latticeVector()+k*v2.latticeVector();
+                        //LatticeVector<dim> vector(latticeVector(vectorIn_l.cartesian()));
+                        LatticeVector<dim> vector((mat*vectorIn_l).eval(),*this);
+                        //LatticeDirection<dim> v1(MatrixDimIExt<IntScalarType,dim>::adjoint(mat)*boxVectors[1],l);
+
+                        int c0= IntegerMath<IntScalarType>::positive_modulo(vector.dot(r0),boxVectors[0].dot(r0)) -
+                                vector.dot(r0);
+                        c0= c0/boxVectors[0].dot(r0);
+                        int c1= IntegerMath<IntScalarType>::positive_modulo(vector.dot(r1),boxVectors[1].dot(r1)) -
+                                vector.dot(r1);
+                        c1= c1/boxVectors[1].dot(r1);
+                        int c2= IntegerMath<IntScalarType>::positive_modulo(vector.dot(r2),boxVectors[2].dot(r2)) -
+                                vector.dot(r2);
+                        c2= c2/boxVectors[2].dot(r2);
+                        vector= vector+c0*boxVectors[0]+c1*boxVectors[1]+c2*boxVectors[2];
+                        output.push_back(vector);
+                    }
+                }
+            }
+
+            if(!filename.empty()) {
+                std::ofstream file;
+                file.open(filename);
+                if (!file) std::cerr << "Unable to open file";
+                file << output.size() << std::endl;
+                file << "Lattice=\"";
+
+                for(const auto& vector:boxVectors) {
+                    file << vector.cartesian().transpose() << " ";
+                }
+                file << "\" Properties=atom_types:I:1:pos:R:3" << std::endl;
+
+                for (const auto &vector: output)
+                    file << 1 << " " << vector.cartesian().transpose() << std::endl;
+
+                file.close();
+            }
+            return output;
+        }
+
+        /*! This function outputs/prints lattice points within a box bounded by the
+         * optional input box vectors. The box vectors have to be linearly independent lattice
+         * vectors. This function is specialized to dim=2.
+         *
+         * @tparam dm dimension (int)
+         * @param boxVectors two linearly independent lattice vectors
+         * @param filename (optional) name of the output file
+         * @return Lattice points bounded by the box vectors
+         */
+        template<int dm=dim>
+        typename std::enable_if<dm==2,std::vector<LatticeVector<dim>>>::type
+        box(const std::vector<LatticeVector<dim>>& boxVectors, const std::string& filename= "") const
+        {
+            for(const LatticeVector<dim>& boxVector : boxVectors)
+            {
+                assert(this == &boxVector.lattice && "Box vectors belong to different lattice.");
+            }
+
+            // Form the box lattice
+            MatrixDimD C;
+            for (int i=0; i<dim; ++i) {
+                C.col(i) = boxVectors[i].cartesian();
+            }
+            assert(C.determinant() != 0);
+            Lattice<dim> boxLattice(C);
+
+            // Form plane parallel vectors v0 and v1
+            //LatticeDirection<dim> v0(this->latticeDirection(boxVectors[0].cartesian()));
+            LatticeDirection<dim> v0(
+                    (VectorDimI) boxVectors[0]/IntegerMath<IntScalarType>::gcd(boxVectors[0]),
+                    *this);
+
+            ReciprocalLatticeVector<dim> temp(*this);
+            temp << v0.latticeVector()(0),-v0.latticeVector()(1);
+            LatticeDirection<dim> v1(planeParallelLatticeBasis(temp,true)[0]);
+
+            /*
+            IntScalarType x,y;
+            IntegerMath<IntScalarType>::extended_gcd(v0.latticeVector()(0),-v0.latticeVector()(1),x,y);
+            LatticeVector<dim> temp(*this);
+            temp << y,x;
+
+            LatticeDirection<dim> v1(temp);
+             */
+
+            int areaRatio= round(abs(boxLattice.latticeBasis.determinant()/
+                                            (*this).latticeBasis.determinant()));
+
+            int scale1= abs(IntegerMath<IntScalarType>::gcd(boxVectors[0]));
+            int scale2= round(areaRatio/scale1);
+
+            std::vector<LatticeVector<dim>> output;
+
+            // r0 and r1 are reciprocal vectors perpendicular to boxVectors[1] and boxVectors[0], respectively.
+            ReciprocalLatticeVector<dim> r1_temp(*this), r0_temp(*this);
+            r1_temp << boxVectors[0](1),-boxVectors[0](0);
+            if (r1_temp.dot(boxVectors[1]) < 0)
+                r1_temp=-1*r1_temp;
+            r0_temp << boxVectors[1](1),-boxVectors[1](0);
+            if (r0_temp.dot(boxVectors[0]) < 0)
+                r0_temp=-1*r0_temp;
+            assert(r1_temp.dot(boxVectors[0])==0);
+            assert(r0_temp.dot(boxVectors[1])==0);
+            ReciprocalLatticeDirection<dim> r1(r1_temp), r0(r0_temp);
+
+            for(int j=0; j<scale1; ++j)
+            {
+                for(int k=0; k<scale2; ++k) {
+                    LatticeVector<dim> vector(j*v0.latticeVector()+k*v1.latticeVector());
+                    int c1= IntegerMath<IntScalarType>::positive_modulo(vector.dot(r1),boxVectors[1].dot(r1)) -
+                            vector.dot(r1);
+                    c1= c1/boxVectors[1].dot(r1);
+                    int c2= IntegerMath<IntScalarType>::positive_modulo(vector.dot(r0),boxVectors[0].dot(r0)) -
+                            vector.dot(r0);
+                    c2= c2/boxVectors[0].dot(r0);
+                    vector= vector+c1*boxVectors[1]+c2*boxVectors[0];
+                    output.push_back(vector);
+                }
+            }
+
+            if(!filename.empty()) {
+                std::ofstream file;
+                file.open(filename);
+                if (!file) std::cerr << "Unable to open file";
+                file << output.size() << std::endl;
+                file << "Lattice=\"";
+
+                for(const auto& vector:boxVectors) {
+                    file << vector.cartesian().transpose() << " 0 ";
+                }
+                file << " 0 0 1 ";
+                file << "\" Properties=atom_types:I:1:pos:R:3" << std::endl;
+
+                for (const auto &vector: output)
+                    file << 1 << " " << vector.cartesian().transpose() << " 0 " << std::endl;
+
+                file.close();
+            }
             return output;
         }
 };
@@ -320,7 +567,8 @@ namespace gbLAB
  */
 
 /*! @example testMoire.cpp
- *  This example demonstrates the generation of strained moire superlattices from a 2D homostructure
+ *  This example demonstrates the generation of strained moire superlattices from a 2D homostructure and calculation
+ *  of the translational invariance of a moire
  *
  * -# Define types
  * @snippet testMoire.cpp Types
@@ -336,7 +584,14 @@ namespace gbLAB
  * out SNF bicrystallography
  * @snippet testMoire.cpp SNF
  *
+ * -# Output the heterodeformation, its polar decomposition, and the corresponding elastic strain
+ * @snippet testMoire.cpp Heterodeform
  *
+ * -# Output the invariance property of the moire in the following steps:
+ * 1) compute reduced basis vectors \f$\mathbf d_1\f$ and \f$\mathbf d_2\f$ for the DSCL,
+ * 2) compute the moire shifts \f$\mathbf s_1\f$ and \f$\mathbf s_2\f$ when lattice \f$\mathcal A\f$ is
+ * displaced by \f$\mathbf d_1\f$ and \f$\mathbf d_2\f$, respectively.
+ * @snippet testMoire.cpp Invariance
  * Full code:
  */
 
@@ -375,11 +630,25 @@ namespace gbLAB
  * may be required to access functions that accept a vector as an input.
  *  @snippet testLattice.cpp Direction to vector
  *
+ * -# Get a lattice direction along a given cartesian vector.
+ *  CAUTION: This will fail if the cartesian vector is not a lattice vector.
+ *  @snippet testLattice.cpp Lattice direction along a cartesian vector
+ *
+ * -# Get the stacking along a lattice plane
+ *  @snippet testLattice.cpp Stacking of a lattice plane
+
  * -# The cross product of two lattice vectors is a reciprocal lattice direction.
  * Similarly, the cross product of two reciprocal lattice vectors is a lattice direction.
  * The cross product is enabled only for dim=3
  *  @snippet testLattice.cpp Cross product
  *
+ * -# Output a configuration of lattice points bounded by three lattice vectors (named boxVectors)
+ * of a 3D lattice.
+ *  @snippet testLattice.cpp Box3
+ *
+ * -# Create a 2D lattice and output its lattice points bounded by two lattice vectors (named boxVectors)
+ * of a 2D lattice.
+ *  @snippet testLattice.cpp Box2
  *
  * Full code:
  */

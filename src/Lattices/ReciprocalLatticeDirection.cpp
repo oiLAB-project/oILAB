@@ -29,6 +29,20 @@ namespace gbLAB
         return 1.0 / cartesian().norm();
     }
 
+    template <int dim>
+    int ReciprocalLatticeDirection<dim>::stacking() const
+    {
+        RLLL rlll((*this).lattice.latticeBasis,0.75);
+        auto structureMatrix= rlll.reducedBasis();
+        auto U= rlll.unimodularMatrix();
+
+        Lattice<dim> reducedLattice(structureMatrix);
+        VectorDimI temp= U.transpose()*(*this);
+        ReciprocalLatticeVector<dim> r(temp,reducedLattice);
+        LatticeDirection<dim> vector(reducedLattice);
+        vector = reducedLattice.latticeDirection(r.cartesian());
+        return abs(vector.dot(r));
+    }
 
     template struct ReciprocalLatticeDirection<1>;
     template basic_ostream<char>& operator<<(basic_ostream<char>& s, const ReciprocalLatticeDirection<1>& m);

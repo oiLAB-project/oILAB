@@ -39,7 +39,7 @@ namespace gbLAB
         {
             for (int j = 0; j < dim; ++j)
             {
-                im(i, j) = nums(i, j) * sigma / dens(i, j);
+                im(i, j) = nums(i, j) * (sigma / dens(i, j));
             }
         }
 

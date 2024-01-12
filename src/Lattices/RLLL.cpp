@@ -8,6 +8,7 @@
 #define gbLAB_RLLL_cpp_
 
 #include <RLLL.h>
+#include <vector>
 
 namespace gbLAB
 {
@@ -53,7 +54,7 @@ namespace gbLAB
                      const int &j)
     {
 
-        const long int c = std::round(M(k, j));
+        const long long int c = std::round(M(k, j));
         B.col(k) -= c * B.col(j);
         U.col(k) -= c * U.col(j);
         for (int l = 0; l <= j; ++l) // j is already 0-based, so use <=
@@ -65,19 +66,24 @@ namespace gbLAB
     /**********************************************************************/
     RLLL::RLLL(const MatrixType &B0,
          const double &delta) : /* init */ B(B0),
-                                /* init */ U(Eigen::Matrix<long int, Eigen::Dynamic, Eigen::Dynamic>::Identity(B0.cols(), B0.cols()))
+                                /* init */ U(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic>::Identity(B0.cols(), B0.cols()))
     {
         assert(delta >= 0.5 && delta <= 1.0 && "delta must be in [0.5 1]");
 
         const int n = B0.cols();
         const int dim = B0.rows();
+        double err;
+        double absDetU;
+        //double scale= B.norm();
+        double scale= 1;
+
         assert(dim <= B0.rows() && "B.rows() must be >= B.cols()");
 
         if (n < dim)
         {
             MatrixType orthonormalBasis(dim,n);
             orthonormalBasis= B0.householderQr().householderQ();
-            orthonormalBasis= orthonormalBasis.block(0,0,dim,n);
+            orthonormalBasis= orthonormalBasis.block(0,0,dim,n).eval();
 
             MatrixType B0InNewCoords(n,n);
             B0InNewCoords= orthonormalBasis.transpose()*B0;
@@ -88,70 +94,97 @@ namespace gbLAB
         }
         else
         {
-            //            //std::cout<<"here 0"<<std::endl;
-            VectorType H(VectorType::Zero(n));
-            for (int j = 0; j < n; ++j) {
-                H(j) = B.col(j).squaredNorm();
-            }
+            std::vector<int> indices(n);
+            Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> preU(n,n);
+            for(int i=0; i<n; ++i)
+                indices[i]= i;
+            for (int i=0;i<2;++i) {
+                if (i == 0)
+                    scale = 1.0;
+                else
+                    scale = B.norm();
 
-            //std::cout<<H.transpose()<<std::endl;
-
-            //std::cout<<"here 1"<<std::endl;
-            MatrixType M(MatrixType::Identity(n, n));
-            for (int j = 0; j < n; ++j) {
-                for (int i = j + 1; i < n; ++i) {
-                    double temp = 0.0;
-                    //std::cout<<i<<" "<<j<<std::endl;
-
-                    for (int k = 0; k <= j - 1; ++k) // j is already 0-based, so use <=
-                    {
-                        //std::cout<<i<<" "<<j<<" "<<k<<std::endl;
-
-                        temp += M(j, k) * M(i, k) * H(k);
+                do {
+                    B = B0 / scale;
+                    U = Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic>::Identity(n, n);
+                    for (int i = 0; i < n; ++i) {
+                        B.col(i) = B0.col(indices[i]) / scale;
+                        preU.col(i) = U.col(indices[i]);
                     }
-                    M(i, j) = (B.col(i).dot(B.col(j)) - temp) / H(j);
-                    H(i) -= std::pow(M(i, j), 2) * H(j);
-                }
-            }
 
+                    //            //std::cout<<"here 0"<<std::endl;
+                    VectorType H(VectorType::Zero(n));
+                    for (int j = 0; j < n; ++j) {
+                        H(j) = B.col(j).squaredNorm();
+                    }
 
-            //std::cout<<std::setprecision(15)<<std::scientific<<M<<std::endl;
-            //std::cout<<std::setprecision(15)<<std::scientific<<H<<std::endl;
+                    //std::cout<<H.transpose()<<std::endl;
 
-            //            MatrixType M(MatrixType::Identity(n,n));
-            int k = 1;
-            while (k < n) {
-                if (fabs(M(k, k - 1)) > 0.5) {
-                    size_reduce(M, k, k - 1);
-                }
+                    //std::cout<<"here 1"<<std::endl;
+                    MatrixType M(MatrixType::Identity(n, n));
+                    for (int j = 0; j < n; ++j) {
+                        for (int i = j + 1; i < n; ++i) {
+                            double temp = 0.0;
+                            //std::cout<<i<<" "<<j<<std::endl;
 
-                if (H(k) < (delta - std::pow(M(k, k - 1), 2)) * H(k - 1)) {
-                    update(H, M, k);
-                    U.col(k).swap(U.col(k - 1));
-                    k = std::max(1, k - 1);
-                } else {
-                    //                    for j=k-2:-1:1
-                    for (int j = k - 2; j >= 0; --j) {
-                        if (fabs(M(k, j)) > 0.5) {
-                            size_reduce(M, k, j);
+                            for (int k = 0; k <= j - 1; ++k) // j is already 0-based, so use <=
+                            {
+                                //std::cout<<i<<" "<<j<<" "<<k<<std::endl;
+
+                                temp += M(j, k) * M(i, k) * H(k);
+                            }
+                            M(i, j) = (B.col(i).dot(B.col(j)) - temp) / H(j);
+                            H(i) -= std::pow(M(i, j), 2) * H(j);
                         }
                     }
-                    k = k + 1;
-                }
+
+
+                    //std::cout<<std::setprecision(15)<<std::scientific<<M<<std::endl;
+                    //std::cout<<std::setprecision(15)<<std::scientific<<H<<std::endl;
+
+                    //            MatrixType M(MatrixType::Identity(n,n));
+                    int k = 1;
+                    while (k < n) {
+                        if (fabs(M(k, k - 1)) > 0.5) {
+                            size_reduce(M, k, k - 1);
+                        }
+
+                        if (H(k) < (delta - std::pow(M(k, k - 1), 2)) * H(k - 1)) {
+                            update(H, M, k);
+                            U.col(k).swap(U.col(k - 1));
+                            k = std::max(1, k - 1);
+                        } else {
+                            //                    for j=k-2:-1:1
+                            for (int j = k - 2; j >= 0; --j) {
+                                if (fabs(M(k, j)) > 0.5) {
+                                    size_reduce(M, k, j);
+                                }
+                            }
+                            k = k + 1;
+                        }
+                    }
+                    U = preU * U;
+
+                    err = (B0.lu().solve(scale * B) - U.cast<double>()).norm() / U.cast<double>().norm();
+                    absDetU = fabs(U.cast<double>().determinant());
+                    if (err < FLT_EPSILON && fabs(absDetU - 1.0) < FLT_EPSILON) {
+                        B = B * scale;
+                        return;
+                    }
+                } while (std::next_permutation(indices.begin(), indices.end()));
             }
 
-            const double err = (B0.lu().solve(B) - U.cast<double>()).norm() / U.cast<double>().norm();
             if (err > FLT_EPSILON) {
                 std::cout << "RLLL relative error= " << std::setprecision(15) << std::scientific << err << " > "
                           << FLT_EPSILON << std::endl;
-                assert(false && "Relative error too large. RLLL failed.");
+                throw std::runtime_error("Relative error too large. RLLL failed.\n");
             }
 
-            const double absDetU(fabs(U.cast<double>().determinant()));
             if (fabs(absDetU - 1.0) > FLT_EPSILON) {
                 std::cout << "|det(U)|= " << std::setprecision(15) << std::scientific << absDetU << std::endl;
-                assert(false && "U is not unimodular. RLLL failed.");
+                throw std::runtime_error("U is not unimodular. RLLL failed.\n");
             }
+
         }
     }
 
@@ -162,7 +195,7 @@ namespace gbLAB
     }
 
     /**********************************************************************/
-    const Eigen::Matrix<long int, Eigen::Dynamic, Eigen::Dynamic>& RLLL::unimodularMatrix() const
+    const Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic>& RLLL::unimodularMatrix() const
     {
         return U;
     }

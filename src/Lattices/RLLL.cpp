@@ -83,7 +83,7 @@ namespace gbLAB
         {
             MatrixType orthonormalBasis(dim,n);
             orthonormalBasis= B0.householderQr().householderQ();
-            orthonormalBasis= orthonormalBasis.block(0,0,dim,n);
+            orthonormalBasis= orthonormalBasis.block(0,0,dim,n).eval();
 
             MatrixType B0InNewCoords(n,n);
             B0InNewCoords= orthonormalBasis.transpose()*B0;

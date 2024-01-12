@@ -445,7 +445,7 @@ namespace gbLAB
                     *this);
 
             ReciprocalLatticeVector<dim> temp(*this);
-            temp << v0.latticeVector()(0),-v0.latticeVector()(1);
+            temp << v0.latticeVector()(1),-v0.latticeVector()(0);
             LatticeDirection<dim> v1(planeParallelLatticeBasis(temp,true)[0]);
 
             /*

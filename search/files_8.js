@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['range_2eh',['range.h',['../range_8h.html',1,'']]],
+  ['rational_2eh',['Rational.h',['../_rational_8h.html',1,'']]],
+  ['rationalapproximations_2eh',['RationalApproximations.h',['../_rational_approximations_8h.html',1,'']]],
+  ['rationallatticedirection_2ecpp',['RationalLatticeDirection.cpp',['../_rational_lattice_direction_8cpp.html',1,'']]],
+  ['rationallatticedirection_2eh',['RationalLatticeDirection.h',['../_rational_lattice_direction_8h.html',1,'']]],
+  ['rationalmatrix_2ecpp',['RationalMatrix.cpp',['../_rational_matrix_8cpp.html',1,'']]],
+  ['rationalmatrix_2eh',['RationalMatrix.h',['../_rational_matrix_8h.html',1,'']]],
+  ['rationalreciprocallatticedirection_2ecpp',['RationalReciprocalLatticeDirection.cpp',['../_rational_reciprocal_lattice_direction_8cpp.html',1,'']]],
+  ['rationalreciprocallatticedirection_2eh',['RationalReciprocalLatticeDirection.h',['../_rational_reciprocal_lattice_direction_8h.html',1,'']]],
+  ['reciprocallatticedirection_2ecpp',['ReciprocalLatticeDirection.cpp',['../_reciprocal_lattice_direction_8cpp.html',1,'']]],
+  ['reciprocallatticedirection_2eh',['ReciprocalLatticeDirection.h',['../_reciprocal_lattice_direction_8h.html',1,'']]],
+  ['reciprocallatticevector_2ecpp',['ReciprocalLatticeVector.cpp',['../_reciprocal_lattice_vector_8cpp.html',1,'']]],
+  ['reciprocallatticevector_2eh',['ReciprocalLatticeVector.h',['../_reciprocal_lattice_vector_8h.html',1,'']]],
+  ['rlll_2ecpp',['RLLL.cpp',['../_r_l_l_l_8cpp.html',1,'']]],
+  ['rlll_2eh',['RLLL.h',['../_r_l_l_l_8h.html',1,'']]],
+  ['rotation_2eh',['Rotation.h',['../_rotation_8h.html',1,'']]]
+];

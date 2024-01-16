@@ -1,0 +1,12 @@
+var searchData=
+[
+  ['d',['d',['../structgb_l_a_b_1_1_fraction.html#a664be43cd088f738593dbfd34731ed39',1,'gbLAB::Fraction::d()'],['../structgb_l_a_b_1_1_rational.html#af80d60e0de461b875f5b4ca7cd46a6e9',1,'gbLAB::Rational::d()'],['../structgb_l_a_b_1_1_fraction.html#a3dd7d5aa31bdf8082122919845954506',1,'gbLAB::Fraction::D()']]],
+  ['defaultcolor',['defaultColor',['../namespacegb_l_a_b.html#a2bb35e9de25b2f4dd95b5d91f0bf9f9b',1,'gbLAB']]],
+  ['den',['den',['../classgb_l_a_b_1_1_best_rational_approximation.html#aecb05e3107ead705fc29494009424491',1,'gbLAB::BestRationalApproximation']]],
+  ['diophantinesolver',['DiophantineSolver',['../classgb_l_a_b_1_1_diophantine_solver.html',1,'gbLAB']]],
+  ['diophantinesolver_2eh',['DiophantineSolver.h',['../_diophantine_solver_8h.html',1,'']]],
+  ['dir',['dir',['../structgb_l_a_b_1_1_rational_lattice_direction.html#a99631f7fc04e114817ae93c5d17059e3',1,'gbLAB::RationalLatticeDirection::dir()'],['../structgb_l_a_b_1_1_rational_reciprocal_lattice_direction.html#a03fb5c193cdfe7210fb849ae784155f2',1,'gbLAB::RationalReciprocalLatticeDirection::dir()']]],
+  ['directionorthogonalreciprocallatticebasis',['directionOrthogonalReciprocalLatticeBasis',['../classgb_l_a_b_1_1_lattice.html#a17d3cd44b0f11a569ea25ff49065e2c2',1,'gbLAB::Lattice']]],
+  ['dot',['dot',['../classgb_l_a_b_1_1_lattice_vector.html#a364a9d253fd6a7e013bc90c274f4adca',1,'gbLAB::LatticeVector::dot(const ReciprocalLatticeVector&lt; dim &gt; &amp;other) const '],['../classgb_l_a_b_1_1_lattice_vector.html#a11f668bd5113070648a9324cf1d256f4',1,'gbLAB::LatticeVector::dot(const ReciprocalLatticeDirection&lt; dim &gt; &amp;other) const '],['../structgb_l_a_b_1_1_rational_lattice_direction.html#acd2cba3242b7d455221e540bc578b80a',1,'gbLAB::RationalLatticeDirection::dot()'],['../structgb_l_a_b_1_1_rational_reciprocal_lattice_direction.html#aceb197750901c6e2c34c77d63e752592',1,'gbLAB::RationalReciprocalLatticeDirection::dot()'],['../classgb_l_a_b_1_1_reciprocal_lattice_vector.html#aae2ce59af8139f62ced2c7f3abc39c56',1,'gbLAB::ReciprocalLatticeVector::dot(const LatticeVector&lt; dim &gt; &amp;other) const '],['../classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a356cf88fe1eeade949311c4bc7c430fe',1,'gbLAB::ReciprocalLatticeVector::dot(const LatticeDirection&lt; dim &gt; &amp;other) const ']]],
+  ['dscl',['dscl',['../classgb_l_a_b_1_1_bi_crystal.html#a255f64c2f26fb61cd60cb6e586d77180',1,'gbLAB::BiCrystal']]]
+];

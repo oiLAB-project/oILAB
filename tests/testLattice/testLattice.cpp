@@ -1,4 +1,6 @@
 #include <LatticeModule.h>
+#include <fstream>
+#include<vector>
 
 using namespace gbLAB;
 int main()
@@ -81,21 +83,57 @@ int main()
     /*! [Reciprocal lattice direction] */
 
     /*! [Direction to vector] */
-    std::cout << "Get reciprocal lattice vector from reciprocal lattice direction:" << std::endl;
+    std::cout << "Recover the reciprocal lattice vector from the reciprocal lattice direction s:" << std::endl;
     ReciprocalLatticeVector<3> t= s.reciprocalLatticeVector();
     std::cout << t <<  std::endl;
     /*! [Direction to vector] */
 
-    /*! [Direction along a reciprocal direction] */
-    std::cout << "Get a lattice direction along the reciprocal lattice direction " << s << std::endl;
-    LatticeDirection<3> directionAlongReciprocalDirection(L.latticeDirection(s.cartesian()));
-    std::cout << directionAlongReciprocalDirection <<  std::endl;
-    std::cout << "Stacking for the above plane = " << directionAlongReciprocalDirection.dot(s) << std::endl;
-    /*! [Direction along a reciprocal direction] */
+    /*! [Lattice direction along a cartesian vector] */
+   LatticeDirection<3>  latticeDirectionAlong_s= L.latticeDirection(s.cartesian());
+   std::cout << "Lattice direction along s = " << std::endl;
+   std::cout << latticeDirectionAlong_s <<  std::endl;
+    /*! [Lattice direction along a cartesian vector] */
+
+    /*! [Stacking of a lattice plane] */
+    std::cout << "Stacking of the lattice plane described by s = " << s.stacking() << std::endl;
+    /*! [Stacking of a lattice plane] */
 
     /*! [Cross product] */
-   ReciprocalLatticeDirection<3> uxv(u.cross(v));
-   LatticeDirection<3> rxs(r.cross(s.reciprocalLatticeVector()));
+    ReciprocalLatticeDirection<3> uxv(u.cross(v));
+    std::cout << "The cross product of the lattice vectors u and v is a lattice direction: " << uxv << std::endl;
+
+    ReciprocalLatticeVector<3> q(L);
+    q << 7,9,11;
+    std::cout << "Reciprocal lattice vector q = " << std::endl;
+    std::cout << q << std::endl;
+    LatticeDirection<3> qxr(q.cross(r));
+    std::cout << "The cross product of two reciprocal lattice vectors q and r is a lattice direction: " << qxr<< std::endl;
     /*! [Cross product] */
+
+
+    /*! [Box3] */
+    std::vector<LatticeVector<3>> boxVectors;
+    boxVectors.push_back(LatticeVector<3>(u,L));
+    boxVectors.push_back(LatticeVector<3>(v,L));
+    boxVectors.push_back(LatticeVector<3>(latticeDirectionAlong_s.latticeVector(),L));
+    std::cout << "Outputting a configuration of lattice points bounded by three box vectors: " << std::endl;
+    for (const auto& vector : boxVectors)
+        std::cout << vector.cartesian().transpose() << std::endl;
+    L.box(boxVectors,"lattice.txt");
+    /*! [Box3] */
+
+    /*! [Box2] */
+    Eigen::Matrix2d B;
+    B << 1.0, 0.0,
+         0.5, 1.0;
+    Lattice<2> L2(B);
+    LatticeVector<2> b1(L2); b1 << 1,13;
+    LatticeVector<2> b2(L2); b2 << 2,7;
+    std::cout << "Outputting a configuration of lattice points bounded by two box vectors: " << std::endl;
+    std::cout << b1.cartesian().transpose() << std::endl;
+    std::cout << b2.cartesian().transpose() << std::endl;
+    L2.box(std::vector<LatticeVector<2>>{-1*b1,b2},"lattice2.txt");
+    /*! [Box2] */
+
     return 0;
 }

@@ -227,6 +227,36 @@ namespace gbLAB
     }
 
     template<int dim>
+    LatticeVector<dim> BiCrystal<dim>::getLatticeVectorInA(const LatticeVector<dim> &v) const
+    {
+        VectorDimI integerCoordinates;
+
+        if(&(v.lattice) == &(this->A))
+            return v;
+        else if(&(v.lattice) == &(this->csl))
+            // U*M*v
+            return LatticeVector<dim>((VectorDimI)(this->matrixX() * M * v),A);
+        else
+            throw(std::runtime_error("The input lattice vector should belong "
+                                     "to lattice A or the CSL"));
+    }
+
+    template<int dim>
+    LatticeVector<dim> BiCrystal<dim>::getLatticeVectorInB(const LatticeVector<dim> &v) const
+    {
+        VectorDimI integerCoordinates;
+
+        if(&(v.lattice) == &(this->B))
+            return v;
+        else if(&(v.lattice) == &(this->csl))
+            // V*N*v
+            return LatticeVector<dim>((VectorDimI)(this->matrixV() * N * v),B);
+        else
+            throw(std::runtime_error("The input lattice vector should belong "
+                                     "to lattice B or the CSL"));
+    }
+
+    template<int dim>
     LatticeDirection<dim> BiCrystal<dim>::getLatticeDirectionInC(const LatticeVector<dim> &v) const
     {
         VectorDimI integerCoordinates;
@@ -354,6 +384,8 @@ namespace gbLAB
             integerCoordinates= adjN * rv;
         else if(&(rv.lattice) == &(this->B))
             integerCoordinates= adjM * rv;
+        else if(&(rv.lattice) == &(this->csl))
+            integerCoordinates= adjN * adjM * rv;
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
 

@@ -10,20 +10,37 @@ using namespace gbLAB;
 
 int main(int argc, char** argv)
 {
+    using IntScalarType= long long int;
     
-    const int dim = argc > 1 ? std::atoi(argv[1]) : 2;
-    
-    switch (dim) {
+    //const int case = argc > 1 ? std::atoi(argv[1]) : 2;
+    const int caseId= 2;
+
+    switch (caseId) {
         case 2:
         {
             const auto A(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("A",true));
-            const auto R1(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("R1",true));
-            const auto R2(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("R2",true));
+            Lattice<2> L1(A);
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(38.04313507482*M_PI/180).matrix();
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(81.95686492519*M_PI/180).matrix();
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(38.05455500587*M_PI/180).matrix();
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(90.02872079759*M_PI/180).matrix();
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(43.89139748113*M_PI/180).matrix();
+            Eigen::Matrix2d R= Eigen::Rotation2D<double>( 143.0029103206*M_PI/180).matrix();
 
-            Lattice<2> L1(A,R1);
-            Lattice<2> L2(A,R2);
+            Lattice<2> L2(A,R);
             BiCrystal<2> bc(L1,L2);
             std::cout<<"sigma="<<bc.sigma<<std::endl;
+
+            std::vector<LatticeVector<2>> boxVectors;
+            Eigen::Matrix<IntScalarType,2,2> U;
+            U = RLLL(bc.csl.latticeBasis, 0.75).unimodularMatrix();
+            Eigen::Vector<IntScalarType,2> temp(U.col(0));
+            boxVectors.push_back(LatticeVector<2>(temp,bc.csl));
+            temp= U.col(1);
+            boxVectors.push_back(LatticeVector<2>(temp,bc.csl));
+
+            bc.box(boxVectors,0.6,"bc.txt",true);
+
             break;
         }
             
@@ -41,13 +58,10 @@ int main(int argc, char** argv)
             std::cout<<"sigma="<<bc.sigma<<std::endl;
             
             const auto a1(L1.latticeDirection(misAxis));
-//            const auto ac(bc.AtoCSLvector(a1));
 
             std::cout<<"Integer coordinates of misorientation axis = "<<a1.latticeVector().transpose()<<std::endl;
-//            std::cout<<"ac="<<ac.transpose()<<std::endl;
-            
-            
-                        
+
+
             break;
         }
             
@@ -58,17 +72,13 @@ int main(int argc, char** argv)
             const auto Td(TextFileParser("Grimmer1985.txt").readScalar<long long int>("Td",true));
             RationalMatrix<3> T(Tn,Td);
             
-//            T=inv(A)*R*A
-//            R=A*T*inv(A)
-            
             const Eigen::Matrix<double,3,3> R(A*T.asMatrix()*A.inverse());
             const double angle(acos(R.trace()/3.0));
             std::cout<<"rot angle="<<angle*180.0/M_PI<<std::endl;
 
             Eigen::Matrix<double,3,1> axis(Eigen::Matrix<double,3,1>::Zero());
             Eigen::EigenSolver< Eigen::Matrix<double,3,3> > es(R);
-//            std::cout<<"eigenvalues"<<es.eigenvalues()<<std::endl;
-            
+
             for(int k=0;k<3;++k)
             {
                 const auto& eVal(es.eigenvalues()(k));
@@ -115,13 +125,12 @@ int main(int argc, char** argv)
             std::cout<<"M=\n"<<bcT.M<<std::endl;
             std::cout<<"N=\n"<<bcT.N<<std::endl;
 
-                        
             break;
         }
 
         default:
         {
-            std::cout<<"No input file for dim="<<dim<<std::endl;
+            std::cout<<"No input file for case="<< caseId <<std::endl;
             break;
         }
     }

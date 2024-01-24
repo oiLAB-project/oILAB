@@ -416,5 +416,19 @@ namespace gbLAB
             return output.transpose();
         }
     };
+
+    template<typename IntScalarType>
+    class MatrixDimIExt<IntScalarType,1> : public Eigen::Matrix<IntScalarType,1,1>
+    {
+    public:
+        static Eigen::Matrix<IntScalarType,1,1> adjoint(const Eigen::Matrix<IntScalarType,1,1>& input)
+        {
+            Eigen::Matrix<IntScalarType,1,1> output;
+            output << 1;
+            return output;
+        }
+
+    };
+
 }
 #endif

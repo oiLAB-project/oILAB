@@ -10,6 +10,10 @@
 
 namespace gbLAB
 {
+    /*! \brief LatticeVector class
+     *
+     *  The LatticeVector<dim> class describes a lattice vector in a lattice
+     * */
     template <int dim>
     class LatticeVector: public Eigen::Matrix<typename LatticeCore<dim>::IntScalarType,dim,1>
     {

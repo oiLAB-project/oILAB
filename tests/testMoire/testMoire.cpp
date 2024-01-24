@@ -32,7 +32,7 @@ int main()
         try
         {
             BiCrystal<2> bc(lattice,Lattice<2>(lattice.latticeBasis,deformationGradient),false);
-            if (abs(bc.sigmaA) > 20000 || abs(bc.sigmaB) > 20000)
+            if (abs(bc.sigmaA) > 60000 || abs(bc.sigmaB) > 60000)
                 continue;
             std::cout << std::endl;
             std::cout << "--------------------------------- SNF -------------------------------------" << std::endl;

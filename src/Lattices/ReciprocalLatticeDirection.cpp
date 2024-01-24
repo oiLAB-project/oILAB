@@ -32,11 +32,16 @@ namespace gbLAB
     template <int dim>
     int ReciprocalLatticeDirection<dim>::stacking() const
     {
-        VectorDimD doubleCoordinates= lattice.reciprocalBasis.transpose()*cartesian();
-        VectorDimI integerCoordinates= LatticeCore<dim>::rationalApproximation(doubleCoordinates);
-        LatticeDirection<dim> directionAlongReciprocalDirection(integerCoordinates,lattice);
-        return dot(directionAlongReciprocalDirection);
-return 1;
+        RLLL rlll((*this).lattice.latticeBasis,0.75);
+        auto structureMatrix= rlll.reducedBasis();
+        auto U= rlll.unimodularMatrix();
+
+        Lattice<dim> reducedLattice(structureMatrix);
+        VectorDimI temp= U.transpose()*(*this);
+        ReciprocalLatticeVector<dim> r(temp,reducedLattice);
+        LatticeDirection<dim> vector(reducedLattice);
+        vector = reducedLattice.latticeDirection(r.cartesian());
+        return abs(vector.dot(r));
     }
 
     template struct ReciprocalLatticeDirection<1>;

@@ -131,12 +131,24 @@ int main()
                         if (cosAngle-1>-epsilon) cosAngle= 1.0;
                         if (cosAngle+1<epsilon) cosAngle= -1.0;
                         std::cout << gbCount+1 << ") Inclination = " << std::setprecision(20) << acos(cosAngle)*180/M_PI << std::endl;
+
+                        Eigen::Vector3d nAglobalCoords= gb.second.nA.cartesian();
+                        Eigen::Vector3d nBglobalCoords= rotation.transpose()*gb.second.nB.cartesian();
+                        std::cout << "nA = " <<  std::setprecision(20) << nAglobalCoords.transpose() << std::endl;
+                        std::cout << "nB = " <<  std::setprecision(20) << nBglobalCoords.transpose() << std::endl;
+                        /* Change the above two lines as follows if you need the GB normals in the coordinate system of A */
+                        /*
                         std::cout << "nA = " << gb.second.nA << std::endl;
                         std::cout << "nB = " << gb.second.nB << std::endl;
-                        /* Change the above two lines as follows if you need the cartesian coordinates of the GB normals
-                        std::cout << "nA = " << gb.second.nA.cartesian().transpose() << std::endl;
-                        std::cout << "nB = " << gb.second.nB.cartesian().transpose() << std::endl;
                          */
+
+                        nAglobalCoords= nAglobalCoords.array().round().cwiseAbs();
+                        nBglobalCoords= nBglobalCoords.array().round().cwiseAbs();
+                        std::sort(nAglobalCoords.data(), nAglobalCoords.data() + 3);
+                        std::sort(nBglobalCoords.data(), nBglobalCoords.data() + 3);
+                        if ((nAglobalCoords-nBglobalCoords).norm() < FLT_EPSILON)
+                            std::cout << "STGB" <<  std::endl;
+
                         std::cout << "GB period = " << std::setprecision(20) << periodVector.cartesian().norm() << std::endl;
                         std::cout << "CSL plane distance (Height)= " << std::setprecision(20)
                                   << 1.0/rvInCsl.cartesian().norm() << std::endl;

@@ -5,112 +5,61 @@
 #ifndef OILAB_MESOSTATE_H
 #define OILAB_MESOSTATE_H
 
+#include <ReferenceState.h>
 #include <Gb.h>
+#include <set>
+#include <Dislocations.h>
+#include <Triplet.h>
 
 namespace gbLAB {
+
     template<int dim>
-    class MesoState {
+    class MesoState : public ReferenceState<dim>, public Dislocations
+    {
         using IntScalarType= typename LatticeCore<dim>::IntScalarType;
+        using VectorDimD = LatticeCore<3>::VectorDimD;
         using VectorDimI= typename LatticeCore<dim>::VectorDimI;
         using Matrix= typename Eigen::Matrix<IntScalarType,Eigen::Dynamic,Eigen::Dynamic>;
-
-    private:
-        static LatticeVector<dim> getPeriodVector();
-        static void getRefState();
+        using Vector2d= Eigen::Vector2d;
+        using Matrix2d= Eigen::Matrix2d;
 
     public:
-        const Gb<dim>& gb;
-        const ReciprocalLatticeDirection<dim>& axis;
-        LatticeVector<dim> periodVector;
-        Matrix refState, currentState;
+        // currently storing states of only one lattice as we are restricted to STGB
+        std::vector<Triplet> currentState;
+        std::vector<Triplet> defectsIndices;
 
-        explicit MesoState(const Gb<dim>& gb, const LatticeDirection<dim>& axis) :
-            gb(gb),
-            axis(axis),
-            periodVector(getPeriodVector()),
-            refState(getRefState()),
-            currentState(refState)
+        explicit MesoState(const Gb<dim>& gb,
+                           const ReciprocalLatticeVector<dim>& axis,
+                           const int& periodScaling,
+                           const double& a2,
+                           const int& nImages);
+
+        explicit MesoState(const ReferenceState<dim>& rS, const double& a2, const int& nImages);
+
+        double energy() const;
+        Eigen::VectorXi getLocalStateCount(const int& numberOfInteractingPlanes) const
         {
-                LatticeVector<3> glideA(axis.cross(gb.nA.reciprocalLatticeVector()).latticeVector());
-                LatticeVector<3> burgersVectorA(gb.bc.getLatticeDirectionInD(glideA).latticeVector());
-                LatticeVector<3> periodVectorA(gb.bc.getLatticeDirectionInC(glideA).latticeVector());
-
-                ReciprocalLatticeVector<3> gbNormalA = gb.nA.reciprocalLatticeVector();
-                ReciprocalLatticeVector<3> gbNormalCsl= gb.bc.getReciprocalLatticeDirectionInC(gbNormalA).reciprocalLatticeVector();
-
-                /*! [Output] */
-                double epsilon = 1e-8;
-                if (periodVectorA.cartesian().norm() < 50) {
-                    std::cout << "nA = " << gb.nA << std::endl;
-                    std::cout << "nB = " << gb.nB << std::endl;
-                    std::cout << "GB period = " << std::setprecision(20) << periodVectorA.cartesian().norm()
-                              << std::endl;
-                    std::cout << "CSL plane distance (Height)= " << std::setprecision(20)
-                              << 1.0 / gbNormalCsl.cartesian().norm() << std::endl;
-
-                    // planes perpendicular to the GB
-                    ReciprocalLatticeDirection<3> planeOrthogonalToGb(  gb.bc.A.reciprocalLatticeDirection(burgersVectorA.cartesian() ));
-                    int numberOfPlanesOrthogonalToGB= planeOrthogonalToGb.stacking();
-                    std::cout << "Number of lattice planes perpendicular to the GB = "
-                              << numberOfPlanesOrthogonalToGB << std::endl;
-                    std::cout << "Number of lattice planes parallel to the GB = "
-                              << gb.nA.stacking() << std::endl;
-
-
-
-                    LatticeVector<3> axisCSL(gb.bc.csl.latticeDirection(axis).latticeVector());
-                    auto basis= gb.bc.A.planeParallelLatticeBasis(gb.nA);
-                    int numberOfCslPoints= std::round(
-                            axisCSL.cartesian().cross(periodVectorA.cartesian()).norm()/
-                            basis[1].cartesian().cross(basis[2].cartesian()).norm());
-                    std::cout << "Number of CSL points = " << numberOfCslPoints << std::endl;
-
-                    IntScalarType alpha= basis[1].dot(planeOrthogonalToGb);
-                    IntScalarType beta= basis[2].dot(planeOrthogonalToGb);
-                    IntScalarType x,y;
-                    IntegerMath<IntScalarType>::extended_gcd(alpha, beta, x, y);
-                    LatticeVector<3> gbBasisAtom(x * basis[1].latticeVector() + y * basis[2].latticeVector());
-                    std::vector<VectorDimI> basisAtomIndex;
-
-                    for(int j=0; j< gb.nA.stacking(); ++j) {
-                        for (int i = 0; i < numberOfCslPoints; ++i) {
-                            LatticeVector<3> atom((i+1)*gbBasisAtom);
-                            atom= atom + j*basis[0].latticeVector();
-                            VectorDimI index;
-                            index(0) =
-                                    IntegerMath<IntScalarType>::positive_modulo(atom.dot(planeOrthogonalToGb) , numberOfPlanesOrthogonalToGB);
-                            index(1) =
-                                    IntegerMath<IntScalarType>::positive_modulo(atom.dot(axis) , (ReciprocalLatticeDirection<3>(axis).stacking()));
-                            index(2) = j;
-                            basisAtomIndex.push_back(index);
-                        }
-                    }
-
-                    std::map<int,int> mesostate;
-                    for(auto index : basisAtomIndex)
-                    {
-                        mesostate.insert(std::make_pair<int,int>(index(0),index(2)));
-                    }
-                    for(auto pair : mesostate)
-                        std::cout << pair.first << "  " << pair.second << std::endl;
-
-                    // mesostate generator
-                    std::vector<std::map<int,int>> mesostates;
-                    mesostates.push_back(mesostate);
-
-
-                    std::cout << "-----------------------------------------------------------------------------"
-                              << std::endl;
-            }
-            /*! [Output] */
-
-
-
+            Eigen::VectorXi output(numberOfInteractingPlanes);
+            for(int i=0; i<numberOfInteractingPlanes; ++i)
+                output(i) = getOrthogonalPlaneIndices(i).size();
+            return output;
         }
 
-        void transition();
-        double surfaceEnergy();
-        double elasticEnergy();
+        void insertDislocation(const Triplet&);
+        Triplet removeRandomDislocation();
+        void removeDislocation(const Triplet& t);
+        Triplet insertRandomDislocation(const int& dipoleSign);
+        Triplet insertRandomDislocation();
+        std::set<int> getOrthogonalPlaneIndices(const int& parallelPlaneIndex) const;
+
+        //template<int dm=dim>
+        typename std::enable_if<dim==3,void>::type
+        box(const int& heightFactor,
+            const int& dsclFactor,
+            const std::string& name) const;
+
+        template <typename T> int sgn(T val) const;
+        bool operator<(const MesoState& rhs) const;
     };
 }
 #endif //OILAB_MESOSTATE_H

@@ -209,6 +209,8 @@ namespace gbLAB
                                    const int& maxDen=50,
                                    const int& N=30) const
         {
+            int numberOfConfigurations= 0;
+            const int maxConfigurations= 80;
             std::vector<MatrixDimD> output;
             std::map<IntScalarType,MatrixDimD> temp;
             MatrixDimI mn(MatrixDimI::Zero());
@@ -278,6 +280,10 @@ namespace gbLAB
                                 if (F.determinant() < 0) continue;
 
                                 output.push_back( F );
+                                numberOfConfigurations++;
+                                std::cout << numberOfConfigurations << std::endl;
+                                if (numberOfConfigurations == maxConfigurations)
+                                    return output;
                             }
                         }
                     }

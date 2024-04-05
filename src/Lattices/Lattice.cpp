@@ -67,7 +67,8 @@ namespace gbLAB
 
         const GramMatrix<double,2> G(std::array<VectorDimD,2>{temp.cartesian().normalized(),d.normalized()});
         const double crossNorm(sqrt(G.determinant()));
-        if(crossNorm>FLT_EPSILON)
+        //if(crossNorm>FLT_EPSILON)
+        if(crossNorm>1e-6)
         {
             std::cout<<"input direction="<<d.normalized().transpose()<<std::endl;
             std::cout<<"lattice direction="<<temp.cartesian().normalized().transpose()<<std::endl;

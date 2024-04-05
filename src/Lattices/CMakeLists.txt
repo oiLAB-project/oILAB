@@ -12,5 +12,10 @@ add_library(oILAB SHARED    BiCrystal.cpp
                             RationalLatticeDirection.cpp
                             RationalReciprocalLatticeDirection.cpp
                             ReciprocalLatticeVector.cpp
-                            Farey.cpp)
+                            Farey.cpp
+                            Dislocations.cpp
+                            DislocationDipole.cpp
+                            ReferenceState.cpp
+                            MesoState.cpp
+                            MesoStateEnsemble.cpp)
 

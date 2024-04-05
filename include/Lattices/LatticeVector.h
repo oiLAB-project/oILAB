@@ -61,11 +61,31 @@ namespace gbLAB
         VectorDimD cartesian() const;
 
         template<int dm=dim>
+        typename std::enable_if<dm==2,ReciprocalLatticeDirection<dm>>::type
+        cross(const LatticeVector<dm>& other) const
+        {
+            assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
+            return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>((VectorDimI() << 0,0,0).finished(), lattice));
+        }
+        template<int dm=dim>
         typename std::enable_if<dm==3,ReciprocalLatticeDirection<dm>>::type
         cross(const LatticeVector<dm>& other) const
         {
             assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
             return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>(static_cast<VectorDimI>(*this).cross(static_cast<VectorDimI>(other)), lattice));
+        }
+
+        template<int dm=dim>
+        typename std::enable_if<dm==2,ReciprocalLatticeDirection<dm>>::type
+        cross() const
+        {
+            return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>((VectorDimI() << -(*this)(1),(*this)(0)).finished(), lattice));
+        }
+        template<int dm=dim>
+        typename std::enable_if<dm==3,ReciprocalLatticeDirection<dm>>::type
+        cross() const
+        {
+            return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>((VectorDimI() << -(*this)(1),(*this)(0),0).finished(), lattice));
         }
 
     };

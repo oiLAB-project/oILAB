@@ -257,6 +257,32 @@ namespace gbLAB
     }
 
     template<int dim>
+    LatticeVector<dim> BiCrystal<dim>::getLatticeVectorInD(const LatticeVector<dim> &v) const
+    {
+        VectorDimI integerCoordinates;
+
+        MatrixDimI adjX= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixX());
+        MatrixDimI adjV= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixV());
+
+        if(&(v.lattice) == &(this->A))
+            // N*inv(U)*v
+            integerCoordinates = N * adjX * v;
+        else if(&(v.lattice) == &(this->B))
+            // M*inv(V)*v
+            integerCoordinates = M * adjV * v;
+        else if(&(v.lattice) == &(this->csl))
+            // N*M*v
+            return LatticeVector<dim>((VectorDimI) (N*M*v),dscl);
+        else if(&(v.lattice) == &(this->dscl))
+            return LatticeVector<dim>(v);
+        else
+            throw(std::runtime_error("The input lattice vector should belong to one of the four lattices of the bicrystal"));
+
+        return LatticeVector<dim>(integerCoordinates,dscl);
+    }
+
+
+    template<int dim>
     LatticeDirection<dim> BiCrystal<dim>::getLatticeDirectionInC(const LatticeVector<dim> &v) const
     {
         VectorDimI integerCoordinates;
@@ -285,26 +311,7 @@ namespace gbLAB
     template<int dim>
     LatticeDirection<dim> BiCrystal<dim>::getLatticeDirectionInD(const LatticeVector<dim> &v) const
     {
-        VectorDimI integerCoordinates;
-
-        MatrixDimI adjX= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixX());
-        MatrixDimI adjV= MatrixDimIExt<IntScalarType,dim>::adjoint(this->matrixV());
-
-        if(&(v.lattice) == &(this->A))
-            // N*inv(U)*v
-            integerCoordinates = N * adjX * v;
-        else if(&(v.lattice) == &(this->B))
-            // M*inv(V)*v
-            integerCoordinates = M * adjV * v;
-        else if(&(v.lattice) == &(this->csl))
-            // N*M*v
-            return LatticeDirection<dim>(LatticeVector<dim>((VectorDimI) (N*M*v),dscl));
-        else if(&(v.lattice) == &(this->dscl))
-            return LatticeDirection<dim>(v);
-        else
-            throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
-
-        return LatticeDirection<dim>(LatticeVector<dim>(integerCoordinates,dscl));
+        return LatticeDirection<dim>(getLatticeVectorInD(v));
     }
 
     template<int dim>

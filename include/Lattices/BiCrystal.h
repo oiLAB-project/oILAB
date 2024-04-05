@@ -139,6 +139,13 @@ namespace gbLAB
          */
         LatticeVector<dim> getLatticeVectorInB(const LatticeVector<dim>& v) const;
         /*!
+         * Outputs lattice vector in lattice \f$\mathcal D\f$ that is equal to the inputted vector \f$\textbf v\f$
+         * that belongs to \f$\mathcal A\f$, \f$\mathcal B\f$, \f$\mathcal C\f$, or \f$\mathcal D\f$
+         * @param v - lattice vector
+         * @return LatticeVector in \f$\mathcal D\f$
+         */
+        LatticeVector<dim> getLatticeVectorInD(const LatticeVector<dim>& v) const;
+        /*!
          * Outputs lattice direction in the CSL \f$\mathcal C\f$ that is parallel to the inputted vector \f$\textbf v\f$
          * that belongs to one of the four lattices, \f$\mathcal A\f$, \f$\mathcal B\f$, \f$\mathcal C\f$, or \f$\mathcal D\f$,
          * @param v - lattice vector
@@ -266,11 +273,17 @@ namespace gbLAB
          * @return lattice points of the bicrystal (along with the CSL) bounded by the box (std::vector<LatticeVector<2>>).
          */
         template<int dm=dim>
-        typename std::enable_if<dm==2,std::vector<LatticeVector<dim>>>::type
-        box(std::vector<LatticeVector<dim>> boxVectors, double const& orthogonality, std::string filename= "", bool orient=false) const
+        typename std::enable_if<dm==2 || dm==3,std::vector<LatticeVector<dim>>>::type
+        box(std::vector<LatticeVector<dim>>& boxVectors, 
+                const double& orthogonality, 
+                const int& dsclFactor,
+                std::string filename= "", 
+                bool orient=false) const
         {
             assert(orthogonality>=0.0 && orthogonality<=1.0 &&
-                           "The \"orthogonality\" parameter should be between 0.0 and 1.0");
+            "The \"orthogonality\" parameter should be between 0.0 and 1.0");
+            assert(dsclFactor>=1 &&
+            "The \"dsclFactor\" should be greater than 1.");
             assert(boxVectors.size()==dim);
             for(const auto& boxVector : boxVectors)
             {
@@ -283,25 +296,24 @@ namespace gbLAB
             for (int i=0; i<dim; ++i) {
                 C.col(i) = boxVectors[i].cartesian();
             }
-            assert(C.determinant() != 0);
+            assert(abs(C.determinant()) > FLT_EPSILON && "Box volume is equal to zero.");
 
 
             // Adjust boxVector[0] such that it is as orthogonal as possible to boxVector[1]
             auto boxVectorTemp= boxVectors[0];
-            ReciprocalLatticeVector<dim> temp(csl);
-            temp << -boxVectors[1](1),boxVectors[1](0);
-            ReciprocalLatticeDirection<dim> nC(temp);
-            std::cout << "Input box height= " << abs(nC.planeSpacing()*boxVectors[0].dot(nC)) << std::endl;
+            ReciprocalLatticeDirection<dim> nC(csl);
+            if (dim==2)
+                nC= boxVectors[1].cross();
+            if (dim==3)
+                nC= boxVectors[1].cross(boxVectors[2]);
             auto basis= csl.planeParallelLatticeBasis(nC,true);
 
             int planesToExplore= nC.stacking();
-            std::cout << "Exploring " << planesToExplore << " planes" << std::endl;
             MatrixDimI boxLatticeIndices;
             boxLatticeIndices.col(0)= boxVectors[0];
             for (int i=1; i<dim; ++i)
                 boxLatticeIndices.col(i)= boxVectors[i]/IntegerMath<long long int>::gcd(boxVectors[i]);
-            double minAngle= M_PI/2;
-            double nonOrthogonality= 1;
+            double minDotProduct= M_PI/2;
             int minStep;
 
             auto boxVectorUpdated(boxVectors[0]);
@@ -317,72 +329,110 @@ namespace gbLAB
                 VectorDimI temp=
                         boxLatticeIndices*boxLattice.planeParallelLatticeBasis(ReciprocalLatticeDirection<dim>(rC),true)[0].latticeVector();
                 boxVectorTemp= LatticeVector<dim>(temp,csl);
-                double angle= abs(acos(boxVectorTemp.cartesian().normalized().dot(rC.cartesian().normalized())));
-                if(angle < minAngle) {
-                    minAngle= angle;
+                double dotProduct= abs(acos(boxVectorTemp.cartesian().normalized().dot(rC.cartesian().normalized())));
+                if(dotProduct<minDotProduct) {
+                    minDotProduct = dotProduct;
                     boxVectorUpdated= boxVectorTemp;
-                    if (angle < (1-orthogonality)*M_PI/2)
+                    if (dotProduct < (1-orthogonality)*M_PI/2)
                         break;
                 }
 
             }
             boxVectors[0]=boxVectorUpdated;
             C.col(0)= boxVectors[0].cartesian();
-            std::cout << "Updated box height= " << abs(nC.planeSpacing()*boxVectors[0].dot(nC)) << std::endl;
 
 
+            // form the rotation matrix used to orient the system
             MatrixDimD rotation= Eigen::Matrix<double,dim,dim>::Identity();;
+            Eigen::Matrix<double,dim,dim-1> orthogonalVectors;
             if (orient) {
-                Eigen::Matrix<double,dim,dim-1> orthogonalVectors;
-                orthogonalVectors.col(0)= C.col(1).normalized();
-                rotation = Rotation<dim>(orthogonalVectors);
+                if (dim==3) {
+                    orthogonalVectors.col(0) = C.col(1).normalized();
+                    orthogonalVectors.col(1) = C.col(2).normalized();
+                }
+                else if (dim==2)
+                    orthogonalVectors.col(0)= C.col(1).normalized();
+
+                rotation=Rotation<dim>(orthogonalVectors);
             }
             assert((rotation*rotation.transpose()).template isApprox(Eigen::Matrix<double,dim,dim>::Identity())
                    && "Cannot orient the grain boundary. Box vectors are not orthogonal.");
+
 
             std::vector<LatticeVector<dim>> configurationA, configurationB, configurationC, configurationD;
             std::vector<LatticeVector<dim>> configuration;
 
             std::vector<LatticeVector<dim>> boxVectorsInA, boxVectorsInB, boxVectorsInD;
+            // calculate boxVectors in A, B, and D
             for(const auto& boxVector : boxVectors) {
                 boxVectorsInA.push_back(getLatticeVectorInA(boxVector));
                 boxVectorsInB.push_back(getLatticeVectorInB(boxVector));
+                boxVectorsInD.push_back(getLatticeVectorInD(boxVector));
             }
 
-            configurationA= A.box(boxVectorsInA);
-            configurationB= B.box(boxVectorsInB);
-            configurationC= csl.box(boxVectors);
+            // prepare boxVectors for D
+            auto dsclVector=getLatticeDirectionInD(boxVectors[0]).latticeVector();
+            auto nD= getReciprocalLatticeDirectionInD(nC.reciprocalLatticeVector());
+            if(abs((dsclFactor*dsclVector).dot(nD)) < abs(boxVectorsInD[0].dot(nD)))
+                boxVectorsInD[0]= dsclFactor*dsclVector;
+
+            std::vector<LatticeVector<dim>> boxVectorsForA(boxVectorsInA),
+                                            boxVectorsForB(boxVectorsInB),
+                                            boxVectorsForC(boxVectors),
+                                            boxVectorsForD(boxVectorsInD);
+            boxVectorsForA[0]=2*boxVectorsInA[0];
+            boxVectorsForB[0]=2*boxVectorsInB[0];
+            boxVectorsForC[0]=2*boxVectors[0];
+            boxVectorsForD[0]=2*boxVectorsInD[0];
+
+            configurationA= A.box(boxVectorsForA);
+            configurationB= B.box(boxVectorsForB);
+            configurationC= csl.box(boxVectorsForC);
+            configurationD= dscl.box(boxVectorsForD);
+
+            LatticeVector<dim> origin(-1*boxVectors[0]);
+            for(auto& vector : configurationA)
+                vector= vector + LatticeVector<dim>(-1*boxVectorsInA[0]);
+            for(auto& vector : configurationB)
+                vector= vector + LatticeVector<dim>(-1*boxVectorsInB[0]);
+            for(auto& vector : configurationC)
+                vector= vector + origin;
+            for(auto& vector : configurationD)
+                vector= vector + LatticeVector<dim>(-1*boxVectorsInD[0]);
 
             configuration= configurationA;
             configuration.insert(configuration.end(),configurationB.begin(),configurationB.end());
-            std::cout << "Number of lattice points in A = " << configurationA.size() << std::endl;
-            std::cout << "Number of lattice points in B = " << configurationB.size() << std::endl;
-            std::cout << "Number of lattice points in CSL = " << configurationC.size() << std::endl;
+            configuration.insert(configuration.end(),configurationC.begin(),configurationC.end());
+            configuration.insert(configuration.end(),configurationD.begin(),configurationD.end());
 
             if(!filename.empty()) {
                 std::ofstream file;
                 file.open(filename);
                 if (!file) std::cerr << "Unable to open file";
-                file << configurationA.size() + configurationB.size() + configurationC.size() << std::endl;
+                file << configuration.size() << std::endl;
                 file << "Lattice=\"";
 
                 if (dim==2) {
-                    file << (rotation*boxVectors[0].cartesian()).transpose() << " 0 ";
-                    file << (rotation*boxVectors[1].cartesian()).transpose() << " 0 ";
+                    file << (rotation*boxVectorsForC[0].cartesian()).transpose() << " 0 ";
+                    file << (rotation*boxVectorsForC[1].cartesian()).transpose() << " 0 ";
                     file << " 0 0 1 ";
-                    file << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1" << std::endl;
+                    file << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\"F T T\" origin=\"";
+                    file << (rotation*origin.cartesian()).transpose() << " 0.0\"" << std::endl;
                     for (const auto &vector: configurationA)
                         file << 1 << " " << (rotation*vector.cartesian()).transpose() << " " << 0.0 << "  " << 0.05 << std::endl;
                     for (const auto &vector: configurationB)
                         file << 2 << " " << (rotation*vector.cartesian()).transpose() << " " << 0.0 << "  " << 0.05 << std::endl;
                     for (const auto &vector: configurationC)
                         file << 3 << " " << (rotation*vector.cartesian()).transpose() << " " << 0.0 << "  " << 0.2 << std::endl;
+                    for (const auto &vector: configurationD)
+                        file << 4 << " " << (rotation*vector.cartesian()).transpose() << " " << 0.0 << "  " << 0.01 << std::endl;
                 }
                 else if (dim==3){
-                    file << (rotation*boxVectors[0].cartesian()).transpose()  << " ";
-                    file << (rotation*boxVectors[1].cartesian()).transpose() << " ";
-                    file << (rotation*boxVectors[2].cartesian()).transpose() << " ";
-                    file << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1" << std::endl;
+                    file << (rotation*boxVectorsForC[0].cartesian()).transpose()  << " ";
+                    file << (rotation*boxVectorsForC[1].cartesian()).transpose() << " ";
+                    file << (rotation*boxVectorsForC[2].cartesian()).transpose() << " ";
+                    file << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\"F T T\" origin=\"";
+                    file << (rotation*origin.cartesian()).transpose() << "\"" << std::endl;
 
                     for (const auto &vector: configurationA)
                         file << 1 << " " << (rotation*vector.cartesian()).transpose() << "  " << 0.05 << std::endl;
@@ -390,6 +440,8 @@ namespace gbLAB
                         file << 2 << " " << (rotation*vector.cartesian()).transpose() << "  " << 0.05 << std::endl;
                     for (const auto &vector: configurationC)
                         file << 3 << " " << (rotation*vector.cartesian()).transpose() << "  " << 0.2 << std::endl;
+                    for (const auto &vector: configurationD)
+                        file << 4 << " " << (rotation*vector.cartesian()).transpose() << "  " << 0.01 << std::endl;
                 }
 
 

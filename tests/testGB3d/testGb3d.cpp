@@ -105,8 +105,8 @@ int main()
 
         /*! [gb] */
         ReciprocalLatticeVector<dim> normal(L1);
-        normal << 17,23,-40;
-        //normal << 5,6,-11;
+        //normal << 17,23,-40;
+        normal << 5,6,-11;
         Gb<dim> gb(bc,normal);
         /*! [gb] */
         std::cout << "Miller indices w.r.t A: ";
@@ -134,7 +134,15 @@ int main()
         boxVectors.push_back(nonParallelC);
         boxVectors.push_back(periodC);
         boxVectors.push_back(vectorAlongAxisC);
-        gb.box(boxVectors,0.8,2,"gb.txt",true);
+        std::cout << "Input box vectors = " << std::endl;
+        std::cout << boxVectors[0].cartesian().transpose() << std::endl;
+        std::cout << boxVectors[1].cartesian().transpose() << std::endl;
+        std::cout << boxVectors[2].cartesian().transpose() << std::endl;
+        gb.box(boxVectors,0.1,2,"gb.txt",true);
+        std::cout << "Output box vectors = " << std::endl;
+        std::cout << boxVectors[0].cartesian().transpose() << std::endl;
+        std::cout << boxVectors[1].cartesian().transpose() << std::endl;
+        std::cout << boxVectors[2].cartesian().transpose() << std::endl;
         /*! [box vectors] */
 
     }

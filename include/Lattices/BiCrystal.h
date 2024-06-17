@@ -9,9 +9,9 @@
 
 #include <LatticeModule.h>
 #include <SmithDecomposition.h>
-#include <RationalMatrix.h>
-#include <LLL.h>
-#include <RLLL.h>
+#include "RationalMatrix.h"
+#include "LLL.h"
+#include "RLLL.h"
 #include <unordered_set>
 #include "Rotation.h"
 
@@ -202,58 +202,8 @@ namespace gbLAB
          * @return A data structure that stores GBs sorted in increasing order of their inclination angle.
          */
         template<int dm=dim>
-        typename std::enable_if<dm==2 || dim==3,std::map<IntScalarType,Gb<dm>>>::type
-        generateGrainBoundaries(const LatticeDirection<dim>& d, int div=30) const
-        {
-            if (&d.lattice != &A && &d.lattice != &B)
-                throw std::runtime_error("The tilt axis does not belong to lattices A and B  \n");
-            std::vector<Gb<dm>> gbVec;
-            double epsilon=1e-8;
-            int count= -1;
-            IntScalarType keyScale= 1e6;
-            auto basis= d.lattice.directionOrthogonalReciprocalLatticeBasis(d,true);
-            if (dm==3)
-            {
-                for (int i = -div; i <= div; ++i)
-                {
-                    for (int j = -div; j <= div; ++j)
-                    {
-                        if (i==0 && j==0) continue;
-                        count++;
-                        ReciprocalLatticeVector<dm> rv = i * basis[1].reciprocalLatticeVector() + j * basis[2].reciprocalLatticeVector();
-                        try
-                        {
-                            Gb<dm> gb(*this, rv);
-                            gbVec.push_back(gb);
-                        }
-                        catch(std::runtime_error& e)
-                        {
-                            std::cout << e.what() << std::endl;
-                            std::cout << "Unable to form GB with normal = " << rv << std::endl;
-                            std::cout << "moving on to next inclination" << std::endl;
-                        }
-                    }
-                }
-            }
-            else if(dm==2)
-            {
-                auto rv= basis[0].reciprocalLatticeVector();
-                gbVec.push_back(Gb<dm>(*this, rv));
-            }
-            std::map<IntScalarType,Gb<dm>> gbSet;
-            for(const Gb<dim>& gb:gbVec)
-            {
-                double cosAngle;
-                cosAngle= gb.nA.cartesian().normalized().dot(gbVec[0].nA.cartesian().normalized());
-                if (cosAngle-1>-epsilon) cosAngle= 1.0;
-                if (cosAngle+1<epsilon) cosAngle= -1.0;
-
-                double angle= acos(cosAngle);
-                IntScalarType key= angle*keyScale;
-                gbSet.insert(std::pair<IntScalarType,Gb<dm>>(key,gb));
-            }
-            return gbSet;
-        }
+        typename std::enable_if<dm==2 || dm==3,std::map<IntScalarType,Gb<dm>>>::type
+        generateGrainBoundaries(const LatticeDirection<dim>& d, int div=30) const;
 
 
         /*! This function outputs/prints a 2D bicrystal (two lattices that form the GB and
@@ -278,177 +228,7 @@ namespace gbLAB
                 const double& orthogonality, 
                 const int& dsclFactor,
                 std::string filename= "", 
-                bool orient=false) const
-        {
-            assert(orthogonality>=0.0 && orthogonality<=1.0 &&
-            "The \"orthogonality\" parameter should be between 0.0 and 1.0");
-            assert(dsclFactor>=1 &&
-            "The \"dsclFactor\" should be greater than 1.");
-            assert(boxVectors.size()==dim);
-            for(const auto& boxVector : boxVectors)
-            {
-                assert(&csl == &boxVector.lattice &&
-                       "Box vectors do not belong to the CSL.");
-            }
-
-            // Form the box lattice
-            MatrixDimD C;
-            for (int i=0; i<dim; ++i) {
-                C.col(i) = boxVectors[i].cartesian();
-            }
-            assert(abs(C.determinant()) > FLT_EPSILON && "Box volume is equal to zero.");
-
-
-            // Adjust boxVector[0] such that it is as orthogonal as possible to boxVector[1]
-            auto boxVectorTemp= boxVectors[0];
-            ReciprocalLatticeDirection<dim> nC(csl);
-            if (dim==2)
-                nC= boxVectors[1].cross();
-            if (dim==3)
-                nC= boxVectors[1].cross(boxVectors[2]);
-            auto basis= csl.planeParallelLatticeBasis(nC,true);
-
-            int planesToExplore= nC.stacking();
-            MatrixDimI boxLatticeIndices;
-            boxLatticeIndices.col(0)= boxVectors[0];
-            for (int i=1; i<dim; ++i)
-                boxLatticeIndices.col(i)= boxVectors[i]/IntegerMath<long long int>::gcd(boxVectors[i]);
-            double minDotProduct= M_PI/2;
-            int minStep;
-
-            auto boxVectorUpdated(boxVectors[0]);
-
-            for(int i=0;i<planesToExplore;++i)
-            {
-                int sign= boxVectors[0].cartesian().dot(basis[0].cartesian())>0? 1 : -1;
-                boxVectorTemp= boxVectors[0]+i*sign*basis[0].latticeVector();
-                boxLatticeIndices.col(0)= boxVectorTemp;
-                Lattice<dim> boxLattice(csl.latticeBasis*boxLatticeIndices.template cast<double>());
-                ReciprocalLatticeVector<dim> rC(boxLattice);
-                rC(0)=1;
-                VectorDimI temp=
-                        boxLatticeIndices*boxLattice.planeParallelLatticeBasis(ReciprocalLatticeDirection<dim>(rC),true)[0].latticeVector();
-                boxVectorTemp= LatticeVector<dim>(temp,csl);
-                double dotProduct= abs(acos(boxVectorTemp.cartesian().normalized().dot(rC.cartesian().normalized())));
-                if(dotProduct<minDotProduct) {
-                    minDotProduct = dotProduct;
-                    boxVectorUpdated= boxVectorTemp;
-                    if (dotProduct < (1-orthogonality)*M_PI/2)
-                        break;
-                }
-
-            }
-            boxVectors[0]=boxVectorUpdated;
-            C.col(0)= boxVectors[0].cartesian();
-
-
-            // form the rotation matrix used to orient the system
-            MatrixDimD rotation= Eigen::Matrix<double,dim,dim>::Identity();;
-            Eigen::Matrix<double,dim,dim-1> orthogonalVectors;
-            if (orient) {
-                if (dim==3) {
-                    orthogonalVectors.col(0) = C.col(1).normalized();
-                    orthogonalVectors.col(1) = C.col(2).normalized();
-                }
-                else if (dim==2)
-                    orthogonalVectors.col(0)= C.col(1).normalized();
-
-                rotation=Rotation<dim>(orthogonalVectors);
-            }
-            assert((rotation*rotation.transpose()).template isApprox(Eigen::Matrix<double,dim,dim>::Identity())
-                   && "Cannot orient the grain boundary. Box vectors are not orthogonal.");
-
-
-            std::vector<LatticeVector<dim>> configurationA, configurationB, configurationC, configurationD;
-            std::vector<LatticeVector<dim>> configuration;
-
-            std::vector<LatticeVector<dim>> boxVectorsInA, boxVectorsInB, boxVectorsInD;
-            // calculate boxVectors in A, B, and D
-            for(const auto& boxVector : boxVectors) {
-                boxVectorsInA.push_back(getLatticeVectorInA(boxVector));
-                boxVectorsInB.push_back(getLatticeVectorInB(boxVector));
-                boxVectorsInD.push_back(getLatticeVectorInD(boxVector));
-            }
-
-            // prepare boxVectors for D
-            auto dsclVector=getLatticeDirectionInD(boxVectors[0]).latticeVector();
-            auto nD= getReciprocalLatticeDirectionInD(nC.reciprocalLatticeVector());
-            if(abs((dsclFactor*dsclVector).dot(nD)) < abs(boxVectorsInD[0].dot(nD)))
-                boxVectorsInD[0]= dsclFactor*dsclVector;
-
-            std::vector<LatticeVector<dim>> boxVectorsForA(boxVectorsInA),
-                                            boxVectorsForB(boxVectorsInB),
-                                            boxVectorsForC(boxVectors),
-                                            boxVectorsForD(boxVectorsInD);
-            boxVectorsForA[0]=2*boxVectorsInA[0];
-            boxVectorsForB[0]=2*boxVectorsInB[0];
-            boxVectorsForC[0]=2*boxVectors[0];
-            boxVectorsForD[0]=2*boxVectorsInD[0];
-
-            configurationA= A.box(boxVectorsForA);
-            configurationB= B.box(boxVectorsForB);
-            configurationC= csl.box(boxVectorsForC);
-            configurationD= dscl.box(boxVectorsForD);
-
-            LatticeVector<dim> origin(-1*boxVectors[0]);
-            for(auto& vector : configurationA)
-                vector= vector + LatticeVector<dim>(-1*boxVectorsInA[0]);
-            for(auto& vector : configurationB)
-                vector= vector + LatticeVector<dim>(-1*boxVectorsInB[0]);
-            for(auto& vector : configurationC)
-                vector= vector + origin;
-            for(auto& vector : configurationD)
-                vector= vector + LatticeVector<dim>(-1*boxVectorsInD[0]);
-
-            configuration= configurationA;
-            configuration.insert(configuration.end(),configurationB.begin(),configurationB.end());
-            configuration.insert(configuration.end(),configurationC.begin(),configurationC.end());
-            configuration.insert(configuration.end(),configurationD.begin(),configurationD.end());
-
-            if(!filename.empty()) {
-                std::ofstream file;
-                file.open(filename);
-                if (!file) std::cerr << "Unable to open file";
-                file << configuration.size() << std::endl;
-                file << "Lattice=\"";
-
-                if (dim==2) {
-                    file << (rotation*boxVectorsForC[0].cartesian()).transpose() << " 0 ";
-                    file << (rotation*boxVectorsForC[1].cartesian()).transpose() << " 0 ";
-                    file << " 0 0 1 ";
-                    file << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\"F T T\" origin=\"";
-                    file << (rotation*origin.cartesian()).transpose() << " 0.0\"" << std::endl;
-                    for (const auto &vector: configurationA)
-                        file << 1 << " " << (rotation*vector.cartesian()).transpose() << " " << 0.0 << "  " << 0.05 << std::endl;
-                    for (const auto &vector: configurationB)
-                        file << 2 << " " << (rotation*vector.cartesian()).transpose() << " " << 0.0 << "  " << 0.05 << std::endl;
-                    for (const auto &vector: configurationC)
-                        file << 3 << " " << (rotation*vector.cartesian()).transpose() << " " << 0.0 << "  " << 0.2 << std::endl;
-                    for (const auto &vector: configurationD)
-                        file << 4 << " " << (rotation*vector.cartesian()).transpose() << " " << 0.0 << "  " << 0.01 << std::endl;
-                }
-                else if (dim==3){
-                    file << (rotation*boxVectorsForC[0].cartesian()).transpose()  << " ";
-                    file << (rotation*boxVectorsForC[1].cartesian()).transpose() << " ";
-                    file << (rotation*boxVectorsForC[2].cartesian()).transpose() << " ";
-                    file << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\"F T T\" origin=\"";
-                    file << (rotation*origin.cartesian()).transpose() << "\"" << std::endl;
-
-                    for (const auto &vector: configurationA)
-                        file << 1 << " " << (rotation*vector.cartesian()).transpose() << "  " << 0.05 << std::endl;
-                    for (const auto &vector: configurationB)
-                        file << 2 << " " << (rotation*vector.cartesian()).transpose() << "  " << 0.05 << std::endl;
-                    for (const auto &vector: configurationC)
-                        file << 3 << " " << (rotation*vector.cartesian()).transpose() << "  " << 0.2 << std::endl;
-                    for (const auto &vector: configurationD)
-                        file << 4 << " " << (rotation*vector.cartesian()).transpose() << "  " << 0.01 << std::endl;
-                }
-
-
-                file.close();
-            }
-            return configuration;
-        }
+                bool orient=false) const;
     };
     
     

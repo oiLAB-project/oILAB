@@ -18,6 +18,9 @@ namespace gbLAB
     using VectorDimD = typename LatticeCore<dim>::VectorDimD;
     using MatrixDimD = typename LatticeCore<dim>::MatrixDimD;
     using MatrixDimI = typename LatticeCore<dim>::MatrixDimI;
+    using IntScalarType = typename LatticeCore<dim>::IntScalarType;
+    private:
+        MatrixDimI getBasisT(const BiCrystal<dim>& bc, const ReciprocalLatticeDirection<dim>& n);
 
     public:
         /*!
@@ -32,6 +35,16 @@ namespace gbLAB
          * GB normal described with respect to lattice \f$\mathcal B\f$
          */
         const ReciprocalLatticeDirection<dim> nB;
+
+        const Lattice<dim> T;
+
+        const MatrixDimI basisT;
+
+        ReciprocalLatticeVector<dim> getReciprocalLatticeVectorInT(const ReciprocalLatticeVector<dim>& v) const;
+
+        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInT(const ReciprocalLatticeVector<dim>& v) const;
+
+
 
         /*!
          * \brief Computes the step height of a disconnection formed by displacing lattice \f$\mathcal A\f$
@@ -56,13 +69,12 @@ namespace gbLAB
         Gb(const BiCrystal<dim>& bc, const ReciprocalLatticeDirection<dim>& n);
 
         template<int dm=dim>
+        typename std::enable_if<dm==2,LatticeVector<dim>>::type
+        getPeriodVector(const ReciprocalLatticeVector<dim>& axis) const;
+
+        template<int dm=dim>
         typename std::enable_if<dm==3,LatticeVector<dim>>::type
-        getPeriodVector(const ReciprocalLatticeVector<dim>& axis) const {
-            assert(abs(nA.cartesian().dot(axis.cartesian())) < FLT_EPSILON);
-            LatticeVector<3> glideA(axis.cross(nA.reciprocalLatticeVector()).latticeVector());
-            LatticeVector<3> burgersVectorA(bc.getLatticeDirectionInD(glideA).latticeVector());
-            return (LatticeVector<3>(bc.getLatticeDirectionInC(glideA).latticeVector()));
-        }
+        getPeriodVector(const ReciprocalLatticeVector<dm>& axis) const;
 
         /*! This function outputs/prints a grain boundary (two lattices that form the GB,
          * CSL, and the DSCL) bounded by a box defined using
@@ -94,91 +106,7 @@ namespace gbLAB
             const double& orthogonality,
             const int& dsclFactor,
             std::string filename= "",
-            bool orient=false) const
-        {
-            for (auto iter= std::next(boxVectors.begin()); iter < boxVectors.end(); iter++)
-                assert((*iter).dot(bc.getReciprocalLatticeDirectionInC(nA.reciprocalLatticeVector())) == 0 &&
-                       "Box vectors not parallel to the grain boundary.");
-
-            auto config= bc.box(boxVectors,orthogonality,dsclFactor);
-            std::vector<LatticeVector<dim>> configuration;
-            for (const LatticeVector<dim>& latticeVector : config)
-            {
-                if (&(latticeVector.lattice) == &bc.A && latticeVector.dot(nA)<=0)
-                    configuration.push_back(latticeVector);
-                if (&(latticeVector.lattice) == &bc.B && latticeVector.dot(nB)<=0)
-                    configuration.push_back(latticeVector);
-                if (&(latticeVector.lattice) == &bc.csl || &(latticeVector.lattice) == &bc.dscl)
-                    configuration.push_back(latticeVector);
-            }
-
-            // form the rotation matrix used to orient the system
-            MatrixDimD rotation= Eigen::Matrix<double,dim,dim>::Identity();;
-            Eigen::Matrix<double,dim,dim-1> orthogonalVectors;
-            if (orient) {
-                if (dim==3) {
-                    orthogonalVectors.col(0) = boxVectors[1].cartesian().normalized();
-                    orthogonalVectors.col(1) = boxVectors[2].cartesian().normalized();
-                }
-                else if (dim==2)
-                    orthogonalVectors.col(0)= boxVectors[1].cartesian().normalized();
-
-                rotation=Rotation<dim>(orthogonalVectors);
-            }
-            assert((rotation*rotation.transpose()).template isApprox(Eigen::Matrix<double,dim,dim>::Identity())
-                   && "Cannot orient the grain boundary. The GB plane box vectors are not orthogonal.");
-
-            if(!filename.empty()) {
-                std::ofstream file;
-                file.open(filename);
-                if (!file) std::cerr << "Unable to open file";
-                file << configuration.size() << std::endl;
-                file << "Lattice=\"";
-
-                LatticeVector<dim> origin(-1*boxVectors[0]);
-                if (dim == 2) {
-                    file << (rotation * 2 * boxVectors[0].cartesian()).transpose() << " 0 ";
-                    file << (rotation * boxVectors[1].cartesian()).transpose() << " 0 ";
-                    file << " 0 0 1 ";
-                    file << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\"F T T\" origin=\"";
-                    file << (rotation * origin.cartesian()).transpose() << " 0.0\"" << std::endl;
-                    for (const auto &vector: configuration)
-                        if (&(vector.lattice) == &bc.A)
-                            file << 1 << " " << (rotation * vector.cartesian()).transpose() << " " << 0.0 << "  "
-                                 << 0.05 << std::endl;
-                        else if (&(vector.lattice) == &bc.B)
-                            file << 2 << " " << (rotation * vector.cartesian()).transpose() << " " << 0.0 << "  "
-                                 << 0.05 << std::endl;
-                        else if (&(vector.lattice) == &bc.csl)
-                            file << 3 << " " << (rotation * vector.cartesian()).transpose() << " " << 0.0 << "  " << 0.2
-                                 << std::endl;
-                        else
-                            file << 4 << " " << (rotation * vector.cartesian()).transpose() << " " << 0.0 << "  "
-                                 << 0.01 << std::endl;
-                } else if (dim == 3) {
-                    file << (rotation * 2 * boxVectors[0].cartesian()).transpose() << " ";
-                    file << (rotation * boxVectors[1].cartesian()).transpose() << " ";
-                    file << (rotation * boxVectors[2].cartesian()).transpose() << " ";
-                    file << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\"F T T\" origin=\"";
-                    file << (rotation * origin.cartesian()).transpose() << "\"" << std::endl;
-
-                    for (const auto &vector: configuration)
-                        if (&(vector.lattice) == &bc.A)
-                            file << 1 << " " << (rotation * vector.cartesian()).transpose() << "  " << 0.05
-                                 << std::endl;
-                        else if (&(vector.lattice) == &bc.B)
-                            file << 2 << " " << (rotation * vector.cartesian()).transpose() << "  " << 0.05
-                                 << std::endl;
-                        else if (&(vector.lattice) == &bc.csl)
-                            file << 3 << " " << (rotation * vector.cartesian()).transpose() << "  " << 0.2 << std::endl;
-                        else
-                            file << 4 << " " << (rotation * vector.cartesian()).transpose() << "  " << 0.01
-                                 << std::endl;
-                }
-                file.close();
-            }
-            return configuration;
-        }
+            bool orient=false) const;
 
     };
 

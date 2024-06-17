@@ -1,8 +1,8 @@
 #include <LatticeModule.h>
 #include <TextFileParser.h>
 #include <BiCrystal.h>
-#include <MesoState.h>
-#include <MesoStateEnsemble.h>
+#include "old/MesoState.h"
+#include "old/MesoStateEnsemble.h"
 #include <randomInteger.h>
 
 using namespace gbLAB;

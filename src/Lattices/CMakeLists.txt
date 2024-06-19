@@ -14,6 +14,7 @@ add_library(oILAB SHARED    BiCrystal.cpp
         ../Math/Farey.cpp
                             GbShifts.cpp
                             GbContinuum.cpp
+                            GbMaterialTensors.cpp
                             GbMesoState.cpp
                             GbMesoStateEnsemble.cpp)
 

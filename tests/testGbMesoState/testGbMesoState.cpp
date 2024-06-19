@@ -51,11 +51,18 @@ int main()
             c11 = lambda + 2 mu;
             c12 = lambda; mu = (c11-c12)/2
             lambda/mu = 2 c12/(c11-c12)
+            lattice constant = 3.615
          */
 
-        GbContinuum<3>::lambda= 2* 0.7750032094485771/(1.0439923926128656-0.7750032094485771);
+        //GbMaterialTensors::lambda= 2 * 0.7750032094485771 / (1.0439923926128656 - 0.7750032094485771);
         //GbContinuum<3>::lambda= 0.5;
-        GbContinuum<3>::mu= 1;
+        //GbMaterialTensors::mu= 1;
+
+        double a0= 3.615;
+        double c11= 1.0439923926128656 * std::pow(a0,3);
+        double c12= 0.7750032094485771 * std::pow(a0,3);
+        GbMaterialTensors::lambda= c12;
+        GbMaterialTensors::mu= (c11-c12)/2;
         GbMesoStateEnsemble<3> ensemble(gb, rAxisA);
         int count= 0;
         //for(const auto& mesoState : ensemble.mesoStates)

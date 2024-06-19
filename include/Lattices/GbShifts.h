@@ -22,7 +22,8 @@ namespace gbLAB {
         const std::vector<LatticeVector<dim>> gbCslVectors;
         std::vector<std::pair<LatticeVector<dim>,VectorDimD>> bShiftPairs;
         explicit GbShifts(const Gb<dim>& gb,
-                          const ReciprocalLatticeVector<dim>& axis);
+                          const ReciprocalLatticeVector<dim>& axis,
+                          const double& bhalfMax= 0.3);
 
     };
 }

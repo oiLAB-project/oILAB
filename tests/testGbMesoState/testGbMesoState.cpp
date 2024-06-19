@@ -28,7 +28,6 @@ int main()
 
     try
     {
-        /*! [SNF] */
         double theta= 53.594515175286005615*M_PI/180;
         //double theta= 50.478803641357835374*M_PI/180;
         Eigen::AngleAxis<double> halfRotation(theta/2,rAxisGlobal.cartesian().normalized());
@@ -72,7 +71,7 @@ int main()
         {
             //if (count > 0) (*it).box(1,1,"ms"+ std::to_string(count));
             std::cout << count << " of " << ensemble.mesoStates.size() << std::endl;
-            (*it).box(1,1,"ms"+ std::to_string(count));
+            (*it).box(6,1,"ms"+ std::to_string(count));
             count++;
         }
     }

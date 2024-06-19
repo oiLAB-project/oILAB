@@ -18,7 +18,7 @@ namespace gbLAB {
                                                                 const ReciprocalLatticeVector<dim>& axis,
                                                                 const std::vector<std::pair<LatticeVector<dim>,VectorDimD>>& bShiftPairs);
     public:
-        GbMesoStateEnsemble(const Gb<dim>& gb, const ReciprocalLatticeVector<dim>& axis);
+        GbMesoStateEnsemble(const Gb<dim>& gb, const ReciprocalLatticeVector<dim>& axis, const double& bhalfMax= 0.3);
         std::deque<GbMesoState<dim>> mesoStates;
     };
 

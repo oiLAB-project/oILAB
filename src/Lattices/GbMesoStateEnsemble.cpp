@@ -5,8 +5,8 @@
 
 namespace gbLAB {
     template<int dim>
-    GbMesoStateEnsemble<dim>::GbMesoStateEnsemble(const Gb<dim>& gb, const ReciprocalLatticeVector<dim>& axis):
-            GbShifts<dim>(gb,axis),
+    GbMesoStateEnsemble<dim>::GbMesoStateEnsemble(const Gb<dim>& gb, const ReciprocalLatticeVector<dim>& axis, const double& bhalfMax):
+            GbShifts<dim>(gb,axis,bhalfMax),
             mesoStates(enumerateMesoStates(gb,axis,this->bShiftPairs))
     {
                 /*

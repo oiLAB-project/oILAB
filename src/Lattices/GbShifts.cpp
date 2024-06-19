@@ -8,7 +8,8 @@ namespace gbLAB
 {
     template<int dim>
     GbShifts<dim>::GbShifts(const Gb<dim>& gb,
-                            const ReciprocalLatticeVector<dim>& axis):
+                            const ReciprocalLatticeVector<dim>& axis,
+                            const double& bhalfMax):
             gb(gb),
             axis(axis),
             gbCslVectors(getGbCslVectors(gb,axis))
@@ -32,7 +33,9 @@ namespace gbLAB
 
         // T Sublattice
         std::vector<LatticeVector<dim>> latticeVectorsT;
-        latticeVectorsT.push_back(12 * gb.T.latticeDirection(gb.nA.cartesian()).latticeVector());
+        int numPlanes= floor(bhalfMax/gb.nA.planeSpacing());
+        std::cout << "GBShifts: Number of planes explored =  " << numPlanes << std::endl;
+        latticeVectorsT.push_back(numPlanes * gb.T.latticeDirection(gb.nA.cartesian()).latticeVector());
         latticeVectorsT.push_back(gb.T.latticeDirection(gb.getPeriodVector(axis).cartesian()).latticeVector());
         latticeVectorsT.push_back(gb.T.latticeDirection(axisC.cartesian()).latticeVector());
 

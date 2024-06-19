@@ -62,7 +62,8 @@ int main()
         double c12= 0.7750032094485771 * std::pow(a0,3);
         GbMaterialTensors::lambda= c12;
         GbMaterialTensors::mu= (c11-c12)/2;
-        GbMesoStateEnsemble<3> ensemble(gb, rAxisA);
+        // The last argument 0.3 is optional, and it defaults to 0.3. Increasing this number will increase the number of mesostates
+        GbMesoStateEnsemble<3> ensemble(gb, rAxisA, 0.3);
         int count= 0;
         //for(const auto& mesoState : ensemble.mesoStates)
         for(auto it= ensemble.mesoStates.cbegin();

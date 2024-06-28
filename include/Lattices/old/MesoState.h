@@ -9,7 +9,7 @@
 #include "Gb.h"
 #include <set>
 #include "Dislocations.h"
-#include "Triplet.h"
+#include "OrderedTuplet.h"
 
 namespace gbLAB {
 

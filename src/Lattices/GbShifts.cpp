@@ -34,7 +34,7 @@ namespace gbLAB
         // T Sublattice
         std::vector<LatticeVector<dim>> latticeVectorsT;
         int numPlanes= floor(bhalfMax/gb.nA.planeSpacing());
-        std::cout << "GBShifts: Number of planes explored =  " << numPlanes << std::endl;
+        std::cout << "GBShifts: Number of lattice planes involved in forming mesostates =  " << numPlanes << std::endl;
         latticeVectorsT.push_back(numPlanes * gb.T.latticeDirection(gb.nA.cartesian()).latticeVector());
         latticeVectorsT.push_back(gb.T.latticeDirection(gb.getPeriodVector(axis).cartesian()).latticeVector());
         latticeVectorsT.push_back(gb.T.latticeDirection(axisC.cartesian()).latticeVector());
@@ -43,7 +43,8 @@ namespace gbLAB
 
         VectorDimD shiftT, shiftC;
         shiftT << -0.5, -0.5, -0.5;
-        shiftC << -0.5,  0.0, -0.5;
+        //shiftC << -0.5,  0.0, -0.5;
+        shiftC << -0.5,  -1e-6, -1e-6;
         for(auto& point : points) {
             LatticeVector<dim>::modulo(point, latticeVectorsT, shiftT);
             auto cslShift = LatticeVector<dim>((gb.bc.LambdaA * gb.basisT * point).eval(), gb.bc.dscl);

@@ -6,7 +6,7 @@
 #define OILAB_REFERENCESTATE_H
 
 #include "Gb.h"
-#include "Triplet.h"
+#include "OrderedTuplet.h"
 
 namespace gbLAB {
 

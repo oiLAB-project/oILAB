@@ -63,18 +63,9 @@ int main()
         GbMaterialTensors::lambda= c12;
         GbMaterialTensors::mu= (c11-c12)/2;
         // The last argument 0.3 is optional, and it defaults to 0.3. Increasing this number will increase the number of mesostates
-        GbMesoStateEnsemble<3> ensemble(gb, rAxisA, 0.3);
-        int count= 0;
-        //for(const auto& mesoState : ensemble.mesoStates)
-        for(auto it= ensemble.mesoStates.cbegin();
-            it!= ensemble.mesoStates.cend();
-            ++it)
-        {
-            //if (count > 0) (*it).box(1,1,"ms"+ std::to_string(count));
-            std::cout << count << " of " << ensemble.mesoStates.size() << std::endl;
-            (*it).box(6,1,"ms"+ std::to_string(count));
-            count++;
-        }
+        GbMesoStateEnsemble<3> ensemble(gb, rAxisA, 0.3,{1,1,2});
+        ensemble.collectMesoStates("ms");
+
     }
     catch(std::runtime_error& e)
     {

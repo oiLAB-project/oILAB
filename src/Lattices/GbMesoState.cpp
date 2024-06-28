@@ -10,12 +10,17 @@ namespace gbLAB {
     GbMesoState<dim>::GbMesoState(const Gb<dim>& gb,
                                   const ReciprocalLatticeVector<dim>& axis,
                                   const std::deque<std::pair<LatticeVector<dim>,VectorDimD>>& bs,
-                                  const std::vector<LatticeVector<dim>>& gbCslVectors) :
-                  GbContinuum<dim>(getGbDomain(gbCslVectors), get_xuPairs(bs,gb.nA.cartesian()), discretize(gbCslVectors,gb)),
-                  gb(gb),
-                  axis(axis),
-                  gbCslVectors(gbCslVectors),
-                  bs(bs)
+                                  const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
+                                  const BicrystalLatticeVectors& bicrystalConfig) :
+          GbContinuum<dim>(getMesoStateGbDomain(mesoStateCslVectors),
+                           get_xuPairs(gb,bs),
+                           discretize(mesoStateCslVectors,gb),
+                           bicrystalCoordsMap(gb,bicrystalConfig)),
+          gb(gb),
+          axis(axis),
+          mesoStateCslVectors(mesoStateCslVectors),
+          bicrystalConfig(bicrystalConfig),
+          bs(bs)
     {
         // check
         /*
@@ -25,66 +30,102 @@ namespace gbLAB {
             */
     }
 
+
     template<int dim>
-    Eigen::Matrix<double, dim,dim-1> GbMesoState<dim>::getGbDomain(const std::vector<LatticeVector<dim>>& gbCslVectors)
+    Eigen::Matrix<double, dim,dim-1> GbMesoState<dim>::getMesoStateGbDomain(const std::vector<LatticeVector<dim>>& mesoStateCslVectors)
     {
-        Eigen::Matrix<double, dim,dim-1> gbDomain;
-        for(int i=0; i<dim-1; ++i)
-            gbDomain.col(i)= gbCslVectors[i].cartesian();
-        return gbDomain;
+        Eigen::Matrix<double, dim,dim-1> mesoStateGbDomain;
+        for(int i=1; i<dim; ++i)
+            mesoStateGbDomain.col(i-1)= mesoStateCslVectors[i].cartesian();
+        return mesoStateGbDomain;
     }
 
     template<int dim>
-    std::deque<std::pair<typename GbMesoState<dim>::VectorDimD, typename GbMesoState<dim>::VectorDimD>>
-          GbMesoState<dim>::get_xuPairs(const std::deque<std::pair<LatticeVector<dim>,VectorDimD>>& bs,
-                                        const VectorDimD& normal)
+    std::map<OrderedTuplet<dim>, typename GbMesoState<dim>::VectorDimD>
+          GbMesoState<dim>::get_xuPairs(const Gb<dim>& gb,
+                                        const std::deque<std::pair<LatticeVector<dim>,VectorDimD>>& bs)
     {
-              std::deque<std::pair<VectorDimD,VectorDimD>> xuPairs;
-              std::pair<VectorDimD,VectorDimD> xu;
-              for(const auto& pair : bs)
-              {
-                  xu.second= pair.first.cartesian()/2;
-                  if(xu.second.dot(normal)>0)
-                      xu.first= pair.second - xu.second;
-                  else
-                      xu.first= pair.second + xu.second;
-                  xuPairs.push_back(xu);
-              }
-              return xuPairs;
+        auto normal= gb.nA.cartesian();
+        std::map<OrderedTuplet<dim>,VectorDimD> xuPairs;
+        for(const auto& pair : bs)
+        {
+            OrderedTuplet<dim> key;
+            VectorDimD value;
+            // value = b/2
+            value= pair.first.cartesian()/2;
+            if(value.dot(normal)>0) {
+                // replace value with a scaled normal inside this for loop
+                // as a consequence, we will have to change OrderedTuple<dim> to OrderedTuple<Rational,dim> for this to generalize to ATGBs
+                VectorDimD temp= pair.second - value;
+                try {
+                    //key << gb.bc.dscl.latticeVector(temp);
+                    key << gb.bc.getLatticeVectorInD(gb.bc.A.latticeVector(temp));
+                }
+                catch(std::runtime_error& e)
+                {
+                    std::cout << e.what() << std::endl;
+                    std::cout << "x = " << key.transpose() << ";   " << temp.transpose() << std::endl;
+                    std::cout << "b = " << pair.first.cartesian().transpose()  << " ; s= " << pair.second.transpose() << std::endl;
+                    exit(0);
+                }
+            }
+            else {
+                VectorDimD temp= pair.second + value;
+                try {
+                    //key << gb.bc.dscl.latticeVector(temp);
+                    key << gb.bc.getLatticeVectorInD(gb.bc.B.latticeVector(temp));
+                }
+                catch(std::runtime_error& e)
+                {
+                    std::cout << e.what() << std::endl;
+                    std::cout << "x = " << key.transpose() << ";   " << temp.transpose() << std::endl;
+                    std::cout << "b = " << pair.first.cartesian().transpose()  << " ; s= " << pair.second.transpose() << std::endl;
+                    exit(0);
+                }
+            }
+            xuPairs[key]=value;
+        }
+        return xuPairs;
     }
 
     template<int dim>
-    std::array<Eigen::Index,dim-1> GbMesoState<dim>::discretize(const std::vector<LatticeVector<dim>>& gbCslVectors, const Gb<dim>& gb)
+    std::array<Eigen::Index,dim-1> GbMesoState<dim>::discretize(const std::vector<LatticeVector<dim>>& mesoStateCslVectors, const Gb<dim>& gb)
     {
-        std::array<Eigen::Index,dim-1> n;
-        for(int i=0; i<dim-1; ++i)
-            n[i]= 2*IntegerMath<int>::gcd(gb.bc.getLatticeVectorInD(gbCslVectors[i]));
-        //    n[1]= 2*IntegerMath<int>::gcd(gb.bc.getLatticeVectorInD(gbCslVectors[0]));
-
+        std::array<Eigen::Index,dim-1> n{};
+        for(int i=1; i<dim; ++i)
+            n[i-1]= 2*IntegerMath<int>::gcd(gb.bc.getLatticeVectorInD(mesoStateCslVectors[i]));
         return n;
+
+    }
+
+
+    template<int dim>
+    std::map<OrderedTuplet<dim>,typename GbMesoState<dim>::VectorDimD> GbMesoState<dim>::bicrystalCoordsMap(const Gb<dim>& gb, const BicrystalLatticeVectors& bicrystalConfig)
+    {
+        std::map<OrderedTuplet<dim>,VectorDimD> idCoordsMap;
+
+        for(const auto& latticeVector : bicrystalConfig) {
+            auto latticeVectorInD= gb.bc.getLatticeVectorInD(latticeVector);
+            OrderedTuplet<dim> key;
+            key << latticeVectorInD;
+            idCoordsMap[key]= latticeVectorInD.cartesian();
+        }
+        return idCoordsMap;
 
     }
 
     template<int dim>
     //template<int dm=dim>
     typename std::enable_if<dim==3,void>::type
-    GbMesoState<dim>::box(const int& heightFactor,
-                        const int& dsclFactor,
-                        const std::string& name) const
+    GbMesoState<dim>::box(const std::string& name) const
     {
-        auto basis = this->gb.bc.csl.planeParallelLatticeBasis(
-                this->gb.bc.getReciprocalLatticeDirectionInC(this->gb.nA.reciprocalLatticeVector()), true);
-        LatticeVector<3> nonParallelC(basis[0].latticeVector());
-        LatticeVector<3> vectorAlongAxisA(this->gb.bc.A.latticeDirection(this->axis.cartesian()).latticeVector());
-        LatticeVector<3> vectorAlongAxisC(this->gb.bc.getLatticeDirectionInC(vectorAlongAxisA).latticeVector());
-
+        const auto& config= this->bicrystalConfig;
         std::vector<LatticeVector<3>> boxVectors;
-        boxVectors.push_back(heightFactor * nonParallelC);
-        boxVectors.push_back(gb.getPeriodVector(this->axis));
-        boxVectors.push_back(vectorAlongAxisC);
-        assert(abs(boxVectors[1].cartesian().dot(boxVectors[2].cartesian())) < FLT_EPSILON);
+        boxVectors.push_back(this->mesoStateCslVectors[0]);
+        boxVectors.push_back(this->mesoStateCslVectors[1]);
+        boxVectors.push_back(this->mesoStateCslVectors[2]);
+        double boxHalfHeight= abs(boxVectors[0].cartesian().dot(gb.nA.cartesian().normalized()));
 
-        auto config= this->gb.bc.box(boxVectors,1,1);
         std::vector<VectorDimD> referenceConfigA, deformedConfigA;
         std::vector<VectorDimD> referenceConfigB, deformedConfigB;
         std::vector<VectorDimD> configDscl;
@@ -92,28 +133,18 @@ namespace gbLAB {
         for (const auto &latticeVector: config) {
             if (&(latticeVector.lattice) == &(this->gb.bc.A) || &(latticeVector.lattice) == &(this->gb.bc.B))
             {
-                VectorDimD x,temp;
-                temp= latticeVector.cartesian();
+                VectorDimD x;
+                OrderedTuplet<dim> temp;
+                temp <<  gb.bc.getLatticeVectorInD(latticeVector);
                 if (&(latticeVector.lattice) == &(this->gb.bc.A)) {
-                    int planeIndex= latticeVector.dot(gb.nA);
-                    double height;
-                    if (planeIndex == 0)
-                        height= FLT_EPSILON;
-                    else
-                        height= latticeVector.cartesian().dot(gb.nA.cartesian().normalized());
-                    if (&(latticeVector.lattice) == &(this->gb.bc.A) && height > 0)
-                        temp= latticeVector.cartesian() - 2 * height * gb.nA.cartesian().normalized();
+                    double height= latticeVector.cartesian().dot(gb.nA.cartesian().normalized());
+                    if (height > 0 && height < boxHalfHeight-FLT_EPSILON)
+                        temp << gb.bc.getLatticeVectorInD(gb.bc.B.latticeVector(latticeVector.cartesian() - 2 * height * gb.nA.cartesian().normalized()));
                 }
                 else if (&(latticeVector.lattice) == &(this->gb.bc.B)) {
-                        int planeIndex= latticeVector.dot(gb.nB);
-                        double height;
-                        if (planeIndex == 0)
-                            height= FLT_EPSILON;
-                        else
-                            height = latticeVector.cartesian().dot(gb.nB.cartesian().normalized());
-                        if (&(latticeVector.lattice) == &(this->gb.bc.B) && height > 0)
-                            temp = latticeVector.cartesian() - 2 * height * gb.nB.cartesian().normalized();
-
+                        double height = latticeVector.cartesian().dot(gb.nB.cartesian().normalized());
+                        if (height > 0 && height < boxHalfHeight-FLT_EPSILON)
+                            temp << gb.bc.getLatticeVectorInD(gb.bc.A.latticeVector(latticeVector.cartesian() - 2 * height * gb.nB.cartesian().normalized()));
                     }
 
                 //x = latticeVector.cartesian() + this->displacement(latticeVector.cartesian());

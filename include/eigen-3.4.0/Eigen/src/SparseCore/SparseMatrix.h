@@ -1082,11 +1082,11 @@ void set_from_triplets(const InputIterator& begin, const InputIterator& end, Spa
   * Scalar row() const;   // the row index i
   * Scalar col() const;   // the column index j
   * \endcode
-  * See for instance the Eigen::Triplet template class.
+  * See for instance the Eigen::OrderedTuplet template class.
   *
   * Here is a typical usage example:
   * \code
-    typedef Triplet<double> T;
+    typedef OrderedTuplet<double> T;
     std::vector<T> tripletList;
     tripletList.reserve(estimation_of_entries);
     for(...)

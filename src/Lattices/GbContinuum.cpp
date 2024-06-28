@@ -10,12 +10,13 @@ namespace gbLAB {
 
     template<int dim>
     GbContinuum<dim>::GbContinuum(const Eigen::Matrix<double,dim,dim-1>& domain,
-                                  const std::deque<std::pair<VectorDimD,VectorDimD>>& xuPairs,
-                                  const std::array<Eigen::Index,dim-1>& n):
+                                  const std::map<OrderedTuplet<dim>,VectorDimD>& xuPairs,
+                                  const std::array<Eigen::Index,dim-1>& n,
+                                  const std::map<OrderedTuplet<dim>,VectorDimD>& atoms):
         gbDomain(domain),
         xuPairs(xuPairs),
         n(n),
-        bbhat(calculateb(domain,xuPairs,n)),
+        bbhat(calculateb(domain,xuPairs,n,atoms)),
         b(bbhat.first),
         bhat(bbhat.second)
    {
@@ -30,11 +31,45 @@ namespace gbLAB {
         */
    }
 
+    template<int dim>
+    PeriodicFunction<double,dim-1>
+    GbContinuum<dim>::get_pi(const Eigen::Matrix<double,dim,dim-1>& domain,
+                             const std::array<Eigen::Index,dim-1>& n,
+                             const VectorDimD& point)
+    {
+        Eigen::Matrix<double,dim,dim-1> basisVectors(domain.transpose().completeOrthogonalDecomposition().pseudoInverse());
+        VectorDimD normal(domain.col(0).cross(domain.col(1)));
+        normal.normalize();
+
+        DisplacementKernel f(normal,10);
+        Shift<DisplacementKernel,double> piFunction(point, (const Function<DisplacementKernel,double>&) f);
+        return PeriodicFunction<double,dim-1>(n,domain,piFunction);
+    }
+
+
+    template<int dim>
+    LatticeFunction<std::complex<double>,dim-1>
+    GbContinuum<dim>::get_pihat(const Eigen::Matrix<double,dim,dim-1>& domain,
+                                const std::array<Eigen::Index,dim-1>& n,
+                                const VectorDimD& point)
+    {
+        Eigen::Matrix<double,dim,dim-1> basisVectors(domain.transpose().completeOrthogonalDecomposition().pseudoInverse());
+        VectorDimD normal(domain.col(0).cross(domain.col(1)));
+        normal.normalize();
+
+        std::vector<LatticeFunction<std::complex<double>,dim-1>> pihat;
+        DisplacementKernel f(normal,10);
+
+        ShiftedDisplacementKernelFT pihatFunction(point,normal);
+        return LatticeFunction<std::complex<double>,dim-1> (n,basisVectors,pihatFunction);
+    }
+
    template<int dim>
    typename GbContinuum<dim>::FunctionFFTPair
    GbContinuum<dim>::calculateb(const Eigen::Matrix<double,dim,dim-1>& domain,
-                                const std::deque<std::pair<VectorDimD,VectorDimD>>& xuPairs,
-                                const std::array<Eigen::Index,dim-1>& n)
+                                const std::map<OrderedTuplet<dim>,VectorDimD>& xuPairs,
+                                const std::array<Eigen::Index,dim-1>& n,
+                                const std::map<OrderedTuplet<dim>,VectorDimD>& atoms)
    {
        if (HhatInvComponents.size() ==0 ) HhatInvComponents= getHhatInvComponents(domain,n);
        Eigen::Matrix<double,dim,dim-1> basisVectors(domain.transpose().completeOrthogonalDecomposition().pseudoInverse());
@@ -50,83 +85,90 @@ namespace gbLAB {
        std::vector<LatticeFunction<std::complex<double>,dim-1>> lbhat(lb0hat);
 
 
-       // calculate GB normal
-       VectorDimD normal(domain.col(0).cross(domain.col(1)));
-       normal.normalize();
-
-       // calculare pi and pihat
-       std::vector<PeriodicFunction<double,dim-1>> pi;
-       std::vector<LatticeFunction<std::complex<double>,dim-1>> pihat;
-       DisplacementKernel f(normal,10);
-
-       for(const auto& xu : xuPairs) {
-           VectorDimD t = xu.first;
-           ShiftedDisplacementKernelFT pihatFunction(t,normal);
-           Shift<DisplacementKernel,double> piFunction(t, (const Function<DisplacementKernel,double>&) f);
-           pi.push_back(PeriodicFunction<double,dim-1>(n,domain,piFunction));
-           pihat.push_back(LatticeFunction<std::complex<double>,dim-1> (n,basisVectors,pihatFunction));
-           auto temp= *(pihat.end()-1);
+       if(piPeriodicFunctions.empty()) {
+           for (const auto& [key, value]: atoms) {
+               piPeriodicFunctions.insert({key, get_pi(domain, n, value)});
+               pihatLatticeFunctions.insert({key, get_pihat(domain, n, value)});
+           }
        }
 
        // matrices P and u
        const int numberOfCslPoints= xuPairs.size();
-       Eigen::Matrix<std::complex<double>,Eigen::Dynamic,dim> u(numberOfCslPoints,dim);
+       Eigen::Matrix<std::complex<double>,Eigen::Dynamic,dim> uMatrix(numberOfCslPoints,dim);
        Eigen::Matrix<std::complex<double>,Eigen::Dynamic,Eigen::Dynamic> P(numberOfCslPoints,numberOfCslPoints);
-       for(int i=0; i<numberOfCslPoints; ++i)
+
+       int row= -1;
+       for(const auto& [xi,ui] : xuPairs)
        {
-           u.row(i) = xuPairs[i].second;
-           for (int j=0; j<numberOfCslPoints; ++j)
+           row++;
+           uMatrix.row(row)= ui;
+           int col= -1;
+           for(const auto& [xj,uj] : xuPairs)
            {
-               Eigen::Tensor<std::complex<double>,dim-1> temp(pihat[j].values * pihat[i].values.conjugate());
+               col++;
+               Eigen::Tensor<std::complex<double>,dim-1> temp(pihatLatticeFunctions.at(xj).values * pihatLatticeFunctions.at(xi).values.conjugate());
                Eigen::Tensor<std::complex<double>,0> sum(temp.sum());
-               P(i,j)= sum(0);
+               P(row,col)= sum(0);
            }
+
        }
 
        // Solve P \alpha = u
        Eigen::Matrix<std::complex<double>,Eigen::Dynamic,dim> alpha(numberOfCslPoints,dim);
        Eigen::LLT<Eigen::Matrix<std::complex<double>,Eigen::Dynamic,Eigen::Dynamic>> llt;
        llt.compute(P);
-       alpha= llt.solve(u);
+       alpha= llt.solve(uMatrix);
 
        // calculate lb0 and lb0hat
+
        for(int i=0; i<dim; ++i)
        {
            lb0hat[i].values.setZero();
-           for(int j=0; j<numberOfCslPoints; ++j)
-               lb0hat[i].values= lb0hat[i].values + pihat[j].values * alpha(j,i);
+           int j= -1;
+           for(const auto& [xj,uj] : xuPairs) {
+               j++;
+               lb0hat[i].values = lb0hat[i].values + pihatLatticeFunctions.at(xj).values * alpha(j,i);
+           }
        }
-       for(int i=0; i<dim; ++i)
-           for(int j=0; j<numberOfCslPoints; ++j)
-               lb0[i].values= lb0[i].values + pi[j].values * alpha(j,i).real();
-
+       for(int i=0; i<dim; ++i) {
+           lb0[i].values.setZero();
+           int j = -1;
+           for (const auto &[xj, uj]: xuPairs) {
+               j++;
+               lb0[i].values = lb0[i].values + piPeriodicFunctions.at(xj).values * alpha(j,i).real();
+           }
+       }
 
        // calculate lagrange multipliers, lbhat, and lb
        Eigen::VectorXcd uFlattened;
-       uFlattened= u.reshaped();
+       uFlattened= uMatrix.reshaped();
        Eigen::VectorXcd lm(dim*numberOfCslPoints);
        Eigen::MatrixXcd M(dim*numberOfCslPoints,dim*numberOfCslPoints);
        M.setZero();
 
        for (int i=0; i<dim; ++i)
        {
-           for (int j=0; j<numberOfCslPoints; ++j)
+           int j= -1;
+           for (const auto& [xj,uj] : xuPairs)
            {
+               ++j;
                int row= i*numberOfCslPoints + j;
                for (int l=0; l<dim; ++l)
                {
-                   for (int k = 0; k < numberOfCslPoints; ++k)
+                   int k= -1;
+                   for(const auto& [xk,uk] : xuPairs)
                    {
+                       k++;
                        int col= l*numberOfCslPoints + k;
                        Eigen::Tensor<std::complex<double>, 0> sum;
                        Eigen::Tensor<std::complex<double>, dim - 1> temp(n);
                        LatticeFunction<std::complex<double>,dim-1> HhatInv_il(n,basisVectors);
-                       if (i==0 && l==0) temp = HhatInvComponents[0].values * pihat[k].values * pihat[j].values.conjugate();
-                       if (i==1 && l==1) temp = HhatInvComponents[1].values * pihat[k].values * pihat[j].values.conjugate();
-                       if (i==2 && l==2) temp = HhatInvComponents[2].values * pihat[k].values * pihat[j].values.conjugate();
-                       if ((i==1 && l==2) || (i==2 && l==1)) temp = HhatInvComponents[3].values * pihat[k].values * pihat[j].values.conjugate();
-                       if ((i==0 && l==2) || (i==2 && l==0)) temp = HhatInvComponents[4].values * pihat[k].values * pihat[j].values.conjugate();
-                       if ((i==0 && l==1) || (i==1 && l==0)) temp = HhatInvComponents[5].values * pihat[k].values * pihat[j].values.conjugate();
+                       if (i==0 && l==0) temp = HhatInvComponents[0].values * pihatLatticeFunctions.at(xk).values * pihatLatticeFunctions.at(xj).values.conjugate();
+                       if (i==1 && l==1) temp = HhatInvComponents[1].values * pihatLatticeFunctions.at(xk).values * pihatLatticeFunctions.at(xj).values.conjugate();
+                       if (i==2 && l==2) temp = HhatInvComponents[2].values * pihatLatticeFunctions.at(xk).values * pihatLatticeFunctions.at(xj).values.conjugate();
+                       if ((i==1 && l==2) || (i==2 && l==1)) temp = HhatInvComponents[3].values * pihatLatticeFunctions.at(xk).values * pihatLatticeFunctions.at(xj).values.conjugate();
+                       if ((i==0 && l==2) || (i==2 && l==0)) temp = HhatInvComponents[4].values * pihatLatticeFunctions.at(xk).values * pihatLatticeFunctions.at(xj).values.conjugate();
+                       if ((i==0 && l==1) || (i==1 && l==0)) temp = HhatInvComponents[5].values * pihatLatticeFunctions.at(xk).values * pihatLatticeFunctions.at(xj).values.conjugate();
                        sum = temp.sum();
                        M(row, col) = sum(0);
                    }
@@ -138,13 +180,6 @@ namespace gbLAB {
        Eigen::LLT<Eigen::Matrix<std::complex<double>,Eigen::Dynamic,Eigen::Dynamic>> llt2;
        llt2.compute(M);
        lm= llt2.solve(uFlattened);
-       /*
-       std::cout << "u = " << u.col(2).transpose() << std::endl;
-       std::cout << "M = " << M << std::endl;
-       std::cout << "P = " << P << std::endl;
-       std::cout << "lm = " << lm.transpose() << std::endl;
-       std::cout << "alpha = " << alpha << std::endl;
-        */
 
        lbhat[0].values.setZero();
        lbhat[1].values.setZero();
@@ -156,8 +191,11 @@ namespace gbLAB {
 
        for (int i=0; i<dim; ++i) {
            temp.push_back(LatticeFunction<std::complex<double>, dim - 1>(n, basisVectors));
-           for (int k = 0; k < numberOfCslPoints; ++k)
-               temp[i].values = temp[i].values + pihat[k].values * lmMatrix(k, i);
+           int k= -1;
+           for (const auto& [xk,uk] : xuPairs) {
+               k++;
+               temp[i].values = temp[i].values + pihatLatticeFunctions.at(xk).values * lmMatrix(k, i);
+           }
        }
 
        lbhat[0].values= HhatInvComponents[0].values * temp[0].values +
@@ -179,19 +217,14 @@ namespace gbLAB {
    }
 
     template<int dim>
-    GbContinuum<dim>::VectorDimD GbContinuum<dim>::displacement(const VectorDimD& t) const
+    GbContinuum<dim>::VectorDimD GbContinuum<dim>::displacement(const OrderedTuplet<dim>& t) const
     {
         VectorDimD u;
-        Eigen::Matrix<double,dim,dim-1> basisVectors(bhat[0].basisVectors);
-
-        VectorDimD normal(gbDomain.col(0).cross(gbDomain.col(1)));
-        normal.normalize();
-        ShiftedDisplacementKernelFT phatFunction(t,normal);
-        LatticeFunction<std::complex<double>,dim-1> phat(n,basisVectors,phatFunction);
 
         // u = f \star b
         for(int i=0; i<dim; ++i) {
-            Eigen::Tensor<std::complex<double>, dim - 1> temp(bhat[i].values * phat.values.conjugate());
+            //Eigen::Tensor<std::complex<double>, dim - 1> temp(bhat[i].values * phat.values.conjugate());
+            Eigen::Tensor<std::complex<double>, dim - 1> temp(bhat[i].values * pihatLatticeFunctions.at(t).values.conjugate()) ;
             Eigen::Tensor<std::complex<double>, 0> sum(temp.sum());
             u(i)= sum(0).real();
         }

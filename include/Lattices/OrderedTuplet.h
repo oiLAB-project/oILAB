@@ -21,30 +21,85 @@ namespace gbLAB {
             if (this->operator()(1) < rhs(1)) return true;
             if (rhs(1) < this->operator()(1)) return false;
             if (this->operator()(2) < rhs(2)) return true;
+            if (rhs(2) < this->operator()(2)) return false;
+            if (this->operator()(3) < rhs(3)) return true;
             return false;
         }
 
-        static void generate_tuples(int n, vector<vector<int>>& results, vector<int>& current_tuple, int index) {
-            if (index == dim) {
+        virtual ~OrderedTuplet() {}
+    };
+
+    class XTuplet : public Eigen::Matrix<int,Eigen::Dynamic,1>
+    {
+    public:
+        XTuplet(const int& sz) : Eigen::Matrix<int,Eigen::Dynamic,1>(sz)
+        {}
+
+        static void generate_tuples(int n, int k, std::vector<XTuplet>& results, XTuplet& current_tuple, int index) {
+            if (index == k) {
                 results.push_back(current_tuple);  // Add current tuple to results
             } else {
-                for (int i = 1; i <= n; ++i) {
-                    current_tuple[index] = i;  // Assign current element
-                    generate_tuples(n, results, current_tuple, index + 1);  // Recursively generate next element
+                for (int i = 0; i < n; ++i) {
+                    current_tuple(index) = i;  // Assign current element
+                    generate_tuples(n, k, results, current_tuple, index + 1);  // Recursively generate next element
                 }
             }
         }
 
-        static vector<vector<int>> generate_tuples(int n) {
-            vector<vector<int>> results;
-            vector<int> current_tuple(dim, 0);  // Initialize a vector of size k with 0s
+        /*!
+         * Constructs the collection of all tuplets of size \p k with each entry in the
+         * range \f$\{0,\dots,n-1\}\f$.
+         * @param n
+         * @param k
+         * @param results
+         * @param current_tuple
+         * @param index
+         */
+        static std::vector<XTuplet> generate_tuples(int n, int k) {
+            std::vector<XTuplet> results;
+            XTuplet current_tuple(k);  // Initialize a vector of size k with 0s
+            current_tuple.setZero();
 
-            generate_tuples(n, results, current_tuple, 0);  // Start generating tuples from index 0
+
+            generate_tuples(n, k, results, current_tuple, 0);  // Start generating tuples from index 0
 
             return results;
         }
 
-        virtual ~OrderedTuplet() {}
+        static void generate_tuples(std::vector<int> n, int k, std::vector<XTuplet>& results, XTuplet& current_tuple, int index) {
+            if (index == k) {
+                results.push_back(current_tuple);  // Add current tuple to results
+            } else {
+                for (int i = 0; i < n[index]; ++i) {
+                    current_tuple(index) = i;  // Assign current element
+                    generate_tuples(n, k, results, current_tuple, index + 1);  // Recursively generate next element
+                }
+            }
+        }
+
+        /*!
+         * Constructs the collection of all tuplets of size \p k with the i-th entry in the
+         * range \f$\{0,\dots,n_i-1\}\f$.
+         * @param n
+         * @param k
+         * @param results
+         * @param current_tuple
+         * @param index
+         */
+        static std::vector<XTuplet> generate_tuples(std::vector<int> n, int k) {
+            assert(n.size() == k);
+            std::vector<XTuplet> results;
+            XTuplet current_tuple(k);  // Initialize a vector of size k with 0s
+            current_tuple.setZero();
+
+
+            generate_tuples(n, k, results, current_tuple, 0);  // Start generating tuples from index 0
+
+            return results;
+        }
+
+
+
     };
 
 }

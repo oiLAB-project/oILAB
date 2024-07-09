@@ -82,6 +82,21 @@ namespace gbLAB
         return pfhat;
     }
 
+    template<typename Scalar, int dim>
+    double PeriodicFunction<Scalar,dim>::dot(const PeriodicFunction<Scalar,dim>& other) const
+    {
+        Eigen::Tensor<double,0> sum((this->values * other.values).sum());
+        Eigen::Matrix<double,dim,dim> gramMatrix;
+        for(int i=0; i<dim; ++i)
+            for(int j=0; j<dim; ++j)
+                gramMatrix(i,j)= unitCell.col(i).dot(unitCell.col(j));
+        Eigen::array<Eigen::Index,dim> n= this->values.dimensions();
+        int prod= std::accumulate(std::begin(n),
+                        std::begin(n) + dim,
+                        1,
+                        std::multiplies<>{});
+        return sum(0)*sqrt(gramMatrix.determinant())/prod;
+    }
 
     template<typename Scalar, int dim> template <typename T>
     PeriodicFunction<Scalar,dim> PeriodicFunction<Scalar,dim>::kernelConvolution(const Function<T,Scalar>& kernel)

@@ -36,8 +36,9 @@ namespace gbLAB {
          * @param bs - a deque of pairs (translation vector \p b, shift vector \p s). \p b is a DSCL vector while \p s is expressed in Cartesian coordinates
          * @return A map between the DSCL coordinates \f$\underline{\textbf x}^i_{\mathcal D}\f$ of \f$\textbf x^i\f$ and Cartesian coordinates of \f$\textbf u^i\f$.
          */
-        static std::map<OrderedTuplet<dim>, VectorDimD> get_xuPairs(const Gb<dim>& gb,
-                                                                    const std::deque<std::pair<LatticeVector<dim>, VectorDimD>>& bs);
+        static std::map<OrderedTuplet<dim+1>, VectorDimD> get_xuPairs(const Gb<dim>& gb,
+                                                                      const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
+                                                                      const std::deque<std::pair<LatticeVector<dim>, VectorDimD>>& bs);
 
         /*!
          * \brief Returns the Cartesian coordinates of the lattice vectors of the mesostates's bicrystal in the form of a map that maps the
@@ -45,7 +46,7 @@ namespace gbLAB {
          * @param bicrystalConfig - a vector of lattice vectors in the mesostates' bicrystal.
          * @return A map between the DSCL coordinates of lattice vectors in bicrystalConfig to their Cartesian coordinates.
          */
-        static std::map<OrderedTuplet<dim>,VectorDimD> bicrystalCoordsMap(const Gb<dim>& gb, const BicrystalLatticeVectors& bicrystalConfig);
+        static std::map<OrderedTuplet<dim+1>,VectorDimD> bicrystalCoordsMap(const Gb<dim>& gb, const BicrystalLatticeVectors& bicrystalConfig);
 
 
         /*!
@@ -94,6 +95,8 @@ namespace gbLAB {
                              const std::deque<std::pair<LatticeVector<dim>,VectorDimD>>& bs,
                              const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
                              const BicrystalLatticeVectors& bicrystalConfig);
+
+        double energy() const;
 
         /*! This function outputs/prints a grain boundary mesostate
          * @param filename name of the file to be written to

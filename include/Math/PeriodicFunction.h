@@ -46,6 +46,8 @@ namespace gbLAB {
 
         LatticeFunction<dcomplex,dim> fft() const;
 
+        double dot(const PeriodicFunction<Scalar,dim>& other) const;
+
         template <typename T>
         PeriodicFunction<Scalar,dim> kernelConvolution(const Function<T,Scalar>& kernel);
     };

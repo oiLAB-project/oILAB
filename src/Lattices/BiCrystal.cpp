@@ -278,7 +278,11 @@ namespace gbLAB
         else
             throw(std::runtime_error("The input lattice vector should belong to one of the four lattices of the bicrystal"));
 
-        return LatticeVector<dim>(integerCoordinates,dscl);
+        auto temp= LatticeVector<dim>(integerCoordinates,dscl);
+        if (temp.cartesian().dot(v.cartesian()) < 0) temp= -1*temp;
+
+        //return LatticeVector<dim>(integerCoordinates,dscl);
+        return temp;
     }
 
 
@@ -306,7 +310,9 @@ namespace gbLAB
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
 
-        return LatticeDirection<dim>(LatticeVector<dim>(integerCoordinates,csl));
+        auto temp= LatticeVector<dim>(integerCoordinates,csl);
+        if (temp.cartesian().dot(v.cartesian()) < 0) temp= -1*temp;
+        return LatticeDirection<dim>(temp);
     }
     template<int dim>
     LatticeDirection<dim> BiCrystal<dim>::getLatticeDirectionInD(const LatticeVector<dim> &v) const
@@ -335,7 +341,10 @@ namespace gbLAB
             integerCoordinates = adjX.transpose() * N * rv;
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
-        return ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector<dim>(integerCoordinates,A));
+
+        auto temp= ReciprocalLatticeVector<dim>(integerCoordinates,A);
+        if (temp.cartesian().dot(rv.cartesian()) < 0) temp= -1*temp;
+        return ReciprocalLatticeDirection<dim>(temp);
     }
     template<int dim>
     ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInB(const ReciprocalLatticeVector<dim>& rv) const
@@ -360,7 +369,10 @@ namespace gbLAB
             integerCoordinates= adjV.transpose() * M * rv;
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
-        return ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector<dim>(integerCoordinates,B));
+
+        auto temp= ReciprocalLatticeVector<dim>(integerCoordinates,B);
+        if (temp.cartesian().dot(rv.cartesian()) < 0) temp= -1*temp;
+        return ReciprocalLatticeDirection<dim>(temp);
     }
     template<int dim>
     ReciprocalLatticeDirection<dim> BiCrystal<dim>::getReciprocalLatticeDirectionInC(const ReciprocalLatticeVector<dim>& rv) const
@@ -396,7 +408,9 @@ namespace gbLAB
         else
             throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
 
-        return ReciprocalLatticeDirection<dim>(ReciprocalLatticeVector<dim>(integerCoordinates,dscl));
+        auto temp= ReciprocalLatticeVector<dim>(integerCoordinates,dscl);
+        if (temp.cartesian().dot(rv.cartesian()) < 0) temp= -1*temp;
+        return ReciprocalLatticeDirection<dim>(temp);
     }
 
     template<int dim>

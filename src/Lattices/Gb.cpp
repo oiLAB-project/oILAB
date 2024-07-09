@@ -175,12 +175,32 @@ namespace gbLAB
 
         assert(IntegerMath<IntScalarType>::gcd(alpha,beta) == 1);
 
-        auto basis= bc.dscl.planeParallelLatticeBasis(m,true);
+        //auto basis= bc.dscl.planeParallelLatticeBasis(m,true);
+        auto basis= bc.dscl.planeParallelLatticeBasis(m,false);
         for(int i=0; i<dim; ++i) {
             output.col(i) = basis[i].latticeVector();
             if (i==0) output.col(i)= beta*output.col(i);
         }
         return output;
+    }
+
+    template<int dim>
+    LatticeVector<dim> Gb<dim>::getLatticeVectorInT(const LatticeVector<dim>& v) const
+    {
+        MatrixDimI adj= MatrixDimIExt<IntScalarType,dim>::adjoint(basisT);
+        IntScalarType det= basisT.template cast<double>().determinant();
+        //      basisTA
+        // T    -------->   dscl
+        if (&(v.lattice) == &(bc.csl)  && IntegerMath<IntScalarType>::gcd(v)%2 == 0)
+        {
+            VectorDimI integerCoordinates= adj * bc.getLatticeVectorInD(v);
+            assert(IntegerMath<IntScalarType>::gcd(integerCoordinates) % det == 0);
+            integerCoordinates= integerCoordinates/det;
+            return LatticeVector<dim>(integerCoordinates,T);
+        }
+        else
+            throw(std::runtime_error("The input lattice vector should belong to twice the CSL lattice"));
+
     }
 
     template<int dim>
@@ -191,7 +211,7 @@ namespace gbLAB
         if (&(v.lattice) == &(bc.dscl))
             return ReciprocalLatticeVector<dim>((basisT.transpose()*v).eval(),T);
         else
-            throw(std::runtime_error("The input reciprocal lattice vector should belong to one of the four reciprocal lattices of the bicrystal"));
+            throw(std::runtime_error("The input reciprocal lattice vector should belong to the reciprocal lattice of the DSCL"));
 
     }
 

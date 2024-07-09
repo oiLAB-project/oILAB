@@ -13,8 +13,12 @@ namespace gbLAB {
     class GbShifts
     {
         using VectorDimD = typename LatticeCore<dim>::VectorDimD;
+        using VectorDimI = typename LatticeCore<dim>::VectorDimI;
     protected:
-        static std::vector<LatticeVector<dim>> getGbCslVectors(const Gb<dim>& gb, const ReciprocalLatticeVector<dim>& axis);
+        //static std::vector<LatticeVector<dim>> getGbCslVectors(const Gb<dim>& gb, const ReciprocalLatticeVector<dim>& axis);
+        static std::vector<std::pair<LatticeVector<dim>,VectorDimD>>  getbShiftPairs(const Gb<dim>& gb,
+                                                                                     const std::vector<LatticeVector<dim>>& gbCslVectors,
+                                                                                     const double& bhalfMax);
 
     public:
         const Gb<dim>& gb;
@@ -23,7 +27,8 @@ namespace gbLAB {
         std::vector<std::pair<LatticeVector<dim>,VectorDimD>> bShiftPairs;
         explicit GbShifts(const Gb<dim>& gb,
                           const ReciprocalLatticeVector<dim>& axis,
-                          const double& bhalfMax= 0.3);
+                          const std::vector<LatticeVector<dim>>& gbCslVectors,
+                          const double& bhalfMax= 1);
 
     };
 }

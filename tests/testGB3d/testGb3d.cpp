@@ -105,14 +105,15 @@ int main()
 
         /*! [gb] */
         ReciprocalLatticeVector<dim> normal(L1);
-        //normal << 17,23,-40;
-        normal << 5,6,-11;
+        normal << 17,23,-40;
+        //normal << 5,6,-11;
         Gb<dim> gb(bc,normal);
         /*! [gb] */
         std::cout << "Miller indices w.r.t A: ";
         std::cout << gb.nA << std::endl;
         std::cout << "Miller indices w.r.t B: ";
         std::cout << gb.nB << std::endl;
+
 
         /*! [period vector] */
         LatticeVector<dim> glideA(rv.cross(gb.nA.reciprocalLatticeVector()).latticeVector());
@@ -138,7 +139,7 @@ int main()
         std::cout << boxVectors[0].cartesian().transpose() << std::endl;
         std::cout << boxVectors[1].cartesian().transpose() << std::endl;
         std::cout << boxVectors[2].cartesian().transpose() << std::endl;
-        gb.box(boxVectors,0.1,2,"gb.txt",true);
+        gb.box(boxVectors,0.5,2,"gb.txt",true);
         std::cout << "Output box vectors = " << std::endl;
         std::cout << boxVectors[0].cartesian().transpose() << std::endl;
         std::cout << boxVectors[1].cartesian().transpose() << std::endl;

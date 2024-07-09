@@ -64,7 +64,24 @@ namespace gbLAB
     }
 
     template<typename Scalar, int dim>
-    PeriodicFunction<typename LatticeFunction<Scalar,dim>::dcomplex,dim> LatticeFunction<Scalar,dim>::ifft()
+    std::complex<double> LatticeFunction<Scalar,dim>::dot(const LatticeFunction<std::complex<double>,dim>& other) const
+    {
+        Eigen::Tensor<std::complex<double>,0> sum((this->values * other.values.conjugate()).sum());
+        Eigen::Matrix<double,dim,dim> gramMatrix;
+        for(int i=0; i<dim; ++i)
+            for(int j=0; j<dim; ++j)
+                gramMatrix(i,j)= basisVectors.col(i).dot(basisVectors.col(j));
+        Eigen::array<Eigen::Index,dim> n= this->values.dimensions();
+        int prod= std::accumulate(std::begin(n),
+                                  std::begin(n) + dim,
+                                  1,
+                                  std::multiplies<>{});
+        return sum(0) / (sqrt(gramMatrix.determinant()) * std::pow(prod,2));
+
+    }
+
+    template<typename Scalar, int dim>
+    PeriodicFunction<typename LatticeFunction<Scalar,dim>::dcomplex,dim> LatticeFunction<Scalar,dim>::ifft() const
     {
         Eigen::Matrix<double,Eigen::Dynamic,dim> unitCell(basisVectors.transpose().completeOrthogonalDecomposition().pseudoInverse());
         PeriodicFunction<dcomplex,dim> pf(values.dimensions(),unitCell);
@@ -72,4 +89,13 @@ namespace gbLAB
         return pf;
     }
 
+    template<typename Scalar, int dim>
+    LatticeFunction<Scalar, dim> operator*(const LatticeFunction<Scalar,dim>& lf1, const LatticeFunction<Scalar,dim>& lf2)
+    {
+        // assert that the two lattice functions have the same domain
+        const auto n= lf1.values.dimensions();
+        LatticeFunction<Scalar,dim> output(n,lf1.basisVectors);
+        output.values= lf1.values * lf2.values;
+        return output;
+    }
 }

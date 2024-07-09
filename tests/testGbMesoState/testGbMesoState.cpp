@@ -3,6 +3,11 @@
 
 using namespace gbLAB;
 
+// Hunter GB Details
+//
+// Sigma 3 [110]; theta = 70.52878
+// GB normal: {1 - 1 2}
+
 int main()
 {
     /*! [Types] */
@@ -28,8 +33,9 @@ int main()
 
     try
     {
-        double theta= 53.594515175286005615*M_PI/180;
-        //double theta= 50.478803641357835374*M_PI/180;
+        double theta= 70.52878*M_PI/180;
+        //double theta= 53.594515175286005615*M_PI/180;
+        //double theta= 43.60282*M_PI/180;
         Eigen::AngleAxis<double> halfRotation(theta/2,rAxisGlobal.cartesian().normalized());
         Lattice<3> latticeA(lattice.latticeBasis,halfRotation.matrix());
         Lattice<3> latticeB(lattice.latticeBasis,halfRotation.matrix().transpose());
@@ -38,11 +44,21 @@ int main()
 
         // Specify GB normal
         VectorDimD gbNormal;
-        gbNormal << 0.0, 0.0, 1.0;
+        //gbNormal << 0.0, 0.0, 1.0;
+        gbNormal << 1.0, 1.0, 2.0;
+        gbNormal= halfRotation.matrix() * gbNormal;
         ReciprocalLatticeDirection<3> rd= latticeA.reciprocalLatticeDirection(gbNormal);
 
         Gb<3> gb(bc,rd);
         ReciprocalLatticeVector<3> rAxisA(latticeA.reciprocalLatticeDirection(axis).reciprocalLatticeVector());
+        LatticeVector<3> axisA(gb.bc.A.latticeDirection(axis).latticeVector());
+        LatticeVector<3> axisC(gb.bc.getLatticeDirectionInC(axisA).latticeVector());
+
+        std::vector<LatticeVector<3>> cslVectors;
+        cslVectors.push_back(15*gb.bc.csl.latticeDirection(gb.nA.cartesian()).latticeVector());
+        cslVectors.push_back(2*gb.getPeriodVector(rAxisA));
+        cslVectors.push_back(1*axisC);
+
         /*
          *  c11 = 1.0439923926128656 eV/angstrom^3
             c12 = 0.7750032094485771 eV/angstrom^3
@@ -62,17 +78,13 @@ int main()
         double c12= 0.7750032094485771 * std::pow(a0,3);
         GbMaterialTensors::lambda= c12;
         GbMaterialTensors::mu= (c11-c12)/2;
-        // The last argument 0.3 is optional, and it defaults to 0.3. Increasing this number will increase the number of mesostates
-        GbMesoStateEnsemble<3> ensemble(gb, rAxisA, 0.3,{1,1,2});
+        GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, 2.2);
         ensemble.collectMesoStates("ms");
 
     }
     catch(std::runtime_error& e)
     {
         std::cout << e.what() << std::endl;
-        std::cout << "Moving on the the next misorientation" << std::endl;
-        std::cout << "-----------------------------------------------------------------------------"
-                  << std::endl;
     }
     return 0;
 }

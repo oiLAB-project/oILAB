@@ -40,6 +40,8 @@ namespace gbLAB
 
         const MatrixDimI basisT;
 
+        LatticeVector<dim> getLatticeVectorInT(const LatticeVector<dim>& v) const;
+
         ReciprocalLatticeVector<dim> getReciprocalLatticeVectorInT(const ReciprocalLatticeVector<dim>& v) const;
 
         ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInT(const ReciprocalLatticeVector<dim>& v) const;

@@ -41,8 +41,13 @@ namespace gbLAB {
                         const Eigen::Matrix<double, Eigen::Dynamic, dim> &_basisVectors,
                         const Function<T, Scalar> &fun);
 
-        PeriodicFunction<dcomplex,dim> ifft();
+        std::complex<double> dot(const LatticeFunction<std::complex<double>,dim>& other) const;
+
+        PeriodicFunction<dcomplex,dim> ifft() const;
     };
+
+    template<typename Scalar, int dim>
+    LatticeFunction<Scalar, dim> operator*(const LatticeFunction<Scalar,dim>& lf1, const LatticeFunction<Scalar,dim>& lf2);
 }
 
 #endif //OILAB_LATTICEFUNCTION_H

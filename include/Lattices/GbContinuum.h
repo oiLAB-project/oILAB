@@ -19,7 +19,7 @@ namespace gbLAB {
     private:
         Eigen::Vector<double, Eigen::Dynamic> normal;
     public:
-        explicit DisplacementKernel(Eigen::Vector<double, Eigen::Dynamic> _normal, double domainSize);
+        explicit DisplacementKernel(const Eigen::Vector<double, Eigen::Dynamic>& _normal);
         double operator()(const Eigen::Vector<double, Eigen::Dynamic> &x) const;
     };
 
@@ -52,8 +52,8 @@ namespace gbLAB {
 
         static GbLatticeFunctions HhatInvComponents;
         //static FunctionFFTPair pipihat;
-        static std::map<OrderedTuplet<dim>,PeriodicFunction<double, dim - 1>> piPeriodicFunctions;
-        static std::map<OrderedTuplet<dim>,LatticeFunction<std::complex<double>, dim - 1>> pihatLatticeFunctions;
+        static std::map<OrderedTuplet<dim+1>,PeriodicFunction<double, dim - 1>> piPeriodicFunctions;
+        static std::map<OrderedTuplet<dim+1>,LatticeFunction<std::complex<double>, dim - 1>> pihatLatticeFunctions;
         // GBMesostateEnsemble should generate the bicrystal (member variable <OrderedTuplet,VectorDimD>) and pass it as a reference to each mesostate
         // pipihat should be map from OrderedTuplet to FunctionFFTPair. should be computed once in calculateb
         // at the same time, compute pipihat once
@@ -61,9 +61,9 @@ namespace gbLAB {
 
         FunctionFFTPair bbhat;
         static FunctionFFTPair calculateb(const Eigen::Matrix<double, dim,dim-1>& domain,
-                                          const std::map<OrderedTuplet<dim>,VectorDimD>& xuPairs,
+                                          const std::map<OrderedTuplet<dim+1>,VectorDimD>& xuPairs,
                                           const std::array<Eigen::Index,dim-1>& n,
-                                          const std::map<OrderedTuplet<dim>,VectorDimD>& points);
+                                          const std::map<OrderedTuplet<dim+1>,VectorDimD>& points);
         static GbLatticeFunctions getHhatInvComponents(const Eigen::Matrix<double, dim,dim-1>& domain,
                                                        const std::array<Eigen::Index,dim-1>& n);
         static PeriodicFunction<double,dim-1>get_pi(const Eigen::Matrix<double,dim,dim-1>& domain,
@@ -77,20 +77,23 @@ namespace gbLAB {
 
 
         const Eigen::Matrix<double,dim,dim-1> gbDomain;
-        const std::map<OrderedTuplet<dim>,VectorDimD> xuPairs;
+        const std::map<OrderedTuplet<dim+1>,VectorDimD> xuPairs;
         std::array<Eigen::Index,dim-1> n;
         std::vector<PeriodicFunction<double,dim-1>> b;
         std::vector<LatticeFunction<std::complex<double>,dim-1>> bhat;
-        std::map<OrderedTuplet<dim>,VectorDimD> atoms;
+        std::map<OrderedTuplet<dim+1>,VectorDimD> atoms;
+        VectorDimD uAverage;
 
         double energy;
 
         GbContinuum(const Eigen::Matrix<double, dim,dim-1>& domain,
-                    const std::map<OrderedTuplet<dim>, VectorDimD>& xuPairs,
+                    const std::map<OrderedTuplet<dim+1>, VectorDimD>& xuPairs,
                     const std::array<Eigen::Index,dim-1>& n,
-                    const std::map<OrderedTuplet<dim>,VectorDimD>& atoms);
+                    const std::map<OrderedTuplet<dim+1>,VectorDimD>& atoms);
 
-        VectorDimD displacement(const OrderedTuplet<dim>& x) const;
+        VectorDimD displacement(const OrderedTuplet<dim+1>& x) const;
+
+        VectorDimD displacement(const VectorDimD& x) const;
     };
 
 
@@ -98,9 +101,9 @@ namespace gbLAB {
     std::vector<LatticeFunction<std::complex<double>,dim-1>> GbContinuum<dim>::HhatInvComponents;
 
     template<int dim>
-    std::map<OrderedTuplet<dim>,PeriodicFunction<double, dim - 1>> GbContinuum<dim>::piPeriodicFunctions;
+    std::map<OrderedTuplet<dim+1>,PeriodicFunction<double, dim - 1>> GbContinuum<dim>::piPeriodicFunctions;
 
     template<int dim>
-    std::map<OrderedTuplet<dim>,LatticeFunction<std::complex<double>, dim - 1>> GbContinuum<dim>::pihatLatticeFunctions;
+    std::map<OrderedTuplet<dim+1>,LatticeFunction<std::complex<double>, dim - 1>> GbContinuum<dim>::pihatLatticeFunctions;
 }
 #endif //OILAB_GBPLASTICITY_H

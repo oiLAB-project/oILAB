@@ -17,6 +17,28 @@ int main()
     using IntScalarType = LatticeCore<3>::IntScalarType;
     /*! [Types] */
 
+
+    // Sigma 123 [110](-5 5 14)
+    VectorDimD axis(1,1,0);
+    double theta= 53.594515175286005615*M_PI/180;       // misorientation angle
+    VectorDimD gbNormal(5,5,14);                        // Miller indices
+    int heightScaling= 2;
+    int periodScaling= 2;
+    int axisScaling= 1;
+    double bScaling= 1.5;
+
+    /*
+    //Sigma 3[1-10](112)
+    VectorDimD axis(1,-1,0);
+    double theta= 70.52878*M_PI/180;
+    VectorDimD gbNormal(1,1,2);
+    int heightScaling= 2;
+    int periodScaling= 2;
+    int axisScaling= 1;
+    double bScaling= 2.0;
+     */
+
+
     /*! [Lattice] */
     const auto A(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,3>("A",true));
     Lattice<3> lattice(A);
@@ -24,33 +46,12 @@ int main()
     std::cout << lattice.latticeBasis << std::endl;
     /*! [Lattice] */
 
-    /*! [Axis] */
-    const auto axis (TextFileParser("bicrystal_3d.txt").readMatrix<double,3,1>("axis",true));
     ReciprocalLatticeVector<3> rAxisGlobal(lattice.reciprocalLatticeDirection(axis).reciprocalLatticeVector());
     std::cout << "Cartesian coordinates of axis = " << std::endl;
     std::cout << rAxisGlobal.cartesian().transpose() << std::endl;
-    /*! [Axis] */
 
     try
     {
-        // Sigma 123 [110](-5 5 14)
-        double theta= 53.594515175286005615*M_PI/180;       // misorientation angle
-        VectorDimD gbNormal(5,5,14);                        // Miller indices
-        int heightScaling= 2;
-        int periodScaling= 2;
-        int axisScaling= 1;
-        double bScaling= 1.5;
-
-        /*
-        //Sigma 3[1-10](112)
-        double theta= 70.52878*M_PI/180;
-        VectorDimD gbNormal(1,1,2);
-        int heightScaling= 2;
-        int periodScaling= 2;
-        int axisScaling= 1;
-        double bScaling= 2.0;
-         */
-
         // construct bicrystal
         Eigen::AngleAxis<double> halfRotation(theta/2,rAxisGlobal.cartesian().normalized());
         Lattice<3> latticeA(lattice.latticeBasis,halfRotation.matrix());

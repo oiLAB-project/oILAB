@@ -98,7 +98,8 @@ namespace gbLAB
         shiftC << -0.5, -FLT_EPSILON, -FLT_EPSILON;
         //shiftC << -0.5, -1e-6, -1e-6;
         for(auto& point : points) {
-            if (((VectorDimI)point).isZero() || point.cartesian().norm() > bhalfMax*gb.bc.A.latticeBasis.col(0).norm())
+            //if (((VectorDimI)point).isZero() || point.cartesian().norm() > bhalfMax*gb.bc.A.latticeBasis.col(0).norm())
+            if (point.cartesian().norm() > bhalfMax*gb.bc.A.latticeBasis.col(0).norm())
                 continue;
             LatticeVector<dim>::modulo(point, latticeVectorsT, shiftT);
             auto cslShift = LatticeVector<dim>((gb.bc.LambdaA * gb.basisT * point).eval(), gb.bc.dscl);

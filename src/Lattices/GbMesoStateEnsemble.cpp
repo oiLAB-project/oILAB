@@ -74,6 +74,7 @@ namespace gbLAB {
 
             count++;
             std::cout << "Constructing mesostate " << count << " of " << constraintsEnsemble.size() << std::endl;
+            std::cout << "Mesostate signature:  " << constraints.transpose() << std::endl;
             mesoStates.emplace_back(GbMesoState<dim>(this->gb, this->axis, bsPairs, ensembleCslVectors, bicrystalConfig));
             if (!filename.empty())
                 mesoStates.back().box(filename + std::to_string(count));
@@ -88,8 +89,10 @@ namespace gbLAB {
         std::deque<Constraints> constraintsEnsemble;
 
         auto tuples= XTuplet::generate_tuples(2,gbs.bShiftPairs.size());
-        for (auto& tuple : tuples)
-            constraintsEnsemble.push_back(tuple);
+        for (auto& tuple : tuples) {
+            if (!(tuple.array()==0).all())
+                constraintsEnsemble.push_back(tuple);
+        }
 
         return constraintsEnsemble;
     }

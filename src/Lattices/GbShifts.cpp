@@ -96,9 +96,7 @@ namespace gbLAB
         VectorDimD shiftT, shiftC;
         shiftT << -0.5, -0.5, -0.5;
         shiftC << -0.5, -FLT_EPSILON, -FLT_EPSILON;
-        //shiftC << -0.5, -1e-6, -1e-6;
         for(auto& point : points) {
-            //if (((VectorDimI)point).isZero() || point.cartesian().norm() > bhalfMax*gb.bc.A.latticeBasis.col(0).norm())
             if (point.cartesian().norm() > bhalfMax*gb.bc.A.latticeBasis.col(0).norm())
                 continue;
             LatticeVector<dim>::modulo(point, latticeVectorsT, shiftT);

@@ -25,7 +25,7 @@ int main()
     int heightScaling= 2;
     int periodScaling= 1;
     int axisScaling= 1;
-    double bScaling= 1.5;
+    double bScaling= 1.4;
 
     /*
     //Sigma 3[1-10](112)

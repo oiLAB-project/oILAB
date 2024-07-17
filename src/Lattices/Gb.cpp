@@ -196,7 +196,10 @@ namespace gbLAB
             VectorDimI integerCoordinates= adj * bc.getLatticeVectorInD(v);
             assert(IntegerMath<IntScalarType>::gcd(integerCoordinates) % det == 0);
             integerCoordinates= integerCoordinates/det;
-            return LatticeVector<dim>(integerCoordinates,T);
+
+            auto temp= LatticeVector<dim>(integerCoordinates,T);
+            if (temp.cartesian().dot(v.cartesian()) < 0) temp= -1*temp;
+            return temp;
         }
         else
             throw(std::runtime_error("The input lattice vector should belong to twice the CSL lattice"));

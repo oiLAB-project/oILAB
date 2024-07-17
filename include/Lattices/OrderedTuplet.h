@@ -16,6 +16,14 @@ namespace gbLAB {
 
         // Define < operator to use std::map<OrderedTuplet,std::vector<int>>
         bool operator<(const OrderedTuplet &rhs) const {
+            for(int i=0; i<dim-1; ++i)
+            {
+                if (this->operator()(i) < rhs(i)) return true;
+                if (rhs(i) < this->operator()(i)) return false;
+            }
+            if (this->operator()(dim-1) < rhs(dim-1)) return true;
+            return false;
+            /*
             if (this->operator()(0) < rhs(0)) return true;
             if (rhs(0) < this->operator()(0)) return false;
             if (this->operator()(1) < rhs(1)) return true;
@@ -24,6 +32,7 @@ namespace gbLAB {
             if (rhs(2) < this->operator()(2)) return false;
             if (this->operator()(3) < rhs(3)) return true;
             return false;
+             */
         }
 
         virtual ~OrderedTuplet() {}

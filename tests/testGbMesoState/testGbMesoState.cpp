@@ -18,6 +18,16 @@ int main()
     /*! [Types] */
 
 
+    // Sigma 29 [0-10](2 0 -5)
+    VectorDimD axis(0,-1,0);
+    double theta= 43.60282*M_PI/180;       // misorientation angle
+    VectorDimD gbNormal(2,0,5);                        // Miller indices
+    int heightScaling= 1;
+    int periodScaling= 1;
+    int axisScaling= 1;
+    double bScaling= 2.0;
+
+    /*
     // Sigma 123 [110](-5 5 14)
     VectorDimD axis(1,1,0);
     double theta= 53.594515175286005615*M_PI/180;       // misorientation angle
@@ -26,6 +36,7 @@ int main()
     int periodScaling= 1;
     int axisScaling= 1;
     double bScaling= 1.4;
+     */
 
     /*
     //Sigma 3[1-10](112)
@@ -66,6 +77,7 @@ int main()
 
         // Define the CSL box vectors
         ReciprocalLatticeVector<3> rAxisA(latticeA.reciprocalLatticeDirection(axis).reciprocalLatticeVector());
+        std::cout << gb.getPeriodVector(rAxisA).cartesian().transpose() << std::endl;
         LatticeVector<3> axisA(gb.bc.A.latticeDirection(axis).latticeVector());
         LatticeVector<3> axisC(gb.bc.getLatticeDirectionInC(axisA).latticeVector());
         std::vector<LatticeVector<3>> cslVectors;
@@ -73,6 +85,7 @@ int main()
         cslVectors.push_back(periodScaling*gb.getPeriodVector(rAxisA));
         cslVectors.push_back(axisScaling*axisC);
 
+        gb.box(cslVectors,1,1,"gb.txt");
         /*
          *  c11 = 1.0439923926128656 eV/angstrom^3
             c12 = 0.7750032094485771 eV/angstrom^3

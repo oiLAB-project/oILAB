@@ -46,7 +46,7 @@ namespace gbLAB {
                                         const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
                                         const std::deque<std::pair<LatticeVector<dim>,VectorDimD>>& bs)
     {
-        auto normal= gb.nA.cartesian();
+        auto normal= gb.nA.cartesian().normalized();
         std::map<OrderedTuplet<dim+1>,VectorDimD> xuPairs;
         std::vector<LatticeVector<dim>> bicrystalBoxVectors(mesoStateCslVectors);
         bicrystalBoxVectors[0]= 2*mesoStateCslVectors[0];
@@ -63,7 +63,7 @@ namespace gbLAB {
             VectorDimD tempx= s-valueu;
 
 
-            if(tempx.dot(normal)<0)
+            if(tempx.dot(normal)<FLT_EPSILON) // tempx is in lattice A
             {
                 // modulo tempx w.r.t the bicrystal box
                 LatticeVector<dim>::modulo(tempx,bicrystalBoxVectors,shift);
@@ -79,9 +79,9 @@ namespace gbLAB {
                 }
 
             }
-            else
+            else    // tempx is in lattice B
             {
-                tempx= tempx + 2*valueu.dot(gb.nA.cartesian().normalized()) * gb.nA.cartesian().normalized();
+                tempx= tempx + 2*valueu.dot(normal) * normal;
                 // modulo tempx w.r.t the bicrystal box
                 LatticeVector<dim>::modulo(tempx,bicrystalBoxVectors,shift);
 
@@ -167,10 +167,10 @@ namespace gbLAB {
                 double height= latticeVector.cartesian().dot(gb.nA.cartesian().normalized());
                 LatticeDirection<dim> latticeVectorInAalongnA(gb.bc.A.latticeDirection(gb.nA.cartesian()));
                 LatticeDirection<dim> dsclDirectionAlongnA(gb.bc.getLatticeDirectionInD(latticeVectorInAalongnA.latticeVector()));
-                LatticeVector<dim> dsclVector= round(abs(2.0*height/dsclDirectionAlongnA.cartesian().norm())) * dsclDirectionAlongnA.latticeVector();
+                int heightFactor= round(abs(2.0*height/dsclDirectionAlongnA.cartesian().norm()));
+                LatticeVector<dim> dsclVector= heightFactor * dsclDirectionAlongnA.latticeVector();
 
-                if (height > 0 && height < bmax) // latticeVector is outside A
-                    //temp << gb.bc.getLatticeVectorInD(gb.bc.B.latticeVector(latticeVector.cartesian() - 2.0 * height * gb.nA.cartesian().normalized())),2;
+                if (height > 0 && heightFactor != 0 && height < bmax) // latticeVector is outside A
                     temp << gb.bc.getLatticeVectorInD(latticeVector)-dsclVector, 2;
             }
             else if (&(latticeVector.lattice) == &(this->gb.bc.B)) {
@@ -178,9 +178,11 @@ namespace gbLAB {
                 double height = latticeVector.cartesian().dot(gb.nB.cartesian().normalized());
                 LatticeDirection<dim> latticeVectorInBalongnB(gb.bc.B.latticeDirection(gb.nB.cartesian()));
                 LatticeDirection<dim> dsclDirectionAlongnB(gb.bc.getLatticeDirectionInD(latticeVectorInBalongnB.latticeVector()));
-                LatticeVector<dim> dsclVector= round(abs(2.0*height/dsclDirectionAlongnB.cartesian().norm())) * dsclDirectionAlongnB.latticeVector();
-                if (height > 0 && height < bmax) // latticeVector is outside B
-                    //temp << gb.bc.getLatticeVectorInD(gb.bc.A.latticeVector(latticeVector.cartesian() - 2.0 * height * gb.nB.cartesian().normalized())),1;
+                int heightFactor= round(abs(2.0*height/dsclDirectionAlongnB.cartesian().norm()));
+                LatticeVector<dim> dsclVector= heightFactor * dsclDirectionAlongnB.latticeVector();
+                if (heightFactor==0)
+                    std::cout << "found:" << latticeVector.cartesian().transpose() << std::endl;
+                if (height > 0 && heightFactor!= 0 && height < bmax) // latticeVector is outside B
                     temp << gb.bc.getLatticeVectorInD(latticeVector)-dsclVector, 1;
             }
 

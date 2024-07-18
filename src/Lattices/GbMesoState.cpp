@@ -180,8 +180,6 @@ namespace gbLAB {
                 LatticeDirection<dim> dsclDirectionAlongnB(gb.bc.getLatticeDirectionInD(latticeVectorInBalongnB.latticeVector()));
                 int heightFactor= round(abs(2.0*height/dsclDirectionAlongnB.cartesian().norm()));
                 LatticeVector<dim> dsclVector= heightFactor * dsclDirectionAlongnB.latticeVector();
-                if (heightFactor==0)
-                    std::cout << "found:" << latticeVector.cartesian().transpose() << std::endl;
                 if (height > 0 && heightFactor!= 0 && height < bmax) // latticeVector is outside B
                     temp << gb.bc.getLatticeVectorInD(latticeVector)-dsclVector, 1;
             }

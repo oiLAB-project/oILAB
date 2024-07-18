@@ -8,6 +8,7 @@ int main()
 {
     /*! [Types] */
     using VectorDimI = LatticeCore<3>::VectorDimI;
+    using VectorDimD = LatticeCore<3>::VectorDimD;
     using IntScalarType = LatticeCore<3>::IntScalarType;
     /*! [Types] */
 
@@ -17,9 +18,10 @@ int main()
     /*! [Lattice] */
 
     /*! [Axis] */
-    const auto axis (TextFileParser("bicrystal_3d.txt").readMatrix<IntScalarType,3,1>("axis",true));
+    const auto axis (TextFileParser("bicrystal_3d.txt").readMatrix<double,3,1>("axis",true));
     ReciprocalLatticeVector<3> rv(axis,lattice);
-    std::cout << rv;
+    std::cout << "Miller indices of the tilt axis plane = " << std::endl;
+    std::cout << rv << std::endl;
     /*! [Axis] */
 
     /*! [Test] */

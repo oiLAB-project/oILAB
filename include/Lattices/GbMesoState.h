@@ -38,7 +38,7 @@ namespace gbLAB {
          */
         static std::map<OrderedTuplet<dim+1>, VectorDimD> get_xuPairs(const Gb<dim>& gb,
                                                                       const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
-                                                                      const std::deque<std::pair<LatticeVector<dim>, VectorDimD>>& bs);
+                                                                      const std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>>& bs);
 
         /*!
          * \brief Returns the Cartesian coordinates of the lattice vectors of the mesostates's bicrystal in the form of a map that maps the
@@ -86,13 +86,13 @@ namespace gbLAB {
          * @param bs a deque of pairs (translation vector \f$\textbf b\f$, shift vector \f$\textbf s\f$) that defines a mesostate. Translating lattice \f$\mathcal A\f$
          *           by \f$\textbf b\f$ results in a CSL shift of \f$\textbf s\f$.
          */
-        const std::deque<std::pair<LatticeVector<dim>, VectorDimD>> bs;
+        const std::deque<std::tuple<LatticeVector<dim>, VectorDimD,int>> bs;
 
          // ensure that b in bs pair belongs to the DSCL vectors and s belongs to the box
          // ensure that the lattice vectors in bicrystalConfig lie entirely in the box
         explicit GbMesoState(const Gb<dim>& gb,
                              const ReciprocalLatticeVector<dim>& axis,
-                             const std::deque<std::pair<LatticeVector<dim>,VectorDimD>>& bs,
+                             const std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>>& bs,
                              const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
                              const BicrystalLatticeVectors& bicrystalConfig);
 

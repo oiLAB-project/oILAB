@@ -9,7 +9,7 @@ namespace gbLAB {
     template<int dim>
     GbMesoState<dim>::GbMesoState(const Gb<dim>& gb,
                                   const ReciprocalLatticeVector<dim>& axis,
-                                  const std::deque<std::pair<LatticeVector<dim>,VectorDimD>>& bs,
+                                  const std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>>& bs,
                                   const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
                                   const BicrystalLatticeVectors& bicrystalConfig) :
           GbContinuum<dim>(getMesoStateGbDomain(mesoStateCslVectors),
@@ -44,7 +44,7 @@ namespace gbLAB {
     std::map<OrderedTuplet<dim+1>, typename GbMesoState<dim>::VectorDimD>
           GbMesoState<dim>::get_xuPairs(const Gb<dim>& gb,
                                         const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
-                                        const std::deque<std::pair<LatticeVector<dim>,VectorDimD>>& bs)
+                                        const std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>>& bs)
     {
         auto normal= gb.nA.cartesian().normalized();
         std::map<OrderedTuplet<dim+1>,VectorDimD> xuPairs;
@@ -54,7 +54,7 @@ namespace gbLAB {
         shift << -0.5-FLT_EPSILON,-FLT_EPSILON,-FLT_EPSILON;
 
 
-        for(const auto& [b,s] : bs)
+        for(const auto& [b,s,include] : bs)
         {
             OrderedTuplet<dim+1> keyx;
             VectorDimD valueu;
@@ -156,8 +156,8 @@ namespace gbLAB {
         std::vector<VectorDimD> configDscl;
 
         double bmax= 0.0;
-        for(const auto& elem : bs)
-            bmax= max(bmax,elem.first.cartesian().norm());
+        for(const auto& [b,s,include] : bs)
+            bmax= max(bmax,b.cartesian().norm());
 
         for (const auto &latticeVector: config) {
             VectorDimD x;
@@ -194,6 +194,16 @@ namespace gbLAB {
             else
                 x = latticeVector.cartesian() + this->displacement(temp);
 
+            // ignore x if it occupies a deleted CSL position
+            bool ignore= false;
+            for(const auto& [b,s, include] : bs)
+                if (include == 2 && (s-x).norm() < FLT_EPSILON) {
+                    ignore = true;
+                    break;
+                }
+            if (ignore==true)
+                continue;
+
 
             if (&(latticeVector.lattice) == &(this->gb.bc.A) && x.dot(this->gb.nA.cartesian().normalized()) <= FLT_EPSILON)
             //if (&(latticeVector.lattice) == &(this->gb.bc.A))
@@ -208,9 +218,6 @@ namespace gbLAB {
                 deformedConfigB.push_back(x);
             }
 
-            // insert dscl atoms
-            if (&(latticeVector.lattice) == &(this->gb.bc.dscl))
-                configDscl.push_back(latticeVector.cartesian());
         }
 
 

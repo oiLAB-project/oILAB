@@ -21,11 +21,11 @@ int main()
     // Sigma 29 [0-10](2 0 -5)
     VectorDimD axis(0,-1,0);
     double theta= 43.60282*M_PI/180;       // misorientation angle
-    VectorDimD gbNormal(2,0,5);                        // Miller indices
+    VectorDimD gbNormal(2,0,5);            // Miller indices
     int heightScaling= 1;
     int periodScaling= 1;
     int axisScaling= 1;
-    double bScaling= 2.0;
+    double bScaling= 1.0;
 
     /*
     // Sigma 123 [110](-5 5 14)

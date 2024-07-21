@@ -63,12 +63,12 @@ namespace gbLAB {
         int count= -1;
         for(const Constraints& constraints : constraintsEnsemble)
         {
-            std::deque<std::pair<LatticeVector<dim>,VectorDimD>> bsPairs;
+            std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>> bsPairs;
             for(int i=0; i<this->bShiftPairs.size(); ++i) {
-                if (constraints(i) == 1) {
+                if (constraints(i) == 1 || constraints(i) == 2) {
                     const auto& b= this->bShiftPairs[i].first;
                     auto shift= this->bShiftPairs[i].second;
-                    bsPairs.push_back(std::make_pair(b,shift));
+                    bsPairs.push_back(std::make_tuple(b,shift,constraints(i)));
                 }
             }
 
@@ -88,7 +88,7 @@ namespace gbLAB {
     {
         std::deque<Constraints> constraintsEnsemble;
 
-        auto tuples= XTuplet::generate_tuples(2,gbs.bShiftPairs.size());
+        auto tuples= XTuplet::generate_tuples(3,gbs.bShiftPairs.size());
         for (auto& tuple : tuples) {
             if (!(tuple.array()==0).all())
                 constraintsEnsemble.push_back(tuple);

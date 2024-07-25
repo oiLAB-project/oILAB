@@ -86,12 +86,12 @@ namespace gbLAB {
         for(const Constraints& constraints : constraintsEnsemble)
         {
             std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>> bsPairs(bsPairsFromConstraints(this->bShiftPairs,constraints));
-            count++;
-            std::cout << "Constructing mesostate " << count << " of " << constraintsEnsemble.size() << std::endl;
-            std::cout << "Mesostate signature:  " << constraints.transpose() << std::endl;
             try {
                 mesoStates.emplace_back(
                         GbMesoState<dim>(this->gb, this->axis, bsPairs, ensembleCslVectors, bicrystalConfig));
+                count++;
+                std::cout << "Constructing mesostate " << count << " of " << constraintsEnsemble.size() << std::endl;
+                std::cout << "Mesostate signature:  " << constraints.transpose() << std::endl;
             if (!filename.empty())
                 mesoStates.back().box(filename + std::to_string(count));
             }

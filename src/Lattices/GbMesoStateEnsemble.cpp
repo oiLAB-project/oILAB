@@ -89,9 +89,16 @@ namespace gbLAB {
             count++;
             std::cout << "Constructing mesostate " << count << " of " << constraintsEnsemble.size() << std::endl;
             std::cout << "Mesostate signature:  " << constraints.transpose() << std::endl;
-            mesoStates.emplace_back(GbMesoState<dim>(this->gb, this->axis, bsPairs, ensembleCslVectors, bicrystalConfig));
+            try {
+                mesoStates.emplace_back(
+                        GbMesoState<dim>(this->gb, this->axis, bsPairs, ensembleCslVectors, bicrystalConfig));
             if (!filename.empty())
                 mesoStates.back().box(filename + std::to_string(count));
+            }
+            catch(std::runtime_error& e)
+            {
+                std::cout << e.what() << std::endl;
+            }
         }
         return mesoStates;
     }
@@ -170,7 +177,7 @@ namespace gbLAB {
                 }
                 catch(std::runtime_error& e)
                 {
-                    std::cout << e.what() << std::endl;
+                    //throw(e);
                 }
             }
             GbMesoState<dim> new_ms(this->gb,

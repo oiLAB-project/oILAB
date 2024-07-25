@@ -34,7 +34,7 @@ namespace gbLAB {
     }
     catch(std::runtime_error& e)
     {
-        throw(std::runtime_error("GB Mesostate construction failed"));
+        //throw(std::runtime_error("GB Mesostate construction failed"));
     }
 
 

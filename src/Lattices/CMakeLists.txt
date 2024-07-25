@@ -18,4 +18,6 @@ add_library(oILAB SHARED    BiCrystal.cpp
                             GbMesoState.cpp
                             GbMesoStateEnsemble.cpp)
 
+target_link_libraries(oILAB PRIVATE Python3::Python)
+
 

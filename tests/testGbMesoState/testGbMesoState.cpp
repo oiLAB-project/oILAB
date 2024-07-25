@@ -25,7 +25,7 @@ int main()
     int heightScaling= 1;
     int periodScaling= 1;
     int axisScaling= 1;
-    double bScaling= 1.0;
+    double bScaling= 2.0;
 
     /*
     // Sigma 123 [110](-5 5 14)
@@ -104,12 +104,17 @@ int main()
 
 
         GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, bScaling);
-        ensemble.collectMesoStates("ms");
+        //ensemble.collectMesoStates("ms");
+
+        // temperature = 0.2;
+        // resetEvery = 100 - resets the Monte Carlo every 100 accepted states to avoid getting stuck in a metastable state
+        // maxIterations = 20000 - total number of Monte Carlo steps
+        ensemble.evolveMesoStates(0.2,100,20000,"ms");
 
     }
     catch(std::runtime_error& e)
     {
-        std::cout << e.what() << std::endl;
+        //std::cout << e.what() << std::endl;
     }
     return 0;
 }

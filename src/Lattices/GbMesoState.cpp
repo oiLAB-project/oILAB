@@ -2,6 +2,8 @@
 // Created by Nikhil Chandra Admal on 5/27/24.
 //
 
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
 #include <GbMesoState.h>
 #include <iostream>
 
@@ -11,7 +13,8 @@ namespace gbLAB {
                                   const ReciprocalLatticeVector<dim>& axis,
                                   const std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>>& bs,
                                   const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
-                                  const BicrystalLatticeVectors& bicrystalConfig) :
+                                  const BicrystalLatticeVectors& bicrystalConfig)
+                                  try :
           GbContinuum<dim>(getMesoStateGbDomain(mesoStateCslVectors),
                            get_xuPairs(gb,mesoStateCslVectors,bs),
                            discretize(mesoStateCslVectors,gb),
@@ -28,6 +31,10 @@ namespace gbLAB {
         for(const auto& pair : xuPairs)
             std::cout << (pair.second-this->displacement(pair.first)).norm() << std::endl;
             */
+    }
+    catch(std::runtime_error& e)
+    {
+        throw(std::runtime_error("GB Mesostate construction failed"));
     }
 
 
@@ -99,6 +106,8 @@ namespace gbLAB {
             }
             xuPairs[keyx]=valueu;
         }
+        if(xuPairs.size() != bs.size())
+            throw(std::runtime_error("Clash in constraints."));
         return xuPairs;
     }
 
@@ -137,7 +146,17 @@ namespace gbLAB {
     {
         // form box
         // run a python script to calculate energy
-        return 0.0;
+        box("temp");
+        PyObject* pyModuleString = PyUnicode_FromString((char*)"lammps");
+        PyObject* pyModule = PyImport_Import(pyModuleString);
+        PyObject* pDict = PyModule_GetDict(pyModule);
+        PyObject* pyFunction= PyDict_GetItemString(pDict, (char*)"energy");
+        PyObject* pyEnergy= PyObject_CallObject(pyFunction,NULL);
+        double energy= PyFloat_AsDouble(pyEnergy);
+        Py_DECREF(pyModule);
+        Py_DECREF(pyModuleString);
+
+        return energy;
     }
 
     template<int dim>
@@ -196,11 +215,16 @@ namespace gbLAB {
 
             // ignore x if it occupies a deleted CSL position
             bool ignore= false;
-            for(const auto& [b,s, include] : bs)
-                if (include == 2 && (s-x).norm() < FLT_EPSILON) {
+            for(const auto& [b,s, include] : bs) {
+                VectorDimD cslShift;
+                cslShift << -0.5, -FLT_EPSILON, -FLT_EPSILON;
+                VectorDimD xModulo= x;
+                LatticeVector<dim>::modulo(xModulo, boxVectors, cslShift);
+                if (include == 2 && (s - xModulo).norm() < FLT_EPSILON) {
                     ignore = true;
                     break;
                 }
+            }
             if (ignore==true)
                 continue;
 

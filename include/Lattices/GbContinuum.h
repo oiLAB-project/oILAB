@@ -89,7 +89,8 @@ namespace gbLAB {
         GbContinuum(const Eigen::Matrix<double, dim,dim-1>& domain,
                     const std::map<OrderedTuplet<dim+1>, VectorDimD>& xuPairs,
                     const std::array<Eigen::Index,dim-1>& n,
-                    const std::map<OrderedTuplet<dim+1>,VectorDimD>& atoms);
+                    const std::map<OrderedTuplet<dim+1>,VectorDimD>& atoms,
+                    const bool& verbosity=false);
 
         VectorDimD displacement(const OrderedTuplet<dim+1>& x) const;
 

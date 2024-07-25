@@ -96,6 +96,11 @@ namespace gbLAB {
                              const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
                              const BicrystalLatticeVectors& bicrystalConfig);
 
+        /*!
+         * \brief Calculate the energy of a mesostate using lammps
+         * @param ms - mesostate
+         * @return Energy of the mesostate
+         */
         double energy() const;
 
         /*! This function outputs/prints a grain boundary mesostate

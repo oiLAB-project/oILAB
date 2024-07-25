@@ -34,6 +34,9 @@ namespace gbLAB {
         static BicrystalLatticeVectors getBicrystalConfig(const GbShifts<dim>& gbs,
                                                           std::vector<LatticeVector<dim>>& ensembleCslVectors);
                                                           //const Eigen::Vector<int,dim>& scales);
+
+        static std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>> bsPairsFromConstraints(const std::vector<std::pair<LatticeVector<dim>, VectorDimD>>& bShiftPairs,
+                                                                                                const Constraints& constraints);
     public:
         /*!
          * CSL vectors that define the ensemble's grain boundary region
@@ -45,25 +48,28 @@ namespace gbLAB {
          */
         BicrystalLatticeVectors bicrystalConfig;
 
-        /*!
-         * A collection of mesostates that form the ensemble
-         */
-        std::deque<Constraints> constraintsEnsemble;
 
         GbMesoStateEnsemble(const Gb<dim>& gb,
                             const ReciprocalLatticeVector<dim>& axis,
                             std::vector<LatticeVector<dim>>& ensembleCslVectors,
                             const double& bhalfMax);
-//                            const Eigen::Vector<int,dim>& scales= Eigen::Vector<int,dim>::Ones());
 
         /*!
          * \brief Constructs an ensemble of mesostates
-         * @param gbs - a const reference to GBShifts<dim> object
-         * @param scaledGbCslVectors - the CSL vectors of the ensemble's grain boundary
-         * @param bicrystalConfig - Lattice vectors of lattices \f$\mathcal A\f$ and \f$\mathcal B\f$
+         * @param filename-
          * @return A deque of mesostates
          */
         std::deque<GbMesoState<dim>> collectMesoStates(const std::string& filename="") const;
+
+
+        /*!
+         * \brief Evove mesostates using a Monte Carlo algorithm
+         * @param filename-
+         * @return A deque of mesostates
+         */
+        std::map<Constraints,GbMesoState<dim>> evolveMesoStates(const double& temperature, const int& resetEvery, const int& maxIterations, const std::string& filename="") const;
+
+
 
     };
 

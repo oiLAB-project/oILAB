@@ -12,7 +12,8 @@ namespace gbLAB {
     GbContinuum<dim>::GbContinuum(const Eigen::Matrix<double,dim,dim-1>& domain,
                                   const std::map<OrderedTuplet<dim+1>,VectorDimD>& xuPairs,
                                   const std::array<Eigen::Index,dim-1>& n,
-                                  const std::map<OrderedTuplet<dim+1>,VectorDimD>& atoms):
+                                  const std::map<OrderedTuplet<dim+1>,VectorDimD>& atoms,
+                                  const bool& verbosity):
         gbDomain(domain),
         xuPairs(xuPairs),
         n(n),
@@ -20,21 +21,25 @@ namespace gbLAB {
         b(bbhat.first),
         bhat(bbhat.second)
    {
-       std::cout << "------------------------------------------------------------------------------" << std::endl;
        uAverage.setZero();
-       for(const auto& [x,u] : xuPairs) {
-           uAverage= uAverage + u;
+       for (const auto &[x, u]: xuPairs) {
+           uAverage = uAverage + u;
        }
-       if (xuPairs.size() !=0)
-           uAverage= uAverage/xuPairs.size();
+       if (xuPairs.size() != 0)
+           uAverage = uAverage / xuPairs.size();
 
-       std::cout << "Constraints: " << std::endl;
-       for(const auto& [x,u] : xuPairs) {
-           std::cout << "x = " << atoms.at(x).transpose() << "; displacement = " << u.transpose() << std::endl;
-           if( (u - displacement(x) - uAverage).norm() > FLT_EPSILON )
+       if (verbosity) {
+           std::cout << "------------------------------------------------------------------------------" << std::endl;
+           std::cout << "Constraints: " << std::endl;
+       }
+       for (const auto &[x, u]: xuPairs) {
+           if (verbosity)
+               std::cout << "x = " << atoms.at(x).transpose() << "; displacement = " << u.transpose() << std::endl;
+           if ((u - displacement(x) - uAverage).norm() > FLT_EPSILON)
                throw std::runtime_error("GBContinuum construction failed - unable to impose constraints.");
        }
-       std::cout << std::endl;
+       if (verbosity)
+           std::cout << std::endl;
 
    }
 

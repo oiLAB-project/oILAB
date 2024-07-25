@@ -107,6 +107,15 @@ namespace gbLAB {
             return results;
         }
 
+        // Define < operator to use std::map<OrderedTuplet,std::vector<int>>
+        bool operator<(const XTuplet& rhs) const {
+            for (int i = 0; i < rhs.size()-1; ++i) {
+                if (this->operator()(i) < rhs(i)) return true;
+                if (rhs(i) < this->operator()(i)) return false;
+            }
+            if (this->operator()(rhs.size()- 1) < rhs(rhs.size()- 1)) return true;
+            return false;
+        }
 
 
     };

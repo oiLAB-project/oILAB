@@ -149,6 +149,12 @@ namespace gbLAB {
         box("temp");
         PyObject* pyModuleString = PyUnicode_FromString((char*)"lammps");
         PyObject* pyModule = PyImport_Import(pyModuleString);
+        if (pyModule == nullptr)
+        {
+            PyErr_Print();
+            std::cout << "cannot import python script" << std::endl;
+            std::exit(0);
+        }
         PyObject* pDict = PyModule_GetDict(pyModule);
         PyObject* pyFunction= PyDict_GetItemString(pDict, (char*)"energy");
         PyObject* pyEnergy= PyObject_CallObject(pyFunction,NULL);

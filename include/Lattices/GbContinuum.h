@@ -95,6 +95,12 @@ namespace gbLAB {
         VectorDimD displacement(const OrderedTuplet<dim+1>& x) const;
 
         VectorDimD displacement(const VectorDimD& x) const;
+
+        static void reset(){
+            HhatInvComponents.clear();
+            piPeriodicFunctions.clear();
+            pihatLatticeFunctions.clear();
+        }
     };
 
 

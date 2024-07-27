@@ -87,20 +87,34 @@ namespace gbLAB {
         {
             std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>> bsPairs(bsPairsFromConstraints(this->bShiftPairs,constraints));
             try {
-                mesoStates.emplace_back(
-                        GbMesoState<dim>(this->gb, this->axis, bsPairs, ensembleCslVectors, bicrystalConfig));
+                mesoStates.emplace_back(constructMesoState(constraints));
                 count++;
                 std::cout << "Constructing mesostate " << count << " of " << constraintsEnsemble.size() << std::endl;
                 std::cout << "Mesostate signature:  " << constraints.transpose() << std::endl;
-            if (!filename.empty())
-                mesoStates.back().box(filename + std::to_string(count));
+                if (!filename.empty())
+                    mesoStates.back().box(filename + std::to_string(count));
             }
             catch(std::runtime_error& e)
             {
                 std::cout << e.what() << std::endl;
             }
+
         }
         return mesoStates;
+    }
+
+    /*-------------------------------------*/
+    template<int dim>
+    GbMesoState<dim> GbMesoStateEnsemble<dim>::constructMesoState(const Constraints& constraints) const {
+        std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>> bsPairs(bsPairsFromConstraints(this->bShiftPairs,constraints));
+        try {
+            GbMesoState<dim> mesostate(this->gb, this->axis, bsPairs, ensembleCslVectors, bicrystalConfig);
+            return mesostate;
+        }
+        catch(std::runtime_error& e)
+        {
+            throw(e);
+        }
     }
 
     /*-------------------------------------*/

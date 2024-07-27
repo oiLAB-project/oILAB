@@ -109,7 +109,20 @@ int main()
         // temperature = 0.2;
         // resetEvery = 100 - resets the Monte Carlo every 100 accepted states to avoid getting stuck in a metastable state
         // maxIterations = 20000 - total number of Monte Carlo steps
-        ensemble.evolveMesoStates(0.2,100,20000,"ms");
+        const auto& constraintsMesostateMap= ensemble.evolveMesoStates(0.3,1000,20000,"ms");
+
+        /* uncomment if we intend to construct systems with increased height
+        cslVectors[0]= 5*cslVectors[0];
+        GbMesoStateEnsemble<3> newEnsemble(gb, rAxisA, cslVectors, bScaling);
+        int count= 0;
+        GbContinuum<3>::reset();
+        for(const auto& [constraints,mesostate]: constraintsMesostateMap)
+        {
+            auto largeMesostate= newEnsemble.constructMesoState(constraints);
+            largeMesostate.box("msLarge" + std::to_string(count));
+            count++;
+        }
+         */
 
     }
     catch(std::runtime_error& e)

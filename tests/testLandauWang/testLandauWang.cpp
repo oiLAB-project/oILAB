@@ -28,7 +28,7 @@ int main()
     int heightScaling= 1;
     int periodScaling= 1;
     int axisScaling= 1;
-    double bScaling= 2.0;
+    double bScaling= 1.5;
 
     /*
     // Sigma 123 [110](-5 5 14)
@@ -107,40 +107,25 @@ int main()
 
         GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, bScaling);
 
-        //ensemble.collectMesoStates("ms");
+        /*
+        auto mesostates= ensemble.collectMesoStates();
+        for (const auto& mesostate : mesostates) {
+            auto [density,energy]= mesostate.densityEnergy();
+            std::cout << "density = " << density << "; energy = " << energy << std::endl;
+        }
+         */
 
-        // temperature = 0.2;
-        // resetEvery = 1000 - resets the Monte Carlo every 100 accepted states to avoid getting stuck in a metastable state
-        // maxIterations = 20000 - total number of Monte Carlo steps
-
-        /* Standard Monte Carlo
-        const auto& constraintsMesostateMap= ensemble.evolveMesoStates(0.3,1000,20000,"ms");
-        StandardMC<XTuplet> standardMC(2000.0);
-        MonteCarlo<XTuplet,GbMesoState<3>,GbMesoStateEnsemble<3>,StandardMC<XTuplet>> mc(ensemble,standardMC);
-        */
-
-        LandauWangTP<XTuplet,GbMesoState<3>> landauWang(1.4, 20, 200);
+        //LandauWangTP<XTuplet,GbMesoState<3>> landauWang(1.51, 20,30,0.78,0.96,9);
+        LandauWangTP<XTuplet,GbMesoState<3>> landauWang(1.51, 20,30);
         MonteCarlo<XTuplet, GbMesoState<3>, GbMesoStateEnsemble<3>, LandauWangTP<XTuplet,GbMesoState<3>>> mc(ensemble, landauWang);
-        for (int i=0; i<25; ++i) {
+        for (int i=0; i<50; ++i) {
             //const auto& constraintsMesostateMap= mc.evolve(1000,20000,"ms");
-            mc.evolve(10);
+            mc.evolve(10000);
             std::ofstream outputFileHandle;
             outputFileHandle.open("theta"+std::to_string(i)+".txt");
             outputFileHandle << landauWang.theta;
         }
 
-        /* uncomment if we intend to construct systems with increased height
-        cslVectors[0]= 5*cslVectors[0];
-        GbMesoStateEnsemble<3> newEnsemble(gb, rAxisA, cslVectors, bScaling);
-        int count= 0;
-        GbContinuum<3>::reset();
-        for(const auto& [constraints,mesostate]: constraintsMesostateMap)
-        {
-            auto largeMesostate= newEnsemble.constructMesoState(constraints);
-            largeMesostate.box("msLarge" + std::to_string(count));
-            count++;
-        }
-         */
 
     }
     catch(std::runtime_error& e)

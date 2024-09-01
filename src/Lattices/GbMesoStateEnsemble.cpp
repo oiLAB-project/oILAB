@@ -2,7 +2,6 @@
 // Created by Nikhil Chandra Admal on 5/26/24.
 //
 #define PY_SSIZE_T_CLEAN
-#include <Python.h>
 #include <GbMesoStateEnsemble.h>
 #include <randomInteger.h>
 
@@ -121,9 +120,6 @@ namespace gbLAB {
     template<int dim>
     std::map<typename GbMesoStateEnsemble<dim>::Constraints, GbMesoState<dim>> GbMesoStateEnsemble<dim>::evolveMesoStates(const double& temperature, const int& resetEvery, const int& maxIterations, const std::string& filename) const
     {
-        setenv("PYTHONPATH",".",1);
-        Py_Initialize();
-
         std::map<Constraints,GbMesoState<dim>> mesoStates;
         std::map<Constraints,double> visitedStatesEnergy;
 
@@ -136,7 +132,9 @@ namespace gbLAB {
                                     bsPairsFromConstraints(this->bShiftPairs,initialConstraints),
                                     ensembleCslVectors,
                                     bicrystalConfig);
-        double newEnergy= initial_ms.energy();
+        //double newEnergy= initial_ms.energy();
+        std::pair<double, double> newDensityEnergyPair= initial_ms.densityEnergy();
+        double newEnergy= newDensityEnergyPair.second;
         int count= 0;
         int mesoStateCount= 0;
         double currentEnergy= 0.0;
@@ -166,10 +164,14 @@ namespace gbLAB {
             }
 
             // new mesostate construction
+            bool randomize= false;
+            if (count % resetEvery == 0 && count != 0) {
+                std::cout << "Starting over using ramdomized constraints" << std::endl;
+                randomize= true;
+            }
+            /*
             Constraints newConstraints(this->bShiftPairs.size());
             bool msConstructionSuccess= false;
-            if (count % resetEvery == 0 && count != 0)
-                std::cout << "Starting over using ramdomized constraints" << std::endl;
             while(!msConstructionSuccess) {
                 try {
                     newConstraints= currentConstraints;
@@ -199,11 +201,21 @@ namespace gbLAB {
                                     bsPairsFromConstraints(this->bShiftPairs, newConstraints),
                                     ensembleCslVectors,
                                     bicrystalConfig);
+                                    */
+            /*
+            auto newConstraintsMesoStatePair= sampleNewMesoState(currentConstraints,randomize);
+            Constraints newConstraints(newConstraintsMesoStatePair.first);
+            GbMesoState<dim> new_ms(newConstraintsMesoStatePair.second);
+             */
+            Constraints newConstraints(sampleNewState(currentConstraints,randomize));
+            GbMesoState<dim> new_ms(constructMesoState(newConstraints));
 
             if (visitedStatesEnergy.find(newConstraints) != visitedStatesEnergy.end())
                 newEnergy = visitedStatesEnergy.at(newConstraints);
             else {
-                newEnergy = new_ms.energy();
+                //newEnergy = new_ms.energy();
+                newDensityEnergyPair= initial_ms.densityEnergy();
+                newEnergy= newDensityEnergyPair.second;
                 visitedStatesEnergy[newConstraints] = newEnergy;
             }
 
@@ -216,9 +228,6 @@ namespace gbLAB {
                 transition = true;
             }
         }
-
-
-        Py_FinalizeEx();
         return mesoStates;
     }
     /*-------------------------------------*/
@@ -235,6 +244,49 @@ namespace gbLAB {
 
         return constraintsEnsemble;
     }
+
+    /*-------------------------------------*/
+    template<int dim>
+    typename GbMesoStateEnsemble<dim>::Constraints GbMesoStateEnsemble<dim>::sampleNewState(const Constraints& currentConstraints,
+                                                                                            const bool& randomize) const
+    {
+        // new mesostate construction
+        Constraints newConstraints(this->bShiftPairs.size());
+        bool msConstructionSuccess = false;
+        while (!msConstructionSuccess) {
+            try {
+                newConstraints = currentConstraints;
+                // alter the constraints
+                if (randomize){
+                    for (auto &elem: newConstraints)
+                        elem = random<int>(0, 2);
+                } else {
+                    int randomSpot = random<int>(0, this->bShiftPairs.size() - 1);
+                    newConstraints(randomSpot) = random<int>(0, 2);
+                }
+                GbMesoState<dim> temp(this->gb,
+                                      this->axis,
+                                      bsPairsFromConstraints(this->bShiftPairs, newConstraints),
+                                      ensembleCslVectors,
+                                      bicrystalConfig);
+                msConstructionSuccess = true;
+            }
+            catch (std::runtime_error &e) {
+                //throw(e);
+            }
+        }
+        return newConstraints;
+    }
+
+        /*-------------------------------------*/
+    template<int dim>
+    typename GbMesoStateEnsemble<dim>::Constraints GbMesoStateEnsemble<dim>::initializeState() const
+    {
+        Constraints initialConstraints(this->bShiftPairs.size());
+        initialConstraints.setZero();
+        return initialConstraints;
+    }
+
 
     template class GbMesoStateEnsemble<3>;
 }

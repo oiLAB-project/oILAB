@@ -11,6 +11,7 @@ project(oILAB VERSION 1.0)
 # Include directories
 include_directories(${PROJECT_SOURCE_DIR}/include/IO)
 include_directories(${PROJECT_SOURCE_DIR}/include/Lattices)
+include_directories(${PROJECT_SOURCE_DIR}/include/MonteCarlo)
 include_directories(${PROJECT_SOURCE_DIR}/include/Math)
 include_directories(${PROJECT_SOURCE_DIR}/include/Utilities)
 include_directories(${PROJECT_SOURCE_DIR}/include/Visualization)

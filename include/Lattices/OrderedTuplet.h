@@ -5,6 +5,7 @@
 #ifndef OILAB_ORDEREDTUPLET_H
 #define OILAB_ORDEREDTUPLET_H
 #include<Eigen/Eigen>
+#include<LatticeCore.h>
 
 namespace gbLAB {
     template <int dim>
@@ -116,10 +117,11 @@ namespace gbLAB {
             if (this->operator()(rhs.size()- 1) < rhs(rhs.size()- 1)) return true;
             return false;
         }
-
-
     };
 
+    static std::basic_ostream<char>& operator<<(std::basic_ostream<char>& s, const XTuplet& m) {
+        return s << m.transpose() ;
+    }
 }
 
 #endif //OILAB_ORDEREDTUPLET_H

@@ -142,10 +142,17 @@ namespace gbLAB {
 
     /*-------------------------------------*/
     template<int dim>
-    double GbMesoState<dim>::energy() const
+    std::pair<double,double> GbMesoState<dim>::densityEnergy() const
     {
         // form box
         // run a python script to calculate energy
+
+        setenv("PYTHONPATH", ".", 1);
+        if(!Py_IsInitialized()) {
+            std::cout << "Initializing Python Interpreter" << std::endl;
+            Py_Initialize();
+        }
+
         box("temp");
         PyObject* pyModuleString = PyUnicode_FromString((char*)"lammps");
         PyObject* pyModule = PyImport_Import(pyModuleString);
@@ -157,12 +164,16 @@ namespace gbLAB {
         }
         PyObject* pDict = PyModule_GetDict(pyModule);
         PyObject* pyFunction= PyDict_GetItemString(pDict, (char*)"energy");
-        PyObject* pyEnergy= PyObject_CallObject(pyFunction,NULL);
-        double energy= PyFloat_AsDouble(pyEnergy);
+        //PyObject* pyEnergy= PyObject_CallObject(pyFunction,NULL);
+        PyObject* pyValue= PyObject_CallObject(pyFunction,NULL);
+        double energy, density;
+        PyArg_ParseTuple(pyValue, "dd", &energy, &density);
+        //double energy= PyFloat_AsDouble(pyEnergy);
+
         Py_DECREF(pyModule);
         Py_DECREF(pyModuleString);
 
-        return energy;
+        return std::make_pair(density,energy);
     }
 
     template<int dim>

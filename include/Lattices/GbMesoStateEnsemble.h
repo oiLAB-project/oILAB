@@ -9,13 +9,15 @@
 #include <deque>
 #include <GbMesoState.h>
 #include <GbContinuum.h>
+#include <Ensemble.h>
 
 namespace gbLAB {
     /*! Class template that aids in the construction of an ensemble of GB mesostates.
      *
      */
     template<int dim>
-    class GbMesoStateEnsemble : public GbShifts<dim>
+    class GbMesoStateEnsemble : public GbShifts<dim>,
+                                public Ensemble<XTuplet,GbMesoState<dim>,GbMesoStateEnsemble<dim>>
     {
         using VectorDimD = typename LatticeCore<dim>::VectorDimD;
         using BicrystalLatticeVectors= std::vector<LatticeVector<dim>>;
@@ -71,6 +73,11 @@ namespace gbLAB {
 
 
         GbMesoState<dim> constructMesoState(const Constraints& constraints) const;
+
+        Constraints sampleNewState(const Constraints& currentConstraints,
+                                   const bool& randomize= false) const;
+
+        Constraints initializeState() const;
 
     };
 

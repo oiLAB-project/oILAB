@@ -101,7 +101,7 @@ namespace gbLAB {
          * @param ms - mesostate
          * @return Energy of the mesostate
          */
-        double energy() const;
+        std::pair<double,double> densityEnergy() const;
 
         /*! This function outputs/prints a grain boundary mesostate
          * @param filename name of the file to be written to

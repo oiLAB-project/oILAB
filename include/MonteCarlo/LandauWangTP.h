@@ -7,6 +7,7 @@
 #include<EvolutionAlgorithm.h>
 #include<vector>
 #include<Eigen/Eigen>
+#include <fstream>
 
 namespace gbLAB {
 
@@ -15,41 +16,42 @@ namespace gbLAB {
     template<typename StateType, typename SystemType>
     class LandauWangTP : public EvolutionAlgorithm<StateType, SystemType, LandauWangTP<StateType,SystemType>> {
     private:
-        const int numberOfEnergyStates, numberOfDensityStates;
-        const std::tuple<double,double,int> energyLimits, densityLimits;
-
-        int countLW;
         bool exponentialRegime;
         double f;
+        int countLW;
         double currentEnergy, currentDensity;
+        const std::tuple<double,double,int> energyLimits, densityLimits;
+        const int numberOfEnergyStates, numberOfDensityStates;
         Eigen::MatrixXi histogram;
+        std::map<StateType, std::pair<double,double>> stateDensityEnergyMap;
+        std::ofstream spectrumFile;
+
 
         bool histogramIsFlat(const double& c) const;
+
         static std::tuple<int,int,bool> spectrumIndex(const double& energy,
                                                       const double& density,
                                                       const std::tuple<double,double,int>& energyLimits,
                                                       const std::tuple<double,double,int>& densityLimits);
-        static Eigen::Matrix<bool,Eigen::Dynamic,Eigen::Dynamic> getMask(const std::tuple<double,double,int>& energyLimits,
-                                                                         const std::tuple<double,double,int>& densityLimits,
-                                                                         const std::string& filename);
+        static Eigen::Matrix<bool,Eigen::Dynamic,Eigen::Dynamic> getMask(const int& numberOfEnergyStates,
+                                                                         const int& numberOfDensityStates);
+        static std::map<StateType,std::pair<double,double>> getStateDensityEnergyMap();
+        static Eigen::MatrixXd getTheta(const Eigen::Matrix<bool,Eigen::Dynamic,Eigen::Dynamic>& mask, double& f);
 
     public:
-        Eigen::MatrixXd theta;
-        std::map<StateType, std::pair<double,double>> stateDensityEnergyMap;
         Eigen::Matrix<bool,Eigen::Dynamic,Eigen::Dynamic> mask;
+        Eigen::MatrixXd theta;
 
 
-        LandauWangTP(const double& minEnergy,
-                     const double& maxEnergy,
-                     const int& numberOfEnergyStates,
-                     const std::string& filename="");
+        explicit LandauWangTP(const std::tuple<double,double,int>& energyLimits);
 
-        LandauWangTP(const double& minEnergy, const double& maxEnergy, const int& numberOfEnergyStates,
-                     const double& minDensity, const double& maxDensity, const int& numberOfDensityStates,
-                     const std::string& filename="");
+        LandauWangTP(const std::tuple<double,double,int>& energyLimits,
+                     const std::tuple<double,double,int>& densityLimits);
 
         double probability(const std::pair<StateType,SystemType>& proposedState,
                            const std::pair<StateType,SystemType>& currentState);
+
+        void writeTheta(const std::string& filename) const;
 
 
     };

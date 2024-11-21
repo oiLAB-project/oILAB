@@ -21,6 +21,7 @@ int main()
     /*! [Types] */
 
 
+    /*
     // Sigma 29 [0-10](2 0 -5)
     VectorDimD axis(0,-1,0);
     double theta= 43.60282*M_PI/180;       // misorientation angle
@@ -28,6 +29,16 @@ int main()
     int heightScaling= 1;
     int periodScaling= 1;
     int axisScaling= 1;
+    double bScaling= 2.0;
+     */
+
+    // Sigma 17
+    VectorDimD axis(0,0,1);
+    double theta= 28.072486935852964507*M_PI/180;       // misorientation angle
+    VectorDimD gbNormal(-4,1,0);            // Miller indices
+    int heightScaling= 1;
+    int periodScaling= 1;
+    int axisScaling= 4;
     double bScaling= 2.0;
 
     /*
@@ -115,15 +126,13 @@ int main()
         }
          */
 
-        //LandauWangTP<XTuplet,GbMesoState<3>> landauWang(0, 20,30,0.78,0.96,9,"spectrum.txt");
-        LandauWangTP<XTuplet,GbMesoState<3>> landauWang(0, 20,30,0.70,1.0,10,"spectrum.txt");
+        //LandauWangTP<XTuplet,GbMesoState<3>> landauWang({0,20,30},{0.7,1.0,10});
+        LandauWangTP<XTuplet,GbMesoState<3>> landauWang({0,20,30},{-40,16,57});
         MonteCarlo<XTuplet, GbMesoState<3>, GbMesoStateEnsemble<3>, LandauWangTP<XTuplet,GbMesoState<3>>> mc(ensemble, landauWang);
         for (int i=0; i<500; ++i) {
             //const auto& constraintsMesostateMap= mc.evolve(1000,20000,"ms");
             mc.evolve(10000);
-            std::ofstream outputFileHandle;
-            outputFileHandle.open("theta"+std::to_string(i)+".txt");
-            outputFileHandle << landauWang.theta;
+            landauWang.writeTheta("theta"+std::to_string(i)+".txt");
         }
 
 

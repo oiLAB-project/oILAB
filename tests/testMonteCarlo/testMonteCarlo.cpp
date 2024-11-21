@@ -1,17 +1,16 @@
 #include <TextFileParser.h>
 #include <GbMesoStateEnsemble.h>
 #include <MonteCarlo.h>
-#include <LandauWangTP.h>
+#include <CanonicalTP.h>
+#include <omp.h>
 
 using namespace gbLAB;
 
-// Hunter GB Details
-//
-// Sigma 3 [110]; theta = 70.52878
-// GB normal: {1 - 1 2}
-
-
-int main()
+void runMonteCarlo(const double& a0,
+                   const double& temperature,
+                   const int& iterations,
+                   XTuplet startingState,
+                   const std::string filename="")
 {
     /*! [Types] */
     using VectorDimI = LatticeCore<3>::VectorDimI;
@@ -20,13 +19,12 @@ int main()
     using IntScalarType = LatticeCore<3>::IntScalarType;
     /*! [Types] */
 
-
     // Sigma 29 [0-10](2 0 -5)
     VectorDimD axis(0,-1,0);
     double theta= 43.60282*M_PI/180;       // misorientation angle
     VectorDimD gbNormal(2,0,5);            // Miller indices
     int heightScaling= 1;
-    int periodScaling= 1;
+    int periodScaling= 2;
     int axisScaling= 1;
     double bScaling= 2.0;
 
@@ -52,9 +50,12 @@ int main()
     double bScaling= 2.0;
      */
 
-
     /*! [Lattice] */
-    const auto A(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,3>("A",true));
+    Eigen::Matrix3d A;
+    A << 0.0, 0.5, 0.5,
+            0.5, 0.0, 0.5,
+            0.5, 0.5, 0.0;
+    A= a0*A;
     Lattice<3> lattice(A);
     std::cout << "Lattice A = " << std::endl;
     std::cout << lattice.latticeBasis << std::endl;
@@ -64,88 +65,138 @@ int main()
     std::cout << "Cartesian coordinates of axis = " << std::endl;
     std::cout << rAxisGlobal.cartesian().transpose() << std::endl;
 
-    try
-    {
-        // construct bicrystal
-        Eigen::AngleAxis<double> halfRotation(theta/2,rAxisGlobal.cartesian().normalized());
-        Lattice<3> latticeA(lattice.latticeBasis,halfRotation.matrix());
-        Lattice<3> latticeB(lattice.latticeBasis,halfRotation.matrix().transpose());
-        BiCrystal<3> bc(latticeA,latticeB,false);
+    // construct bicrystal
+    Eigen::AngleAxis<double> halfRotation(theta/2,rAxisGlobal.cartesian().normalized());
+    Lattice<3> latticeA(lattice.latticeBasis,halfRotation.matrix());
+    Lattice<3> latticeB(lattice.latticeBasis,halfRotation.matrix().transpose());
+    BiCrystal<3> bc(latticeA,latticeB,false);
 
-        // construct GB
-        gbNormal= halfRotation.matrix() * gbNormal;
-        ReciprocalLatticeDirection<3> rd= latticeA.reciprocalLatticeDirection(gbNormal);
-        Gb<3> gb(bc,rd);
+    // construct GB
+    gbNormal= halfRotation.matrix() * gbNormal;
+    ReciprocalLatticeDirection<3> rd= latticeA.reciprocalLatticeDirection(gbNormal);
+    Gb<3> gb(bc,rd);
 
 
-        // Define the CSL box vectors
-        ReciprocalLatticeVector<3> rAxisA(latticeA.reciprocalLatticeDirection(axis).reciprocalLatticeVector());
-        std::cout << gb.getPeriodVector(rAxisA).cartesian().transpose() << std::endl;
-        LatticeVector<3> axisA(gb.bc.A.latticeDirection(axis).latticeVector());
-        LatticeVector<3> axisC(gb.bc.getLatticeDirectionInC(axisA).latticeVector());
-        std::vector<LatticeVector<3>> cslVectors;
-        cslVectors.push_back(heightScaling*gb.bc.csl.latticeDirection(gb.nA.cartesian()).latticeVector());
-        cslVectors.push_back(periodScaling*gb.getPeriodVector(rAxisA));
-        cslVectors.push_back(axisScaling*axisC);
+    // Define the CSL box vectors
+    ReciprocalLatticeVector<3> rAxisA(latticeA.reciprocalLatticeDirection(axis).reciprocalLatticeVector());
+    std::cout << gb.getPeriodVector(rAxisA).cartesian().transpose() << std::endl;
+    LatticeVector<3> axisA(gb.bc.A.latticeDirection(axis).latticeVector());
+    LatticeVector<3> axisC(gb.bc.getLatticeDirectionInC(axisA).latticeVector());
+    std::vector<LatticeVector<3>> cslVectors;
+    cslVectors.push_back(heightScaling*gb.bc.csl.latticeDirection(gb.nA.cartesian()).latticeVector());
+    cslVectors.push_back(periodScaling*gb.getPeriodVector(rAxisA));
+    cslVectors.push_back(axisScaling*axisC);
 
-        gb.box(cslVectors,1,1,"gb.txt");
-        /*
-         *  c11 = 1.0439923926128656 eV/angstrom^3
-            c12 = 0.7750032094485771 eV/angstrom^3
-            c44 = 0.4771664655306506 eV/angstrom^3/
-            c11 = lambda + 2 mu;
-            c12 = lambda; mu = (c11-c12)/2
-            lambda/mu = 2 c12/(c11-c12)
-            lattice constant = 3.615
-         */
-        // material parameter
-        double a0= 3.615;
-        double c11= 1.0439923926128656 * std::pow(a0,3);
-        double c12= 0.7750032094485771 * std::pow(a0,3);
-        GbMaterialTensors::lambda= c12;
-        GbMaterialTensors::mu= (c11-c12)/2;
+    // material parameter
+    // source: https://openkim.org/id/EAM_Dynamo_MishinMehlPapaconstantopoulos_2001_Cu__MO_346334655118_005
+    double c11= 169.9281940954852/160.2176621;
+    double c12= 122.65063014404001/160.2176621;
+    GbMaterialTensors::lambda= c12;
+    GbMaterialTensors::mu= (c11-c12)/2;
 
-        GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, bScaling);
-
-        //ensemble.collectMesoStates("ms");
-
-        // temperature = 0.2;
-        // resetEvery = 1000 - resets the Monte Carlo every 100 accepted states to avoid getting stuck in a metastable state
-        // maxIterations = 20000 - total number of Monte Carlo steps
-
-        /* Standard Monte Carlo
-        const auto& constraintsMesostateMap= ensemble.evolveMesoStates(0.3,1000,20000,"ms");
-        StandardMC<XTuplet> standardMC(2000.0);
-        MonteCarlo<XTuplet,GbMesoState<3>,GbMesoStateEnsemble<3>,StandardMC<XTuplet>> mc(ensemble,standardMC);
-        */
-
-        LandauWangTP<XTuplet,GbMesoState<3>> landauWang(1.4, 20, 200);
-        MonteCarlo<XTuplet, GbMesoState<3>, GbMesoStateEnsemble<3>, LandauWangTP<XTuplet,GbMesoState<3>>> mc(ensemble, landauWang);
-        for (int i=0; i<25; ++i) {
-            //const auto& constraintsMesostateMap= mc.evolve(1000,20000,"ms");
-            mc.evolve(10);
-            std::ofstream outputFileHandle;
-            outputFileHandle.open("theta"+std::to_string(i)+".txt");
-            outputFileHandle << landauWang.theta;
-        }
-
-        /* uncomment if we intend to construct systems with increased height
-        cslVectors[0]= 5*cslVectors[0];
-        GbMesoStateEnsemble<3> newEnsemble(gb, rAxisA, cslVectors, bScaling);
-        int count= 0;
-        GbContinuum<3>::reset();
-        for(const auto& [constraints,mesostate]: constraintsMesostateMap)
-        {
-            auto largeMesostate= newEnsemble.constructMesoState(constraints);
-            largeMesostate.box("msLarge" + std::to_string(count));
-            count++;
-        }
-         */
-
+    GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, bScaling);
+    const double kb = 8.61733e-5; // in eV/K
+    CanonicalTP<XTuplet, GbMesoState<3>> canonicalTP(kb*temperature,filename);
+    if (startingState.size()!=0) {
+        MonteCarlo<XTuplet, GbMesoState < 3>, GbMesoStateEnsemble < 3 >, CanonicalTP<XTuplet, GbMesoState < 3>>> mc(
+                ensemble, canonicalTP, startingState);
+        std::cout << "Starting MC with state = " << startingState << std::endl;
+        mc.evolve(iterations);
     }
-    catch(std::runtime_error& e)
+    else {
+        MonteCarlo<XTuplet, GbMesoState < 3>, GbMesoStateEnsemble < 3 >, CanonicalTP<XTuplet, GbMesoState < 3>>> mc(
+                ensemble, canonicalTP,ensemble.initializeState());
+        mc.evolve(iterations);
+    }
+}
+
+std::pair<double,XTuplet> getLowestEnergyState(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+    }
+    std::string line;
+    std::vector<std::string> row_with_min_energy;
+    double min_value = std::numeric_limits<double>::infinity(); // Initialize with a very high value
+
+// Read file line by line
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        std::vector<std::string> row;
+        std::string value;
+
+// Split the line into individual columns
+        while (ss >> value) {
+            row.push_back(value);
+        }
+
+// Check if the row is not empty and has at least one value
+        if (!row.empty()) {
+            try {
+// Get the last column value (last element in the row)
+                double current_value = std::stod(row.back());
+
+// Check if this value is the lowest we have encountered
+                if (current_value < min_value) {
+                    min_value = current_value;
+                    row_with_min_energy = row; // Store the entire row with the minimum value
+                }
+            } catch (const std::invalid_argument &e) {
+// Handle the case where conversion to double fails
+                std::cerr << "Invalid number in the file: " << e.what() << std::endl;
+            }
+        }
+    }
+    file.close();
+
+    double lowestEnergy;
+    std::vector<int> lowestEnergyStateVector;
+    if (!row_with_min_energy.empty()) {
+        lowestEnergy= std::stod(row_with_min_energy.back());
+        for (auto it = row_with_min_energy.begin(); it != std::prev(std::prev(row_with_min_energy.end())); ++it) {
+            lowestEnergyStateVector.push_back(std::stoi(*it));
+        }
+    } else {
+        std::cerr << "No valid data found in the file." << std::endl;
+    }
+
+    XTuplet lowestEnergyState(lowestEnergyStateVector.size());
+    for(int i=0; i<lowestEnergyStateVector.size(); ++i)
+        lowestEnergyState(i)= lowestEnergyStateVector[i];
+
+    return std::make_pair(lowestEnergy,lowestEnergyState);
+}
+
+int main()
+{
+
+    // run a high temperature monte carlo
+    double a0= 3.615000084042549;
+    double temperature= 2000;
+    int iterations= 1;
+    std::string filename = "lowestEnergy";
+    runMonteCarlo(a0,temperature,iterations,XTuplet(0),filename);
+
+
+    // get lowest energy state
+    auto pair= getLowestEnergyState(filename);
+    std::cout << "Lowest energy = " << pair.first << std::endl;
+    std::cout << "Lowest energy state = " << pair.second << std::endl;
+    XTuplet lowestEnergyState(pair.second);
+
+
+    double a0ref= a0;
+    //iterations = 100000;
+    iterations = 10;
+#pragma omp parallel for num_threads(30) collapse(2)
+    for(int i=1; i<=10; ++i)
     {
-        //std::cout << e.what() << std::endl;
+        for(int j=0; j<=10; ++j)
+        {
+            temperature = 300 * i;
+            a0= (1.0+(double)j/500.0)*a0ref;
+            runMonteCarlo(a0, temperature, iterations, lowestEnergyState, "observablesT" + std::to_string(temperature) + "_a" + std::to_string((double)j/1000.0));
+        }
     }
     return 0;
 }

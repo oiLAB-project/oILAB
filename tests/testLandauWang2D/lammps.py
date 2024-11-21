@@ -84,8 +84,8 @@ def read_oILAB_output(path):
     #                               Array of box origin (1x3)
     #                               Boundary conditions
     #                               Other details in xyz file]
-    sys.stdout = open(os.devnull, "w")
-    sys.stderr = open(os.devnull, "w")
+    #sys.stdout = open(os.devnull, "w")
+    #sys.stderr = open(os.devnull, "w")
     atoms = []
     message = "Reading " + path
     print(message)

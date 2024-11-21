@@ -7,6 +7,7 @@
 #include <EvolutionAlgorithm.h>
 #include <utility>
 #include <map>
+#include <fstream>
 
 namespace gbLAB {
     // CanonicalTP is an evolution algorithm with a transition probability
@@ -15,11 +16,12 @@ namespace gbLAB {
     private:
         int countTP;
         double currentEnergy, currentDensity;
+        std::ofstream output;
     public:
         double temperature;
         std::map<StateType, double> stateEnergyMap;
 
-        CanonicalTP(const double temperature);
+        CanonicalTP(const double& temperature, const std::string& filename="");
         double probability(const std::pair<StateType, SystemType>& proposedState,
                            const std::pair<StateType, SystemType>& currentState) ;
 

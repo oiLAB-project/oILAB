@@ -8,6 +8,34 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # set the project name
 project(oILAB VERSION 1.0)
 
+
+
+set(CMAKE_CXX_COMPILER /opt/homebrew/Cellar/llvm/19.1.3/bin/clang++)
+set(CMAKE_C_COMPILER /opt/homebrew/Cellar/llvm/19.1.3/bin/clang)
+
+OPTION (USE_OpenMP "Use OpenMP to enable <omp.h>" ON)
+if (USE_OpenMP)
+    set(OpenMP_C_FLAGS "-fopenmp")
+    set(OpenMP_CXX_FLAGS "-fopenmp")
+    set(OpenMP_C_LIB_NAMES "omp")
+    set(OpenMP_CXX_LIB_NAMES "omp")
+    set(OpenMP_omp_LIBRARY omp)
+    find_package(OpenMP REQUIRED)
+endif(USE_OpenMP)
+
+if(OPENMP_FOUND)
+    set(OPENMP_INCLUDES "/opt/homebrew/Cellar/libomp/16.0.6/include")
+    set(OPENMP_LIBRARIES "/opt/Homebrew/Cellar/libomp/16.0.6/lib")
+    include_directories("${OPENMP_INCLUDES}")
+    link_directories("${OPENMP_LIBRARIES}")
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif(OPENMP_FOUND)
+
+
+
+
+
 # Include directories
 include_directories(${PROJECT_SOURCE_DIR}/include/IO)
 include_directories(${PROJECT_SOURCE_DIR}/include/Lattices)

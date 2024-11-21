@@ -119,7 +119,7 @@ int main()
         MonteCarlo<XTuplet,GbMesoState<3>,GbMesoStateEnsemble<3>,StandardMC<XTuplet>> mc(ensemble,standardMC);
         */
 
-        LandauWangTP<XTuplet,GbMesoState<3>> landauWang(1.4, 20, 200);
+        LandauWangTP<XTuplet,GbMesoState<3>> landauWang({1.4, 20, 200});
         MonteCarlo<XTuplet, GbMesoState<3>, GbMesoStateEnsemble<3>, LandauWangTP<XTuplet,GbMesoState<3>>> mc(ensemble, landauWang);
         for (int i=0; i<25; ++i) {
             //const auto& constraintsMesostateMap= mc.evolve(1000,20000,"ms");

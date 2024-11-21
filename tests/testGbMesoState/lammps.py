@@ -206,7 +206,7 @@ def write_lammps_input_script(folder,file,infile,outfile,lattice_constant,cohesi
     f.write("compute         peratom GB pe/atom\n")
     f.write("compute         pe GB reduce sum c_peratom\n")
     f.write("variable        peGB equal c_pe\n")
-    f.write("variable        atomsGB equal count(GB)\n")
+    f.write("variable        atomsGB equal }count(GB)\n")
     f.write("\n")
     f.write("thermo 1000\n")
     f.write("compute 1 all ke/atom\n")

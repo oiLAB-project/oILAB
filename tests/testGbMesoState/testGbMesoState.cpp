@@ -18,7 +18,6 @@ int main()
     /*! [Types] */
 
 
-    /*
     // Sigma 29 [0-10](2 0 -5)
     VectorDimD axis(0,-1,0);
     double theta= 43.60282*M_PI/180;       // misorientation angle
@@ -27,7 +26,6 @@ int main()
     int periodScaling= 1;
     int axisScaling= 1;
     double bScaling= 2.0;
-     */
 
     /*
     // Sigma 123 [110](-5 5 14)
@@ -40,6 +38,7 @@ int main()
     double bScaling= 1.4;
      */
 
+    /*
     //Sigma 3[1-10](112)
     VectorDimD axis(1,-1,0);
     double theta= 70.52878*M_PI/180;
@@ -48,6 +47,7 @@ int main()
     int periodScaling= 2;
     int axisScaling= 1;
     double bScaling= 2.0;
+     */
 
 
     /*! [Lattice] */
@@ -110,6 +110,16 @@ int main()
         // resetEvery = 100 - resets the Monte Carlo every 100 accepted states to avoid getting stuck in a metastable state
         // maxIterations = 20000 - total number of Monte Carlo steps
         const auto& constraintsMesostateMap= ensemble.evolveMesoStates(0.3,1000,20000,"ms");
+
+        /*
+        XTuplet constraint(14);
+        constraint << 1,1,1,1,1,1,1,1,0,0,0,2,2,0; // lowest energy
+        //constraint <<  1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+        auto ms= ensemble.constructMesoState(constraint);
+        ms.box("xx.txt");
+        auto densityEnergy= ms.densityEnergy();
+        std::cout << "density = " << densityEnergy.first << "; energy = " << densityEnergy.second;
+         */
 
         /* uncomment if we intend to construct systems with increased height
         cslVectors[0]= 5*cslVectors[0];

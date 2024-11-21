@@ -174,7 +174,7 @@ def write_lammps_datafile(outfolder,file,box,atom_data,atom_types):
     return file
 
 
-def write_lammps_input_script(folder,file,infile,outfile,lattice_constant,cohesive_energy,gb_thickness_parameter,potential_file_path,output_dump_file):
+def write_lammps_input_script(folder,file,infile,outfile,cohesive_energy,gb_thickness_parameter,potential_file_path,output_dump_file):
     
     
     f = open(folder+file,"w")
@@ -182,7 +182,6 @@ def write_lammps_input_script(folder,file,infile,outfile,lattice_constant,cohesi
     f.write("#Find energy of a config and write in %s file\n"%(outfile))
     f.write("\n")
     f.write("variable a equal 0\n")
-    f.write("variable a0 equal %f\n"%lattice_constant)
     f.write("variable coh equal %f\n"%cohesive_energy)
     f.write("variable potential_path string %s\n"%potential_file_path)
     f.write("clear\n")
@@ -194,7 +193,6 @@ def write_lammps_input_script(folder,file,infile,outfile,lattice_constant,cohesi
     f.write("read_data %s\n"%infile)
     f.write("pair_style      eam/alloy\n")
     f.write("pair_coeff      * * ${potential_path} Cu Cu\n")
-    f.write("change_box      all x scale ${a0} y scale ${a0} z scale ${a0} remap units box\n")
     f.write("variable        xlobox equal xlo-10\n")
     f.write("variable        xhibox equal xhi-10\n")
     f.write("delete_atoms overlap 1e-2 all all\n")
@@ -218,7 +216,7 @@ def write_lammps_input_script(folder,file,infile,outfile,lattice_constant,cohesi
     f.write("thermo_style custom step temp ke pe etotal press pxx pyy pzz pxy pxz pyz ly lx lz xy xz yz c_pe v_atomsGB\n")
     f.write("dump                    OUT0 all custom 10 %s id type x y z fx fy fz c_3 c_1 vx vy vz c_4[1] c_4[2] c_4[3] c_4[4] c_4[5] c_4[6]\n"%output_dump_file)
     f.write("run                     0\n")
-    f.write("variable        GBene equal (${peGB}-${coh}*${atomsGB})/${area}*16.02\n")
+    f.write("variable        GBene equal (${peGB}-${coh}*${atomsGB})\n")
     f.write("print \"a = ${a} energy = ${peGB} numAtoms = ${atomsGB} GBene = ${GBene} area = ${area}\" file %s\n"%outfile)
     f.write("\n")
     f.write("\n")
@@ -266,13 +264,11 @@ def energy():
     # Lammps object location
     lammps_loc = "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/"
     # Lattice constant of the material you want to simulate
-    lattice_constant = 3.615
     # Cohesive energy corresponsing to the potential file
     cohesive_energy = -3.54
     # Location of mpi object
     mpi_loc = "/opt/homebrew/bin/"
 
-    lattice_constant = 3.615
     cohesive_energy = -3.54
 
     # Read data
@@ -314,9 +310,10 @@ def energy():
     # Write lammps input script
     lammps_file = "in.find_energy"
     outfile = out_folder + "lmp_mesostate_energies.txt"
-    gb_thickness_parameter = 0.75*(new_box[0,0]*lattice_constant/2)
+    #gb_thickness_parameter = 0.75*(new_box[0,0]*0.5)
+    gb_thickness_parameter = 6;
     output_dump_file = out_folder+"dump.lammpsConfigs"
-    lf = write_lammps_input_script(out_folder,lammps_file,f,outfile,lattice_constant,cohesive_energy,gb_thickness_parameter,potential_file_path,output_dump_file)
+    lf = write_lammps_input_script(out_folder,lammps_file,f,outfile,cohesive_energy,gb_thickness_parameter,potential_file_path,output_dump_file)
     
     # Run the lammps script
     multicore = False # Change this to run the lammps script on single or multiple cores

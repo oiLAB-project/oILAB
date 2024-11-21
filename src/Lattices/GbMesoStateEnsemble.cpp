@@ -214,7 +214,7 @@ namespace gbLAB {
                 newEnergy = visitedStatesEnergy.at(newConstraints);
             else {
                 //newEnergy = new_ms.energy();
-                newDensityEnergyPair= initial_ms.densityEnergy();
+                newDensityEnergyPair= new_ms.densityEnergy();
                 newEnergy= newDensityEnergyPair.second;
                 visitedStatesEnergy[newConstraints] = newEnergy;
             }

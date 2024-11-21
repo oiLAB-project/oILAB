@@ -9,8 +9,13 @@
 namespace gbLAB {
 
     template<typename StateType, typename SystemType>
-    CanonicalTP<StateType,SystemType>::CanonicalTP(const double temperature) : temperature(temperature),
-                                                                               countTP(0){}
+    CanonicalTP<StateType,SystemType>::CanonicalTP(const double& temperature,
+                                                   const std::string& filename) : temperature(temperature),
+                                                                                  countTP(0)
+                                                                                  {
+                                                                                      if (!filename.empty())
+                                                                                          output.open(filename);
+                                                                                  }
 
     template<typename StateType, typename SystemType>
     double CanonicalTP<StateType,SystemType>::probability(const std::pair<StateType,SystemType>& proposedStateSystem,
@@ -27,7 +32,7 @@ namespace gbLAB {
             currentDensity = temp.first;
             currentEnergy = temp.second;
             stateEnergyMap[currentState] = currentEnergy;
-            std::cout << "density = " << currentDensity << ", energy = " << currentEnergy << std::endl;
+            //std::cout << "density = " << currentDensity << ", energy = " << currentEnergy << std::endl;
         }
         else {
             assert(stateEnergyMap.find(currentState) != stateEnergyMap.end());
@@ -46,12 +51,15 @@ namespace gbLAB {
             proposedDensity= temp.first;
             proposedEnergy= temp.second;
             //proposedEnergy = proposedSystem.energy();
-            std::cout << "density = " << proposedDensity << ", energy = " << proposedEnergy << std::endl;
+            //std::cout << "density = " << proposedDensity << ", energy = " << proposedEnergy << std::endl;
             stateEnergyMap[proposedState] = proposedEnergy;
         }
 
         countTP++;
         double delta = proposedEnergy - currentEnergy;
+
+        if(output.is_open())
+            output << currentState << "  " << currentState.density() << "     " << currentEnergy << std::endl;
         return std::min(1.0, exp(-delta / temperature));
     }
 

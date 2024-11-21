@@ -15,6 +15,15 @@ namespace gbLAB {
                                                ensemble(ensemble),
                                                currentState(ensemble.sampleNewState(ensemble.initializeState(), true))
         {}
+    template<typename StateType, typename SystemType, typename EnsembleType, typename EvolveType>
+    MonteCarlo<StateType,SystemType,EnsembleType,EvolveType>::
+    MonteCarlo(const EnsembleType& ensemble,
+               const EvolveType& evolve,
+               const StateType& state) : EvolutionAlgorithm<StateType,SystemType,EvolveType>(evolve),
+                                         ensemble(ensemble),
+                                         //currentState(ensemble.sampleNewState(state, false))
+                                         currentState(state)
+    {}
 
     template<typename StateType, typename SystemType, typename EnsembleType, typename EvolveType>
     void MonteCarlo<StateType,SystemType,EnsembleType,EvolveType>::evolve(const int& maxIterations)

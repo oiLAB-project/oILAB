@@ -117,6 +117,28 @@ namespace gbLAB {
             if (this->operator()(rhs.size()- 1) < rhs(rhs.size()- 1)) return true;
             return false;
         }
+
+
+        // this is a temporary fix
+        double density() const
+        {
+            double density= 0.0;
+            for (int stateIndex = 0; stateIndex < (*this).size(); ++stateIndex) {
+                if(stateIndex==0 or stateIndex==1)
+                    if((*this).operator()(stateIndex) == 2 )
+                        density= density - 1;
+                if(stateIndex>=2 and stateIndex<=(*this).size()/2) {
+                    if ((*this).operator()(stateIndex) == 1)
+                        density = density - 1;
+                    if ((*this).operator()(stateIndex) == 2)
+                        density = density - 2;
+                }
+                if(stateIndex>=(*this).size()/2+1 and stateIndex<(*this).size())
+                    if((*this).operator()(stateIndex) == 1 )
+                        density= density + 1;
+            }
+            return density;
+        }
     };
 
     static std::basic_ostream<char>& operator<<(std::basic_ostream<char>& s, const XTuplet& m) {

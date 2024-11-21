@@ -578,7 +578,8 @@ namespace gbLAB
 
             rotation=Rotation<dim>(orthogonalVectors);
         }
-        assert((rotation*rotation.transpose()).template isApprox(Eigen::Matrix<double,dim,dim>::Identity())
+        //assert((rotation*rotation.transpose()).template isApprox(Eigen::Matrix<double,dim,dim>::Identity())
+        assert((rotation*rotation.transpose()).isApprox(Eigen::Matrix<double,dim,dim>::Identity())
                && "Cannot orient the grain boundary. Box vectors are not orthogonal.");
 
 

@@ -50,10 +50,10 @@ namespace gbLAB {
 
     private:
 
-        static GbLatticeFunctions HhatInvComponents;
+        static thread_local  GbLatticeFunctions HhatInvComponents;
         //static FunctionFFTPair pipihat;
-        static std::map<OrderedTuplet<dim+1>,PeriodicFunction<double, dim - 1>> piPeriodicFunctions;
-        static std::map<OrderedTuplet<dim+1>,LatticeFunction<std::complex<double>, dim - 1>> pihatLatticeFunctions;
+        static thread_local std::map<OrderedTuplet<dim+1>,PeriodicFunction<double, dim - 1>> piPeriodicFunctions;
+        static thread_local std::map<OrderedTuplet<dim+1>,LatticeFunction<std::complex<double>, dim - 1>> pihatLatticeFunctions;
         // GBMesostateEnsemble should generate the bicrystal (member variable <OrderedTuplet,VectorDimD>) and pass it as a reference to each mesostate
         // pipihat should be map from OrderedTuplet to FunctionFFTPair. should be computed once in calculateb
         // at the same time, compute pipihat once
@@ -105,12 +105,12 @@ namespace gbLAB {
 
 
     template<int dim>
-    std::vector<LatticeFunction<std::complex<double>,dim-1>> GbContinuum<dim>::HhatInvComponents;
+    thread_local std::vector<LatticeFunction<std::complex<double>,dim-1>> GbContinuum<dim>::HhatInvComponents;
 
     template<int dim>
-    std::map<OrderedTuplet<dim+1>,PeriodicFunction<double, dim - 1>> GbContinuum<dim>::piPeriodicFunctions;
+    thread_local std::map<OrderedTuplet<dim+1>,PeriodicFunction<double, dim - 1>> GbContinuum<dim>::piPeriodicFunctions;
 
     template<int dim>
-    std::map<OrderedTuplet<dim+1>,LatticeFunction<std::complex<double>, dim - 1>> GbContinuum<dim>::pihatLatticeFunctions;
+    thread_local std::map<OrderedTuplet<dim+1>,LatticeFunction<std::complex<double>, dim - 1>> GbContinuum<dim>::pihatLatticeFunctions;
 }
 #endif //OILAB_GBPLASTICITY_H

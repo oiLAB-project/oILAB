@@ -2,10 +2,10 @@
 // Created by Nikhil Chandra Admal on 5/27/24.
 //
 
-#define PY_SSIZE_T_CLEAN
-#include <Python.h>
+#include<Lammps.h>
 #include <GbMesoState.h>
 #include <iostream>
+#include <Python.h>
 
 namespace gbLAB {
     template<int dim>
@@ -144,163 +144,178 @@ namespace gbLAB {
     template<int dim>
     std::pair<double,double> GbMesoState<dim>::densityEnergy() const
     {
-        // form box
-        // run a python script to calculate energy
-
-        setenv("PYTHONPATH", ".", 1);
-        if(!Py_IsInitialized()) {
-            std::cout << "Initializing Python Interpreter" << std::endl;
-            Py_Initialize();
-        }
-
-        box("temp");
-        PyObject* pyModuleString = PyUnicode_FromString((char*)"lammps");
-        PyObject* pyModule = PyImport_Import(pyModuleString);
-        if (pyModule == nullptr)
-        {
-            PyErr_Print();
-            std::cout << "cannot import python script" << std::endl;
-            std::exit(0);
-        }
-        PyObject* pDict = PyModule_GetDict(pyModule);
-        PyObject* pyFunction= PyDict_GetItemString(pDict, (char*)"energy");
-        //PyObject* pyEnergy= PyObject_CallObject(pyFunction,NULL);
-        PyObject* pyValue= PyObject_CallObject(pyFunction,NULL);
-        double energy, density;
-        PyArg_ParseTuple(pyValue, "dd", &energy, &density);
-        //double energy= PyFloat_AsDouble(pyEnergy);
-
-        Py_DECREF(pyModule);
-        Py_DECREF(pyModuleString);
-
-        return std::make_pair(density,energy);
+        std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/";
+        box("temp" + std::to_string(omp_get_thread_num()));
+        //auto xx= densityEnergyPython();
+        auto yy= energy( lammpsLocation, "temp" + std::to_string(omp_get_thread_num()) + "_reference1.txt","Cu_mishin1.eam.alloy");
+        //return energy( lammpsLocation, "temp_reference1.txt","Cu_mishin1.eam.alloy");
+        return yy;
     }
 
-    template<int dim>
-    //template<int dm=dim>
-    typename std::enable_if<dim==3,void>::type
-    GbMesoState<dim>::box(const std::string& name) const
-    {
-        const auto& config= this->bicrystalConfig;
-        std::vector<LatticeVector<3>> boxVectors;
-        boxVectors.push_back(this->mesoStateCslVectors[0]);
-        boxVectors.push_back(this->mesoStateCslVectors[1]);
-        boxVectors.push_back(this->mesoStateCslVectors[2]);
-
-        std::vector<VectorDimD> referenceConfigA, deformedConfigA;
-        std::vector<VectorDimD> referenceConfigB, deformedConfigB;
-        std::vector<VectorDimD> configDscl;
-
-        double bmax= 0.0;
-        for(const auto& [b,s,include] : bs)
-            bmax= max(bmax,b.cartesian().norm());
-
-        for (const auto &latticeVector: config) {
-            VectorDimD x;
-            OrderedTuplet<dim+1> temp;
-            if (&(latticeVector.lattice) == &(this->gb.bc.A)) {
-                temp <<  gb.bc.getLatticeVectorInD(latticeVector),1;
-                double height= latticeVector.cartesian().dot(gb.nA.cartesian().normalized());
-                LatticeDirection<dim> latticeVectorInAalongnA(gb.bc.A.latticeDirection(gb.nA.cartesian()));
-                LatticeDirection<dim> dsclDirectionAlongnA(gb.bc.getLatticeDirectionInD(latticeVectorInAalongnA.latticeVector()));
-                int heightFactor= round(abs(2.0*height/dsclDirectionAlongnA.cartesian().norm()));
-                LatticeVector<dim> dsclVector= heightFactor * dsclDirectionAlongnA.latticeVector();
-
-                if (height > 0 && heightFactor != 0 && height < bmax) // latticeVector is outside A
-                    temp << gb.bc.getLatticeVectorInD(latticeVector)-dsclVector, 2;
-            }
-            else if (&(latticeVector.lattice) == &(this->gb.bc.B)) {
-                temp <<  gb.bc.getLatticeVectorInD(latticeVector),2;
-                double height = latticeVector.cartesian().dot(gb.nB.cartesian().normalized());
-                LatticeDirection<dim> latticeVectorInBalongnB(gb.bc.B.latticeDirection(gb.nB.cartesian()));
-                LatticeDirection<dim> dsclDirectionAlongnB(gb.bc.getLatticeDirectionInD(latticeVectorInBalongnB.latticeVector()));
-                int heightFactor= round(abs(2.0*height/dsclDirectionAlongnB.cartesian().norm()));
-                LatticeVector<dim> dsclVector= heightFactor * dsclDirectionAlongnB.latticeVector();
-                if (height > 0 && heightFactor!= 0 && height < bmax) // latticeVector is outside B
-                    temp << gb.bc.getLatticeVectorInD(latticeVector)-dsclVector, 1;
-            }
-
-            //x = latticeVector.cartesian() + this->displacement(latticeVector.cartesian());
-
-            if (&(latticeVector.lattice) == &(this->gb.bc.A)) {
-                x = latticeVector.cartesian() + this->displacement(temp) + this->uAverage;
-            }
-            else if (&(latticeVector.lattice) == &(this->gb.bc.B) )
-                x = latticeVector.cartesian() + this->displacement(temp) - this->uAverage;
-            else
-                x = latticeVector.cartesian() + this->displacement(temp);
-
-            // ignore x if it occupies a deleted CSL position
-            bool ignore= false;
-            for(const auto& [b,s, include] : bs) {
-                VectorDimD cslShift;
-                cslShift << -0.5, -FLT_EPSILON, -FLT_EPSILON;
-                VectorDimD xModulo= x;
-                LatticeVector<dim>::modulo(xModulo, boxVectors, cslShift);
-                if (include == 2 && (s - xModulo).norm() < FLT_EPSILON) {
-                    ignore = true;
-                    break;
-                }
-            }
-            if (ignore==true)
-                continue;
 
 
-            if (&(latticeVector.lattice) == &(this->gb.bc.A) && x.dot(this->gb.nA.cartesian().normalized()) <= FLT_EPSILON)
-            //if (&(latticeVector.lattice) == &(this->gb.bc.A))
-            {
-                referenceConfigA.push_back(latticeVector.cartesian());
-                deformedConfigA.push_back(x);
-            }
-            else if (&(latticeVector.lattice) == &(this->gb.bc.B) && x.dot(this->gb.nB.cartesian().normalized()) <= FLT_EPSILON)
-            //else if (&(latticeVector.lattice) == &(this->gb.bc.B))
-            {
-                referenceConfigB.push_back(latticeVector.cartesian());
-                deformedConfigB.push_back(x);
-            }
+    /*-------------------------------------*/
+ template<int dim>
+ std::pair<double,double> GbMesoState<dim>::densityEnergyPython() const
+ {
+     // form box
+     // run a python script to calculate energy
 
-        }
+     setenv("PYTHONPATH", ".", 1);
+     if(!Py_IsInitialized()) {
+         std::cout << "Initializing Python Interpreter" << std::endl;
+         Py_Initialize();
+     }
+
+     box("temp");
+     PyObject* pyModuleString = PyUnicode_FromString((char*)"lammps");
+     PyObject* pyModule = PyImport_Import(pyModuleString);
+     if (pyModule == nullptr)
+     {
+         PyErr_Print();
+         std::cout << "cannot import python script" << std::endl;
+         std::exit(0);
+     }
+     PyObject* pDict = PyModule_GetDict(pyModule);
+     PyObject* pyFunction= PyDict_GetItemString(pDict, (char*)"energy");
+     //PyObject* pyEnergy= PyObject_CallObject(pyFunction,NULL);
+     PyObject* pyValue= PyObject_CallObject(pyFunction,NULL);
+     double energy, density;
+
+     PyArg_ParseTuple(pyValue, "dd", &energy, &density);
+     //double energy= PyFloat_AsDouble(pyEnergy);
+
+     Py_DECREF(pyModule);
+     Py_DECREF(pyModuleString);
+
+     return std::make_pair(density,energy);
+ }
+
+ template<int dim>
+ //template<int dm=dim>
+ typename std::enable_if<dim==3,void>::type
+ GbMesoState<dim>::box(const std::string& name) const
+ {
+     const auto& config= this->bicrystalConfig;
+     std::vector<LatticeVector<3>> boxVectors;
+     boxVectors.push_back(this->mesoStateCslVectors[0]);
+     boxVectors.push_back(this->mesoStateCslVectors[1]);
+     boxVectors.push_back(this->mesoStateCslVectors[2]);
+
+     std::vector<VectorDimD> referenceConfigA, deformedConfigA;
+     std::vector<VectorDimD> referenceConfigB, deformedConfigB;
+     std::vector<VectorDimD> configDscl;
+
+     double bmax= 0.0;
+     for(const auto& [b,s,include] : bs)
+         bmax= max(bmax,b.cartesian().norm());
+
+     for (const auto &latticeVector: config) {
+         VectorDimD x;
+         OrderedTuplet<dim+1> temp;
+         if (&(latticeVector.lattice) == &(this->gb.bc.A)) {
+             temp <<  gb.bc.getLatticeVectorInD(latticeVector),1;
+             double height= latticeVector.cartesian().dot(gb.nA.cartesian().normalized());
+             LatticeDirection<dim> latticeVectorInAalongnA(gb.bc.A.latticeDirection(gb.nA.cartesian()));
+             LatticeDirection<dim> dsclDirectionAlongnA(gb.bc.getLatticeDirectionInD(latticeVectorInAalongnA.latticeVector()));
+             int heightFactor= round(abs(2.0*height/dsclDirectionAlongnA.cartesian().norm()));
+             LatticeVector<dim> dsclVector= heightFactor * dsclDirectionAlongnA.latticeVector();
+
+             if (height > 0 && heightFactor != 0 && height < bmax) // latticeVector is outside A
+                 temp << gb.bc.getLatticeVectorInD(latticeVector)-dsclVector, 2;
+         }
+         else if (&(latticeVector.lattice) == &(this->gb.bc.B)) {
+             temp <<  gb.bc.getLatticeVectorInD(latticeVector),2;
+             double height = latticeVector.cartesian().dot(gb.nB.cartesian().normalized());
+             LatticeDirection<dim> latticeVectorInBalongnB(gb.bc.B.latticeDirection(gb.nB.cartesian()));
+             LatticeDirection<dim> dsclDirectionAlongnB(gb.bc.getLatticeDirectionInD(latticeVectorInBalongnB.latticeVector()));
+             int heightFactor= round(abs(2.0*height/dsclDirectionAlongnB.cartesian().norm()));
+             LatticeVector<dim> dsclVector= heightFactor * dsclDirectionAlongnB.latticeVector();
+             if (height > 0 && heightFactor!= 0 && height < bmax) // latticeVector is outside B
+                 temp << gb.bc.getLatticeVectorInD(latticeVector)-dsclVector, 1;
+         }
+
+         //x = latticeVector.cartesian() + this->displacement(latticeVector.cartesian());
+
+         if (&(latticeVector.lattice) == &(this->gb.bc.A)) {
+             x = latticeVector.cartesian() + this->displacement(temp) + this->uAverage;
+         }
+         else if (&(latticeVector.lattice) == &(this->gb.bc.B) )
+             x = latticeVector.cartesian() + this->displacement(temp) - this->uAverage;
+         else
+             x = latticeVector.cartesian() + this->displacement(temp);
+
+         // ignore x if it occupies a deleted CSL position
+         bool ignore= false;
+         for(const auto& [b,s, include] : bs) {
+             VectorDimD cslShift;
+             cslShift << -0.5, -FLT_EPSILON, -FLT_EPSILON;
+             VectorDimD xModulo= x;
+             LatticeVector<dim>::modulo(xModulo, boxVectors, cslShift);
+             if (include == 2 && (s - xModulo).norm() < FLT_EPSILON) {
+                 ignore = true;
+                 break;
+             }
+         }
+         if (ignore==true)
+             continue;
 
 
-        int nAtoms= referenceConfigA.size()+referenceConfigB.size()+configDscl.size();
+         if (&(latticeVector.lattice) == &(this->gb.bc.A) && x.dot(this->gb.nA.cartesian().normalized()) <= FLT_EPSILON)
+         //if (&(latticeVector.lattice) == &(this->gb.bc.A))
+         {
+             referenceConfigA.push_back(latticeVector.cartesian());
+             deformedConfigA.push_back(x);
+         }
+         else if (&(latticeVector.lattice) == &(this->gb.bc.B) && x.dot(this->gb.nB.cartesian().normalized()) <= FLT_EPSILON)
+         //else if (&(latticeVector.lattice) == &(this->gb.bc.B))
+         {
+             referenceConfigB.push_back(latticeVector.cartesian());
+             deformedConfigB.push_back(x);
+         }
 
-        std::string referenceFile= name + "_reference0.txt";
-        std::string deformedFile= name + "_reference1.txt";
+     }
 
-        std::ofstream reference, deformed;
-        reference.open(referenceFile);
-        deformed.open(deformedFile);
-        if (!reference || !deformed) std::cerr << "Unable to open files";
-        reference << nAtoms << std::endl; deformed << nAtoms << std::endl;
-        reference << "Lattice=\""; deformed << "Lattice=\"";
 
-        reference << std::setprecision(15) << (2*boxVectors[0].cartesian()).transpose() << " ";
-        deformed << std::setprecision(15) << (2*boxVectors[0].cartesian()).transpose() << " ";
-        reference << std::setprecision(15) << (boxVectors[1].cartesian()).transpose() << " ";
-        deformed << std::setprecision(15) << (boxVectors[1].cartesian()).transpose() << " ";
-        reference << std::setprecision(15) << (boxVectors[2].cartesian()).transpose();
-        deformed << std::setprecision(15) << (boxVectors[2].cartesian()).transpose();
-        reference << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\"F T T\" origin=\""; deformed << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\"F T T\" origin=\"";
-        reference << std::setprecision(15) << (-1 * boxVectors[0].cartesian()).transpose() << "\"" << std::endl;
-        deformed << std::setprecision(15) << (-1 * boxVectors[0].cartesian()).transpose() << "\"" << std::endl;
+     int nAtoms= referenceConfigA.size()+referenceConfigB.size()+configDscl.size();
 
-        for(const auto& position : referenceConfigA)
-            reference << 1 << " " << std::setprecision(15) << position.transpose() << "  " << 0.05 << std::endl;
-        for(const auto& position : referenceConfigB)
-            reference << 2 << " " << std::setprecision(15) << position.transpose() << "  " << 0.05 << std::endl;
-        for(const auto& position : deformedConfigA)
-            deformed << 1 << " " << std::setprecision(15) << position.transpose() << "  " << 0.05 << std::endl;
-        for(const auto& position : deformedConfigB)
-            deformed << 2 << " " << std::setprecision(15) << position.transpose() << "  " << 0.05 << std::endl;
-        for(const auto& position : configDscl) {
-            reference << 4 << " " << std::setprecision(15) << position.transpose() << "  " << 0.01 << std::endl;
-            deformed << 4 << " " << std::setprecision(15) << position.transpose() << "  " << 0.01 << std::endl;
-        }
+     std::string referenceFile= name + "_reference0.txt";
+     std::string deformedFile= name + "_reference1.txt";
 
-        reference.close();
-        deformed.close();
-    }
+     std::ofstream reference, deformed;
+     reference.open(referenceFile);
+     deformed.open(deformedFile);
+     if (!reference || !deformed) std::cerr << "Unable to open files";
+     reference << nAtoms << std::endl; deformed << nAtoms << std::endl;
+     reference << "Lattice=\" "; deformed << "Lattice=\" ";
 
-    //template class GbMesoState<2>;
-    template class GbMesoState<3>;
+     reference << std::setprecision(15) << (2*boxVectors[0].cartesian()).transpose() << " ";
+     deformed << std::setprecision(15) << (2*boxVectors[0].cartesian()).transpose() << " ";
+     reference << std::setprecision(15) << (boxVectors[1].cartesian()).transpose() << " ";
+     deformed << std::setprecision(15) << (boxVectors[1].cartesian()).transpose() << " ";
+     reference << std::setprecision(15) << (boxVectors[2].cartesian()).transpose();
+     deformed << std::setprecision(15) << (boxVectors[2].cartesian()).transpose();
+     reference << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\"F T T\" origin=\" "; deformed << "\" Properties=atom_types:I:1:pos:R:3:radius:R:1 PBC=\" F T T\" origin=\" ";
+     reference << std::setprecision(15) << (-1 * boxVectors[0].cartesian()).transpose() << "\"" << std::endl;
+     deformed << std::setprecision(15) << (-1 * boxVectors[0].cartesian()).transpose() << "\"" << std::endl;
+
+     for(const auto& position : referenceConfigA)
+         reference << 1 << " " << std::setprecision(15) << position.transpose() << "  " << 0.05 << std::endl;
+     for(const auto& position : referenceConfigB)
+         reference << 2 << " " << std::setprecision(15) << position.transpose() << "  " << 0.05 << std::endl;
+     for(const auto& position : deformedConfigA)
+         deformed << 1 << " " << std::setprecision(15) << position.transpose() << "  " << 0.05 << std::endl;
+     for(const auto& position : deformedConfigB)
+         deformed << 2 << " " << std::setprecision(15) << position.transpose() << "  " << 0.05 << std::endl;
+     for(const auto& position : configDscl) {
+         reference << 4 << " " << std::setprecision(15) << position.transpose() << "  " << 0.01 << std::endl;
+         deformed << 4 << " " << std::setprecision(15) << position.transpose() << "  " << 0.01 << std::endl;
+     }
+
+     reference.close();
+     deformed.close();
+ }
+
+ //template class GbMesoState<2>;
+ template class GbMesoState<3>;
 }

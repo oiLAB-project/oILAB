@@ -15,13 +15,15 @@
 namespace gbLAB {
     template<typename StateType, typename SystemType, typename EnsembleType, typename EvolveType>
     class MonteCarlo : public EvolutionAlgorithm<StateType, SystemType, EvolveType> {
-    private:
-        StateType currentState;
     public:
+
+        StateType currentState;
 
         const EnsembleType& ensemble;
 
         MonteCarlo(const EnsembleType& ensemble, const EvolveType &evolve);
+
+        MonteCarlo(const EnsembleType& ensemble, const EvolveType &evolve, const StateType& state);
 
         void evolve(const int &maxIterations);
     };

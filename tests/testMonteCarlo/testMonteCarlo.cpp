@@ -24,7 +24,7 @@ void runMonteCarlo(const double& a0,
     double theta= 43.60282*M_PI/180;       // misorientation angle
     VectorDimD gbNormal(2,0,5);            // Miller indices
     int heightScaling= 1;
-    int periodScaling= 2;
+    int periodScaling= 1;
     int axisScaling= 1;
     double bScaling= 2.0;
 
@@ -172,10 +172,11 @@ int main()
 
     // run a high temperature monte carlo
     double a0= 3.615000084042549;
-    double temperature= 2000;
-    int iterations= 1;
+    double temperature= 3000;
+    int iterations= 50000;
     std::string filename = "lowestEnergy";
     runMonteCarlo(a0,temperature,iterations,XTuplet(0),filename);
+    exit(0);
 
 
     // get lowest energy state
@@ -186,16 +187,16 @@ int main()
 
 
     double a0ref= a0;
-    //iterations = 100000;
-    iterations = 10;
-#pragma omp parallel for num_threads(30) collapse(2)
+    iterations = 100000;
+#pragma omp parallel for num_threads(20) collapse(2)
     for(int i=1; i<=10; ++i)
     {
         for(int j=0; j<=10; ++j)
         {
             temperature = 300 * i;
-            a0= (1.0+(double)j/500.0)*a0ref;
-            runMonteCarlo(a0, temperature, iterations, lowestEnergyState, "observablesT" + std::to_string(temperature) + "_a" + std::to_string((double)j/1000.0));
+	    double strain= (double)j/500.0;
+            a0= (1.0+strain)*a0ref;
+            runMonteCarlo(a0, temperature, iterations, lowestEnergyState, "observablesT" + std::to_string(temperature) + "_a" + std::to_string(strain));
         }
     }
     return 0;

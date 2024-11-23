@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <Eigen/Eigen>
+#include <iomanip>
 
 std::tuple<Eigen::MatrixXd,
            Eigen::Matrix3d,
@@ -30,7 +31,7 @@ std::tuple<Eigen::MatrixXd,
 
     std::ifstream file(path);
     if (!file.is_open()) {
-        std::cerr << "Error opening file: " << path << std::endl;
+        std::cerr << "Error opening file for reading oilab config file: " << path << std::endl;
     }
 
     std::string line;
@@ -107,7 +108,7 @@ void write_lammps_datafile(const std::string &filename,
 {
     std::ofstream file(filename);
     if (!file.is_open())
-        std::cerr << "Error opening file for writing: " << filename << std::endl;
+        std::cerr << "Error opening file for writing lammps configuration file: " << filename << std::endl;
 
     file << "# LAMMPS data file via write_data\n";
     file << "\n";
@@ -131,13 +132,12 @@ void write_lammps_datafile(const std::string &filename,
 void write_lammps_input_script(const std::string &filename, const std::string &infile, const std::string &outfile, double cohesive_energy, double gb_thickness_parameter, const std::string &potential_file_path, const std::string &output_dump_file) {
     std::ofstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "Error opening file for writing: " << filename << std::endl;
+        std::cerr << "Error opening file for writing lammps input script: " << filename << std::endl;
         return;
     }
 
     file << "# Find energy of a config and write in " << outfile << " file\n";
     file << "\n";
-    file << "variable coh equal " << std::setprecision(8) << cohesive_energy << "\n";
     file << "variable potential_path string " << potential_file_path << "\n";
     file << "clear\n";
     file << "units metal\n";
@@ -148,18 +148,24 @@ void write_lammps_input_script(const std::string &filename, const std::string &i
     file << "read_data " << infile << "\n";
     file << "pair_style      eam/alloy\n";
     file << "pair_coeff      * * ${potential_path} Cu Cu\n";
-    file << "variable        xlobox equal xlo-10\n";
-    file << "variable        xhibox equal xhi-10\n";
     file << "delete_atoms overlap 1e-2 all all\n";
     file << "variable area equal ly*lz\n";
     file << "variable        xlogb equal xlo+" << std::setprecision(8) << gb_thickness_parameter << "\n";
     file << "variable        xhigb equal xhi-" << std::setprecision(8) << gb_thickness_parameter << "\n";
+    file << "variable        xlobulk equal xlo+" << std::setprecision(8) << gb_thickness_parameter << "\n";
+    file << "variable        xhibulk equal xlo+" << std::setprecision(8) << 1.5*gb_thickness_parameter << "\n";
     file << "region         GB      block ${xlogb} ${xhigb} INF INF INF INF side in units box\n";
+    file << "region         BULK    block ${xlobulk} ${xhibulk} INF INF INF INF side in units box\n";
     file << "group           GB region GB\n";
+    file << "group           BULK region BULK\n";
     file << "compute         peratom GB pe/atom\n";
+    file << "compute         peratombulk BULK pe/atom\n";
     file << "compute         pe GB reduce sum c_peratom\n";
+    file << "compute         pebulk GB reduce sum c_peratombulk\n";
     file << "variable        peGB equal c_pe\n";
+    file << "variable        peBULK equal c_pebulk\n";
     file << "variable        atomsGB equal count(GB)\n";
+    file << "variable        atomsBULK equal count(BULK)\n";
     file << "thermo 1000\n";
     file << "compute 1 all ke/atom\n";
     file << "compute cna all cna/atom 3.08133\n";
@@ -167,11 +173,12 @@ void write_lammps_input_script(const std::string &filename, const std::string &i
     file << "compute 3 all pe/atom\n";
     file << "compute 4 all stress/atom NULL pair\n";
     file << "timestep        0.001\n";
-    file << "thermo_style custom step temp ke pe etotal press pxx pyy pzz pxy pxz pyz ly lx lz xy xz yz c_pe v_atomsGB\n";
+    file << "thermo_style custom step temp ke pe etotal press pxx pyy pzz pxy pxz pyz ly lx lz xy xz yz c_pe v_atomsGB v_peBULK v_atomsBULK\n";
     file << "dump                    OUT0 all custom 10 " << output_dump_file << " id type x y z fx fy fz c_3 c_1 vx vy vz c_4[1] c_4[2] c_4[3] c_4[4] c_4[5] c_4[6]\n";
     file << "run                     0\n";
+    file << "variable        coh equal (${peBULK}/${atomsBULK})\n";
     file << "variable        GBene equal (${peGB}-${coh}*${atomsGB})\n";
-    file << "print \"a = 0 energy = ${peGB} numAtoms = ${atomsGB} GBene = ${GBene} area = ${area}\" file " << outfile << "\n";
+    file << "print \"coh = ${coh} energy = ${peGB} numAtoms = ${atomsGB} GBene = ${GBene} area = ${area}\" file " << outfile << "\n";
     file << "\n";
 }
 
@@ -180,7 +187,7 @@ std::vector<std::vector<double>> read_python_outfile(const std::string &path) {
     std::vector<std::vector<double>> data;
     std::ifstream file(path);
     if (!file.is_open()) {
-        std::cerr << "Error opening file: " << path << std::endl;
+        std::cerr << "Error opening file for reading lammps output: " << path << std::endl;
         return data;
     }
 
@@ -192,7 +199,7 @@ std::vector<std::vector<double>> read_python_outfile(const std::string &path) {
 
         while (ss >> field)
         {
-            if (field == "a") {
+            if (field == "coh") {
                 ss >> field;
                 ss >> state_id;
             }
@@ -283,7 +290,7 @@ std::pair<double, double> energy(const std::string& lammpsLocation,
     write_lammps_input_script(lammpsInputFile, lammpsDataFile, outfile, cohesive_energy, gb_thickness_parameter, potentialFile, lammpsDumpFile);
 
     // Run the LAMMPS script
-    std::string command = lammpsLocation +"lmp_serial -in " + lammpsInputFile + " > /dev/null 2>&1";
+    std::string command = lammpsLocation +"lmp -in " + lammpsInputFile + " > /dev/null 2>&1";
     std::system(command.c_str());
 
     // Read energy

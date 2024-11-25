@@ -61,7 +61,7 @@ namespace gbLAB {
          * @param filename-
          * @return A deque of mesostates
          */
-        std::deque<GbMesoState<dim>> collectMesoStates(const std::string& filename="") const;
+        std::map<Constraints ,GbMesoState<dim>> collectMesoStates(const std::string& filename="") const;
 
 
         /*!

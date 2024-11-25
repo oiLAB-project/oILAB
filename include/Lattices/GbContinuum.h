@@ -97,9 +97,13 @@ namespace gbLAB {
         VectorDimD displacement(const VectorDimD& x) const;
 
         static void reset(){
-            HhatInvComponents.clear();
-            piPeriodicFunctions.clear();
-            pihatLatticeFunctions.clear();
+            std::map<OrderedTuplet<dim+1>,PeriodicFunction<double, dim - 1>>().swap(piPeriodicFunctions);
+            std::map<OrderedTuplet<dim+1>,LatticeFunction<std::complex<double>, dim - 1>>().swap(pihatLatticeFunctions);
+            GbLatticeFunctions().swap(HhatInvComponents);
+
+            //HhatInvComponents.clear();
+            //piPeriodicFunctions.clear();
+            //pihatLatticeFunctions.clear();
         }
     };
 

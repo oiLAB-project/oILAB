@@ -1,5 +1,6 @@
 #include <TextFileParser.h>
 #include <GbMesoStateEnsemble.h>
+#include <omp.h>
 
 using namespace gbLAB;
 
@@ -51,7 +52,12 @@ int main()
 
 
     /*! [Lattice] */
-    const auto A(TextFileParser("bicrystal_3d.txt").readMatrix<double,3,3>("A",true));
+    double a0= 3.615000084042549;
+    Eigen::Matrix3d A;
+    A << 0.0, 0.5, 0.5,
+            0.5, 0.0, 0.5,
+            0.5, 0.5, 0.0;
+    A= a0*A;
     Lattice<3> lattice(A);
     std::cout << "Lattice A = " << std::endl;
     std::cout << lattice.latticeBasis << std::endl;
@@ -85,31 +91,23 @@ int main()
         cslVectors.push_back(periodScaling*gb.getPeriodVector(rAxisA));
         cslVectors.push_back(axisScaling*axisC);
 
-        gb.box(cslVectors,1,1,"gb.txt");
-        /*
-         *  c11 = 1.0439923926128656 eV/angstrom^3
-            c12 = 0.7750032094485771 eV/angstrom^3
-            c44 = 0.4771664655306506 eV/angstrom^3/
-            c11 = lambda + 2 mu;
-            c12 = lambda; mu = (c11-c12)/2
-            lambda/mu = 2 c12/(c11-c12)
-            lattice constant = 3.615
-         */
+
         // material parameter
-        double a0= 3.615;
-        double c11= 1.0439923926128656 * std::pow(a0,3);
-        double c12= 0.7750032094485771 * std::pow(a0,3);
+        // source: https://openkim.org/id/EAM_Dynamo_MishinMehlPapaconstantopoulos_2001_Cu__MO_346334655118_005
+        double c11= 169.9281940954852/160.2176621;
+        double c12= 122.65063014404001/160.2176621;
         GbMaterialTensors::lambda= c12;
         GbMaterialTensors::mu= (c11-c12)/2;
 
-
         GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, bScaling);
-        //ensemble.collectMesoStates("ms");
+        auto mesostates= ensemble.collectMesoStates();
 
-        // temperature = 0.2;
-        // resetEvery = 100 - resets the Monte Carlo every 100 accepted states to avoid getting stuck in a metastable state
-        // maxIterations = 20000 - total number of Monte Carlo steps
-        const auto& constraintsMesostateMap= ensemble.evolveMesoStates(0.3,1000,20000,"ms");
+        //#pragma omp parallel for num_threads(4)
+        for (size_t i = 0; i < mesostates.size(); ++i) {
+            const auto it = std::next(mesostates.begin(), i);
+            const auto data= (it->second).densityEnergy();
+            std::cout << it->first << "  " << (it->first).density() << "  " << data.second << std::endl;
+        }
 
         /*
         XTuplet constraint(14);

@@ -73,25 +73,27 @@ namespace gbLAB {
 
     /*-------------------------------------*/
     template<int dim>
-    std::deque<GbMesoState<dim>> GbMesoStateEnsemble<dim>::collectMesoStates(const std::string& filename) const
+    std::map<typename GbMesoStateEnsemble<dim>::Constraints,GbMesoState<dim>> GbMesoStateEnsemble<dim>::collectMesoStates(const std::string& filename) const
     {
         std::deque<Constraints> constraintsEnsemble(enumerateConstraints( (const GbShifts<dim>&) *this));
         std::cout << "Number of mesostates in the ensemble = " << constraintsEnsemble.size() << std::endl;
         std::cout << std::endl;
         std::cout << "------------------------------" << std::endl;
-        std::deque<GbMesoState<dim>> mesoStates;
+        std::map<Constraints,GbMesoState<dim>> mesoStates;
 
         int count= -1;
         for(const Constraints& constraints : constraintsEnsemble)
         {
             std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>> bsPairs(bsPairsFromConstraints(this->bShiftPairs,constraints));
             try {
-                mesoStates.emplace_back(constructMesoState(constraints));
+                //mesoStates.emplace_back(constructMesoState(constraints));
+                mesoStates.emplace(constraints,constructMesoState(constraints));
                 count++;
                 std::cout << "Constructing mesostate " << count << " of " << constraintsEnsemble.size() << std::endl;
                 std::cout << "Mesostate signature:  " << constraints.transpose() << std::endl;
                 if (!filename.empty())
-                    mesoStates.back().box(filename + std::to_string(count));
+                    //mesoStates.back().box(filename + std::to_string(count));
+                    mesoStates.at(constraints).box(filename + std::to_string(count));
             }
             catch(std::runtime_error& e)
             {

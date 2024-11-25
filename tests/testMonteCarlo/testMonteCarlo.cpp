@@ -108,6 +108,7 @@ void runMonteCarlo(const double& a0,
                 ensemble, canonicalTP,ensemble.initializeState());
         mc.evolve(iterations);
     }
+    GbContinuum<3>::reset();
 }
 
 std::pair<double,XTuplet> getLowestEnergyState(const std::string& filename) {
@@ -173,10 +174,9 @@ int main()
     // run a high temperature monte carlo
     double a0= 3.615000084042549;
     double temperature= 3000;
-    int iterations= 50000;
+    int iterations= 1;
     std::string filename = "lowestEnergy";
     runMonteCarlo(a0,temperature,iterations,XTuplet(0),filename);
-    exit(0);
 
 
     // get lowest energy state
@@ -184,20 +184,24 @@ int main()
     std::cout << "Lowest energy = " << pair.first << std::endl;
     std::cout << "Lowest energy state = " << pair.second << std::endl;
     XTuplet lowestEnergyState(pair.second);
+    lowestEnergyState << 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 2, 0, 2, 2;
+    //lowestEnergyState << 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+    std::cout << lowestEnergyState << std::endl;
 
 
     double a0ref= a0;
-    iterations = 100000;
-#pragma omp parallel for num_threads(20) collapse(2)
-    for(int i=1; i<=10; ++i)
+    iterations = 1;
+#pragma omp parallel for num_threads(3) collapse(2)
+    for(int i=1; i<=3; ++i)
     {
         for(int j=0; j<=10; ++j)
         {
             temperature = 300 * i;
-	    double strain= (double)j/500.0;
+	        double strain= (double)j/500.0;
             a0= (1.0+strain)*a0ref;
             runMonteCarlo(a0, temperature, iterations, lowestEnergyState, "observablesT" + std::to_string(temperature) + "_a" + std::to_string(strain));
         }
     }
+    std::cout << "Done" << std::endl;
     return 0;
 }

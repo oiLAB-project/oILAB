@@ -144,12 +144,13 @@ namespace gbLAB {
     template<int dim>
     std::pair<double,double> GbMesoState<dim>::densityEnergy() const
     {
-        std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/";
+        //std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/";
+        std::string lammpsLocation= "/usr/bin/lmp";
         box("temp" + std::to_string(omp_get_thread_num()));
         //auto xx= densityEnergyPython();
         auto yy= energy( lammpsLocation, "temp" + std::to_string(omp_get_thread_num()) + "_reference1.txt","Cu_mishin1.eam.alloy");
         //return energy( lammpsLocation, "temp_reference1.txt","Cu_mishin1.eam.alloy");
-        return yy;
+	return yy;
     }
 
 

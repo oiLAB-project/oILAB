@@ -84,7 +84,6 @@ namespace gbLAB {
         int count= -1;
         for(const Constraints& constraints : constraintsEnsemble)
         {
-            std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>> bsPairs(bsPairsFromConstraints(this->bShiftPairs,constraints));
             try {
                 //mesoStates.emplace_back(constructMesoState(constraints));
                 mesoStates.emplace(constraints,constructMesoState(constraints));

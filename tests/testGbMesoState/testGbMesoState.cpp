@@ -100,38 +100,37 @@ int main()
         GbMaterialTensors::mu= (c11-c12)/2;
 
         GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, bScaling);
-        auto mesostates= ensemble.collectMesoStates();
 
-        //#pragma omp parallel for num_threads(4)
-        for (size_t i = 0; i < mesostates.size(); ++i) {
-            const auto it = std::next(mesostates.begin(), i);
-            const auto data= (it->second).densityEnergy();
-            std::cout << it->first << "  " << (it->first).density() << "  " << data.second << std::endl;
+	std::deque<XTuplet> constraintsEnsemble(ensemble.enumerateConstraints((const GbShifts<3>&) ensemble));
+	std::cout << "Size of the ensemble = " << constraintsEnsemble.size() << std::endl;
+
+        std::ofstream out_file;
+
+        #pragma omp parallel for num_threads(20) private(out_file)
+        for (size_t i = 0; i < constraintsEnsemble.size(); ++i) {
+            int thread_id = omp_get_thread_num();
+
+            // Create a filename for each thread
+            std::string filename = "output_thread_" + std::to_string(thread_id) + ".txt";
+
+            // Open the file once per thread (if not already open)
+            if (!out_file.is_open()) 
+                out_file.open(filename);
+
+            const auto& it = std::next(constraintsEnsemble.begin(), i);
+            try {
+                const auto& mesostate= ensemble.constructMesoState(*it);
+                const auto data= mesostate.densityEnergy();
+	        if (out_file.is_open())
+                    out_file << *it << "  " << it->density() << "  " << data.second << std::endl;
+	        else
+	            std::cerr << "Failed to open file " << filename << std::endl;
+            }
+            catch(std::runtime_error& e)
+            {
+                std::cout << e.what() << std::endl;
+            }
         }
-
-        /*
-        XTuplet constraint(14);
-        constraint << 1,1,1,1,1,1,1,1,0,0,0,2,2,0; // lowest energy
-        //constraint <<  1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
-        auto ms= ensemble.constructMesoState(constraint);
-        ms.box("xx.txt");
-        auto densityEnergy= ms.densityEnergy();
-        std::cout << "density = " << densityEnergy.first << "; energy = " << densityEnergy.second;
-         */
-
-        /* uncomment if we intend to construct systems with increased height
-        cslVectors[0]= 5*cslVectors[0];
-        GbMesoStateEnsemble<3> newEnsemble(gb, rAxisA, cslVectors, bScaling);
-        int count= 0;
-        GbContinuum<3>::reset();
-        for(const auto& [constraints,mesostate]: constraintsMesostateMap)
-        {
-            auto largeMesostate= newEnsemble.constructMesoState(constraints);
-            largeMesostate.box("msLarge" + std::to_string(count));
-            count++;
-        }
-         */
-
     }
     catch(std::runtime_error& e)
     {

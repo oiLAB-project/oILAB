@@ -10,8 +10,8 @@ project(oILAB VERSION 1.0)
 
 
 
-set(CMAKE_CXX_COMPILER /opt/homebrew/Cellar/llvm/19.1.3/bin/clang++)
-set(CMAKE_C_COMPILER /opt/homebrew/Cellar/llvm/19.1.3/bin/clang)
+#set(CMAKE_CXX_COMPILER /opt/homebrew/Cellar/llvm/19.1.3/bin/clang++)
+#set(CMAKE_C_COMPILER /opt/homebrew/Cellar/llvm/19.1.3/bin/clang)
 
 OPTION (USE_OpenMP "Use OpenMP to enable <omp.h>" ON)
 if (USE_OpenMP)
@@ -24,10 +24,10 @@ if (USE_OpenMP)
 endif(USE_OpenMP)
 
 if(OPENMP_FOUND)
-    set(OPENMP_INCLUDES "/opt/homebrew/Cellar/libomp/16.0.6/include")
-    set(OPENMP_LIBRARIES "/opt/Homebrew/Cellar/libomp/16.0.6/lib")
-    #set(OPENMP_INCLUDES "/usr/lib/llvm-14/include")
-    #set(OPENMP_LIBRARIES "/usr/lib/llvm-14/lib")
+    #set(OPENMP_INCLUDES "/opt/homebrew/Cellar/libomp/16.0.6/include")
+    #set(OPENMP_LIBRARIES "/opt/Homebrew/Cellar/libomp/16.0.6/lib")
+    set(OPENMP_INCLUDES "/usr/lib/llvm-14/include")
+    set(OPENMP_LIBRARIES "/usr/lib/llvm-14/lib")
     include_directories("${OPENMP_INCLUDES}")
     link_directories("${OPENMP_LIBRARIES}")
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")

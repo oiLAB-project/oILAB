@@ -24,7 +24,6 @@ namespace gbLAB {
         //using Constraints= Eigen::Tensor<int,dim>;
         using Constraints= XTuplet;
 
-        static std::deque<Constraints> enumerateConstraints(const GbShifts<dim>& gbs);
 
         /*!
          * \brief Constructs \p bicrystalConfig and \p ensembleCslVectors
@@ -63,6 +62,7 @@ namespace gbLAB {
          */
         std::map<Constraints ,GbMesoState<dim>> collectMesoStates(const std::string& filename="") const;
 
+        static std::deque<Constraints> enumerateConstraints(const GbShifts<dim>& gbs);
 
         /*!
          * \brief Evove mesostates using a Monte Carlo algorithm

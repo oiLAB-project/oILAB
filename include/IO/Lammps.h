@@ -290,7 +290,7 @@ std::pair<double, double> energy(const std::string& lammpsLocation,
     write_lammps_input_script(lammpsInputFile, lammpsDataFile, outfile, cohesive_energy, gb_thickness_parameter, potentialFile, lammpsDumpFile);
 
     // Run the LAMMPS script
-    std::string command = lammpsLocation +"lmp -in " + lammpsInputFile + " > /dev/null 2>&1";
+    std::string command = lammpsLocation +" -in " + lammpsInputFile + " > /dev/null 2>&1";
     std::system(command.c_str());
 
     // Read energy

@@ -9,7 +9,6 @@ using namespace gbLAB;
 void runMonteCarlo(const double& a0,
                    const double& temperature,
                    const int& iterations,
-                   XTuplet startingState,
                    const std::string filename="")
 {
     /*! [Types] */
@@ -97,20 +96,12 @@ void runMonteCarlo(const double& a0,
     GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, bScaling);
     const double kb = 8.61733e-5; // in eV/K
     CanonicalTP<XTuplet, GbMesoState<3>> canonicalTP(kb*temperature,filename);
-    if (startingState.size()!=0) {
-        MonteCarlo<XTuplet, GbMesoState < 3>, GbMesoStateEnsemble < 3 >, CanonicalTP<XTuplet, GbMesoState < 3>>> mc(
-                ensemble, canonicalTP, startingState);
-        std::cout << "Starting MC with state = " << startingState << std::endl;
-        mc.evolve(iterations);
-    }
-    else {
-        MonteCarlo<XTuplet, GbMesoState < 3>, GbMesoStateEnsemble < 3 >, CanonicalTP<XTuplet, GbMesoState < 3>>> mc(
-                ensemble, canonicalTP,ensemble.initializeState());
-        mc.evolve(iterations);
-    }
+    MonteCarlo<XTuplet, GbMesoState < 3>, GbMesoStateEnsemble < 3 >, CanonicalTP<XTuplet, GbMesoState < 3>>> mc(ensemble, canonicalTP);
+    mc.evolve(iterations);
     GbContinuum<3>::reset();
 }
 
+/*
 std::pair<double,XTuplet> getLowestEnergyState(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -167,6 +158,7 @@ std::pair<double,XTuplet> getLowestEnergyState(const std::string& filename) {
 
     return std::make_pair(lowestEnergy,lowestEnergyState);
 }
+*/
 
 int main()
 {
@@ -192,21 +184,31 @@ int main()
     */
 
 
+    /*
     XTuplet lowestEnergyState(14);
     lowestEnergyState << 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 2, 0, 2, 0;
     std::cout << lowestEnergyState << std::endl;
+    */
 
 
-    iterations = 100000;
-#pragma omp parallel for num_threads(20) collapse(2)
-    for(int i=1; i<=10; ++i)
+    iterations = 10000;
+#pragma omp parallel for num_threads(20) collapse(3)
+    //for(int i=1; i<=10; ++i)
+    for(int i=5; i<=5; ++i)
     {
-        for(int j=0; j<=10; ++j)
+        //for(int j=0; j<=10; ++j)
+        for(int j=0; j<=0; ++j)
         {
-            double temperatureLocal= 300 * i;
-	    double strain= (double)j/500.0;
-            double a0Local= (1.0+strain)*a0;
-            runMonteCarlo(a0Local, temperatureLocal, iterations, lowestEnergyState, "observablesT" + std::to_string(temperatureLocal) + "_a" + std::to_string(strain));
+	    for (int k=0; k<100; ++k)
+	    {
+               double temperatureLocal= 300 * i;
+	       double strain= (double)j/500.0;
+               double a0Local= (1.0+strain)*a0;
+               runMonteCarlo(a0Local, 
+			       temperatureLocal, 
+			       iterations, 
+			       "MC"+std::to_string(k)+"observablesT" + std::to_string(temperatureLocal) + "_a" + std::to_string(strain));
+	    }
         }
     }
     return 0;

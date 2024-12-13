@@ -19,6 +19,7 @@ int main()
     /*! [Types] */
 
 
+    /*
     // Sigma 29 [0-10](2 0 -5)
     VectorDimD axis(0,-1,0);
     double theta= 43.60282*M_PI/180;       // misorientation angle
@@ -27,6 +28,7 @@ int main()
     int periodScaling= 1;
     int axisScaling= 1;
     double bScaling= 2.0;
+    */
 
     /*
     // Sigma 123 [110](-5 5 14)
@@ -39,20 +41,22 @@ int main()
     double bScaling= 1.4;
      */
 
-    /*
-    //Sigma 3[1-10](112)
+
+    //Sigma 3 coherent
     VectorDimD axis(1,-1,0);
-    double theta= 70.52878*M_PI/180;
-    VectorDimD gbNormal(1,1,2);
-    int heightScaling= 2;
+    //double theta= 70.52878*M_PI/180; //Sigma 3[1-10](112) incoherent
+    //VectorDimD gbNormal(1,1,2);
+    double theta= 109.47122*M_PI/180;
+    VectorDimD gbNormal(1,1,1);
+    int heightScaling= 4;
     int periodScaling= 2;
     int axisScaling= 1;
     double bScaling= 2.0;
-     */
 
 
     /*! [Lattice] */
-    double a0= 3.615000084042549;
+    double strain=0.0; // 0.01 or 0.02
+    double a0= (1.0+strain)*3.615000084042549;
     Eigen::Matrix3d A;
     A << 0.0, 0.5, 0.5,
             0.5, 0.0, 0.5,

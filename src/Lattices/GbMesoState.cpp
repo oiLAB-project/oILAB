@@ -144,8 +144,8 @@ namespace gbLAB {
     template<int dim>
     std::pair<double,double> GbMesoState<dim>::densityEnergy() const
     {
-        //std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/";
-        std::string lammpsLocation= "/usr/bin/lmp";
+        std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-29Aug2024/build/lmp";
+        //std::string lammpsLocation= "/usr/bin/lmp";
         box("temp" + std::to_string(omp_get_thread_num()));
         //auto xx= densityEnergyPython();
         auto yy= energy( lammpsLocation, "temp" + std::to_string(omp_get_thread_num()) + "_reference1.txt","Cu_mishin1.eam.alloy");
@@ -211,6 +211,7 @@ namespace gbLAB {
      for(const auto& [b,s,include] : bs)
          bmax= max(bmax,b.cartesian().norm());
 
+     int numberOfIgnoredPoints= 0;
      for (const auto &latticeVector: config) {
          VectorDimD x;
          OrderedTuplet<dim+1> temp;
@@ -248,27 +249,33 @@ namespace gbLAB {
 
          // ignore x if it occupies a deleted CSL position
          bool ignore= false;
+         VectorDimD cslShift;
+         cslShift << -0.5, -FLT_EPSILON, -FLT_EPSILON;
+         VectorDimD xModulo= x;
+         std::vector<LatticeVector<3>> localBoxVectors(boxVectors);
+         localBoxVectors[0]=5*boxVectors[0];
+         LatticeVector<dim>::modulo(xModulo, localBoxVectors, cslShift);
          for(const auto& [b,s, include] : bs) {
-             VectorDimD cslShift;
-             cslShift << -0.5, -FLT_EPSILON, -FLT_EPSILON;
-             VectorDimD xModulo= x;
-             LatticeVector<dim>::modulo(xModulo, boxVectors, cslShift);
-             if (include == 2 && (s - xModulo).norm() < FLT_EPSILON) {
+             if (include == 2 && (s - xModulo).norm() < 1e-6) {
                  ignore = true;
+                 numberOfIgnoredPoints++;
                  break;
              }
          }
-         if (ignore==true)
+         if (ignore==true) {
              continue;
+         }
 
 
-         if (&(latticeVector.lattice) == &(this->gb.bc.A) && x.dot(this->gb.nA.cartesian().normalized()) <= FLT_EPSILON)
+         if (&(latticeVector.lattice) == &(this->gb.bc.A) && x.dot(this->gb.nA.cartesian().normalized()) <= 1e-6)
+         //if (&(latticeVector.lattice) == &(this->gb.bc.A) && x.dot(this->gb.nA.cartesian().normalized()) <= FLT_EPSILON)
          //if (&(latticeVector.lattice) == &(this->gb.bc.A))
          {
              referenceConfigA.push_back(latticeVector.cartesian());
              deformedConfigA.push_back(x);
          }
-         else if (&(latticeVector.lattice) == &(this->gb.bc.B) && x.dot(this->gb.nB.cartesian().normalized()) <= FLT_EPSILON)
+         else if (&(latticeVector.lattice) == &(this->gb.bc.B) && x.dot(this->gb.nB.cartesian().normalized()) <= 1e-6)
+         //else if (&(latticeVector.lattice) == &(this->gb.bc.B) && x.dot(this->gb.nB.cartesian().normalized()) <= FLT_EPSILON)
          //else if (&(latticeVector.lattice) == &(this->gb.bc.B))
          {
              referenceConfigB.push_back(latticeVector.cartesian());
@@ -276,6 +283,15 @@ namespace gbLAB {
          }
 
      }
+
+
+     int numberOfIgnoredCSLPoints= 0;
+     for(const auto& [b,s, include] : bs)
+     {
+         if (include==2) numberOfIgnoredCSLPoints++;
+     }
+     if(numberOfIgnoredPoints != 2*numberOfIgnoredCSLPoints)
+         throw(std::runtime_error("GB Mesostate construction failed: incorrect number of points"));
 
 
      int nAtoms= referenceConfigA.size()+referenceConfigB.size()+configDscl.size();

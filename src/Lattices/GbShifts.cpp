@@ -44,7 +44,8 @@ namespace gbLAB
         {
             std::cout << "b = " << b.cartesian().transpose();
             std::cout << "; s = " << s.transpose() << std::endl;
-            if (abs(s.dot(normal)) > FLT_EPSILON)
+            //if (abs(s.dot(normal)) > FLT_EPSILON)
+            if (abs(s.dot(normal)) > 1e-6)
                 throw std::runtime_error("GBShifts construction failed - shifts are not parallel to the GB.");
 
             Eigen::MatrixXd shiftCoordinates= gbCslReciprocalBasis.transpose()*s;
@@ -86,7 +87,8 @@ namespace gbLAB
         for(int i=0; i<dim; ++i)
         {
             // scale the lattice vectors of T based on the bhalfMax parameter
-            int factor= floor(bhalfMax*latticeConstant/planeParallelBasisT[i].latticeVector().cartesian().norm());
+            //int factor= floor(bhalfMax*latticeConstant/planeParallelBasisT[i].latticeVector().cartesian().norm()+FLT_EPSILON);
+            int factor= floor(5*bhalfMax*latticeConstant/planeParallelBasisT[i].latticeVector().cartesian().norm()+FLT_EPSILON);
             factor= (factor>0 ? factor : 1);
             latticeVectorsT.push_back(factor * planeParallelBasisT[i].latticeVector());
         }
@@ -97,9 +99,11 @@ namespace gbLAB
         shiftT << -0.5, -0.5, -0.5;
         shiftC << -0.5, -FLT_EPSILON, -FLT_EPSILON;
         for(auto& point : points) {
+            //if (point.cartesian().norm() > bhalfMax*gb.bc.A.latticeBasis.col(0).norm())
+            //    continue;
+            LatticeVector<dim>::modulo(point, latticeVectorsT, shiftT);
             if (point.cartesian().norm() > bhalfMax*gb.bc.A.latticeBasis.col(0).norm())
                 continue;
-            LatticeVector<dim>::modulo(point, latticeVectorsT, shiftT);
             auto cslShift = LatticeVector<dim>((gb.bc.LambdaA * gb.basisT * point).eval(), gb.bc.dscl);
             for(const auto& cslPoint : cslPoints) {
                 // only for those CSL points on the boundary

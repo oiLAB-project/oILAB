@@ -223,7 +223,7 @@ std::vector<std::vector<double>> read_python_outfile(const std::string &path) {
             }
         }
 
-        gb_density = gb_density / area;
+        //gb_density = gb_density / area;
         data.push_back({state_id, area, gb_energy, gb_density});
     }
 

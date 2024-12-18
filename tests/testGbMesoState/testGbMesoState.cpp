@@ -19,7 +19,6 @@ int main()
     /*! [Types] */
 
 
-    /*
     // Sigma 29 [0-10](2 0 -5)
     VectorDimD axis(0,-1,0);
     double theta= 43.60282*M_PI/180;       // misorientation angle
@@ -27,8 +26,7 @@ int main()
     int heightScaling= 1;
     int periodScaling= 1;
     int axisScaling= 1;
-    double bScaling= 2.0;
-    */
+    double bScaling= 0.99;
 
     /*
     // Sigma 123 [110](-5 5 14)
@@ -38,20 +36,32 @@ int main()
     int heightScaling= 2;
     int periodScaling= 1;
     int axisScaling= 1;
-    double bScaling= 1.4;
+    double bScaling= 0.75;
      */
 
-
-    //Sigma 3 coherent
+    //Sigma 3
+    /*
     VectorDimD axis(1,-1,0);
-    //double theta= 70.52878*M_PI/180; //Sigma 3[1-10](112) incoherent
-    //VectorDimD gbNormal(1,1,2);
-    double theta= 109.47122*M_PI/180;
-    VectorDimD gbNormal(1,1,1);
+    double theta= 70.52878*M_PI/180; //Sigma 3[1-10](112) incoherent
+    VectorDimD gbNormal(1,1,2);
+    //double theta= 109.47122*M_PI/180; //Sigma 3[1-10](111) coherent
+    //VectorDimD gbNormal(1,1,1);
     int heightScaling= 4;
-    int periodScaling= 2;
+    int periodScaling= 1;
     int axisScaling= 1;
-    double bScaling= 2.0;
+    double bScaling= 0.99;
+     */
+
+    /*
+    //Sigma 11
+    VectorDimD axis(1,-1,0);
+    double theta= 50.478803641357835374*M_PI/180; //Sigma 3[1-10](112) incoherent
+    VectorDimD gbNormal(1,1,3);
+    int heightScaling= 2;
+    int periodScaling= 1;
+    int axisScaling= 1;
+    double bScaling= 0.99;
+    */
 
 
     /*! [Lattice] */
@@ -78,6 +88,7 @@ int main()
         Lattice<3> latticeA(lattice.latticeBasis,halfRotation.matrix());
         Lattice<3> latticeB(lattice.latticeBasis,halfRotation.matrix().transpose());
         BiCrystal<3> bc(latticeA,latticeB,false);
+        std::cout << "Sigma = " << bc.sigma << std::endl;
 
         // construct GB
         gbNormal= halfRotation.matrix() * gbNormal;
@@ -104,13 +115,12 @@ int main()
         GbMaterialTensors::mu= (c11-c12)/2;
 
         GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, bScaling);
-
-	std::deque<XTuplet> constraintsEnsemble(ensemble.enumerateConstraints((const GbShifts<3>&) ensemble));
-	std::cout << "Size of the ensemble = " << constraintsEnsemble.size() << std::endl;
+        std::deque<XTuplet> constraintsEnsemble(ensemble.enumerateConstraints((const GbShifts<3>&) ensemble));
+        std::cout << "Size of the ensemble = " << constraintsEnsemble.size() << std::endl;
 
         std::ofstream out_file;
 
-        #pragma omp parallel for num_threads(20) private(out_file)
+        #pragma omp parallel for num_threads(1) private(out_file)
         for (size_t i = 0; i < constraintsEnsemble.size(); ++i) {
             int thread_id = omp_get_thread_num();
 
@@ -126,7 +136,8 @@ int main()
                 const auto& mesostate= ensemble.constructMesoState(*it);
                 const auto data= mesostate.densityEnergy();
 	        if (out_file.is_open())
-                    out_file << *it << "  " << it->density() << "  " << data.second << std::endl;
+                    //out_file << *it << "  " << it->density() << "  " << data.second << std::endl;
+                    out_file << *it << "  " << data.first << "  " << data.second << std::endl;
 	        else
 	            std::cerr << "Failed to open file " << filename << std::endl;
             }
@@ -138,7 +149,7 @@ int main()
     }
     catch(std::runtime_error& e)
     {
-        //std::cout << e.what() << std::endl;
+        std::cout << e.what() << std::endl;
     }
     return 0;
 }

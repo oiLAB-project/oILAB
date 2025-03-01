@@ -40,7 +40,9 @@ int main()
             /*! [SNF] */
             double theta= acos((rotation.trace()-1.0)/2.0)*180/M_PI;
             std::cout << "Misorientation angle = " << std::setprecision(20) << theta << "; ";
-            BiCrystal<3> bc(lattice,Lattice<3>(lattice.latticeBasis,rotation),false);
+	    Lattice<3> latticeB(lattice.latticeBasis,rotation);
+            //BiCrystal<3> bc(lattice,Lattice<3>(lattice.latticeBasis,rotation),false);
+            BiCrystal<3> bc(lattice,latticeB,false);
             std::cout << "Sigma = " << std::setprecision(20) << bc.sigma << std::endl;
             std::cout << std::endl;
             std::cout << "Lattice B = " << std::endl;

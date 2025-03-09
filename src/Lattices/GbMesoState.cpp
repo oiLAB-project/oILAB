@@ -70,6 +70,7 @@ namespace gbLAB {
             VectorDimD tempx= s-valueu;
 
 
+            /*
             if(tempx.dot(normal)<FLT_EPSILON) // tempx is in lattice A
             {
                 // modulo tempx w.r.t the bicrystal box
@@ -104,6 +105,21 @@ namespace gbLAB {
                 }
 
             }
+             */
+            // modulo tempx w.r.t the bicrystal box
+            LatticeVector<dim>::modulo(tempx,bicrystalBoxVectors,shift);
+            try {
+                if (tempx.dot(normal) < FLT_EPSILON) // tempx is in lattice A
+                    keyx << gb.bc.getLatticeVectorInD(gb.bc.A.latticeVector(tempx)), 1;
+                else    // tempx is in lattice B region
+                    keyx << gb.bc.getLatticeVectorInD(gb.bc.A.latticeVector(tempx)), -1;
+            }
+            catch(std::runtime_error& e) {
+                std::cout << e.what() << std::endl;
+                std::cout << "x key = " << keyx.transpose() << ";   " << tempx.transpose() << std::endl;
+                std::cout << "b = " << b.cartesian().transpose()  << " ; s= " << s.transpose() << std::endl;
+                exit(0);
+            }
             xuPairs[keyx]=valueu;
         }
         if(xuPairs.size() != bs.size())
@@ -130,10 +146,18 @@ namespace gbLAB {
         for(const auto& latticeVector : bicrystalConfig) {
             auto latticeVectorInD= gb.bc.getLatticeVectorInD(latticeVector);
             OrderedTuplet<dim+1> key;
-            if (&latticeVector.lattice == &gb.bc.A)
-                key << latticeVectorInD,1;
-            else if (&latticeVector.lattice == &gb.bc.B)
-                key << latticeVectorInD,2;
+            if (&latticeVector.lattice == &gb.bc.A) {
+                if (latticeVector.dot(gb.nA) <= 0)
+                    key << latticeVectorInD, 1;
+                else
+                    key << latticeVectorInD, -1;
+            }
+            else if (&latticeVector.lattice == &gb.bc.B) {
+                if (latticeVector.dot(gb.nB) <= 0)
+                    key << latticeVectorInD, 2;
+                else
+                    key << latticeVectorInD, -2;
+            }
             idCoordsMap[key]= latticeVectorInD.cartesian();
         }
         return idCoordsMap;
@@ -144,7 +168,8 @@ namespace gbLAB {
     template<int dim>
     std::pair<double,double> GbMesoState<dim>::densityEnergy() const
     {
-        std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-29Aug2024/build/lmp";
+        //std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-29Aug2024/build/lmp";
+        std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/lmp_serial";
         //std::string lammpsLocation= "/usr/bin/lmp";
         box("temp" + std::to_string(omp_get_thread_num()));
         //auto xx= densityEnergyPython();
@@ -216,25 +241,18 @@ namespace gbLAB {
          VectorDimD x;
          OrderedTuplet<dim+1> temp;
          if (&(latticeVector.lattice) == &(this->gb.bc.A)) {
-             temp <<  gb.bc.getLatticeVectorInD(latticeVector),1;
              double height= latticeVector.cartesian().dot(gb.nA.cartesian().normalized());
-             LatticeDirection<dim> latticeVectorInAalongnA(gb.bc.A.latticeDirection(gb.nA.cartesian()));
-             LatticeDirection<dim> dsclDirectionAlongnA(gb.bc.getLatticeDirectionInD(latticeVectorInAalongnA.latticeVector()));
-             int heightFactor= round(abs(2.0*height/dsclDirectionAlongnA.cartesian().norm()));
-             LatticeVector<dim> dsclVector= heightFactor * dsclDirectionAlongnA.latticeVector();
-
-             if (height > 0 && heightFactor != 0 && height < bmax) // latticeVector is outside A
-                 temp << gb.bc.getLatticeVectorInD(latticeVector)-dsclVector, 2;
+             if (height<FLT_EPSILON)
+                 temp <<  gb.bc.getLatticeVectorInD(latticeVector),1;
+             else
+                 temp <<  gb.bc.getLatticeVectorInD(latticeVector),-1;
          }
          else if (&(latticeVector.lattice) == &(this->gb.bc.B)) {
-             temp <<  gb.bc.getLatticeVectorInD(latticeVector),2;
              double height = latticeVector.cartesian().dot(gb.nB.cartesian().normalized());
-             LatticeDirection<dim> latticeVectorInBalongnB(gb.bc.B.latticeDirection(gb.nB.cartesian()));
-             LatticeDirection<dim> dsclDirectionAlongnB(gb.bc.getLatticeDirectionInD(latticeVectorInBalongnB.latticeVector()));
-             int heightFactor= round(abs(2.0*height/dsclDirectionAlongnB.cartesian().norm()));
-             LatticeVector<dim> dsclVector= heightFactor * dsclDirectionAlongnB.latticeVector();
-             if (height > 0 && heightFactor!= 0 && height < bmax) // latticeVector is outside B
-                 temp << gb.bc.getLatticeVectorInD(latticeVector)-dsclVector, 1;
+             if (height<FLT_EPSILON)
+                 temp <<  gb.bc.getLatticeVectorInD(latticeVector),2;
+             else
+                 temp <<  gb.bc.getLatticeVectorInD(latticeVector),-2;
          }
 
          //x = latticeVector.cartesian() + this->displacement(latticeVector.cartesian());

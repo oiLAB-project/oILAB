@@ -85,6 +85,7 @@ namespace gbLAB {
         for(const Constraints& constraints : constraintsEnsemble)
         {
             try {
+                if (constraints(0) != 1) continue;
                 //mesoStates.emplace_back(constructMesoState(constraints));
                 mesoStates.emplace(constraints,constructMesoState(constraints));
                 count++;
@@ -238,8 +239,26 @@ namespace gbLAB {
         std::deque<Constraints> constraintsEnsemble;
 
         auto tuples= XTuplet::generate_tuples(3,gbs.bShiftPairs.size());
+
+        // identify indices of pre-existing CSL points
+        std::vector<int> cslIndices;
+        for(int i=0; i<gbs.bShiftPairs.size(); ++i)
+        {
+            if(gbs.bShiftPairs[i].first.all()==0)
+                cslIndices.push_back(i);
+        }
+
         for (auto& tuple : tuples) {
-            if (!(tuple.array()==0).all())
+            bool pass= true;
+            //if (!(tuple.array()==0).all())
+            // allow only constraints that do not alter pre-existing CSL points
+            for(const auto& index : cslIndices) {
+                if (tuple(index) != 1) {
+                    pass = false;
+                    break;
+                }
+            }
+            if (pass)
                 constraintsEnsemble.push_back(tuple);
         }
 

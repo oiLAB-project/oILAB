@@ -18,7 +18,19 @@ int main()
     using IntScalarType = LatticeCore<3>::IntScalarType;
     /*! [Types] */
 
+    /*
+    // Sigma 37[111], misorientation = 50.569992092103568382
+    VectorDimD axis(1,1,1);
+    double theta = 50.569992092103568382*M_PI/180;
+    VectorDimD gbNormal(10,1,-11);
+    int heightScaling= 1;
+    int periodScaling= 1;
+    int axisScaling= 1;
+    double bScaling= 0.75;
+     */
 
+
+    /*
     // Sigma 29 [0-10](2 0 -5)
     VectorDimD axis(0,-1,0);
     double theta= 43.60282*M_PI/180;       // misorientation angle
@@ -26,9 +38,9 @@ int main()
     int heightScaling= 1;
     int periodScaling= 1;
     int axisScaling= 1;
-    double bScaling= 0.99;
+    double bScaling= 0.75;
+     */
 
-    /*
     // Sigma 123 [110](-5 5 14)
     VectorDimD axis(1,1,0);
     double theta= 53.594515175286005615*M_PI/180;       // misorientation angle
@@ -36,8 +48,7 @@ int main()
     int heightScaling= 2;
     int periodScaling= 1;
     int axisScaling= 1;
-    double bScaling= 0.75;
-     */
+    double bScaling= 0.6;
 
     //Sigma 3
     /*
@@ -105,6 +116,8 @@ int main()
         cslVectors.push_back(heightScaling*gb.bc.csl.latticeDirection(gb.nA.cartesian()).latticeVector());
         cslVectors.push_back(periodScaling*gb.getPeriodVector(rAxisA));
         cslVectors.push_back(axisScaling*axisC);
+        gb.box(cslVectors,1,1,"gb.txt",true);
+        bc.box(cslVectors,1,1,"bcOriented.txt",true);
 
 
         // material parameter
@@ -125,7 +138,7 @@ int main()
             int thread_id = omp_get_thread_num();
 
             // Create a filename for each thread
-            std::string filename = "output_thread_" + std::to_string(thread_id) + ".txt";
+            std::string filename= "output_thread_" + std::to_string(thread_id) + ".txt";
 
             // Open the file once per thread (if not already open)
             if (!out_file.is_open()) 
@@ -134,12 +147,13 @@ int main()
             const auto& it = std::next(constraintsEnsemble.begin(), i);
             try {
                 const auto& mesostate= ensemble.constructMesoState(*it);
+                //mesostate.box(std::to_string(i)+ ".txt");
                 const auto data= mesostate.densityEnergy();
-	        if (out_file.is_open())
-                    //out_file << *it << "  " << it->density() << "  " << data.second << std::endl;
-                    out_file << *it << "  " << data.first << "  " << data.second << std::endl;
-	        else
-	            std::cerr << "Failed to open file " << filename << std::endl;
+                if (out_file.is_open())
+                        //out_file << *it << "  " << it->density() << "  " << data.second << std::endl;
+                        out_file << *it << "  " << data.first << "  " << data.second << std::endl;
+                else
+                    std::cerr << "Failed to open file " << filename << std::endl;
             }
             catch(std::runtime_error& e)
             {

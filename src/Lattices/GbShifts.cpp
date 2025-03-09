@@ -88,7 +88,7 @@ namespace gbLAB
         {
             // scale the lattice vectors of T based on the bhalfMax parameter
             //int factor= floor(bhalfMax*latticeConstant/planeParallelBasisT[i].latticeVector().cartesian().norm()+FLT_EPSILON);
-            int factor= floor(5*bhalfMax*latticeConstant/planeParallelBasisT[i].latticeVector().cartesian().norm()+FLT_EPSILON);
+            int factor= floor(35*bhalfMax*latticeConstant/planeParallelBasisT[i].latticeVector().cartesian().norm()+FLT_EPSILON);
             factor= (factor>0 ? factor : 1);
             latticeVectorsT.push_back(factor * planeParallelBasisT[i].latticeVector());
         }

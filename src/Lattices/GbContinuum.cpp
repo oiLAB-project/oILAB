@@ -106,13 +106,30 @@ namespace gbLAB {
                VectorDimD normal(domain.col(0).cross(domain.col(1)));
                normal.normalize();
 
-               if(abs(value.dot(normal)) < FLT_EPSILON && key(dim)==1) // belongs to lattice 1
+               VectorDimD perturbedValue= value;
+               if(abs(value.dot(normal)) < FLT_EPSILON) // belongs to the GB
+               {
+                   if (key(dim)==1)
+                       perturbedValue= value - (value.dot(normal) + FLT_EPSILON) * normal;
+                   else if (key(dim)==2)
+                       perturbedValue= value - (value.dot(normal) - FLT_EPSILON) * normal;
+               }
+
+               else if (key(dim)==-1 || key(dim)==-2) // belongs to (lattice 1 & grain 2) || (lattice 2 & grain 1)
+               {
+                   perturbedValue= value - 2 * value.dot(normal) * normal;
+               }
+               piPeriodicFunctions.insert({key, get_pi(domain, n, perturbedValue)});
+               pihatLatticeFunctions.insert({key, get_pihat(domain, n, perturbedValue)});
+
+               /*
+               if(abs(value.dot(normal)) < FLT_EPSILON && key(dim)==1) // belongs to lattice 1 and on the GB
                {
                    VectorDimD perturbedValue= value - (value.dot(normal) + FLT_EPSILON) * normal;
                    piPeriodicFunctions.insert({key, get_pi(domain, n, perturbedValue)});
                    pihatLatticeFunctions.insert({key, get_pihat(domain, n, perturbedValue)});
                }
-               else if(abs(value.dot(normal)) < FLT_EPSILON && key(dim)==2) // belongs to lattice 2
+               else if(abs(value.dot(normal)) < FLT_EPSILON && key(dim)==2) // belongs to lattice 2 and on the GB
                {
                    VectorDimD perturbedValue= value - (value.dot(normal) - FLT_EPSILON) * normal;
                    piPeriodicFunctions.insert({key, get_pi(domain, n, perturbedValue)});
@@ -122,6 +139,7 @@ namespace gbLAB {
                    piPeriodicFunctions.insert({key, get_pi(domain, n, value)});
                    pihatLatticeFunctions.insert({key, get_pihat(domain, n, value)});
                }
+                */
            }
        }
 

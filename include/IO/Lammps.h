@@ -274,10 +274,11 @@ std::pair<double, double> energy(const std::string& lammpsLocation,
             nbox[i][0] = -new_box(i,i) / 2;
             nbox[i][1] = new_box(i,i) / 2;
         } else if (i == 1) {
-            nbox[i][0] = origin(i);
+            //nbox[i][0] = origin(i);
+            nbox[i][0] = 0.0;
             nbox[i][1] = new_box(i,i);
         } else {
-            nbox[i][0] = 0;
+            nbox[i][0] = 0.0;
             nbox[i][1] = new_box(i,i);
         }
     }

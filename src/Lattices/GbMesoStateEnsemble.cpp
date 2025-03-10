@@ -244,7 +244,7 @@ namespace gbLAB {
         std::vector<int> cslIndices;
         for(int i=0; i<gbs.bShiftPairs.size(); ++i)
         {
-            if(gbs.bShiftPairs[i].first.all()==0)
+            if((gbs.bShiftPairs[i].first.array()==0).all())
                 cslIndices.push_back(i);
         }
 

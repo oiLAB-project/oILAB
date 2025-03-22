@@ -238,7 +238,8 @@ namespace gbLAB {
     {
         std::deque<Constraints> constraintsEnsemble;
 
-        auto tuples= XTuplet::generate_tuples(3,gbs.bShiftPairs.size());
+        //auto tuples= XTuplet::generate_tuples(3,gbs.bShiftPairs.size());
+        auto tuples= XTuplet::generate_tuples(2,gbs.bShiftPairs.size());
 
         // identify indices of pre-existing CSL points
         std::vector<int> cslIndices;
@@ -250,6 +251,16 @@ namespace gbLAB {
 
         for (auto& tuple : tuples) {
             bool pass= true;
+            if (tuple(0) !=1)
+                pass= false;
+
+            for(const auto& index : cslIndices) {
+                if (tuple(index) == 0)
+                    tuple(index)= 2;
+            }
+
+
+            /*
             //if (!(tuple.array()==0).all())
             // allow only constraints that do not alter pre-existing CSL points
             for(const auto& index : cslIndices) {
@@ -258,6 +269,7 @@ namespace gbLAB {
                     break;
                 }
             }
+             */
             if (pass)
                 constraintsEnsemble.push_back(tuple);
         }

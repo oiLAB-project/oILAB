@@ -25,6 +25,8 @@ namespace gbLAB {
         Eigen::MatrixXi histogram;
         std::map<StateType, std::pair<double,double>> stateDensityEnergyMap;
         std::ofstream spectrumFile;
+        std::string lmpLocation;
+        std::string potentialName;
 
 
         bool histogramIsFlat(const double& c) const;
@@ -43,10 +45,14 @@ namespace gbLAB {
         Eigen::MatrixXd theta;
 
 
-        explicit LandauWangTP(const std::tuple<double,double,int>& energyLimits);
+        explicit LandauWangTP(const std::tuple<double,double,int>& energyLimits,
+                              const std::string& lmpLocation,
+                              const std::string& potentialName);
 
         LandauWangTP(const std::tuple<double,double,int>& energyLimits,
-                     const std::tuple<double,double,int>& densityLimits);
+                     const std::tuple<double,double,int>& densityLimits,
+                     const std::string& lmpLocation,
+                     const std::string& potentialName);
 
         double probability(const std::pair<StateType,SystemType>& proposedState,
                            const std::pair<StateType,SystemType>& currentState);
@@ -56,4 +62,6 @@ namespace gbLAB {
 
     };
 }
+
+#include <LandauWangTPImplementation.h>
 #endif //OILAB_LANDAUWANGTP_H

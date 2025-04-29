@@ -1,21 +1,28 @@
 //
 // Created by Nikhil Chandra Admal on 8/14/24.
 //
-#include <CanonicalTP.h>
+#ifndef OILAB_CANONICALTPIMPLEMENTATION_H
+#define OILAB_CANONICALTPIMPLEMENTATION_H
+
 #include <algorithm>
 #include <OrderedTuplet.h>
-#include <GbMesoStateEnsemble.h>
 
 namespace gbLAB {
 
     template<typename StateType, typename SystemType>
-    CanonicalTP<StateType,SystemType>::CanonicalTP(const double& temperature,
-                                                   const std::string& filename) : temperature(temperature),
-                                                                                  countTP(0)
-                                                                                  {
-                                                                                      if (!filename.empty())
-                                                                                          output.open(filename);
-                                                                                  }
+    CanonicalTP<StateType,SystemType>::CanonicalTP(
+            const std::string& lmpLocation,
+            const std::string& potentialName,
+            const double& temperature,
+            const std::string& filename) :
+                lmpLocation(lmpLocation),
+                potentialName(potentialName),
+                temperature(temperature),
+                countTP(0)
+        {
+            if (!filename.empty())
+                output.open(filename);
+        }
 
     template<typename StateType, typename SystemType>
     double CanonicalTP<StateType,SystemType>::probability(const std::pair<StateType,SystemType>& proposedStateSystem,
@@ -28,9 +35,9 @@ namespace gbLAB {
         const auto& proposedSystem= proposedStateSystem.second;
 
         if(countTP==0) {
-            const auto &temp = currentSystem.densityEnergy();
-            currentDensity = temp.first;
-            currentEnergy = temp.second;
+            const auto &temp = currentSystem.densityEnergy(lmpLocation, potentialName, false);
+            currentDensity = std::get<0>(temp);
+            currentEnergy = std::get<1>(temp);
             stateEnergyMap[currentState] = currentEnergy;
             //std::cout << "density = " << currentDensity << ", energy = " << currentEnergy << std::endl;
         }
@@ -47,9 +54,9 @@ namespace gbLAB {
             proposedEnergy = stateEnergyMap.at(proposedState);
         }
         else {
-            const auto& temp= proposedSystem.densityEnergy();
-            proposedDensity= temp.first;
-            proposedEnergy= temp.second;
+            const auto& temp= proposedSystem.densityEnergy(lmpLocation, potentialName, false);
+            proposedDensity= std::get<0>(temp);
+            proposedEnergy= std::get<1>(temp);
             //proposedEnergy = proposedSystem.energy();
             //std::cout << "density = " << proposedDensity << ", energy = " << proposedEnergy << std::endl;
             stateEnergyMap[proposedState] = proposedEnergy;
@@ -63,6 +70,5 @@ namespace gbLAB {
         return std::min(1.0, exp(-delta / temperature));
     }
 
-    template class CanonicalTP<XTuplet,GbMesoState<3>>;
-/* ---------------------------------------------------*/
 }
+#endif

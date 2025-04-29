@@ -9,6 +9,7 @@
 #include <GbContinuum.h>
 #include <LatticeCore.h>
 #include <OrderedTuplet.h>
+#include <PeriodicFunction.h>
 
 namespace gbLAB {
 
@@ -101,7 +102,12 @@ namespace gbLAB {
          * @param ms - mesostate
          * @return Energy of the mesostate
          */
-        std::pair<double,double> densityEnergy() const;
+        //std::pair<double,double> densityEnergy() const;
+        std::tuple<double,double,PeriodicFunction<double,dim>>
+            densityEnergy(const std::string& lmpLocation,
+                          const std::string& potentialName,
+                          bool relax,
+                          const std::array<Eigen::Index,dim>& n= std::array<Eigen::Index,dim>{}) const;
         std::pair<double,double> densityEnergyPython() const;
 
         /*! This function outputs/prints a grain boundary mesostate
@@ -110,4 +116,6 @@ namespace gbLAB {
         typename std::enable_if<dim==3,void>::type box(const std::string& filename) const;
     };
 }
+
+#include <GbMesoStateImplementation.h>
 #endif //OILAB_GBMESOSTATE_H

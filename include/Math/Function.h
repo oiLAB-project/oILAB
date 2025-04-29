@@ -56,4 +56,5 @@ namespace gbLAB {
     };
 }
 
+#include <FunctionImplementation.h>
 #endif //OILAB_POLYNOMIAL_H

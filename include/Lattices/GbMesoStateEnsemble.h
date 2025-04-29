@@ -69,7 +69,7 @@ namespace gbLAB {
          * @param filename-
          * @return A deque of mesostates
          */
-        std::map<Constraints,GbMesoState<dim>> evolveMesoStates(const double& temperature, const int& resetEvery, const int& maxIterations, const std::string& filename="") const;
+        //std::map<Constraints,GbMesoState<dim>> evolveMesoStates(const double& temperature, const int& resetEvery, const int& maxIterations, const std::string& filename="") const;
 
 
         GbMesoState<dim> constructMesoState(const Constraints& constraints) const;
@@ -83,4 +83,5 @@ namespace gbLAB {
 
 }
 
+#include <GbMesoStateEnsembleImplementation.h>
 #endif //OILAB_GBMESOSTATES_H

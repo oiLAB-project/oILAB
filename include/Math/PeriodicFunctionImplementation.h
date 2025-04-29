@@ -1,6 +1,8 @@
 //
 // Created by Nikhil Chandra Admal on 5/31/24.
 //
+#ifndef OILAB_PERIODICFUNCTIONIMPLEMENTATION_H
+#define OILAB_PERIODICFUNCTIONIMPLEMENTATION_H
 //#include <PeriodicFunction.h>
 #include <FFT.h>
 
@@ -116,3 +118,4 @@ namespace gbLAB
     }
 
 }
+#endif // OILAB_PERIODICFUNCTIONIMPLEMENTATION_H

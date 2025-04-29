@@ -129,7 +129,12 @@ void write_lammps_datafile(const std::string &filename,
 }
 
 /*-----------------------*/
-void write_lammps_input_script(const std::string &filename, const std::string &infile, const std::string &outfile, double cohesive_energy, double gb_thickness_parameter, const std::string &potential_file_path, const std::string &output_dump_file) {
+void write_lammps_input_script(const std::string &filename,
+                               const std::string &infile,
+                               const std::string &outfile,
+                               double gb_thickness_parameter,
+                               const std::string &potential_file_path,
+                               const std::string &output_dump_file) {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Error opening file for writing lammps input script: " << filename << std::endl;
@@ -242,9 +247,6 @@ std::pair<double, double> energy(const std::string& lammpsLocation,
     std::string lammpsDumpFile= "dump" + threadNumber + ".lammpsConfigs";
     std::string outfile = "lmp_mesostate_energies" + threadNumber + ".txt";
 
-    //double cohesive_energy = -3.539999890784346;
-    double cohesive_energy = -3.54022;
-
     // Read data
     auto [atoms, box, origin] = read_oILAB_output(oilabConfigFile);
 
@@ -288,7 +290,7 @@ std::pair<double, double> energy(const std::string& lammpsLocation,
 
     // Write files
     write_lammps_datafile(lammpsDataFile, nbox, new_atoms, 2);
-    write_lammps_input_script(lammpsInputFile, lammpsDataFile, outfile, cohesive_energy, gb_thickness_parameter, potentialFile, lammpsDumpFile);
+    write_lammps_input_script(lammpsInputFile, lammpsDataFile, outfile, gb_thickness_parameter, potentialFile, lammpsDumpFile);
 
     // Run the LAMMPS script
     std::string command = lammpsLocation +" -in " + lammpsInputFile + " > /dev/null 2>&1";

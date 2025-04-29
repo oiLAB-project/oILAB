@@ -1,8 +1,10 @@
 //
 // Created by Nikhil Chandra Admal on 5/26/24.
 //
-#define PY_SSIZE_T_CLEAN
-#include <GbMesoStateEnsemble.h>
+
+#ifndef OILAB_GBMESOSTATEENSEMBLEIMPLEMENTATION_H
+#define OILAB_GBMESOSTATEENSEMBLEIMPLEMENTATION_H
+
 #include <randomInteger.h>
 
 namespace gbLAB {
@@ -119,6 +121,7 @@ namespace gbLAB {
     }
 
     /*-------------------------------------*/
+    /*
     template<int dim>
     std::map<typename GbMesoStateEnsemble<dim>::Constraints, GbMesoState<dim>> GbMesoStateEnsemble<dim>::evolveMesoStates(const double& temperature, const int& resetEvery, const int& maxIterations, const std::string& filename) const
     {
@@ -171,7 +174,6 @@ namespace gbLAB {
                 std::cout << "Starting over using ramdomized constraints" << std::endl;
                 randomize= true;
             }
-            /*
             Constraints newConstraints(this->bShiftPairs.size());
             bool msConstructionSuccess= false;
             while(!msConstructionSuccess) {
@@ -203,12 +205,12 @@ namespace gbLAB {
                                     bsPairsFromConstraints(this->bShiftPairs, newConstraints),
                                     ensembleCslVectors,
                                     bicrystalConfig);
-                                    */
-            /*
-            auto newConstraintsMesoStatePair= sampleNewMesoState(currentConstraints,randomize);
-            Constraints newConstraints(newConstraintsMesoStatePair.first);
-            GbMesoState<dim> new_ms(newConstraintsMesoStatePair.second);
-             */
+
+
+            // auto newConstraintsMesoStatePair= sampleNewMesoState(currentConstraints,randomize);
+            // Constraints newConstraints(newConstraintsMesoStatePair.first);
+            // GbMesoState<dim> new_ms(newConstraintsMesoStatePair.second);
+
             Constraints newConstraints(sampleNewState(currentConstraints,randomize));
             GbMesoState<dim> new_ms(constructMesoState(newConstraints));
 
@@ -232,6 +234,7 @@ namespace gbLAB {
         }
         return mesoStates;
     }
+    */
     /*-------------------------------------*/
     template<int dim>
     std::deque<typename GbMesoStateEnsemble<dim>::Constraints> GbMesoStateEnsemble<dim>::enumerateConstraints(const GbShifts<dim>& gbs)
@@ -319,6 +322,5 @@ namespace gbLAB {
         return initialConstraints;
     }
 
-
-    template class GbMesoStateEnsemble<3>;
 }
+#endif

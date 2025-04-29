@@ -148,10 +148,16 @@ int main()
             try {
                 const auto& mesostate= ensemble.constructMesoState(*it);
                 //mesostate.box(std::to_string(i)+ ".txt");
-                const auto data= mesostate.densityEnergy();
+                std::string potentialName= "Cu_mishin1.eam.alloy";
+                std::string lmpLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/lmp_serial";
+
+                const auto data= mesostate.densityEnergy(lmpLocation, potentialName, true, {10,10,10});
+                PeriodicFunction<double,3> rho= std::get<2>(data) ;
+                // the density values can be read using rho.values
+
                 if (out_file.is_open())
                         //out_file << *it << "  " << it->density() << "  " << data.second << std::endl;
-                        out_file << *it << "  " << data.first << "  " << data.second << std::endl;
+                        out_file << *it << "  " << std::get<0>(data)<< "  " << std::get<1>(data) << std::endl;
                 else
                     std::cerr << "Failed to open file " << filename << std::endl;
             }

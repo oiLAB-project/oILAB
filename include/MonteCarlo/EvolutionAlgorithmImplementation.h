@@ -1,7 +1,10 @@
 //
 // Created by Nikhil Chandra Admal on 8/14/24.
 //
-#include <EvolutionAlgorithm.h>
+
+#ifndef OILAB_EVOLUTIONALGORITHMIMPLEMENTATION_H
+#define OILAB_EVOLUTIONALGORITHMIMPLEMENTATION_H
+
 #include <randomInteger.h>
 #include <OrderedTuplet.h>
 #include <CanonicalTP.h>
@@ -25,6 +28,5 @@ namespace gbLAB {
             return false;
     }
 
-    template class EvolutionAlgorithm<XTuplet,GbMesoState<3>,CanonicalTP<XTuplet,GbMesoState<3>>>;
-    template class EvolutionAlgorithm<XTuplet,GbMesoState<3>,LandauWangTP<XTuplet,GbMesoState<3>>>;
 }
+#endif

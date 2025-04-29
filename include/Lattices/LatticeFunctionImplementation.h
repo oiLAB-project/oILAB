@@ -1,7 +1,8 @@
 //
 // Created by Nikhil Chandra Admal on 5/31/24.
 //
-//#include <LatticeFunction.h>
+#ifndef OILAB_LATTICEFUNCTIONIMPLEMENTATION_H
+#define OILAB_LATTICEFUNCTIONIMPLEMENTATION_H
 #include <FFT.h>
 
 namespace gbLAB
@@ -99,3 +100,4 @@ namespace gbLAB
         return output;
     }
 }
+#endif // OILAB_LATTICEFUNCTIONIMPLEMENTATION_H

@@ -1,7 +1,9 @@
 //
 // Created by Nikhil Chandra Admal on 8/6/24.
 //
-#include <MonteCarlo.h>
+#ifndef OILAB_MONTECARLOIMPLEMENTATION_H
+#define OILAB_MONTECARLOIMPLEMENTATION_H
+
 #include <OrderedTuplet.h>
 #include <GbMesoStateEnsemble.h>
 #include <LandauWangTP.h>
@@ -42,7 +44,5 @@ namespace gbLAB {
         }
     }
 
-    template class MonteCarlo<XTuplet,GbMesoState<3>,GbMesoStateEnsemble<3>,LandauWangTP<XTuplet,GbMesoState<3>>>;
-    template class MonteCarlo<XTuplet,GbMesoState<3>,GbMesoStateEnsemble<3>,CanonicalTP<XTuplet,GbMesoState<3>>>;
-
 }
+#endif

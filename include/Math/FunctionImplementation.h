@@ -2,8 +2,9 @@
 // Created by Nikhil Chandra Admal on 5/30/24.
 //
 
-//#include <Function.h>
-//#include <PeriodicFunction.h>
+#ifndef OILAB_FUNCTIONIMPLEMENTATION_H
+#define OILAB_FUNCTIONIMPLEMENTATION_H
+
 #include <iostream>
 
 namespace gbLAB
@@ -89,3 +90,4 @@ namespace gbLAB
         return fun(t-y);
     }
 }
+#endif

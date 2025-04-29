@@ -17,11 +17,16 @@ namespace gbLAB {
         int countTP;
         double currentEnergy, currentDensity;
         std::ofstream output;
+        std::string lmpLocation;
+        std::string potentialName;
     public:
         double temperature;
         std::map<StateType, double> stateEnergyMap;
 
-        CanonicalTP(const double& temperature, const std::string& filename="");
+        CanonicalTP(const std::string& lmpLocation,
+                    const std::string& potentialName,
+                    const double& temperature,
+                    const std::string& filename="");
         double probability(const std::pair<StateType, SystemType>& proposedState,
                            const std::pair<StateType, SystemType>& currentState) ;
 
@@ -29,4 +34,5 @@ namespace gbLAB {
 
 }
 
+#include <CanonicalTPImplementation.h>
 #endif //OILAB_CANONICALTP_H

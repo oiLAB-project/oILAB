@@ -33,5 +33,5 @@ namespace gbLAB {
 
 
 }
-
+#include <MonteCarloImplementation.h>
 #endif //OILAB_DOS_H

@@ -50,4 +50,6 @@ namespace gbLAB {
     LatticeFunction<Scalar, dim> operator*(const LatticeFunction<Scalar,dim>& lf1, const LatticeFunction<Scalar,dim>& lf2);
 }
 
+#include <LatticeFunctionImplementation.h>
+
 #endif //OILAB_LATTICEFUNCTION_H

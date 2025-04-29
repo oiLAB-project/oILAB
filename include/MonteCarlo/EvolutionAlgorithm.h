@@ -19,5 +19,5 @@ namespace gbLAB {
                         const std::pair<StateType,SystemType>& currentStateSystem) const;
     };
 }
-/* ---------------------------------------------------*/
+#include <EvolutionAlgorithmImplementation.h>
 #endif //OILAB_EVOLUTIONALGORITHM_H

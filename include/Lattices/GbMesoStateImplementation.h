@@ -2,10 +2,13 @@
 // Created by Nikhil Chandra Admal on 5/27/24.
 //
 
+#ifndef OILAB_GBMESOSTATEIMPLEMENTATION_H
+#define OILAB_GBMESOSTATEIMPLEMENTATION_H
+
 #include<Lammps.h>
-#include <GbMesoState.h>
 #include <iostream>
 #include <Python.h>
+#include <PeriodicFunctionImplementation.h>
 
 namespace gbLAB {
     template<int dim>
@@ -166,18 +169,39 @@ namespace gbLAB {
 
     /*-------------------------------------*/
     template<int dim>
-    std::pair<double,double> GbMesoState<dim>::densityEnergy() const
+    std::tuple<double,double,PeriodicFunction<double,dim>> GbMesoState<dim>::densityEnergy(const std::string& lmpLocation,
+                                                             const std::string& potentialName,
+                                                             bool relax,
+                                                             const std::array<Eigen::Index,dim>& n) const
     {
-        //std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-29Aug2024/build/lmp";
-        std::string lammpsLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/lmp_serial";
-        //std::string lammpsLocation= "/usr/bin/lmp";
         box("temp" + std::to_string(omp_get_thread_num()));
-        //auto xx= densityEnergyPython();
-        auto yy= energy( lammpsLocation, "temp" + std::to_string(omp_get_thread_num()) + "_reference1.txt","Cu_mishin1.eam.alloy");
-        //return energy( lammpsLocation, "temp_reference1.txt","Cu_mishin1.eam.alloy");
-	return yy;
-    }
+        std::pair<double,double> densityEnergyPair= energy(lmpLocation,
+                                                           "temp" + std::to_string(omp_get_thread_num()) + "_reference1.txt",
+                                                           potentialName);
 
+
+        // the columns of rhoCell defined the box in which rho is calculated
+        Eigen::Matrix3d rhoCell;
+        PeriodicFunction<double,dim> rho(n,rhoCell);
+        for (int i=0; i<n[0]; ++i)
+        {
+            for (int j=0; j<n[1]; ++j) {
+                for (int k = 0; k < n[2]; ++k)
+                {
+                    Eigen::Vector<double,Eigen::Dynamic> x= i*rho.unitCell.col(0)/n[0] +
+                                                            j*rho.unitCell.col(1)/n[1] +
+                                                            k*rho.unitCell.col(2)/n[2];
+                    // rho(i,j,k) is the density at point x
+                    // calculate rho by first reading the relaxed configuration
+
+                }
+            }
+
+        }
+
+        return {densityEnergyPair.first,densityEnergyPair.second,rho};
+
+    }
 
 
     /*-------------------------------------*/
@@ -351,6 +375,6 @@ namespace gbLAB {
      deformed.close();
  }
 
- //template class GbMesoState<2>;
- template class GbMesoState<3>;
 }
+
+#endif

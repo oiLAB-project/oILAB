@@ -1,10 +1,9 @@
 //
 // Created by Nikhil Chandra Admal on 5/27/24.
 //
-#include <GbContinuum.h>
-#include <PeriodicFunction.cpp>
-#include <Function.cpp>
-#include <LatticeFunction.cpp>
+
+#ifndef OILAB_GBCONTINUUMIMPLEMENTATION_H
+#define OILAB_GBCONTINUUMIMPLEMENTATION_H
 
 namespace gbLAB {
 
@@ -380,7 +379,6 @@ namespace gbLAB {
     }
     /*----------------------------*/
 
-    // Explicit instantiation
-    //template class GbContinuum<2>;
-    template class GbContinuum<3>;
 }
+
+#endif

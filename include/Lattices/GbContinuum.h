@@ -116,5 +116,8 @@ namespace gbLAB {
 
     template<int dim>
     thread_local std::map<OrderedTuplet<dim+1>,LatticeFunction<std::complex<double>, dim - 1>> GbContinuum<dim>::pihatLatticeFunctions;
+
 }
+
+#include <GbContinuumImplementation.h>
 #endif //OILAB_GBPLASTICITY_H

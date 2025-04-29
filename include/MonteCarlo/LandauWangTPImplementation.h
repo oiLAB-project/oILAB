@@ -1,23 +1,29 @@
 //
 // Created by Nikhil Chandra Admal on 8/14/24.
 //
-#include <LandauWangTP.h>
+
+#ifndef OILAB_LANDAUWANGTPIMPLEMENTATION_H
+#define OILAB_LANDAUWANGTPIMPLEMENTATION_H
+
 #include <iostream>
 #include <numeric>
-#include <OrderedTuplet.h>
 #include <GbMesoState.h>
 #include <iomanip>
 
 namespace gbLAB {
 /* ---------------------------------------------------*/
     template<typename StateType, typename SystemType>
-    LandauWangTP<StateType,SystemType>::LandauWangTP(const std::tuple<double,double,int>& energyLimits):
-            LandauWangTP(energyLimits,{0.0,1.0,1})
+    LandauWangTP<StateType,SystemType>::LandauWangTP(const std::tuple<double,double,int>& energyLimits,
+                                                     const std::string& lmpLocation,
+                                                     const std::string& potentialName):
+            LandauWangTP(energyLimits,{0.0,1.0,1},lmpLocation,potentialName)
     {}
 
     template<typename StateType, typename SystemType>
     LandauWangTP<StateType,SystemType>::LandauWangTP(const std::tuple<double,double,int>& energyLimits,
-                                                     const std::tuple<double,double,int>& densityLimits) try:
+                                                     const std::tuple<double,double,int>& densityLimits,
+                                                     const std::string& lmpLocation,
+                                                     const std::string& potentialName) try:
             exponentialRegime(true),
             f(exp(1.0)),
             countLW(-1),
@@ -29,6 +35,8 @@ namespace gbLAB {
             numberOfDensityStates(std::get<2>(densityLimits)),
             histogram(Eigen::MatrixXi::Zero(numberOfEnergyStates,numberOfDensityStates)),
             stateDensityEnergyMap(getStateDensityEnergyMap()),
+            lmpLocation(lmpLocation),
+            potentialName(potentialName),
             mask(getMask(numberOfEnergyStates,numberOfDensityStates)),
             theta(getTheta(mask,f))
     {
@@ -54,12 +62,12 @@ namespace gbLAB {
         // Compute current state properties
         // if this is the first call, compute the current energy and density
         if(countLW==0) {
-            const auto& temp= currentSystem.densityEnergy();
+            const auto& temp= currentSystem.densityEnergy(lmpLocation, potentialName, false);
             //currentDensity= temp.first;
             currentDensity= currentState.density();
-            currentEnergy= temp.second;
+            currentEnergy= std::get<1>(temp);
             std::cout << currentState;
-            stateDensityEnergyMap[currentState]= temp;
+            stateDensityEnergyMap[currentState]= std::make_pair(std::get<0>(temp),std::get<1>(temp));
             spectrumFile << currentDensity << " " << currentEnergy << " " << currentState << std::endl;
         }
         else {
@@ -78,11 +86,11 @@ namespace gbLAB {
         }
         else {
             std::cout << "new" << std::endl;
-            const auto& temp= proposedSystem.densityEnergy();
+            const auto& temp= proposedSystem.densityEnergy(lmpLocation, potentialName, false);
             //proposedDensity= temp.first;
             proposedDensity= proposedState.density();
-            proposedEnergy= temp.second;
-            stateDensityEnergyMap[proposedState]= temp;
+            proposedEnergy= std::get<1>(temp);
+            stateDensityEnergyMap[proposedState]= std::make_pair(std::get<0>(temp),std::get<1>(temp));
             spectrumFile << proposedDensity << " " << proposedEnergy << " " << proposedState << std::endl;
         }
 
@@ -324,6 +332,5 @@ namespace gbLAB {
         outputFileHandle.close();
     }
 
-    template class LandauWangTP<XTuplet,GbMesoState<3>>;
-
 }
+#endif

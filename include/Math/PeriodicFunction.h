@@ -69,5 +69,6 @@ namespace gbLAB {
     }
 
 }
+#include <PeriodicFunctionImplementation.h>
 
 #endif //OILAB_PERIODICFUNCTION_H

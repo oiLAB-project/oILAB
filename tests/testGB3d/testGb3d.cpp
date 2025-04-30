@@ -125,7 +125,7 @@ int main()
         /*! [normal vector] */
 
         /*! [axis vector] */
-        LatticeVector<dim> vectorAlongAxisA(bc.A.latticeVector(rv.cartesian()));
+        LatticeVector<dim> vectorAlongAxisA(bc.A.latticeDirection(rv.cartesian()).latticeVector());
         LatticeVector<dim> vectorAlongAxisC(bc.getLatticeDirectionInC(vectorAlongAxisA).latticeVector());
         /*! [axis vector] */
 

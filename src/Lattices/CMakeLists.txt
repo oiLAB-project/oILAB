@@ -3,7 +3,6 @@ add_library(oILAB SHARED    BiCrystal.cpp
                             Lattice.cpp 
                             LatticeVector.cpp
                             RationalMatrix.cpp 
-                            CMakeLists.txt
                             LatticeCore.cpp
                             RLLL.cpp
                             ReciprocalLatticeDirection.cpp 

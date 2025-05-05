@@ -152,7 +152,7 @@ struct LowerBoundIndex {
 
 /** \ingroup SparseCore_Module
   *
-  * \class OrderedTuplet
+  * \class Triplet
   *
   * \brief A small structure to hold a non zero as a triplet (i,j,value).
   *

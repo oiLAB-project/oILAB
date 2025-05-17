@@ -29,8 +29,10 @@ namespace gbLAB {
         explicit Function(double _domainSize = std::numeric_limits<double>::infinity());
         Scalar operator()(const Eigen::Vector<double,Eigen::Dynamic>& vec) const;
 
+        /*
         template<int dim>
         LatticeFunction<dcomplex,dim> fft(const std::array<Eigen::Index,dim>& n, const Eigen::Matrix<double,Eigen::Dynamic,dim>& basisVectors) const;
+         */
     };
 
     /* ******************************************** */

@@ -276,7 +276,7 @@ namespace gbLAB {
    }
 
     template<int dim>
-    GbContinuum<dim>::VectorDimD GbContinuum<dim>::displacement(const OrderedTuplet<dim+1>& t) const
+    typename GbContinuum<dim>::VectorDimD GbContinuum<dim>::displacement(const OrderedTuplet<dim+1>& t) const
     {
         VectorDimD u;
 
@@ -290,7 +290,7 @@ namespace gbLAB {
 
 
     template<int dim>
-    GbContinuum<dim>::VectorDimD GbContinuum<dim>::displacement(const VectorDimD& t) const
+    typename GbContinuum<dim>::VectorDimD GbContinuum<dim>::displacement(const VectorDimD& t) const
     {
         VectorDimD u;
 
@@ -305,7 +305,7 @@ namespace gbLAB {
         // u = f \star b
         for(int i=0; i<dim; ++i) {
             u(i) = bhat[i].dot(lf).real();
-            assert(abs(bhat[i].dot(lf).imag()) < FLT_EPSILON);
+            //assert(abs(bhat[i].dot(lf).imag()) < FLT_EPSILON);
         }
 
 

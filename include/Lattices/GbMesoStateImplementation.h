@@ -135,7 +135,8 @@ namespace gbLAB {
     {
         std::array<Eigen::Index,dim-1> n{};
         for(int i=1; i<dim; ++i)
-            n[i-1]= 4*IntegerMath<int>::gcd(gb.bc.getLatticeVectorInD(mesoStateCslVectors[i]));
+            n[i-1]= 10*ceil(mesoStateCslVectors[i].cartesian().norm()/gb.bc.A.latticeBasis.col(0).norm());
+            //n[i-1]= 4*IntegerMath<int>::gcd(gb.bc.getLatticeVectorInD(mesoStateCslVectors[i]));
         return n;
 
     }

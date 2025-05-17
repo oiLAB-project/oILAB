@@ -21,6 +21,7 @@ namespace gbLAB
         return derivedFunction(vec);
     }
 
+    /*
     template<typename Derived, typename Scalar>
     template<int dim>
     LatticeFunction<typename Function<Derived,Scalar>::dcomplex,dim>
@@ -47,15 +48,13 @@ namespace gbLAB
         PeriodicFunction<double,dim> pfRefined(nRefined, scaledUnitCell, *this);
         LatticeFunction<dcomplex, dim> pfhatRefined(pfRefined.fft());
 
-        /*
-        // Correct pkfkhat as the kernel function was centered w.r.t the scaled lattice
-        LatticeFunction<dcomplex,dim> temp(nRefined, pfhatRefined.basisVectors);
-        Eigen::Vector<double, Eigen::Dynamic> center = pfRefined.unitCell.rowwise().sum()/2;
-        Exponential exp_function(center);
-        LatticeFunction<dcomplex, dim> exp_factor(nRefined, pfhatRefined.basisVectors, exp_function);
-        temp.values = exp_factor.values * pfhatRefined.values;
-        pfhatRefined.values = temp.values;
-        */
+        //// Correct pkfkhat as the kernel function was centered w.r.t the scaled lattice
+        // LatticeFunction<dcomplex,dim> temp(nRefined, pfhatRefined.basisVectors);
+        // Eigen::Vector<double, Eigen::Dynamic> center = pfRefined.unitCell.rowwise().sum()/2;
+        // Exponential exp_function(center);
+        // LatticeFunction<dcomplex, dim> exp_factor(nRefined, pfhatRefined.basisVectors, exp_function);
+        // temp.values = exp_factor.values * pfhatRefined.values;
+        // pfhatRefined.values = temp.values;
 
         Eigen::array<Eigen::DenseIndex, dim> strides;
         strides.fill(1);
@@ -67,6 +66,7 @@ namespace gbLAB
         return pfhat;
 
     }
+    */
 
     /* ******************************************** */
 

@@ -81,6 +81,18 @@ namespace gbLAB
         Eigen::Matrix<double,Eigen::Dynamic,dim> basisVectors(unitCell.transpose().completeOrthogonalDecomposition().pseudoInverse());
         LatticeFunction<dcomplex,dim> pfhat(values.dimensions(),basisVectors);
         FFT::fft(values.template cast<dcomplex>(),pfhat.values);
+        //return pfhat;
+
+        Eigen::Matrix<double,dim,dim> unitCellGramMatrix;
+        for(int i=0; i<dim; ++i)
+            for(int j=0; j<dim; ++j)
+                unitCellGramMatrix(i,j)= unitCell.col(i).dot(unitCell.col(j));
+        Eigen::array<Eigen::Index,dim> n= this->values.dimensions();
+        int prod= std::accumulate(std::begin(n),
+                                  std::begin(n) + dim,
+                                  1,
+                                  std::multiplies<>{});
+        pfhat.values*= (sqrt(unitCellGramMatrix.determinant())/prod);
         return pfhat;
     }
 
@@ -88,18 +100,19 @@ namespace gbLAB
     double PeriodicFunction<Scalar,dim>::dot(const PeriodicFunction<Scalar,dim>& other) const
     {
         Eigen::Tensor<double,0> sum((this->values * other.values).sum());
-        Eigen::Matrix<double,dim,dim> gramMatrix;
+        Eigen::Matrix<double,dim,dim> unitCellGramMatrix;
         for(int i=0; i<dim; ++i)
             for(int j=0; j<dim; ++j)
-                gramMatrix(i,j)= unitCell.col(i).dot(unitCell.col(j));
+                unitCellGramMatrix(i,j)= unitCell.col(i).dot(unitCell.col(j));
         Eigen::array<Eigen::Index,dim> n= this->values.dimensions();
         int prod= std::accumulate(std::begin(n),
                         std::begin(n) + dim,
                         1,
                         std::multiplies<>{});
-        return sum(0)*sqrt(gramMatrix.determinant())/prod;
+        return sum(0)*sqrt(unitCellGramMatrix.determinant())/prod;
     }
 
+    // this needs to be corrected as we altered the definition of fft
     template<typename Scalar, int dim> template <typename T>
     PeriodicFunction<Scalar,dim> PeriodicFunction<Scalar,dim>::kernelConvolution(const Function<T,Scalar>& kernel)
     {

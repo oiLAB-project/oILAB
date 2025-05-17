@@ -4,6 +4,7 @@
 #ifndef OILAB_LATTICEFUNCTIONIMPLEMENTATION_H
 #define OILAB_LATTICEFUNCTIONIMPLEMENTATION_H
 #include <FFT.h>
+#include <iostream>
 
 namespace gbLAB
 {
@@ -72,12 +73,7 @@ namespace gbLAB
         for(int i=0; i<dim; ++i)
             for(int j=0; j<dim; ++j)
                 gramMatrix(i,j)= basisVectors.col(i).dot(basisVectors.col(j));
-        Eigen::array<Eigen::Index,dim> n= this->values.dimensions();
-        int prod= std::accumulate(std::begin(n),
-                                  std::begin(n) + dim,
-                                  1,
-                                  std::multiplies<>{});
-        return sum(0) / (sqrt(gramMatrix.determinant()) * std::pow(prod,2));
+        return sum(0) * sqrt(gramMatrix.determinant());
 
     }
 
@@ -87,6 +83,19 @@ namespace gbLAB
         Eigen::Matrix<double,Eigen::Dynamic,dim> unitCell(basisVectors.transpose().completeOrthogonalDecomposition().pseudoInverse());
         PeriodicFunction<dcomplex,dim> pf(values.dimensions(),unitCell);
         FFT::ifft(values.template cast<dcomplex>(),pf.values);
+        //return pf;
+        // Calculate the area spanned by the unit cell vectors
+        Eigen::Matrix<double,dim,dim> unitCellGramMatrix;
+        for(int i=0; i<dim; ++i)
+            for(int j=0; j<dim; ++j)
+                unitCellGramMatrix(i,j)= unitCell.col(i).dot(unitCell.col(j));
+
+        Eigen::array<Eigen::Index,dim> n= this->values.dimensions();
+        int prod= std::accumulate(std::begin(n),
+                                  std::begin(n) + dim,
+                                  1,
+                                  std::multiplies<>{});
+        pf.values=  pf.values * (dcomplex)(prod/sqrt(unitCellGramMatrix.determinant()));
         return pf;
     }
 

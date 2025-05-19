@@ -72,6 +72,7 @@ namespace gbLAB {
         static LatticeFunction<std::complex<double>,dim-1>get_pihat(const Eigen::Matrix<double,dim,dim-1>& domain,
                                                                     const std::array<Eigen::Index,dim-1>& n,
                                                                     const VectorDimD& point);
+        static std::vector<PeriodicFunction<double,dim-1>> get_alpha(const std::vector<PeriodicFunction<double,dim-1>>& b);
 
     public:
 
@@ -80,6 +81,14 @@ namespace gbLAB {
         const std::map<OrderedTuplet<dim+1>,VectorDimD> xuPairs;
         std::array<Eigen::Index,dim-1> n;
         std::vector<PeriodicFunction<double,dim-1>> b;
+
+        /*!
+         * Grain boundary dislocation density tensor:
+         * \f$\alpha_{11}\f$, \f$\alpha_{12}\f$, \f$\alpha_{21}\f$, \f$\alpha_{22}\f$, \f$\alpha_{31}\f$, \f$\alpha_{32}\f$
+         * described w.r.t a local coordinate system x: GB period vector; y: axis vector; z: GB normal
+         */
+        std::vector<PeriodicFunction<double,dim-1>> alpha;
+
         std::vector<LatticeFunction<std::complex<double>,dim-1>> bhat;
         std::map<OrderedTuplet<dim+1>,VectorDimD> atoms;
         VectorDimD uAverage;

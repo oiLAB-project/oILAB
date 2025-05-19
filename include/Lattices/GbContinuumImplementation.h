@@ -20,8 +20,7 @@ namespace gbLAB {
         n(n),
         bbhat(calculateb(domain,xuPairs,n,atoms)),
         b(bbhat.first),
-        bhat(bbhat.second),
-        alpha(get_alpha(b))
+        bhat(bbhat.second)
    {
        uAverage.setZero();
        for (const auto &[x, u]: xuPairs) {
@@ -47,11 +46,46 @@ namespace gbLAB {
 
     template<int dim>
     std::vector<PeriodicFunction<double,dim-1>>
-    GbContinuum<dim>::get_alpha(const std::vector<PeriodicFunction<double, dim - 1>>& b)
+    GbContinuum<dim>::get_alpha() const
+    {
+        auto bLocal= get_b();
+        auto unitcellLocal= bLocal[0].unitCell;
+
+        // dimension-dependent part
+        Diff<dim-1> dx({1,0},unitcellLocal,n);
+        Diff<dim-1> dy({0,1},unitcellLocal,n);
+
+        std::vector<PeriodicFunction<double,dim-1>> alpha;
+        for(int i=0; i<dim; ++i)
+        {
+            for(int j=0; j<dim-1; ++j)
+            {
+                PeriodicFunction<double,dim-1> alphaij(n, unitcellLocal);;
+                for(int k=0; k<dim-1; ++k)
+                {
+                    if (k==j) continue;
+                    PeriodicFunction<double,dim-1> dlbi_dxk(n,unitcellLocal);;
+                    if (k==0)
+                        dx.perform_op(bLocal[i].values.data(), dlbi_dxk.values.data());
+                    else if (k==1)
+                        dy.perform_op(bLocal[i].values.data(), dlbi_dxk.values.data());
+                    if (j==0 && k==1)
+                        alphaij.values= alphaij.values + dlbi_dxk.values;
+                    else if (j==1 && k==0)
+                        alphaij.values= alphaij.values - dlbi_dxk.values;
+                }
+                alpha.push_back(alphaij);
+            }
+        }
+        return alpha;
+    }
+
+    template<int dim>
+    std::vector<PeriodicFunction<double,dim-1>>
+    GbContinuum<dim>::get_b() const
     {
         Eigen::Matrix<double,dim,dim-1> orthogonalVectors;
         Eigen::Matrix<double,dim,dim-1> unitCell= b[0].unitCell;
-        Eigen::array<Eigen::Index,dim-1> n= b[0].values.dimensions();
 
         // Form a rotation matrix to transform to a 2D coordinate system containing the grain boundary
         for(int i=0; i<dim-1; ++i)
@@ -65,44 +99,15 @@ namespace gbLAB {
         assert((rotation*unitCell).row(2).norm()<FLT_EPSILON);
 
         // transform the slip vectors b to the local coordinate system
-        std::vector<PeriodicFunction<double, dim - 1>>  lb;
+        std::vector<PeriodicFunction<double, dim - 1>>  bLocal;
+        Eigen::Matrix<double,dim-1,dim-1> unitcellLocal= (rotation*unitCell).block(0,0,dim-1,dim-1);
         for(int i= 0; i<dim; ++i) {
-            PeriodicFunction<double, dim - 1> temp(n,unitCell);
+            PeriodicFunction<double, dim - 1> temp(n,unitcellLocal);
             for (int j = 0; j < dim; ++j)
                 temp.values = temp.values + rotation(i, j) * b[j].values;
-            lb.push_back(temp);
+            bLocal.push_back(temp);
         }
-
-        // Define the gradient operator
-        Eigen::Matrix<double,dim-1,dim-1> A= (rotation*unitCell).block(0,0,dim-1,dim-1);
-        // dimension-dependent part
-        Diff<dim-1> dx({1,0},A,n);
-        Diff<dim-1> dy({0,1},A,n);
-
-        std::vector<PeriodicFunction<double,dim-1>> alpha;
-        for(int i=0; i<dim; ++i)
-        {
-            for(int j=0; j<dim-1; ++j)
-            {
-                PeriodicFunction<double,dim-1> alphaij(n, unitCell);;
-                for(int k=0; k<dim-1; ++k)
-                {
-                    if (k==j) continue;
-                    PeriodicFunction<double,dim-1> dlbi_dxk(n, unitCell);;
-                    if (k==0)
-                        dx.perform_op(lb[i].values.data(), dlbi_dxk.values.data());
-                    else if (k==1)
-                        dy.perform_op(lb[i].values.data(), dlbi_dxk.values.data());
-                    if (j==0 && k==1)
-                        alphaij.values= alphaij.values + dlbi_dxk.values;
-                    else if (j==1 && k==0)
-                        alphaij.values= alphaij.values - dlbi_dxk.values;
-                }
-                alpha.push_back(alphaij);
-            }
-        }
-
-        return alpha;
+        return bLocal;
     }
 
     template<int dim>

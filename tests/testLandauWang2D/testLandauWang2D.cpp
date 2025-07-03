@@ -126,8 +126,10 @@ int main()
         }
          */
 
+        std::string potentialName= "Cu_mishin1.eam.alloy";
+        std::string lmpLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/lmp_serial";
         //LandauWangTP<XTuplet,GbMesoState<3>> landauWang({0,20,30},{0.7,1.0,10});
-        LandauWangTP<XTuplet,GbMesoState<3>> landauWang({0,20,30},{-40,16,57});
+        LandauWangTP<XTuplet,GbMesoState<3>> landauWang({0,20,30},{-40,16,57},lmpLocation,potentialName);
         MonteCarlo<XTuplet, GbMesoState<3>, GbMesoStateEnsemble<3>, LandauWangTP<XTuplet,GbMesoState<3>>> mc(ensemble, landauWang);
         for (int i=0; i<500; ++i) {
             //const auto& constraintsMesostateMap= mc.evolve(1000,20000,"ms");

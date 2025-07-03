@@ -5,8 +5,8 @@
 using namespace gbLAB;
 int main()
 {
-    const int m_max=19;
-    const int n_max=19;
+    const int m_max=10;
+    const int n_max=10;
     const auto A(TextFileParser("cubic_lattice.txt").readMatrix<double,3,3>("A",true));
     Lattice<3> L1(A);
 

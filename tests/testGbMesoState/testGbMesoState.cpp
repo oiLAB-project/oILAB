@@ -135,6 +135,7 @@ int main()
 
         #pragma omp parallel for num_threads(1) private(out_file)
         for (size_t i = 0; i < constraintsEnsemble.size(); ++i) {
+            if (i != 2000) continue;
             int thread_id = omp_get_thread_num();
 
             // Create a filename for each thread
@@ -147,6 +148,38 @@ int main()
             const auto& it = std::next(constraintsEnsemble.begin(), i);
             try {
                 const auto& mesostate= ensemble.constructMesoState(*it);
+                /*
+                std::cout << *it << std::endl;
+                auto n= mesostate.b[0].values.dimensions();
+
+
+                auto alpha= mesostate.get_alpha();
+                auto b= mesostate.get_b();
+
+                std::ofstream bStream("b.txt");
+                bStream << b[2] << std::endl;
+                bStream.close();
+
+                std::ofstream alphaStream("alpha31.txt");
+                alphaStream << alpha[4] << std::endl;
+                alphaStream.close();
+                alphaStream.open("alpha32.txt");
+                alphaStream << alpha[5] << std::endl;
+                alphaStream.close();
+
+                std::ofstream dStream("displacement.txt");
+                for (int in = 0; in < n[0]; in++) {
+                    for (int jn = 0; jn < n[1]; jn++) {
+                        Eigen::Vector<double, 3> x =
+                                in * mesostate.b[0].unitCell.col(0) / n[0] + jn * mesostate.b[0].unitCell.col(1) / n[1];
+                        x(2)=-1e-5;
+
+                        dStream << x.transpose() << ",  "
+                                << mesostate.displacement(x)(2) << std::endl;
+                    }
+                }
+                exit(0);
+                */
                 //mesostate.box(std::to_string(i)+ ".txt");
                 std::string potentialName= "Cu_mishin1.eam.alloy";
                 std::string lmpLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/lmp_serial";

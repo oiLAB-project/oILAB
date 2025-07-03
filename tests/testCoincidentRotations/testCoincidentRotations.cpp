@@ -1,6 +1,5 @@
 #include <LatticeModule.h>
 #include <TextFileParser.h>
-#include <BiCrystal.h>
 
 using namespace gbLAB;
 

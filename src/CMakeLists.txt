@@ -19,7 +19,7 @@ add_library(oILAB SHARED    Lattices/BiCrystal.cpp
 
 target_link_libraries(oILAB PRIVATE Python3::Python)
 
-pybind11_add_module(gblab_bindings Bindings/module.cpp Bindings/Lattice_bindings.cpp)
+pybind11_add_module(gblab_bindings Bindings/module.cpp)
 target_link_libraries(gblab_bindings PRIVATE oILAB)
 
 

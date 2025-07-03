@@ -95,7 +95,10 @@ void runMonteCarlo(const double& a0,
 
     GbMesoStateEnsemble<3> ensemble(gb, rAxisA, cslVectors, bScaling);
     const double kb = 8.61733e-5; // in eV/K
-    CanonicalTP<XTuplet, GbMesoState<3>> canonicalTP(kb*temperature,filename);
+    
+    std::string potentialName= "Cu_mishin1.eam.alloy";
+    std::string lmpLocation= "/Users/Nikhil/Documents/Academic/Software/lammps-15May15/src/lmp_serial";
+    CanonicalTP<XTuplet, GbMesoState<3>> canonicalTP(lmpLocation, potentialName, kb*temperature, filename);
     MonteCarlo<XTuplet, GbMesoState < 3>, GbMesoStateEnsemble < 3 >, CanonicalTP<XTuplet, GbMesoState < 3>>> mc(ensemble, canonicalTP);
     mc.evolve(iterations);
     GbContinuum<3>::reset();

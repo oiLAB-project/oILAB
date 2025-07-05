@@ -15,14 +15,15 @@
 
 
 
-namespace gbLAB {
+namespace pyoilab{
     template<int dim>
     class PyLatticeDirection
     {
+        using PyLatticeVector = pyoilab::PyLatticeVector<dim>;
+
         using Lattice = gbLAB::Lattice<dim>;
         using LatticeDirection = gbLAB::LatticeDirection<dim>;
         using LatticeVector = gbLAB::LatticeVector<dim>;
-        using PyLatticeVector = gbLAB::PyLatticeVector<dim>;
 
         using IntScalarType = long long int;
         using MatrixDimD = Eigen::Matrix<double, dim, dim>;
@@ -32,7 +33,6 @@ namespace gbLAB {
     public:
         LatticeDirection ld;
         PyLatticeDirection(const PyLatticeVector& pv) : ld(pv.lv){}
-        PyLatticeDirection(const LatticeVector& lv) : ld(lv){}
         PyLatticeDirection(const LatticeDirection& ld) : ld(ld){}
         PyLatticeDirection(const PyLatticeDirection& pld) : ld(pld.ld){}
         PyLatticeDirection(const VectorDimI& v, const Lattice& lat) : ld(v,lat){}
@@ -61,14 +61,14 @@ namespace gbLAB {
         using VectorDimI = Eigen::Matrix<long long int, dim, 1>;
 
         using Lattice = gbLAB::Lattice<dim>;
-        using LatticeDirection = LatticeDirection<dim>;
+        using LatticeDirection = gbLAB::LatticeDirection<dim>;
+        using LatticeVector = gbLAB::LatticeVector<dim>;
+
         using PyLatticeDirection = PyLatticeDirection<dim>;
         using PyLatticeVector = PyLatticeVector<dim>;
-        using LatticeVector = LatticeVector<dim>;
 
-        py::class_<PyLatticeDirection>(m, ("PyLatticeDirection" + std::to_string(dim) + "D").c_str())
+        py::class_<PyLatticeDirection>(m, ("LatticeDirection" + std::to_string(dim) + "D").c_str())
                 .def(py::init<const PyLatticeVector&>())
-                .def(py::init<const LatticeDirection&>())
                 .def(py::init<const PyLatticeDirection&>())
                 .def(py::init<const VectorDimI&, const Lattice&>())
                 .def("latticeVector",[](const PyLatticeDirection& ld) {

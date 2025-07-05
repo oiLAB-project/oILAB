@@ -15,13 +15,14 @@
 
 namespace py = pybind11;
 
-namespace gbLAB {
+namespace pyoilab {
 // Had to wrap the ReciprocalLatticeVector<dim> class due to Pybind11 issues with classes with
 // Eigen base classes
     template<int dim>
     class PyReciprocalLatticeVector {
         using Lattice = gbLAB::Lattice<dim>;
         using ReciprocalLatticeVector = gbLAB::ReciprocalLatticeVector<dim>;
+
         using IntScalarType = long long int;
         using MatrixDimD = Eigen::Matrix<double, dim, dim>;
         using VectorDimD = Eigen::Matrix<double, dim, 1>;
@@ -82,7 +83,7 @@ namespace gbLAB {
             return rlv.planeIndexOfPoint(p);
         }
 
-        IntScalarType planeIndexOfPoint(const LatticeVector<dim> &p) const {
+        IntScalarType planeIndexOfPoint(const gbLAB::LatticeVector<dim> &p) const {
             return rlv.planeIndexOfPoint(p);
         }
 
@@ -120,7 +121,7 @@ namespace gbLAB {
         using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
         using PyReciprocalLatticeVector = PyReciprocalLatticeVector<dim>;
 
-        py::class_<PyReciprocalLatticeVector>(m, ("PyReciprocalLatticeVector" + std::to_string(dim) + "D").c_str())
+        py::class_<PyReciprocalLatticeVector>(m, ("ReciprocalLatticeVector" + std::to_string(dim) + "D").c_str())
                 .def(py::init<const Lattice &>())
                 .def(py::init<const VectorDimD&, const Lattice&>())
                 .def(py::init<const VectorDimI&, const Lattice&>())

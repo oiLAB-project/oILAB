@@ -49,7 +49,7 @@ namespace pyoilab{
             return ld.latticeVector();
         }
 
-        IntScalarType dot(const PyReciprocalLatticeVector<dim>& other){
+        IntScalarType dot(const PyReciprocalLatticeVector<dim>& other) const {
             return ld.dot(other.rlv);
         }
     };

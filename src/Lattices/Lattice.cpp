@@ -265,7 +265,7 @@ namespace gbLAB
 
     template<int dim> template<int dm>
     typename std::enable_if<dm==3,std::vector<typename Lattice<dim>::MatrixDimD>>::type
-    Lattice<dim>::generateCoincidentLattices(const ReciprocalLatticeDirection<dim>& rd, const double& maxDen, const int N) const
+    Lattice<dim>::generateCoincidentLattices(const ReciprocalLatticeDirection<dim>& rd, const double& maxDen, const int& N) const
     {
         std::vector<MatrixDimD> output;
         std::map<IntScalarType,MatrixDimD> temp;
@@ -636,7 +636,7 @@ namespace gbLAB
 
     template class Lattice<3>;
     template std::vector<typename Lattice<3>::MatrixDimD> Lattice<3>::generateCoincidentLattices<3>(
-            const ReciprocalLatticeDirection<3> &rd, const double &maxDen, const int N) const;
+            const ReciprocalLatticeDirection<3> &rd, const double &maxDen, const int& N) const;
     template std::vector<LatticeVector<3>> Lattice<3>::box<3>(const std::vector<LatticeVector<3>> &boxVectors,
                                                               const std::string &filename) const;
 

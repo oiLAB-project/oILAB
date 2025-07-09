@@ -20,33 +20,43 @@ namespace pyoilab {
         using MatrixDimD = Eigen::Matrix<double, dim, dim>;
         using VectorDimD = Eigen::Matrix<double, dim, 1>;
 
-        py::class_<Lattice>(m, ("Lattice" + std::to_string(dim) + "D").c_str())
-                .def(py::init<const MatrixDimD&, const MatrixDimD&>(),
-                        py::arg("A"), py::arg("Q")=MatrixDimD::Identity())
-                .def_readonly("latticeBasis", &Lattice::latticeBasis)
-                .def_readonly("reciprocalBasis", &Lattice::reciprocalBasis)
-                .def_readonly("F", &Lattice::F)
-                .def("interPlanarSpacing", &Lattice::interPlanarSpacing)
-                .def("latticeVector", [](const Lattice &lattice, const VectorDimD &p) {
-                    return PyLatticeVector(lattice.latticeVector(p));
-                })
-                .def("box",[](const Lattice& lattice, const std::vector<PyLatticeVector>& boxPyLatticeVectors, const std::string& filename=""){
-                    std::vector<LatticeVector> boxLatticeVectors;
-                    for(const auto& v : boxPyLatticeVectors)
-                        boxLatticeVectors.push_back(v.lv);
-                    auto latticeVectors= lattice.box(boxLatticeVectors,filename);
+        py::class_<Lattice> cls(m, ("Lattice" + std::to_string(dim) + "D").c_str());
+        cls.def(py::init<const MatrixDimD&, const MatrixDimD&>(),
+                py::arg("A"), py::arg("Q")=MatrixDimD::Identity())
+            .def_readonly("latticeBasis", &Lattice::latticeBasis)
+            .def_readonly("reciprocalBasis", &Lattice::reciprocalBasis)
+            .def_readonly("F", &Lattice::F)
+            .def("interPlanarSpacing", &Lattice::interPlanarSpacing)
+            .def("latticeVector", [](const Lattice &lattice, const VectorDimD &p) {
+                return PyLatticeVector(lattice.latticeVector(p));
+            })
+            .def("box",[](const Lattice& lattice, const std::vector<PyLatticeVector>& boxPyLatticeVectors, const std::string& filename){
+                std::vector<LatticeVector> boxLatticeVectors;
+                for(const auto& v : boxPyLatticeVectors)
+                    boxLatticeVectors.push_back(v.lv);
+                auto latticeVectors= lattice.box(boxLatticeVectors,filename);
 
-                    std::vector<PyLatticeVector> pyLatticeVectors;
-                    for(const auto& v : latticeVectors)
-                        pyLatticeVectors.push_back(PyLatticeVector(v));
-                    return pyLatticeVectors;
-                }, py::arg("boxVectors"),py::arg("filename")="");
-
-                /*
-        template<int dm=dim>
-        typename std::enable_if<dm==3,std::vector<LatticeVector<dim>>>::type
-        box(const std::vector<LatticeVector<dim>>& boxVectors, const std::string& filename= "") const;
-                 */
+                std::vector<PyLatticeVector> pyLatticeVectors;
+                for(const auto& v : latticeVectors)
+                    pyLatticeVectors.push_back(PyLatticeVector(v));
+                return pyLatticeVectors;
+            }, py::arg("boxVectors"),py::arg("filename")="");
+        if constexpr(dim==3) {
+            cls.def("generateCoincidentLattices",
+                 [](const Lattice &lattice, const PyReciprocalLatticeDirection<dim>& rd, const double& maxDen, const int& N) {
+                     return lattice.generateCoincidentLattices(rd.rld, maxDen, N);
+                 }, py::arg("rd"), py::arg("maxDen") = 100, py::arg("N") = 100);
+        }
+        if constexpr(dim==2) {
+            cls.def("generateCoincidentLattices",
+                 [](const Lattice& lattice, const double& maxStrain, const double& maxDen, const int& N) {
+                     return lattice.generateCoincidentLattices(maxStrain, maxDen, N);
+                 }, py::arg("maxStrain"),py::arg("maxDen") = 50, py::arg("N") = 30);
+            cls.def("generateCoincidentLattices",
+                    [](const Lattice& lattice, const Lattice& underformedLattice, const double& maxStrain, const double& maxDen, const int& N) {
+                        return lattice.generateCoincidentLattices(underformedLattice, maxStrain, maxDen, N);
+                    }, py::arg("undeformedLattice"), py::arg("maxStrain"),py::arg("maxDen") = 50, py::arg("N") = 30);
+        }
     }
 }
 #endif //OILAB_LATTICE_BINDINGS_H

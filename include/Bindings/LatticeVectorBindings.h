@@ -32,7 +32,7 @@ namespace pyoilab{
     public:
         LatticeVector lv;
 
-        PyLatticeVector(const Lattice &lattice) : lv(lattice) {}
+        PyLatticeVector(const Lattice& lattice) : lv(lattice) {}
 
         PyLatticeVector(const VectorDimD& cartesianCoordinates, const Lattice& lattice) : lv(cartesianCoordinates,
                                                                                              lattice) {}

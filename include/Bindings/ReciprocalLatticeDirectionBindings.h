@@ -46,15 +46,15 @@ namespace pyoilab{
             return rld.reciprocalLatticeVector();
         }
 
-        IntScalarType dot(const PyLatticeVector<dim>& other){
+        IntScalarType dot(const PyLatticeVector<dim>& other) const {
             return rld.dot(other.lv);
         }
 
-        double planeSpacing(){
+        double planeSpacing() const {
             return rld.planeSpacing();
         }
 
-        int stacking(){
+        int stacking() const {
             return rld.stacking();
         }
     };

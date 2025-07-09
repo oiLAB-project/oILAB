@@ -125,7 +125,7 @@ namespace gbLAB
          */
         template<int dm=dim>
         typename std::enable_if<dm==3,std::vector<MatrixDimD>>::type
-        generateCoincidentLattices(const ReciprocalLatticeDirection<dim>& rd, const double& maxDen= 100, const int N= 100) const;
+        generateCoincidentLattices(const ReciprocalLatticeDirection<dim>& rd, const double& maxDen= 100, const int& N= 100) const;
 
         /*! This function generates deformations \f$\mathbf F\f$ such that the deformations of *this lattice share moire supercells
          *  with the undeformed *this lattice

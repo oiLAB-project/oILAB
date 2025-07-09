@@ -23,4 +23,5 @@ pybind11_add_module(pyoilab Bindings/module.cpp)
 target_link_libraries(pyoilab PRIVATE oILAB)
 
 configure_file(Bindings/example.py example.py)
+configure_file(Bindings/pyoilab.pyi pyoilab.pyi)
 

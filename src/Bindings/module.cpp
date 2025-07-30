@@ -12,6 +12,7 @@ namespace pyoilab{
         bind_LatticeDirection<2>(m);
         bind_ReciprocalLatticeVector<2>(m);
         bind_ReciprocalLatticeDirection<2>(m);
+        bind_BiCrystal<2>(m);
 
         // Dimension 3
         bind_Lattice<3>(m);
@@ -19,5 +20,6 @@ namespace pyoilab{
         bind_LatticeDirection<3>(m);
         bind_ReciprocalLatticeVector<3>(m);
         bind_ReciprocalLatticeDirection<3>(m);
+        bind_BiCrystal<3>(m);
     }
 }

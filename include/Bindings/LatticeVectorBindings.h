@@ -128,12 +128,14 @@ namespace pyoilab{
         using PyLatticeVector = PyLatticeVector<dim>;
         using PyReciprocalLatticeDirection = PyReciprocalLatticeDirection<dim>;
 
-        py::class_<PyLatticeVector>(m, ("LatticeVector" + std::to_string(dim) + "D").c_str())
+        py::class_<PyLatticeVector>(m, ("LatticeVector" + std::to_string(dim) + "D").c_str(),("LatticeVector" + std::to_string(dim) + "D class").c_str())
                 .def(py::init<const Lattice&>())
                 .def(py::init<const VectorDimD&, const Lattice&>())
                 .def(py::init<const VectorDimI&, const Lattice&>())
                 .def(py::init<const PyLatticeVector&>())
-
+                .def("lattice",[](const PyLatticeVector& self){
+                    return self.lv.lattice;
+                },py::return_value_policy::reference_internal)
                 .def("cartesian", &PyLatticeVector::cartesian)
                 .def("integerCoordinates", static_cast<VectorDimI (PyLatticeVector::*)() const>(&PyLatticeVector::integerCoordinates),
                      "output the integer coordinates of the lattice vecctor")

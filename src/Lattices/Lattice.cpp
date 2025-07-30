@@ -53,7 +53,7 @@ namespace gbLAB
 
     /**********************************************************************/
     template <int dim>
-    LatticeDirection<dim> Lattice<dim>::latticeDirection(const VectorDimD &d) const
+    LatticeDirection<dim> Lattice<dim>::latticeDirection(const VectorDimD &d, const double& tol) const
     {
         RLLL rlll(latticeBasis,0.75);
         auto structureMatrix= rlll.reducedBasis();
@@ -67,11 +67,12 @@ namespace gbLAB
 
         const GramMatrix<double,2> G(std::array<VectorDimD,2>{temp.cartesian().normalized(),d.normalized()});
         const double crossNorm(sqrt(G.determinant()));
-        if(crossNorm>FLT_EPSILON)
+        if(crossNorm>tol)
         {
             std::cout<<"input direction="<<d.normalized().transpose()<<std::endl;
             std::cout<<"lattice direction="<<temp.cartesian().normalized().transpose()<<std::endl;
             std::cout<<"cross product norm="<<std::setprecision(15)<<std::scientific<<crossNorm<<std::endl;
+            std::cout<<"tolerance="<<std::setprecision(15)<<std::scientific<<tol<<std::endl;
             throw std::runtime_error("LATTICE DIRECTION NOT FOUND\n");
         }
         return LatticeDirection<dim>(temp);
@@ -79,7 +80,7 @@ namespace gbLAB
 
     /**********************************************************************/
     template <int dim>
-    ReciprocalLatticeDirection<dim> Lattice<dim>::reciprocalLatticeDirection(const VectorDimD &d) const
+    ReciprocalLatticeDirection<dim> Lattice<dim>::reciprocalLatticeDirection(const VectorDimD &d, const double& tol) const
     {
         RLLL rlll(latticeBasis,0.75);
         auto structureMatrix= rlll.reducedBasis();
@@ -93,11 +94,12 @@ namespace gbLAB
 
         const GramMatrix<double,2> G(std::array<VectorDimD,2>{temp.cartesian().normalized(),d.normalized()});
         const double crossNorm(sqrt(abs(G.determinant())));
-        if(crossNorm>FLT_EPSILON)
+        if(crossNorm>tol)
         {
             std::cout<<"input direction="<<std::setprecision(15)<<std::scientific<<d.normalized().transpose()<<std::endl;
             std::cout<<"reciprocal lattice direction="<<std::setprecision(15)<<std::scientific<<temp.cartesian().normalized().transpose()<<std::endl;
             std::cout<<"cross product norm="<<std::setprecision(15)<<std::scientific<<crossNorm<<std::endl;
+            std::cout<<"tolerance="<<std::setprecision(15)<<std::scientific<<tol<<std::endl;
             throw std::runtime_error("RECIPROCAL LATTICE DIRECTION NOT FOUND\n");
         }
         return ReciprocalLatticeDirection<dim>(temp);
@@ -106,13 +108,15 @@ namespace gbLAB
     /**********************************************************************/
     template <int dim>
     RationalLatticeDirection<dim> Lattice<dim>::rationalLatticeDirection(const VectorDimD &d,
-                                                          const typename BestRationalApproximation::LongIntType &maxDen ) const
+                                                          const typename BestRationalApproximation::LongIntType& maxDen,
+                                                          const double& magnitudeTol,
+                                                          const double& directionTol) const
     {
-        const LatticeDirection<dim> ld(latticeDirection(d));
+        const LatticeDirection<dim> ld(latticeDirection(d,directionTol));
         const BestRationalApproximation bra(d.norm() / ld.cartesian().norm(), maxDen);
         const Rational rat(bra.num, bra.den);
         const RationalLatticeDirection<dim> rld(rat, ld);
-        if ((rld.cartesian() - d).squaredNorm() > FLT_EPSILON)
+        if ((rld.cartesian() - d).squaredNorm() > magnitudeTol)
         {
             std::cout << "input vector=" << d.transpose() << std::endl;
             std::cout << "lattice direction=" << ld.cartesian().transpose() << std::endl;
@@ -127,13 +131,15 @@ namespace gbLAB
 
     template <int dim>
     RationalReciprocalLatticeDirection<dim> Lattice<dim>::rationalReciprocalLatticeDirection(const VectorDimD &d,
-                                                                         const typename BestRationalApproximation::LongIntType &maxDen ) const
+                                                                         const typename BestRationalApproximation::LongIntType &maxDen,
+                                                                         const double& magnitudeTol,
+                                                                         const double& directionTol) const
     {
-        const ReciprocalLatticeDirection<dim> rld(reciprocalLatticeDirection(d));
+        const ReciprocalLatticeDirection<dim> rld(reciprocalLatticeDirection(d,directionTol));
         const BestRationalApproximation bra(d.norm() / rld.cartesian().norm(), maxDen);
         const Rational rat(bra.num, bra.den);
         const RationalReciprocalLatticeDirection<dim> rrld(rat, rld);
-        if ((rrld.cartesian() - d).squaredNorm() > FLT_EPSILON)
+        if ((rrld.cartesian() - d).squaredNorm() > magnitudeTol)
         {
             std::cout << "input reciprocal vector=" << d.transpose() << std::endl;
             std::cout << "reciprocal lattice direction=" << rld.cartesian().transpose() << std::endl;
@@ -187,6 +193,17 @@ namespace gbLAB
             index++;
         }
 
+        if constexpr(dim>2){
+            const auto& rlll= RLLL(planeParallelLatticeBasisCartesian, 0.75);
+            planeParallelLatticeBasisCartesian= rlll.reducedBasis();
+            MatrixDimI outIntegerCoords;
+            for (int i=0; i<dim; ++i)
+                outIntegerCoords.col(i)= out[i].latticeVector();
+            Eigen::Matrix<IntScalarType,dim,dim-1> planeParallelLatticeBasisIntegerCoords= outIntegerCoords.block(0,1,dim,dim-1)*rlll.unimodularMatrix();
+            for (int i=1; i<dim; ++i)
+                out[i] = LatticeDirection<dim>(planeParallelLatticeBasisIntegerCoords.col(i-1),*this);
+        }
+        /*
         if(dim>2) {
             planeParallelLatticeBasisCartesian = RLLL(planeParallelLatticeBasisCartesian, 0.75).reducedBasis();
             index = 1;
@@ -195,6 +212,7 @@ namespace gbLAB
                 index++;
             }
         }
+         */
 
         // (A^T A)^{-1} A^T
         Eigen::MatrixXd pseudoInverse(dim-1,dim);
@@ -244,6 +262,31 @@ namespace gbLAB
             index++;
         }
 
+        if constexpr(dim>2) {
+            const auto &rlll = RLLL(directionOrthogonalReciprocalLatticeBasisCartesian, 0.75);
+            MatrixDimI outIntegerCoords;
+            for (int i = 0; i < dim; ++i)
+                outIntegerCoords.col(i) = out[i].reciprocalLatticeVector();
+            Eigen::Matrix<IntScalarType, dim, dim - 1> directionOrthogonalReciprocalLatticeBasisIntegerCoords =
+                    outIntegerCoords.block(0, 1, dim, dim - 1) * rlll.unimodularMatrix();
+            for (int i = 1; i < dim; ++i)
+                out[i] = ReciprocalLatticeDirection<dim>(
+                        directionOrthogonalReciprocalLatticeBasisIntegerCoords.col(i - 1), *this);
+        }
+
+        Eigen::MatrixXd pseudoInverse(dim-1,dim);
+        pseudoInverse= (directionOrthogonalReciprocalLatticeBasisCartesian.transpose() * directionOrthogonalReciprocalLatticeBasisCartesian).inverse() *
+                       (directionOrthogonalReciprocalLatticeBasisCartesian.transpose());
+
+        ReciprocalLatticeVector<dim> temp(*this);
+        for(int i=0;i<dim-1;i++)
+        {
+            temp= temp + round(out[0].cartesian().dot(pseudoInverse.row(i)))*out[i+1].reciprocalLatticeVector();
+        }
+        out[0]= ReciprocalLatticeDirection<dim>(out[0].reciprocalLatticeVector()-temp);
+        return out;
+
+        /*
         directionOrthogonalReciprocalLatticeBasisCartesian= RLLL(directionOrthogonalReciprocalLatticeBasisCartesian,0.75).reducedBasis();
         index= 1;
         for(const auto& column : directionOrthogonalReciprocalLatticeBasisCartesian.colwise())
@@ -252,6 +295,7 @@ namespace gbLAB
             index++;
         }
         return out;
+         */
     }
 
     /**********************************************************************/

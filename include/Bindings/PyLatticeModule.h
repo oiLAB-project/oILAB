@@ -25,5 +25,6 @@ namespace pyoilab
 #include <LatticeDirectionBindings.h>
 #include <ReciprocalLatticeVectorBindings.h>
 #include <ReciprocalLatticeDirectionBindings.h>
+#include <BiCrystalBindings.h>
 
 #endif //OILAB_PYLATTICEMODULE_H

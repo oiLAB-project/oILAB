@@ -62,7 +62,7 @@ namespace gbLAB
          * @param[in] d cartesian coordinates of a vector
          * @return Lattice direction along d
          */
-        LatticeDirection<dim> latticeDirection(const VectorDimD& d) const;
+        LatticeDirection<dim> latticeDirection(const VectorDimD& d, const double& tol=FLT_EPSILON) const;
 
         /*! \brief Returns a reciprocal lattice vector (in the dual of the current lattice) with Cartesian coordinates p
          *
@@ -76,7 +76,7 @@ namespace gbLAB
          * @param[in] d cartesian coordinates of a vector
          * @return Reciprocal lattice direction along d
          */
-        ReciprocalLatticeDirection<dim> reciprocalLatticeDirection(const VectorDimD& d) const;
+        ReciprocalLatticeDirection<dim> reciprocalLatticeDirection(const VectorDimD& d, const double& tol= FLT_EPSILON) const;
 
         /*! \brief Given a lattice direction \f$\textbf l\f$, this function returns a direction-orthogonal reciprocal
          * lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$, with the property
@@ -90,9 +90,13 @@ namespace gbLAB
                                                                                                const bool& useRLLL=false) const;
 
         RationalLatticeDirection<dim> rationalLatticeDirection(const VectorDimD& d,
-                                                               const typename BestRationalApproximation::LongIntType& maxDen=1000) const;
+                                                               const typename BestRationalApproximation::LongIntType& maxDen,
+                                                               const double& magnitudeTol,
+                                                               const double& directionTol= FLT_EPSILON) const;
         RationalReciprocalLatticeDirection<dim> rationalReciprocalLatticeDirection(const VectorDimD& d,
-                                                                                   const typename BestRationalApproximation::LongIntType& maxDen=1000) const;
+                                                                                   const typename BestRationalApproximation::LongIntType& maxDen,
+                                                                                   const double& magnitudeTol,
+                                                                                   const double& directionTol= FLT_EPSILON) const;
 
         /*! \brief Given a reciprocal lattice direction \f$\textbf l\f$, this function returns a plane-parallel lattice basis
          * \f$[\textbf b_1,\cdots,\textbf b_{dim}]\f$, with the property

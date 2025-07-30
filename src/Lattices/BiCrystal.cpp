@@ -552,7 +552,7 @@ namespace gbLAB
             VectorDimI temp=
                     boxLatticeIndices*boxLattice.planeParallelLatticeBasis(ReciprocalLatticeDirection<dim>(rC),true)[0].latticeVector();
             boxVectorTemp= LatticeVector<dim>(temp,csl);
-            double dotProduct= abs(acos(boxVectorTemp.cartesian().normalized().dot(rC.cartesian().normalized())));
+            double dotProduct= abs(acos(boxVectorTemp.cartesian().normalized().dot(rC.cartesian().normalized())-FLT_EPSILON));
             if(dotProduct<minDotProduct) {
                 minDotProduct = dotProduct;
                 boxVectorUpdated= boxVectorTemp;
@@ -579,7 +579,8 @@ namespace gbLAB
             rotation=Rotation<dim>(orthogonalVectors);
         }
         //assert((rotation*rotation.transpose()).template isApprox(Eigen::Matrix<double,dim,dim>::Identity())
-        assert((rotation*rotation.transpose()).isApprox(Eigen::Matrix<double,dim,dim>::Identity())
+        //assert((rotation*rotation.transpose()).isApprox(Eigen::Matrix<double,dim,dim>::Identity())
+        assert((rotation*rotation.transpose()).isApprox(Eigen::Matrix<double,dim,dim>::Identity(),1e-6)
                && "Cannot orient the grain boundary. Box vectors are not orthogonal.");
 
 

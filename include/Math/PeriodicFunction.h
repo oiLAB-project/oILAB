@@ -57,11 +57,13 @@ namespace gbLAB {
     {
         auto n = fun.values.dimensions();
         assert(n.size() == dim);
+        s << n[0]*n[1] << std::endl;
+        s << std::endl;
         for (int i = 0; i < n[0]; i++) {
             for (int j = 0; j < n[1]; j++) {
                 Eigen::Vector<double, Eigen::Dynamic> x = i * fun.unitCell.col(0) / n[0] +
                                                           j * fun.unitCell.col(1) / n[1];
-                const Eigen::IOFormat fmt(15, 0, "", "", " ", "", "", "");
+                const Eigen::IOFormat fmt(15, 0, " ", "", " ", "", "", "");
                 s << x.transpose().format(fmt) << std::setw(25) << std::setprecision(15) << fun.values(i, j)
                   << std::endl;
             }
@@ -74,6 +76,8 @@ namespace gbLAB {
     {
         auto n = fun.values.dimensions();
         assert(n.size() == dim);
+        s << n[0]*n[1]*n[2] << std::endl;
+        s << std::endl;
         for (int i = 0; i < n[0]; i++) {
             for (int j = 0; j < n[1]; j++) {
                 for (int k = 0; k < n[2]; k++) {

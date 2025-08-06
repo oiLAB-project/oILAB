@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['lambdaa',['LambdaA',['../classgb_l_a_b_1_1_bi_crystal.html#afef82515ee2953d5c36eed21b1c713a7',1,'gbLAB::BiCrystal']]],
-  ['lambdab',['LambdaB',['../classgb_l_a_b_1_1_bi_crystal.html#a2f0c5024d816b96035f43cd4f179bc0c',1,'gbLAB::BiCrystal']]],
-  ['lattice',['lattice',['../classgb_l_a_b_1_1_lattice_vector.html#a2fb3dd5fadee38e8dac15d88bd882ec1',1,'gbLAB::LatticeVector::lattice()'],['../classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a807ee42c0503ca3accfa38149f74cf45',1,'gbLAB::ReciprocalLatticeVector::lattice()']]],
-  ['latticebasis',['latticeBasis',['../classgb_l_a_b_1_1_integer_lattice.html#a478ebf3812b2f2ae75b6267d8971fcd9',1,'gbLAB::IntegerLattice::latticeBasis()'],['../classgb_l_a_b_1_1_lattice.html#a41a4ba38812af3d18988ae4597a73fc0',1,'gbLAB::Lattice::latticeBasis()']]]
+  ['h_0',['H',['../classgb_l_a_b_1_1_l_l_l.html#aaa4cb0e0089b3c12690022fbccfd9612',1,'gbLAB::LLL']]],
+  ['half_5frotvec_1',['half_rotvec',['../namespaceexample.html#ad4725e15412b17d92c26666b1ac851ad',1,'example']]],
+  ['hhatinvcomponents_2',['HhatInvComponents',['../classgb_l_a_b_1_1_gb_continuum.html#ab9c01aec9b1fad765cd9ad8ecc2768d7',1,'gbLAB::GbContinuum']]],
+  ['histogram_3',['histogram',['../classgb_l_a_b_1_1_landau_wang_t_p.html#a3cecff3a7c0b2bdd5c9acf0dc186cfd8',1,'gbLAB::LandauWangTP']]]
 ];

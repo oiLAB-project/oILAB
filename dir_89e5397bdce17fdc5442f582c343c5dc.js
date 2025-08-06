@@ -1,44 +1,29 @@
 var dir_89e5397bdce17fdc5442f582c343c5dc =
 [
-    [ "BiCrystal.h", "_bi_crystal_8h.html", [
-      [ "BiCrystal", "classgb_l_a_b_1_1_bi_crystal.html", "classgb_l_a_b_1_1_bi_crystal" ]
-    ] ],
-    [ "Gb.h", "_gb_8h.html", [
-      [ "Gb", "classgb_l_a_b_1_1_gb.html", "classgb_l_a_b_1_1_gb" ]
-    ] ],
-    [ "IntegerLattice.h", "_integer_lattice_8h.html", [
-      [ "IntegerLattice", "classgb_l_a_b_1_1_integer_lattice.html", "classgb_l_a_b_1_1_integer_lattice" ]
-    ] ],
-    [ "Lattice.h", "_lattice_8h.html", [
-      [ "Lattice", "classgb_l_a_b_1_1_lattice.html", "classgb_l_a_b_1_1_lattice" ]
-    ] ],
-    [ "LatticeCore.h", "_lattice_core_8h.html", [
-      [ "LatticeCore", "structgb_l_a_b_1_1_lattice_core.html", "structgb_l_a_b_1_1_lattice_core" ]
-    ] ],
+    [ "old", "dir_c7399c3b2e682c4c020be88b05b55026.html", "dir_c7399c3b2e682c4c020be88b05b55026" ],
+    [ "BiCrystal.h", "_bi_crystal_8h.html", "_bi_crystal_8h" ],
+    [ "Diff.h", "_lattices_2_diff_8h.html", "_lattices_2_diff_8h" ],
+    [ "Gb.h", "_gb_8h.html", "_gb_8h" ],
+    [ "GbContinuum.h", "_gb_continuum_8h.html", "_gb_continuum_8h" ],
+    [ "GbContinuumImplementation.h", "_gb_continuum_implementation_8h.html", null ],
+    [ "GbMaterialTensors.h", "_gb_material_tensors_8h.html", "_gb_material_tensors_8h" ],
+    [ "GbMesoState.h", "_gb_meso_state_8h.html", "_gb_meso_state_8h" ],
+    [ "GbMesoStateEnsemble.h", "_gb_meso_state_ensemble_8h.html", "_gb_meso_state_ensemble_8h" ],
+    [ "GbMesoStateEnsembleImplementation.h", "_gb_meso_state_ensemble_implementation_8h.html", null ],
+    [ "GbMesoStateImplementation.h", "_gb_meso_state_implementation_8h.html", null ],
+    [ "GbShifts.h", "_gb_shifts_8h.html", "_gb_shifts_8h" ],
+    [ "IntegerLattice.h", "_integer_lattice_8h.html", "_integer_lattice_8h" ],
+    [ "Lattice.h", "_lattice_8h.html", "_lattice_8h" ],
+    [ "LatticeCore.h", "_lattice_core_8h.html", "_lattice_core_8h" ],
     [ "LatticeDirection.h", "_lattice_direction_8h.html", "_lattice_direction_8h" ],
-    [ "LatticeModule.h", "_lattice_module_8h.html", [
-      [ "Lattice", "classgb_l_a_b_1_1_lattice.html", "classgb_l_a_b_1_1_lattice" ],
-      [ "LatticeVector", "classgb_l_a_b_1_1_lattice_vector.html", "classgb_l_a_b_1_1_lattice_vector" ],
-      [ "ReciprocalLatticeVector", "classgb_l_a_b_1_1_reciprocal_lattice_vector.html", "classgb_l_a_b_1_1_reciprocal_lattice_vector" ],
-      [ "LatticeDirection", "structgb_l_a_b_1_1_lattice_direction.html", "structgb_l_a_b_1_1_lattice_direction" ],
-      [ "ReciprocalLatticeDirection", "structgb_l_a_b_1_1_reciprocal_lattice_direction.html", "structgb_l_a_b_1_1_reciprocal_lattice_direction" ],
-      [ "RationalLatticeDirection", "structgb_l_a_b_1_1_rational_lattice_direction.html", "structgb_l_a_b_1_1_rational_lattice_direction" ],
-      [ "RationalReciprocalLatticeDirection", "structgb_l_a_b_1_1_rational_reciprocal_lattice_direction.html", "structgb_l_a_b_1_1_rational_reciprocal_lattice_direction" ],
-      [ "BiCrystal", "classgb_l_a_b_1_1_bi_crystal.html", "classgb_l_a_b_1_1_bi_crystal" ],
-      [ "Gb", "classgb_l_a_b_1_1_gb.html", "classgb_l_a_b_1_1_gb" ]
-    ] ],
+    [ "LatticeFunction.h", "_lattice_function_8h.html", "_lattice_function_8h" ],
+    [ "LatticeFunctionImplementation.h", "_lattice_function_implementation_8h.html", "_lattice_function_implementation_8h" ],
+    [ "LatticeModule.h", "_lattice_module_8h.html", null ],
     [ "LatticeVector.h", "_lattice_vector_8h.html", "_lattice_vector_8h" ],
-    [ "LLL.h", "_l_l_l_8h.html", [
-      [ "LLL", "classgb_l_a_b_1_1_l_l_l.html", "classgb_l_a_b_1_1_l_l_l" ]
-    ] ],
+    [ "Operator.h", "_lattices_2_operator_8h.html", "_lattices_2_operator_8h" ],
+    [ "OrderedTuplet.h", "_ordered_tuplet_8h.html", "_ordered_tuplet_8h" ],
     [ "RationalLatticeDirection.h", "_rational_lattice_direction_8h.html", "_rational_lattice_direction_8h" ],
-    [ "RationalMatrix.h", "_rational_matrix_8h.html", [
-      [ "RationalMatrix", "classgb_l_a_b_1_1_rational_matrix.html", "classgb_l_a_b_1_1_rational_matrix" ]
-    ] ],
     [ "RationalReciprocalLatticeDirection.h", "_rational_reciprocal_lattice_direction_8h.html", "_rational_reciprocal_lattice_direction_8h" ],
     [ "ReciprocalLatticeDirection.h", "_reciprocal_lattice_direction_8h.html", "_reciprocal_lattice_direction_8h" ],
-    [ "ReciprocalLatticeVector.h", "_reciprocal_lattice_vector_8h.html", "_reciprocal_lattice_vector_8h" ],
-    [ "RLLL.h", "_r_l_l_l_8h.html", [
-      [ "RLLL", "classgb_l_a_b_1_1_r_l_l_l.html", "classgb_l_a_b_1_1_r_l_l_l" ]
-    ] ]
+    [ "ReciprocalLatticeVector.h", "_reciprocal_lattice_vector_8h.html", "_reciprocal_lattice_vector_8h" ]
 ];

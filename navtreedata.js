@@ -1,9 +1,33 @@
+/*
+ @licstart  The following is the entire license notice for the JavaScript code in this file.
+
+ The MIT License (MIT)
+
+ Copyright (C) 1997-2020 by Dimitri van Heesch
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ and associated documentation files (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all copies or
+ substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ @licend  The above is the entire license notice for the JavaScript code in this file
+*/
 var NAVTREE =
 [
   [ "oILAB", "index.html", [
     [ "oILAB - open Interface Lab", "index.html", null ],
-    [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
@@ -16,15 +40,15 @@ var NAVTREE =
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Data Fields", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", null ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
         [ "Typedefs", "functions_type.html", null ],
         [ "Enumerator", "functions_eval.html", null ],
-        [ "Related Functions", "functions_rela.html", null ]
+        [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ],
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
@@ -38,8 +62,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_best_rational_approximation_8h.html",
-"classgb_l_a_b_1_1_lattice_vector.html#a20fdb37db6b353ee4a8c84a17d1c6184",
-"structgb_l_a_b_1_1_rational.html#ac8d38e78f8d840b08b7fd1fdb0fa3dbc"
+"_reciprocal_lattice_vector_8h.html#ada40aee397042f86d3a49169250510d4",
+"classgb_l_a_b_1_1_displacement_kernel.html",
+"classgb_l_a_b_1_1_hhat_inv_function.html#ade3ae22f896d4fa6159a45d903ff20d8",
+"classgb_l_a_b_1_1_meso_state.html#a81c6e21c2f5188713adf07108f3ce6e9",
+"classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a80bb33f972b68790b31c2ff414608112",
+"classpyoilab_1_1_py_lattice_vector.html#a07b825af537af3355953ecb49cc2d840",
+"functions_m.html",
+"structgb_l_a_b_1_1_lattice_core.html#a618c5be9647cf43f5f65786eea856175",
+"test_lattice_8cpp-example.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

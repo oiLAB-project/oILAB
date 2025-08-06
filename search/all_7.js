@@ -1,17 +1,9 @@
 var searchData=
 [
-  ['integercoordinates',['integerCoordinates',['../structgb_l_a_b_1_1_lattice_core.html#a618c5be9647cf43f5f65786eea856175',1,'gbLAB::LatticeCore']]],
-  ['integergramschmidt',['integerGramSchmidt',['../structgb_l_a_b_1_1_integer_math.html#afddde06c89437ef6f3571441ddd194f9',1,'gbLAB::IntegerMath']]],
-  ['integerlattice',['IntegerLattice',['../classgb_l_a_b_1_1_integer_lattice.html',1,'gbLAB']]],
-  ['integerlattice',['IntegerLattice',['../classgb_l_a_b_1_1_integer_lattice.html#af49e01004c05b6c9c606451576d62db3',1,'gbLAB::IntegerLattice']]],
-  ['integerlattice_2eh',['IntegerLattice.h',['../_integer_lattice_8h.html',1,'']]],
-  ['integermath',['IntegerMath',['../structgb_l_a_b_1_1_integer_math.html',1,'gbLAB']]],
-  ['integermath_2eh',['IntegerMath.h',['../_integer_math_8h.html',1,'']]],
-  ['integermatrix',['integerMatrix',['../classgb_l_a_b_1_1_rational_matrix.html#a7405b6f56a3b8d025a44f34a0e9d9a32',1,'gbLAB::RationalMatrix']]],
-  ['interplanarspacing',['interPlanarSpacing',['../classgb_l_a_b_1_1_lattice.html#aef7fed09909e227bc21ade9f261dc449',1,'gbLAB::Lattice']]],
-  ['interplanevector',['interplaneVector',['../classgb_l_a_b_1_1_reciprocal_lattice_vector.html#ae05b3ce95b1da97c342f84805959f21a',1,'gbLAB::ReciprocalLatticeVector']]],
-  ['intscalartype',['IntScalarType',['../structgb_l_a_b_1_1_lattice_core.html#ad9ad3fcf02bb81aff682e8dcdeb41d24',1,'gbLAB::LatticeCore::IntScalarType()'],['../structgb_l_a_b_1_1_lattice_direction.html#aafcd21752b5d8195459a9da35552cfe1',1,'gbLAB::LatticeDirection::IntScalarType()'],['../classgb_l_a_b_1_1_lattice_vector.html#abc64777acc364fb92910122191a9fd30',1,'gbLAB::LatticeVector::IntScalarType()'],['../structgb_l_a_b_1_1_rational_lattice_direction.html#aead5c1293749bb8b83bc221b6cdfcbbe',1,'gbLAB::RationalLatticeDirection::IntScalarType()'],['../structgb_l_a_b_1_1_rational_reciprocal_lattice_direction.html#a21ac0b9fa7070328d98ecdb32cead458',1,'gbLAB::RationalReciprocalLatticeDirection::IntScalarType()'],['../structgb_l_a_b_1_1_reciprocal_lattice_direction.html#a1051ee9959a15eb6616049048c1aa491',1,'gbLAB::ReciprocalLatticeDirection::IntScalarType()'],['../classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a7f0f667bd0843df3c6244a2b985c8ff3',1,'gbLAB::ReciprocalLatticeVector::IntScalarType()']]],
-  ['iscomplex',['IsComplex',['../struct_eigen_1_1_num_traits_3_01gb_l_a_b_1_1_rational_3_01_int_scalar_type_01_4_01_4.html#ad9529a779465e2a12761a129da49ad83a0551d120f67ac247f575abdd3a265369',1,'Eigen::NumTraits&lt; gbLAB::Rational&lt; IntScalarType &gt; &gt;']]],
-  ['isinteger',['IsInteger',['../struct_eigen_1_1_num_traits_3_01gb_l_a_b_1_1_rational_3_01_int_scalar_type_01_4_01_4.html#ad9529a779465e2a12761a129da49ad83adf79ceecb22da42eff49a78818ccf97c',1,'Eigen::NumTraits&lt; gbLAB::Rational&lt; IntScalarType &gt; &gt;']]],
-  ['issigned',['IsSigned',['../struct_eigen_1_1_num_traits_3_01gb_l_a_b_1_1_rational_3_01_int_scalar_type_01_4_01_4.html#ad9529a779465e2a12761a129da49ad83ab59a633c0be02eea630eccd9f1e7305a',1,'Eigen::NumTraits&lt; gbLAB::Rational&lt; IntScalarType &gt; &gt;']]]
+  ['h_0',['H',['../classgb_l_a_b_1_1_l_l_l.html#aaa4cb0e0089b3c12690022fbccfd9612',1,'gbLAB::LLL']]],
+  ['half_5frotvec_1',['half_rotvec',['../namespaceexample.html#ad4725e15412b17d92c26666b1ac851ad',1,'example']]],
+  ['hhatinvcomponents_2',['HhatInvComponents',['../classgb_l_a_b_1_1_gb_continuum.html#ab9c01aec9b1fad765cd9ad8ecc2768d7',1,'gbLAB::GbContinuum']]],
+  ['hhatinvfunction_3',['hhatinvfunction',['../classgb_l_a_b_1_1_hhat_inv_function.html',1,'gbLAB::HhatInvFunction'],['../classgb_l_a_b_1_1_hhat_inv_function.html#a3b88502703c95d19eaba5aa97a3ef225',1,'gbLAB::HhatInvFunction::HhatInvFunction()']]],
+  ['histogram_4',['histogram',['../classgb_l_a_b_1_1_landau_wang_t_p.html#a3cecff3a7c0b2bdd5c9acf0dc186cfd8',1,'gbLAB::LandauWangTP']]],
+  ['histogramisflat_5',['histogramIsFlat',['../classgb_l_a_b_1_1_landau_wang_t_p.html#a43bf53b29a6b9c740fd1397b66bd8507',1,'gbLAB::LandauWangTP']]]
 ];

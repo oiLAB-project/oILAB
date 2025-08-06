@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['numtraits_3c_20gblab_3a_3arational_3c_20intscalartype_20_3e_20_3e',['NumTraits&lt; gbLAB::Rational&lt; IntScalarType &gt; &gt;',['../struct_eigen_1_1_num_traits_3_01gb_l_a_b_1_1_rational_3_01_int_scalar_type_01_4_01_4.html',1,'Eigen']]]
+  ['integerlattice_0',['IntegerLattice',['../classgb_l_a_b_1_1_integer_lattice.html',1,'gbLAB']]],
+  ['integermath_1',['IntegerMath',['../structgb_l_a_b_1_1_integer_math.html',1,'gbLAB']]],
+  ['iter_2',['iter',['../classrange_1_1iter.html',1,'range']]]
 ];

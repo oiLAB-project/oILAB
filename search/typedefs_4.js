@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['real',['Real',['../struct_eigen_1_1_num_traits_3_01gb_l_a_b_1_1_rational_3_01_int_scalar_type_01_4_01_4.html#ace86445910761b42d9746e92b6d1034f',1,'Eigen::NumTraits&lt; gbLAB::Rational&lt; IntScalarType &gt; &gt;']]]
+  ['functionfftpair_0',['FunctionFFTPair',['../classgb_l_a_b_1_1_gb_continuum.html#a4ce847da91d530d2b289bffc632a3d2d',1,'gbLAB::GbContinuum']]]
 ];

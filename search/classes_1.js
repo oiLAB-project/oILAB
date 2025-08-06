@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['diophantinesolver',['DiophantineSolver',['../classgb_l_a_b_1_1_diophantine_solver.html',1,'gbLAB']]]
+  ['canonicaltp_0',['CanonicalTP',['../classgb_l_a_b_1_1_canonical_t_p.html',1,'gbLAB']]]
 ];

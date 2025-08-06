@@ -1,24 +1,4 @@
 var searchData=
 [
-  ['m',['M',['../classgb_l_a_b_1_1_bi_crystal.html#a47395f5ae2281ff8b9815f67c8576a26',1,'gbLAB::BiCrystal']]],
-  ['magentaboldcolor',['magentaBoldColor',['../namespacegb_l_a_b.html#a8fe436f9624584fb977a1d1cec6ba9a0',1,'gbLAB']]],
-  ['magentacolor',['magentaColor',['../namespacegb_l_a_b.html#a713849033abe1dab4165f02cce6fbde3',1,'gbLAB']]],
-  ['main',['main',['../main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;main.cpp'],['../oi_viewer_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;oiViewer.cxx']]],
-  ['main_2ecpp',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['mainpage_2etxt',['mainpage.txt',['../mainpage_8txt.html',1,'']]],
-  ['matrixd',['matrixD',['../classgb_l_a_b_1_1_smith_decomposition.html#a0032031c163d1933a0743bc5f7149245',1,'gbLAB::SmithDecomposition::matrixD()'],['../classgb_l_a_b_1_1_smith_decomposition_3_011_01_4.html#ac6e056c2affec82b2d0c5245857f1c33',1,'gbLAB::SmithDecomposition&lt; 1 &gt;::matrixD()']]],
-  ['matrixdimd',['MatrixDimD',['../structgb_l_a_b_1_1_lattice_core.html#a7a5295a37b0367240c8adf60cd2d6006',1,'gbLAB::LatticeCore::MatrixDimD()'],['../classgb_l_a_b_1_1_lattice_vector.html#a0603daad46e341326005aebff9db52c1',1,'gbLAB::LatticeVector::MatrixDimD()'],['../structgb_l_a_b_1_1_rational_lattice_direction.html#a15b0d97eecdd6f6260e5d3682101e7c7',1,'gbLAB::RationalLatticeDirection::MatrixDimD()'],['../structgb_l_a_b_1_1_rational_reciprocal_lattice_direction.html#a2b9a96fb26bc151e27a81d4aea74e712',1,'gbLAB::RationalReciprocalLatticeDirection::MatrixDimD()'],['../classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a29ac992bb08f2517791131b0f8f860cb',1,'gbLAB::ReciprocalLatticeVector::MatrixDimD()']]],
-  ['matrixdimi',['MatrixDimI',['../structgb_l_a_b_1_1_lattice_core.html#a85e619c6ab4a35c57cbef11251061a90',1,'gbLAB::LatticeCore::MatrixDimI()'],['../classgb_l_a_b_1_1_lattice_vector.html#a20fdb37db6b353ee4a8c84a17d1c6184',1,'gbLAB::LatticeVector::MatrixDimI()'],['../structgb_l_a_b_1_1_rational_lattice_direction.html#a77a5b636f12aef6d5bd9b2c10c6636b1',1,'gbLAB::RationalLatticeDirection::MatrixDimI()'],['../structgb_l_a_b_1_1_rational_reciprocal_lattice_direction.html#a3a3ab7af28e5aaadd44f020cb0f647c4',1,'gbLAB::RationalReciprocalLatticeDirection::MatrixDimI()'],['../classgb_l_a_b_1_1_reciprocal_lattice_vector.html#ae6ecebec4015f8a7f2a1953eaf79df1f',1,'gbLAB::ReciprocalLatticeVector::MatrixDimI()']]],
-  ['matrixdimiext',['MatrixDimIExt',['../classgb_l_a_b_1_1_matrix_dim_i_ext.html',1,'gbLAB']]],
-  ['matrixdimiext_3c_20intscalartype_2c_201_20_3e',['MatrixDimIExt&lt; IntScalarType, 1 &gt;',['../classgb_l_a_b_1_1_matrix_dim_i_ext_3_01_int_scalar_type_00_011_01_4.html',1,'gbLAB']]],
-  ['matrixu',['matrixU',['../classgb_l_a_b_1_1_smith_decomposition.html#ae777f64491e4d50ca6e44d459c5eb7ac',1,'gbLAB::SmithDecomposition::matrixU()'],['../classgb_l_a_b_1_1_smith_decomposition_3_011_01_4.html#af94f33add91021dd273faf44d01aef9a',1,'gbLAB::SmithDecomposition&lt; 1 &gt;::matrixU()']]],
-  ['matrixv',['matrixV',['../classgb_l_a_b_1_1_smith_decomposition.html#ae4beeacd843d33a44c097c096fe15d89',1,'gbLAB::SmithDecomposition::matrixV()'],['../classgb_l_a_b_1_1_smith_decomposition_3_011_01_4.html#a41750a8bb91e68a738fd38997d31ff90',1,'gbLAB::SmithDecomposition&lt; 1 &gt;::matrixV()']]],
-  ['matrixx',['matrixX',['../classgb_l_a_b_1_1_smith_decomposition.html#a3a6400bc7fd970e7a2d1d37342671c9b',1,'gbLAB::SmithDecomposition::matrixX()'],['../classgb_l_a_b_1_1_smith_decomposition_3_011_01_4.html#a338a29920542b787435f5de330b8c62a',1,'gbLAB::SmithDecomposition&lt; 1 &gt;::matrixX()']]],
-  ['matrixy',['matrixY',['../classgb_l_a_b_1_1_smith_decomposition.html#a382e607a07df5e1edad75c0a1eeb6454',1,'gbLAB::SmithDecomposition::matrixY()'],['../classgb_l_a_b_1_1_smith_decomposition_3_011_01_4.html#a9c673d26af2fd58e9e52215dd46b153d',1,'gbLAB::SmithDecomposition&lt; 1 &gt;::matrixY()']]],
-  ['max_5fdenominator',['max_denominator',['../classgb_l_a_b_1_1_rational_approximations.html#ad2739fbd746b9986500da7606dc100e5',1,'gbLAB::RationalApproximations']]],
-  ['model_5fbicrystalactor_5fcpp_5f',['model_BicrystalActor_cpp_',['../_bicrystal_actor_8cpp.html#a91e281cd086944fc2af268d065bad790',1,'BicrystalActor.cpp']]],
-  ['model_5foiviewermainwindow_5fcpp_5f',['model_oiViewerMainWindow_cpp_',['../oi_viewer_main_window_8cpp.html#a5196e47a9a73dee951447658951bf4c6',1,'oiViewerMainWindow.cpp']]],
-  ['model_5foiviewervtkwidget_5fcpp_5f',['model_oiViewerVTKwidget_cpp_',['../oi_viewer_v_t_kwidget_8cpp.html#a56a052d69248f8b73638d2e1ea4d6edb',1,'oiViewerVTKwidget.cpp']]],
-  ['mu',['mu',['../classgb_l_a_b_1_1_rational_matrix.html#a6c75ca7be8a811f8209863f82995f04d',1,'gbLAB::RationalMatrix']]],
-  ['mulcost',['MulCost',['../struct_eigen_1_1_num_traits_3_01gb_l_a_b_1_1_rational_3_01_int_scalar_type_01_4_01_4.html#ad9529a779465e2a12761a129da49ad83a2961378a2da99c36c07b70242e73073a',1,'Eigen::NumTraits&lt; gbLAB::Rational&lt; IntScalarType &gt; &gt;']]]
+  ['jacobian_0',['jacobian',['../classgb_l_a_b_1_1_dislocations.html#affc8096a5c804f4aa473aecc58615fa7',1,'gbLAB::Dislocations']]]
 ];

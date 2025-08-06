@@ -20,7 +20,7 @@ namespace gbLAB
     {
         static_assert(dim>0,"dim must be > 0.");
         static constexpr double roundTol=FLT_EPSILON;
-        
+
         typedef Eigen::Matrix<  double,dim,1> VectorDimD;
         typedef Eigen::Matrix<double,dim,dim> MatrixDimD;
         typedef long long int IntScalarType;

@@ -39,7 +39,7 @@ int main(int argc, char** argv)
             temp= U.col(1);
             boxVectors.push_back(LatticeVector<2>(temp,bc.csl));
 
-            bc.box(boxVectors,0.6,"bc.txt",true);
+            bc.box(boxVectors,0.6,2,"bc.txt",true);
 
             break;
         }

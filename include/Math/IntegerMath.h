@@ -11,6 +11,9 @@
 #include <Eigen/Dense>
 #include <vector>
 #include <iostream>
+#include <algorithm>
+#include <deque>
+
 
 
 namespace gbLAB
@@ -388,6 +391,32 @@ namespace gbLAB
             return output;
         }
 
+
+        static std::deque<std::vector<IntScalarType>> comb(const int& n, const int& k)
+        {
+            std::deque<std::vector<IntScalarType>> output;
+            std::string bitmask(k, 1); // K leading 1's
+            bitmask.resize(n, 0); // N-K trailing 0's
+
+            // print integers and permute bitmask
+            do {
+                std::vector<IntScalarType> kCombination(k);
+                int arrIndex= 0;
+
+                for (int i = 0; i < n; ++i) // [0..N-1] integers
+                {
+                    if (bitmask[i])
+                    {
+                        kCombination[arrIndex]= (IntScalarType) i;
+                        arrIndex++;
+                    }
+                }
+                assert(arrIndex==k);
+                output.push_back(kCombination);
+            } while (std::prev_permutation(bitmask.begin(), bitmask.end()));
+            return output;
+        }
+
     };
 
     template <typename IntScalarType, int dim>
@@ -429,6 +458,5 @@ namespace gbLAB
         }
 
     };
-
 }
 #endif

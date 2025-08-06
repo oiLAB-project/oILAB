@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 # specify the C++ standard
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 enable_testing()
@@ -16,4 +16,9 @@ add_subdirectory(testGb)
 add_subdirectory(testGB3d)
 add_subdirectory(testLattice)
 add_subdirectory(testGenerateGBs)
+add_subdirectory(testGbMesoState)
+add_subdirectory(testGbShifts)
 add_subdirectory(testMoire)
+add_subdirectory(testMonteCarlo)
+add_subdirectory(testLandauWang)
+add_subdirectory(testLandauWang2D)

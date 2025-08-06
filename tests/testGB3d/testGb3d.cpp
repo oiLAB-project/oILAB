@@ -114,6 +114,7 @@ int main()
         std::cout << "Miller indices w.r.t B: ";
         std::cout << gb.nB << std::endl;
 
+
         /*! [period vector] */
         LatticeVector<dim> glideA(rv.cross(gb.nA.reciprocalLatticeVector()).latticeVector());
         LatticeVector<dim> periodC(bc.getLatticeDirectionInC(glideA).latticeVector());
@@ -134,7 +135,15 @@ int main()
         boxVectors.push_back(nonParallelC);
         boxVectors.push_back(periodC);
         boxVectors.push_back(vectorAlongAxisC);
-        gb.box(boxVectors,0.8,2,"gb.txt",true);
+        std::cout << "Input box vectors = " << std::endl;
+        std::cout << boxVectors[0].cartesian().transpose() << std::endl;
+        std::cout << boxVectors[1].cartesian().transpose() << std::endl;
+        std::cout << boxVectors[2].cartesian().transpose() << std::endl;
+        gb.box(boxVectors,0.5,2,"gb.txt",true);
+        std::cout << "Output box vectors = " << std::endl;
+        std::cout << boxVectors[0].cartesian().transpose() << std::endl;
+        std::cout << boxVectors[1].cartesian().transpose() << std::endl;
+        std::cout << boxVectors[2].cartesian().transpose() << std::endl;
         /*! [box vectors] */
 
     }

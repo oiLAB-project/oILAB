@@ -37,13 +37,9 @@ namespace gbLAB
     template <int dim>
     class Gb;
 
-//    struct LatticePlane;
-//    struct LatticeLine;
 
-} // end namespace
+}
 
-//#include <LatticeGCD.h>
-//#include <LatticeBase.h>
 #include <LatticeCore.h>
 #include <Lattice.h>
 #include <LatticeVector.h>
@@ -52,7 +48,7 @@ namespace gbLAB
 #include <ReciprocalLatticeDirection.h>
 #include <RationalLatticeDirection.h>
 #include <RationalReciprocalLatticeDirection.h>
-#include <RationalMatrix.h>
+#include "RationalMatrix.h"
 #include <SmithDecomposition.h>
 #include <BiCrystal.h>
 #include <Gb.h>

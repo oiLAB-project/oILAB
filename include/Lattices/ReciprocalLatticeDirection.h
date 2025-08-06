@@ -22,6 +22,8 @@ namespace gbLAB
 
         ReciprocalLatticeDirection(const ReciprocalLatticeDirection<dim>& other) = default;
         ReciprocalLatticeDirection(const ReciprocalLatticeVector<dim>& v) ;
+        ReciprocalLatticeDirection(const VectorDimI& v,
+                                   const Lattice<dim>& lat) ;
 
         using ReciprocalLatticeVector<dim>::cartesian;
         using ReciprocalLatticeVector<dim>::lattice;

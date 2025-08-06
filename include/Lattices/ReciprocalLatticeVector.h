@@ -43,19 +43,25 @@ namespace gbLAB
         IntScalarType dot(const LatticeVector<dim>& other) const;
         IntScalarType dot(const LatticeDirection<dim>& other) const;
         VectorDimD cartesian() const;
-        VectorDimD interplaneVector() const;
         IntScalarType closestPlaneIndexOfPoint(const VectorDimD& P) const;
         IntScalarType planeIndexOfPoint(const VectorDimD& P) const ;
         IntScalarType planeIndexOfPoint(const LatticeVector<dim>& P) const;
 
         template<int dm=dim>
-        typename std::enable_if<dm==3,LatticeDirection<dm>>::type
-        cross(const ReciprocalLatticeVector<dm>& other) const
-        {
-            assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
-            return LatticeDirection<dm>(LatticeVector<dm>(static_cast<VectorDimI>(*this).cross(static_cast<VectorDimI>(other)), lattice));
-        }
+        typename std::enable_if<dm==2,LatticeDirection<dim>>::type
+        cross(const ReciprocalLatticeVector<dim>& other) const;
 
+        template<int dm=dim>
+        typename std::enable_if<dm==2,LatticeDirection<dim>>::type
+        cross() const;
+
+        template<int dm=dim>
+        typename std::enable_if<dm==3,LatticeDirection<dim>>::type
+        cross(const ReciprocalLatticeVector<dim>& other) const;
+
+        template<int dm=dim>
+        typename std::enable_if<dm==3,LatticeDirection<dim>>::type
+        cross() const;
     };
     
     template<int dim>

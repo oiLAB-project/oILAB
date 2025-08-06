@@ -60,6 +60,7 @@ typename LatticeCore<dim>::VectorDimI LatticeCore<dim>::integerCoordinates(const
     {
         std::cout << "nd=" << nd.transpose() << std::endl;
         std::cout << "rd=" << rd.transpose() << std::endl;
+        std::cout << "rounding error = |nd-rd| = " << (nd-rd).norm() << std::endl;
         throw(std::runtime_error("Input vector is not a lattice vector"));
     }
     return rd.template cast<IntScalarType>();

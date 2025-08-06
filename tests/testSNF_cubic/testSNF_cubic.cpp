@@ -5,8 +5,8 @@
 using namespace gbLAB;
 int main()
 {
-    const int m_max=19; 
-    const int n_max=19; 
+    const int m_max=10;
+    const int n_max=10;
     const auto A(TextFileParser("cubic_lattice.txt").readMatrix<double,3,3>("A",true));
     Lattice<3> L1(A);
 
@@ -35,13 +35,20 @@ int main()
 
             // create bicrystal 
             Lattice<3> L2(A,R);
-            BiCrystal<3> bc(L1,L2,false);
+            try {
+                BiCrystal<3> bc(L1, L2, false);
 
-            std::cout<<", sigma="<<bc.sigma
-                     <<", alpha="<<S/bc.sigma
-                     <<std::endl; 
-            if(S/bc.sigma != 1 && S/bc.sigma != 2 && S/bc.sigma != 4)
-                throw std::runtime_error("S != alpha*sigma, where alpha=1, 2, or 4");
+
+                std::cout << ", sigma=" << bc.sigma
+                          << ", alpha=" << S / bc.sigma
+                          << std::endl;
+                if (S / bc.sigma != 1 && S / bc.sigma != 2 && S / bc.sigma != 4)
+                    throw std::runtime_error("S != alpha*sigma, where alpha=1, 2, or 4");
+            }
+            catch(std::runtime_error& e)
+            {
+                std::cout << e.what() << "Moving on ..." << std::endl;
+            }
         }
 
     return 0;

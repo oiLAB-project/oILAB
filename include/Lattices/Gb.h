@@ -64,6 +64,15 @@ namespace gbLAB
         double stepHeightB(const LatticeVector<dim>& d) const;
 
         /*!
+         * \brief Computes the step height of a disconnection formed by displacing lattice \f$\mathcal A\f$
+         * by \f$\textbf d/2\f$ and \f$\mathcal B\f$ by \f$\textbf d/2\f$
+         * .
+         * @param d - Burgers vector that belongs to the DSCL of the bicrystal
+         * @return step height
+         */
+        double stepHeight(const LatticeVector<dim>& d) const;
+
+        /*!
          * \brief Constructs a grain boundary of a given orientation in a bicrystal
          * @param bc - Bicrystal formed by two lattices \f$\mathcal A\f$ and \f$\mathcal B\f$.
          * @param n - Reciprocal lattice direction in dual lattices \f$\mathcal A^*\f$ or \f$\mathcal B^*\f$.

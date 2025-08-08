@@ -36,6 +36,15 @@ namespace gbLAB
     }
 
     template<int dim>
+    double Gb<dim>::stepHeight(const LatticeVector<dim>& d) const
+    {
+        ReciprocalLatticeDirection<dim> dir= bc.getReciprocalLatticeDirectionInC(nA.reciprocalLatticeVector());
+        double cslPlaneSpacing= dir.planeSpacing();
+        double step= (bc.shiftTensorA(d)-bc.shiftTensorB(d)).cartesian().dot(nA.cartesian().normalized())/2.0;
+        return std::remainder(step,cslPlaneSpacing);
+    }
+
+    template<int dim>
     double Gb<dim>::stepHeightB(const LatticeVector<dim>& d) const
     {
         ReciprocalLatticeDirection<dim> dir= bc.getReciprocalLatticeDirectionInC(nA.reciprocalLatticeVector());

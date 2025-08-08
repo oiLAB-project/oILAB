@@ -20,6 +20,7 @@ var searchData=
   ['squarednorm_17',['squarednorm',['../structgb_l_a_b_1_1_rational_lattice_direction.html#ac5e513611c93baab31b460864160b447',1,'gbLAB::RationalLatticeDirection::squaredNorm()'],['../structgb_l_a_b_1_1_rational_reciprocal_lattice_direction.html#ade3a7710a34c5a61a64bb788661b1e10',1,'gbLAB::RationalReciprocalLatticeDirection::squaredNorm()']]],
   ['stacking_18',['stacking',['../classpyoilab_1_1_py_reciprocal_lattice_direction.html#ac6aea0c7c0d8ab3e557683501643b847',1,'pyoilab::PyReciprocalLatticeDirection::stacking()'],['../structgb_l_a_b_1_1_reciprocal_lattice_direction.html#ac141e1499fb5d6c25474c7d4a29808b1',1,'gbLAB::ReciprocalLatticeDirection::stacking()']]],
   ['staticid_19',['staticid',['../classgb_l_a_b_1_1_static_i_d.html#ad0c22c13a72f8a3abc552c673f625e70',1,'gbLAB::StaticID::StaticID()'],['../classgb_l_a_b_1_1_static_i_d.html#af39a0a3f0d5bcaa8bce0552485aeea7f',1,'gbLAB::StaticID::StaticID(const StaticID &amp;)']]],
-  ['stepheighta_20',['stepHeightA',['../classgb_l_a_b_1_1_gb.html#a6c4082f445adce8f5f06cfa17eb68185',1,'gbLAB::Gb']]],
-  ['stepheightb_21',['stepHeightB',['../classgb_l_a_b_1_1_gb.html#aecde6227ffba1ec751312f864c02a4a9',1,'gbLAB::Gb']]]
+  ['stepheight_20',['stepHeight',['../classgb_l_a_b_1_1_gb.html#ae7d86c24fcf8984feede3354bcb4352c',1,'gbLAB::Gb']]],
+  ['stepheighta_21',['stepHeightA',['../classgb_l_a_b_1_1_gb.html#a6c4082f445adce8f5f06cfa17eb68185',1,'gbLAB::Gb']]],
+  ['stepheightb_22',['stepHeightB',['../classgb_l_a_b_1_1_gb.html#aecde6227ffba1ec751312f864c02a4a9',1,'gbLAB::Gb']]]
 ];

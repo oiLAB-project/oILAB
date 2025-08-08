@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"functions_k.html":[2,3,0,10],
+"functions_l.html":[2,3,0,11],
 "functions_m.html":[2,3,0,12],
 "functions_n.html":[2,3,0,13],
 "functions_o.html":[2,3,0,14],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "structgb_l_a_b_1_1_integer_math.html#af0ca66881346b1d72bc3a0b40abde058":[2,0,1,23,2],
 "structgb_l_a_b_1_1_integer_math.html#af0ca66881346b1d72bc3a0b40abde058":[1,0,2,23,2],
 "structgb_l_a_b_1_1_lattice_core.html":[1,0,2,26],
-"structgb_l_a_b_1_1_lattice_core.html":[2,0,1,26],
-"structgb_l_a_b_1_1_lattice_core.html#a438db448c36e9ff1d068bf3431d45548":[2,0,1,26,6],
-"structgb_l_a_b_1_1_lattice_core.html#a438db448c36e9ff1d068bf3431d45548":[1,0,2,26,6]
+"structgb_l_a_b_1_1_lattice_core.html":[2,0,1,26]
 };

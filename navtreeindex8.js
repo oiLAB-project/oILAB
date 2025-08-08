@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"structgb_l_a_b_1_1_lattice_core.html#a438db448c36e9ff1d068bf3431d45548":[2,0,1,26,6],
+"structgb_l_a_b_1_1_lattice_core.html#a438db448c36e9ff1d068bf3431d45548":[1,0,2,26,6],
 "structgb_l_a_b_1_1_lattice_core.html#a618c5be9647cf43f5f65786eea856175":[1,0,2,26,5],
 "structgb_l_a_b_1_1_lattice_core.html#a618c5be9647cf43f5f65786eea856175":[2,0,1,26,5],
 "structgb_l_a_b_1_1_lattice_core.html#a7a5295a37b0367240c8adf60cd2d6006":[1,0,2,26,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX8 =
 "structgb_l_a_b_1_1oi_viewer_v_t_kwidget.html#aff4d7280bef6efe9b30abe9583992f8d":[2,0,1,37,4],
 "structgb_l_a_b_1_1oi_viewer_v_t_kwidget.html#aff4d7280bef6efe9b30abe9583992f8d":[1,0,2,37,4],
 "test_coincident_rotations_8cpp-example.html":[4,4],
-"test_gb3d_8cpp-example.html":[4,1],
-"test_gb_8cpp-example.html":[4,0],
-"test_generate_g_bs_8cpp-example.html":[4,2]
+"test_gb3d_8cpp-example.html":[4,1]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a807ee42c0503ca3accfa38149f74cf45":[2,0,1,49,30],
+"classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a80bb33f972b68790b31c2ff414608112":[2,0,1,49,0],
 "classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a80bb33f972b68790b31c2ff414608112":[1,0,2,49,0],
 "classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a85a0dbc6abeedd116e6080f16c203f7a":[1,0,2,49,19],
 "classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a85a0dbc6abeedd116e6080f16c203f7a":[2,0,1,49,19],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "classpyoilab_1_1_py_lattice_direction.html#aedb55add32ce80a11e55217cc8b01b90":[2,0,2,0,14],
 "classpyoilab_1_1_py_lattice_direction.html#aeff01405a77d6f7a8bd316811fcc57bc":[2,0,2,0,13],
 "classpyoilab_1_1_py_lattice_direction.html#aeff01405a77d6f7a8bd316811fcc57bc":[1,0,3,0,13],
-"classpyoilab_1_1_py_lattice_vector.html":[1,0,3,1],
-"classpyoilab_1_1_py_lattice_vector.html":[2,0,2,1],
-"classpyoilab_1_1_py_lattice_vector.html#a07b825af537af3355953ecb49cc2d840":[1,0,3,1,3]
+"classpyoilab_1_1_py_lattice_vector.html":[1,0,3,1]
 };

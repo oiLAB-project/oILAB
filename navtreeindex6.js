@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"classpyoilab_1_1_py_lattice_vector.html":[2,0,2,1],
+"classpyoilab_1_1_py_lattice_vector.html#a07b825af537af3355953ecb49cc2d840":[1,0,3,1,3],
 "classpyoilab_1_1_py_lattice_vector.html#a07b825af537af3355953ecb49cc2d840":[2,0,2,1,3],
 "classpyoilab_1_1_py_lattice_vector.html#a0e3afc714354be7751cf5753341764f4":[2,0,2,1,21],
 "classpyoilab_1_1_py_lattice_vector.html#a0e3afc714354be7751cf5753341764f4":[1,0,3,1,21],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "functions_g.html":[2,3,0,6],
 "functions_h.html":[2,3,0,7],
 "functions_i.html":[2,3,0,8],
-"functions_j.html":[2,3,0,9],
-"functions_k.html":[2,3,0,10],
-"functions_l.html":[2,3,0,11]
+"functions_j.html":[2,3,0,9]
 };

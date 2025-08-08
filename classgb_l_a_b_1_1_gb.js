@@ -13,6 +13,7 @@ var classgb_l_a_b_1_1_gb =
     [ "getPeriodVector", "classgb_l_a_b_1_1_gb.html#abd3e0e6fdbf01152bc6ce2e8a0934c2f", null ],
     [ "getReciprocalLatticeDirectionInT", "classgb_l_a_b_1_1_gb.html#a2b11d2662ea8b429ae435002dfc18773", null ],
     [ "getReciprocalLatticeVectorInT", "classgb_l_a_b_1_1_gb.html#af534f8bf888013bdab9a6523fe4dd380", null ],
+    [ "stepHeight", "classgb_l_a_b_1_1_gb.html#ae7d86c24fcf8984feede3354bcb4352c", null ],
     [ "stepHeightA", "classgb_l_a_b_1_1_gb.html#a6c4082f445adce8f5f06cfa17eb68185", null ],
     [ "stepHeightB", "classgb_l_a_b_1_1_gb.html#aecde6227ffba1ec751312f864c02a4a9", null ],
     [ "basisT", "classgb_l_a_b_1_1_gb.html#a51fb104ef62d483c67c6870e547d4169", null ],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['b_0',['b',['../classgb_l_a_b_1_1_l_l_l.html#a6d74792e7ebfffb908ecbf8714112000',1,'gbLAB::LLL::B'],['../classgb_l_a_b_1_1_r_l_l_l.html#aeaf5024a81bf1988eaa166c78b569248',1,'gbLAB::RLLL::B'],['../classgb_l_a_b_1_1_gb_continuum.html#abb96b0b9d8f233bebbc181daa02ddaab',1,'gbLAB::GbContinuum::b'],['../classgb_l_a_b_1_1_dislocation_dipole.html#aba9c90a69fe78d8bb1506990c332438d',1,'gbLAB::DislocationDipole::b'],['../classgb_l_a_b_1_1_bi_crystal.html#a35222d83ef4293e94b53750bc92fde67',1,'gbLAB::BiCrystal::B']]],
+  ['b_0',['b',['../classgb_l_a_b_1_1_dislocation_dipole.html#aba9c90a69fe78d8bb1506990c332438d',1,'gbLAB::DislocationDipole::b'],['../classgb_l_a_b_1_1_bi_crystal.html#a35222d83ef4293e94b53750bc92fde67',1,'gbLAB::BiCrystal::B'],['../classgb_l_a_b_1_1_l_l_l.html#a6d74792e7ebfffb908ecbf8714112000',1,'gbLAB::LLL::B'],['../classgb_l_a_b_1_1_r_l_l_l.html#aeaf5024a81bf1988eaa166c78b569248',1,'gbLAB::RLLL::B'],['../classgb_l_a_b_1_1_gb_continuum.html#abb96b0b9d8f233bebbc181daa02ddaab',1,'gbLAB::GbContinuum::b']]],
   ['bactor_1',['bActor',['../structgb_l_a_b_1_1_bicrystal_actor.html#a674a73af350edb87a909e737efdb50c4',1,'gbLAB::BicrystalActor']]],
   ['basist_2',['basisT',['../classgb_l_a_b_1_1_gb.html#a51fb104ef62d483c67c6870e547d4169',1,'gbLAB::Gb']]],
   ['basisvectors_3',['basisVectors',['../classgb_l_a_b_1_1_lattice_function.html#a67a76fa98c8fb40f4f3bc0e819a3c26d',1,'gbLAB::LatticeFunction']]],

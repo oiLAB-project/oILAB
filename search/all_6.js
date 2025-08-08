@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['gb_0',['gb',['../classgb_l_a_b_1_1_gb.html',1,'gbLAB::Gb&lt; dim &gt;'],['../classgb_l_a_b_1_1_reference_state.html#a7c018594600540177b55fcd976f5e790',1,'gbLAB::ReferenceState::gb'],['../classgb_l_a_b_1_1_gb_shifts.html#a44d63e4dbaef72c1b0e90838b90207e1',1,'gbLAB::GbShifts::gb'],['../classgb_l_a_b_1_1_gb_meso_state.html#abe88f797b4a69994c26cdd352f762b7c',1,'gbLAB::GbMesoState::gb'],['../classgb_l_a_b_1_1_gb.html#a043e05b40e74a6756601b1598b9d1e0d',1,'gbLAB::Gb::Gb()']]],
+  ['gb_0',['gb',['../classgb_l_a_b_1_1_gb.html',1,'gbLAB::Gb&lt; dim &gt;'],['../classgb_l_a_b_1_1_gb.html#a043e05b40e74a6756601b1598b9d1e0d',1,'gbLAB::Gb::Gb()'],['../classgb_l_a_b_1_1_reference_state.html#a7c018594600540177b55fcd976f5e790',1,'gbLAB::ReferenceState::gb'],['../classgb_l_a_b_1_1_gb_shifts.html#a44d63e4dbaef72c1b0e90838b90207e1',1,'gbLAB::GbShifts::gb'],['../classgb_l_a_b_1_1_gb_meso_state.html#abe88f797b4a69994c26cdd352f762b7c',1,'gbLAB::GbMesoState::gb']]],
   ['gb_2ecpp_1',['Gb.cpp',['../_gb_8cpp.html',1,'']]],
   ['gb_2eh_2',['Gb.h',['../_gb_8h.html',1,'']]],
   ['gbcontinuum_3',['gbcontinuum',['../classgb_l_a_b_1_1_gb_continuum.html',1,'gbLAB::GbContinuum&lt; dim &gt;'],['../classgb_l_a_b_1_1_gb_continuum.html#a5d76fa30487658877964909ea4d03ccb',1,'gbLAB::GbContinuum::GbContinuum()']]],

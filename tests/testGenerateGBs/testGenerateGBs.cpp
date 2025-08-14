@@ -60,38 +60,51 @@ int main()
             auto reducedDsclBasis= RLLL(bc.dscl.latticeBasis,0.75);
             auto U_Dscl= reducedDsclBasis.unimodularMatrix();
 
-            std::cout << "Reduced DSCL basis vectors:" << std::endl;
-            std::cout << "d1 = ";
-            std::cout << std::setprecision(20) << reducedDsclBasis.reducedBasis().col(0).transpose() << std::endl;
-            std::cout << "Integer coordinates of d1:";
             LatticeVector<3> d1(bc.dscl);
             d1 << U_Dscl.col(0).template cast<IntScalarType>();
+            std::cout << "Reduced DSCL basis vectors:" << std::endl;
+            std::cout << "d1 = ";
+            std::cout << std::setprecision(20) << d1.cartesian().transpose() << std::endl;
+            std::cout << "Integer coordinates of d1:";
             std::cout << std::setprecision(20) << d1.transpose() << std::endl;
             std::cout << std::endl;
 
             LatticeVector<3> d2(bc.dscl);
-            std::cout << "d2 = ";
-            std::cout << std::setprecision(20) << reducedDsclBasis.reducedBasis().col(1).transpose() << std::endl;
-            std::cout << "Integer coordinates of d2:";
             d2 << U_Dscl.col(1).template cast<IntScalarType>();
+            std::cout << "d2 = ";
+            std::cout << std::setprecision(20) << d2.cartesian().transpose() << std::endl;
+            std::cout << "Integer coordinates of d2:";
             std::cout << std::setprecision(20) << d2.transpose() << std::endl;
             std::cout << std::endl;
 
-            // shift vectors corresponding to d1 and d2
-            LatticeVector<3> s1(bc.dscl), s2(bc.dscl);
+            LatticeVector<3> d3(bc.dscl);
+            d3 << U_Dscl.col(2).template cast<IntScalarType>();
+            std::cout << "d3 = ";
+            std::cout << std::setprecision(20) << d3.cartesian().transpose() << std::endl;
+            std::cout << "Integer coordinates of d3:";
+            std::cout << std::setprecision(20) << d3.transpose() << std::endl;
+            std::cout << std::endl;
+
+            // shift vectors corresponding to d1, d2, and d3
+            LatticeVector<3> s1(bc.dscl), s2(bc.dscl), s3(bc.dscl);
             s1 << bc.LambdaA * d1;
             s2 << bc.LambdaA * d2;
+            s3 << bc.LambdaA * d3;
             Lattice<3> reducedCsl(RLLL(bc.csl.latticeBasis,0.75).reducedBasis());
             std::cout << "Reduced shift vectors: " << std::endl;
 
             Eigen::Vector3d s1_coordinates_in_reduced_csl= reducedCsl.latticeBasis.inverse()*s1.cartesian();
             Eigen::Vector3d s2_coordinates_in_reduced_csl= reducedCsl.latticeBasis.inverse()*s2.cartesian();
+            Eigen::Vector3d s3_coordinates_in_reduced_csl= reducedCsl.latticeBasis.inverse()*s3.cartesian();
             Eigen::Vector3d s1_coordinates_modulo= s1_coordinates_in_reduced_csl.array()-s1_coordinates_in_reduced_csl.array().round();
             Eigen::Vector3d s2_coordinates_modulo= s2_coordinates_in_reduced_csl.array()-s2_coordinates_in_reduced_csl.array().round();
+            Eigen::Vector3d s3_coordinates_modulo= s3_coordinates_in_reduced_csl.array()-s3_coordinates_in_reduced_csl.array().round();
             std::cout << "s1 = ";
             std::cout << std::setprecision(20) << (reducedCsl.latticeBasis * s1_coordinates_modulo).transpose() << std::endl;
             std::cout << "s2 = ";
             std::cout << std::setprecision(20) << (reducedCsl.latticeBasis * s2_coordinates_modulo).transpose() << std::endl;
+            std::cout << "s3 = ";
+            std::cout << std::setprecision(20) << (reducedCsl.latticeBasis * s3_coordinates_modulo).transpose() << std::endl;
             std::cout << std::endl;
             /*! [Invariance] */
 
@@ -157,11 +170,13 @@ int main()
                         std::cout << "Glide disconnection Burgers vector = " << std::setprecision(20)
                                   << burgersVector.cartesian().transpose() << "; norm = " << burgersVector.cartesian().norm() << std::endl;
                         std::cout << "Step height of glide disconnection = " << std::setprecision(20)
-                                  << gb.second.stepHeightA(burgersVector) << std::endl;
-                        std::cout << "Step height of non-glide disconnection 1= " << std::setprecision(20)
-                                  << gb.second.stepHeightA(d1) << std::endl;
-                        std::cout << "Step height of non-glide disconnection 2= " << std::setprecision(20)
-                                  << gb.second.stepHeightA(d2) << std::endl;
+                                  << gb.second.stepHeight(burgersVector) << std::endl;
+                        std::cout << "Step height of disconnection with Burgers vector d1= " << std::setprecision(20)
+                                  << gb.second.stepHeight(d1) << std::endl;
+                        std::cout << "Step height of disconnection with Burgers vector d2= " << std::setprecision(20)
+                                  << gb.second.stepHeight(d2) << std::endl;
+                        std::cout << "Step height of disconnection with Burgers vector d3= " << std::setprecision(20)
+                                  << gb.second.stepHeight(d3) << std::endl;
                         std::cout << "-----------------------------------------------------------------------------" << std::endl;
                         gbCount++;
                     }

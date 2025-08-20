@@ -65,7 +65,7 @@ namespace gbLAB
 
         /*!
          * \brief Computes the step height of a disconnection formed by displacing lattice \f$\mathcal A\f$
-         * by \f$\textbf d/2\f$ and \f$\mathcal B\f$ by \f$\textbf d/2\f$
+         * by \f$\textbf d/2\f$ and \f$\mathcal B\f$ by \f$-\textbf d/2\f$
          * .
          * @param d - Burgers vector that belongs to the DSCL of the bicrystal
          * @return step height

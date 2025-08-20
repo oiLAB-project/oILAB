@@ -15,11 +15,18 @@ add_library(oILAB SHARED    Lattices/BiCrystal.cpp
                             Math/Farey.cpp
                             Lattices/GbShifts.cpp
                             Lattices/GbMaterialTensors.cpp)
+
+target_include_directories(oILAB
+    PUBLIC
+        ${PROJECT_INCLUDE_DIRS}
+        ${Python3_INCLUDE_DIRS}
+)
                             
 
 target_link_libraries(oILAB 
     PRIVATE Python3::Python 
-    PUBLIC Eigen3::Eigen)
+    PUBLIC Eigen3::Eigen
+    PUBLIC OpenMP::OpenMP_CXX)
 
 pybind11_add_module(pyoilab Bindings/module.cpp)
 target_link_libraries(pyoilab PRIVATE oILAB)

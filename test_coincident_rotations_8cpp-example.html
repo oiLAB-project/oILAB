@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('test_coincident_rotations_8cpp-example
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">try</span></div>
 <div class="line">        {</div>
-<div class="line">            <span class="keywordtype">double</span> theta= acos((rotation.trace()-1.0)/2.0)*180/M_PI;</div>
+<div class="line">            <span class="keywordtype">double</span> theta= acos((rotation.trace()-1.0)/2.0)*180/std::numbers::pi;</div>
 <div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;angle = &quot;</span> &lt;&lt; theta &lt;&lt; <span class="stringliteral">&quot;; &quot;</span>;</div>
 <div class="line">            BiCrystal&lt;3&gt; bc(lattice,Lattice&lt;3&gt;(lattice.latticeBasis,rotation),<span class="keyword">false</span>);</div>
 <div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;Sigma = &quot;</span> &lt;&lt; bc.sigma &lt;&lt; std::endl;</div>
@@ -135,6 +135,7 @@ $(document).ready(function(){initNavTree('test_coincident_rotations_8cpp-example
 <p>Full code:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_lattice_module_8h.html">LatticeModule.h</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_text_file_parser_8h.html">TextFileParser.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;numbers&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacegb_l_a_b.html">gbLAB</a>;</div>
 <div class="line"> </div>
@@ -154,7 +155,7 @@ $(document).ready(function(){initNavTree('test_coincident_rotations_8cpp-example
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">try</span></div>
 <div class="line">        {</div>
-<div class="line">            <span class="keywordtype">double</span> theta= acos((rotation.trace()-1.0)/2.0)*180/M_PI;</div>
+<div class="line">            <span class="keywordtype">double</span> theta= acos((rotation.trace()-1.0)/2.0)*180/std::numbers::pi;</div>
 <div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;angle = &quot;</span> &lt;&lt; theta &lt;&lt; <span class="stringliteral">&quot;; &quot;</span>;</div>
 <div class="line">            <a id="_a4" name="_a4"></a><a class="code hl_class" href="classgb_l_a_b_1_1_bi_crystal.html">BiCrystal&lt;3&gt;</a> bc(lattice,<a class="code hl_class" href="classgb_l_a_b_1_1_lattice.html">Lattice&lt;3&gt;</a>(lattice.latticeBasis,rotation),<span class="keyword">false</span>);</div>
 <div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;Sigma = &quot;</span> &lt;&lt; bc.<a id="a5" name="a5"></a><a class="code hl_variable" href="classgb_l_a_b_1_1_bi_crystal.html#a91d185fabf605790db3897b6046ad5f1">sigma</a> &lt;&lt; std::endl;</div>
@@ -173,8 +174,8 @@ $(document).ready(function(){initNavTree('test_coincident_rotations_8cpp-example
 <div class="ttc" id="aclassgb_l_a_b_1_1_lattice_html"><div class="ttname"><a href="classgb_l_a_b_1_1_lattice.html">gbLAB::Lattice</a></div><div class="ttdoc">Lattice class.</div><div class="ttdef"><b>Definition</b> <a href="_lattice_8h_source.html#l00033">Lattice.h:34</a></div></div>
 <div class="ttc" id="aclassgb_l_a_b_1_1_reciprocal_lattice_vector_html"><div class="ttname"><a href="classgb_l_a_b_1_1_reciprocal_lattice_vector.html">gbLAB::ReciprocalLatticeVector</a></div><div class="ttdef"><b>Definition</b> <a href="_reciprocal_lattice_vector_8h_source.html#l00014">ReciprocalLatticeVector.h:15</a></div></div>
 <div class="ttc" id="aclassgb_l_a_b_1_1_text_file_parser_html"><div class="ttname"><a href="classgb_l_a_b_1_1_text_file_parser.html">gbLAB::TextFileParser</a></div><div class="ttdef"><b>Definition</b> <a href="_text_file_parser_8h_source.html#l00125">TextFileParser.h:126</a></div></div>
-<div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="main_8cpp_source.html#l00011">main.cpp:11</a></div></div>
-<div class="ttc" id="anamespacegb_l_a_b_html"><div class="ttname"><a href="namespacegb_l_a_b.html">gbLAB</a></div><div class="ttdef"><b>Definition</b> <a href="_bi_crystal_8cpp_source.html#l00012">BiCrystal.cpp:13</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="main_8cpp_source.html#l00012">main.cpp:12</a></div></div>
+<div class="ttc" id="anamespacegb_l_a_b_html"><div class="ttname"><a href="namespacegb_l_a_b.html">gbLAB</a></div><div class="ttdef"><b>Definition</b> <a href="_bi_crystal_8cpp_source.html#l00013">BiCrystal.cpp:14</a></div></div>
 <div class="ttc" id="astructgb_l_a_b_1_1_lattice_core_html_acbef4d8b38e259b1325a7b4ba700ca0f"><div class="ttname"><a href="structgb_l_a_b_1_1_lattice_core.html#acbef4d8b38e259b1325a7b4ba700ca0f">gbLAB::LatticeCore::VectorDimD</a></div><div class="ttdeci">Eigen::Matrix&lt; double, dim, 1 &gt; VectorDimD</div><div class="ttdef"><b>Definition</b> <a href="_lattice_core_8h_source.html#l00024">LatticeCore.h:24</a></div></div>
 <div class="ttc" id="astructgb_l_a_b_1_1_lattice_core_html_ad9ad3fcf02bb81aff682e8dcdeb41d24"><div class="ttname"><a href="structgb_l_a_b_1_1_lattice_core.html#ad9ad3fcf02bb81aff682e8dcdeb41d24">gbLAB::LatticeCore::IntScalarType</a></div><div class="ttdeci">long long int IntScalarType</div><div class="ttdef"><b>Definition</b> <a href="_lattice_core_8h_source.html#l00026">LatticeCore.h:26</a></div></div>
 <div class="ttc" id="astructgb_l_a_b_1_1_lattice_core_html_ae01bd0e0db48a7c8b19d7b53c46f5431"><div class="ttname"><a href="structgb_l_a_b_1_1_lattice_core.html#ae01bd0e0db48a7c8b19d7b53c46f5431">gbLAB::LatticeCore::VectorDimI</a></div><div class="ttdeci">Eigen::Matrix&lt; IntScalarType, dim, 1 &gt; VectorDimI</div><div class="ttdef"><b>Definition</b> <a href="_lattice_core_8h_source.html#l00027">LatticeCore.h:27</a></div></div>
@@ -183,7 +184,7 @@ $(document).ready(function(){initNavTree('test_coincident_rotations_8cpp-example
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Aug 20 2025 01:44:29 for oILAB by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 26 2025 05:37:41 for oILAB by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

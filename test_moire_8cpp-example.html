@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('test_moire_8cpp-example.html',''); ini
 <div class="line">            <span class="keywordtype">double</span> t= sqrt(C(0,0)+C(1,1)+2*s);</div>
 <div class="line">            Eigen::Matrix2d U= (C+s*Eigen::Matrix2d::Identity())/t;</div>
 <div class="line">            Eigen::Matrix2d R= F*U.inverse();</div>
-<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;R(&quot;</span> &lt;&lt; std::setprecision(12) &lt;&lt; atan2(R(1,0),R(0,0))*180/M_PI &lt;&lt; <span class="stringliteral">&quot;)= &quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;R(&quot;</span> &lt;&lt; std::setprecision(12) &lt;&lt; atan2(R(1,0),R(0,0))*180/std::numbers::pi &lt;&lt; <span class="stringliteral">&quot;)= &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">            std::cout &lt;&lt; R &lt;&lt; std::endl;</div>
 <div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;U= &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">            std::cout &lt;&lt; std::setprecision(12) &lt;&lt; U &lt;&lt; std::endl;</div>
@@ -197,6 +197,7 @@ $(document).ready(function(){initNavTree('test_moire_8cpp-example.html',''); ini
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_text_file_parser_8h.html">TextFileParser.h</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_bi_crystal_8h.html">BiCrystal.h</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;chrono&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;numbers&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacegb_l_a_b.html">gbLAB</a>;</div>
 <div class="line"> </div>
@@ -244,7 +245,7 @@ $(document).ready(function(){initNavTree('test_moire_8cpp-example.html',''); ini
 <div class="line">            <span class="keywordtype">double</span> t= sqrt(C(0,0)+C(1,1)+2*s);</div>
 <div class="line">            Eigen::Matrix2d U= (C+s*Eigen::Matrix2d::Identity())/t;</div>
 <div class="line">            Eigen::Matrix2d R= F*U.inverse();</div>
-<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;R(&quot;</span> &lt;&lt; std::setprecision(12) &lt;&lt; atan2(R(1,0),R(0,0))*180/M_PI &lt;&lt; <span class="stringliteral">&quot;)= &quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;R(&quot;</span> &lt;&lt; std::setprecision(12) &lt;&lt; atan2(R(1,0),R(0,0))*180/std::numbers::pi &lt;&lt; <span class="stringliteral">&quot;)= &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">            std::cout &lt;&lt; R &lt;&lt; std::endl;</div>
 <div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;U= &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">            std::cout &lt;&lt; std::setprecision(12) &lt;&lt; U &lt;&lt; std::endl;</div>
@@ -322,8 +323,8 @@ $(document).ready(function(){initNavTree('test_moire_8cpp-example.html',''); ini
 <div class="ttc" id="aclassgb_l_a_b_1_1_r_l_l_l_html"><div class="ttname"><a href="classgb_l_a_b_1_1_r_l_l_l.html">gbLAB::RLLL</a></div><div class="ttdef"><b>Definition</b> <a href="_r_l_l_l_8h_source.html#l00019">RLLL.h:20</a></div></div>
 <div class="ttc" id="aclassgb_l_a_b_1_1_r_l_l_l_html_a6caeebba14e6c10b9ff68f1ddb2488b9"><div class="ttname"><a href="classgb_l_a_b_1_1_r_l_l_l.html#a6caeebba14e6c10b9ff68f1ddb2488b9">gbLAB::RLLL::reducedBasis</a></div><div class="ttdeci">const MatrixType &amp; reducedBasis() const</div><div class="ttdef"><b>Definition</b> <a href="_r_l_l_l_8cpp_source.html#l00192">RLLL.cpp:192</a></div></div>
 <div class="ttc" id="aclassgb_l_a_b_1_1_text_file_parser_html"><div class="ttname"><a href="classgb_l_a_b_1_1_text_file_parser.html">gbLAB::TextFileParser</a></div><div class="ttdef"><b>Definition</b> <a href="_text_file_parser_8h_source.html#l00125">TextFileParser.h:126</a></div></div>
-<div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="main_8cpp_source.html#l00011">main.cpp:11</a></div></div>
-<div class="ttc" id="anamespacegb_l_a_b_html"><div class="ttname"><a href="namespacegb_l_a_b.html">gbLAB</a></div><div class="ttdef"><b>Definition</b> <a href="_bi_crystal_8cpp_source.html#l00012">BiCrystal.cpp:13</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="main_8cpp_source.html#l00012">main.cpp:12</a></div></div>
+<div class="ttc" id="anamespacegb_l_a_b_html"><div class="ttname"><a href="namespacegb_l_a_b.html">gbLAB</a></div><div class="ttdef"><b>Definition</b> <a href="_bi_crystal_8cpp_source.html#l00013">BiCrystal.cpp:14</a></div></div>
 <div class="ttc" id="astructgb_l_a_b_1_1_lattice_core_html_ad9ad3fcf02bb81aff682e8dcdeb41d24"><div class="ttname"><a href="structgb_l_a_b_1_1_lattice_core.html#ad9ad3fcf02bb81aff682e8dcdeb41d24">gbLAB::LatticeCore::IntScalarType</a></div><div class="ttdeci">long long int IntScalarType</div><div class="ttdef"><b>Definition</b> <a href="_lattice_core_8h_source.html#l00026">LatticeCore.h:26</a></div></div>
 <div class="ttc" id="astructgb_l_a_b_1_1_lattice_core_html_ae01bd0e0db48a7c8b19d7b53c46f5431"><div class="ttname"><a href="structgb_l_a_b_1_1_lattice_core.html#ae01bd0e0db48a7c8b19d7b53c46f5431">gbLAB::LatticeCore::VectorDimI</a></div><div class="ttdeci">Eigen::Matrix&lt; IntScalarType, dim, 1 &gt; VectorDimI</div><div class="ttdef"><b>Definition</b> <a href="_lattice_core_8h_source.html#l00027">LatticeCore.h:27</a></div></div>
 </div><!-- fragment --> </div><!-- contents -->
@@ -331,7 +332,7 @@ $(document).ready(function(){initNavTree('test_moire_8cpp-example.html',''); ini
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Aug 20 2025 01:44:29 for oILAB by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 26 2025 05:37:41 for oILAB by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -12,8 +12,13 @@
 #include <cstdlib>
 #include <cmath>
 #include <sstream>
-#include <sys/stat.h>
-#include <unistd.h>
+#ifdef _WIN32
+    #include <io.h>
+    #include <windows.h>
+#else
+    #include <unistd.h>
+    #include <sys/stat.h>
+#endif
 #include <Eigen/Eigen>
 #include <iomanip>
 

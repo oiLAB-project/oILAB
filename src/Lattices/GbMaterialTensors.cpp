@@ -2,6 +2,7 @@
 // Created by Nikhil Chandra Admal on 6/18/24.
 //
 #include <GbMaterialTensors.h>
+#include <numbers>
 
 namespace gbLAB {
 
@@ -20,9 +21,9 @@ namespace gbLAB {
         if (i==j)
         {
             if (k!=1 && l!=1)
-                output= output + xi(k)*xi(l)*M_PI/(2*std::pow(xi2Norm,3));
+                output= output + xi(k)*xi(l)*std::numbers::pi/(2*std::pow(xi2Norm,3));
             else if (k==1 && l==1)
-                output= output + M_PI/(2*xi2Norm);
+                output= output + std::numbers::pi/(2*xi2Norm);
         }
         // second term
         std::list<int> ijkl{i,j,k,l};
@@ -30,19 +31,19 @@ namespace gbLAB {
         if ( count % 2 != 0)
             return output;
         else if(count == 0)
-            output= output - xi(i)*xi(j)*xi(k)*xi(l)/(2*nuFactor) * 3 * M_PI / (8*std::pow(xi2Norm,5));
+            output= output - xi(i)*xi(j)*xi(k)*xi(l)/(2*nuFactor) * 3 * std::numbers::pi / (8*std::pow(xi2Norm,5));
         else if(count == 4)
-            output= output - 1.0/(2*nuFactor) * 3 * M_PI / (8*xi2Norm);
+            output= output - 1.0/(2*nuFactor) * 3 * std::numbers::pi / (8*xi2Norm);
         else if(count == 2)
         {
             ijkl.remove(1);
             double temp=1.0;
             for(const auto elem : ijkl)
                 temp= temp*xi(elem);
-            output= output - temp/(2*nuFactor) * M_PI / (8*std::pow(xi2Norm,3));
+            output= output - temp/(2*nuFactor) * std::numbers::pi / (8*std::pow(xi2Norm,3));
         }
 
-        return -output/(4*std::pow(M_PI,2)*mu);
+        return -output/(4*std::pow(std::numbers::pi,2)*mu);
     }
 
 
@@ -66,7 +67,7 @@ namespace gbLAB {
         std::complex<double> output(0,0);
         for(int k=0; k<3; ++k)
             for(int r=0; r<3; ++r)
-                output= output - 4*std::pow(M_PI,2)* (tensorGhat(i,k,t,r,xi) + tensorGhat(t,k,i,r,xi)) * xi(r)*xi(k);
+                output= output - 4*std::pow(std::numbers::pi,2)* (tensorGhat(i,k,t,r,xi) + tensorGhat(t,k,i,r,xi)) * xi(r)*xi(k);
         return output;
     }
 

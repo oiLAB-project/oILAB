@@ -8,6 +8,7 @@
 #define gbLAB_BiCrystal_cpp_
 
 #include <LatticeModule.h>
+#include <numbers>
 
 namespace gbLAB
 {
@@ -536,7 +537,7 @@ namespace gbLAB
         boxLatticeIndices.col(0)= boxVectors[0];
         for (int i=1; i<dim; ++i)
             boxLatticeIndices.col(i)= boxVectors[i]/IntegerMath<long long int>::gcd(boxVectors[i]);
-        double minDotProduct= M_PI/2;
+        double minDotProduct= std::numbers::pi/2;
         int minStep;
 
         auto boxVectorUpdated(boxVectors[0]);
@@ -556,7 +557,7 @@ namespace gbLAB
             if(dotProduct<minDotProduct) {
                 minDotProduct = dotProduct;
                 boxVectorUpdated= boxVectorTemp;
-                if (dotProduct < (1-orthogonality)*M_PI/2)
+                if (dotProduct < (1-orthogonality)*std::numbers::pi/2)
                     break;
             }
 

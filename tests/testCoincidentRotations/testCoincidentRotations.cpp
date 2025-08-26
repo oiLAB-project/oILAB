@@ -1,5 +1,6 @@
 #include <LatticeModule.h>
 #include <TextFileParser.h>
+#include <numbers>
 
 using namespace gbLAB;
 
@@ -32,7 +33,7 @@ int main()
     {
         try
         {
-            double theta= acos((rotation.trace()-1.0)/2.0)*180/M_PI;
+            double theta= acos((rotation.trace()-1.0)/2.0)*180/std::numbers::pi;
             std::cout << "angle = " << theta << "; ";
             BiCrystal<3> bc(lattice,Lattice<3>(lattice.latticeBasis,rotation),false);
             std::cout << "Sigma = " << bc.sigma << std::endl;

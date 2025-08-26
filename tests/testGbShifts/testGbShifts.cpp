@@ -31,9 +31,9 @@ int main()
 
     try
     {
-        //double theta= 53.594515175286005615*M_PI/180;
-        //double theta= 6.0089831977661480877*M_PI/180; // axis = 111
-        double theta= 70.52878*M_PI/180;
+        //double theta= 53.594515175286005615*std::numbers::pi/180;
+        //double theta= 6.0089831977661480877*std::numbers::pi/180; // axis = 111
+        double theta= 70.52878*std::numbers::pi/180;
         Eigen::AngleAxis<double> halfRotation(theta/2,rAxisGlobal.cartesian().normalized());
         Lattice<3> latticeA(lattice.latticeBasis,halfRotation.matrix());
         Lattice<3> latticeB(lattice.latticeBasis,halfRotation.matrix().transpose());

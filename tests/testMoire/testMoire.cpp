@@ -2,6 +2,7 @@
 #include <TextFileParser.h>
 #include <BiCrystal.h>
 #include <chrono>
+#include <numbers>
 
 using namespace gbLAB;
 
@@ -62,7 +63,7 @@ int main()
             double t= sqrt(C(0,0)+C(1,1)+2*s);
             Eigen::Matrix2d U= (C+s*Eigen::Matrix2d::Identity())/t;
             Eigen::Matrix2d R= F*U.inverse();
-            std::cout << "R(" << std::setprecision(12) << atan2(R(1,0),R(0,0))*180/M_PI << ")= " << std::endl;
+            std::cout << "R(" << std::setprecision(12) << atan2(R(1,0),R(0,0))*180/std::numbers::pi << ")= " << std::endl;
             std::cout << R << std::endl;
             std::cout << "U= " << std::endl;
             std::cout << std::setprecision(12) << U << std::endl;

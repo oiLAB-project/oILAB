@@ -1,6 +1,7 @@
 #include <LatticeModule.h>
 #include <TextFileParser.h>
 #include <BiCrystal.h>
+#include <numbers>
 
 using namespace gbLAB;
 
@@ -38,7 +39,7 @@ int main()
         try
         {
             /*! [SNF] */
-            double theta= acos((rotation.trace()-1.0)/2.0)*180/M_PI;
+            double theta= acos((rotation.trace()-1.0)/2.0)*180/std::numbers::pi;
             std::cout << "Misorientation angle = " << std::setprecision(20) << theta << "; ";
 	    Lattice<3> latticeB(lattice.latticeBasis,rotation);
             //BiCrystal<3> bc(lattice,Lattice<3>(lattice.latticeBasis,rotation),false);
@@ -145,7 +146,7 @@ int main()
                         double cosAngle= refnA.cartesian().normalized().dot(gb.second.nA.cartesian().normalized());
                         if (cosAngle-1>-epsilon) cosAngle= 1.0;
                         if (cosAngle+1<epsilon) cosAngle= -1.0;
-                        std::cout << gbCount+1 << ") Inclination = " << std::setprecision(20) << acos(cosAngle)*180/M_PI << std::endl;
+                        std::cout << gbCount+1 << ") Inclination = " << std::setprecision(20) << acos(cosAngle)*180/std::numbers::pi << std::endl;
 
                         Eigen::Vector3d nAglobalCoords= gb.second.nA.cartesian();
                         Eigen::Vector3d nBglobalCoords= rotation.transpose()*gb.second.nB.cartesian();

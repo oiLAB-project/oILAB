@@ -5,6 +5,7 @@
 #define OILAB_LATTICEFUNCTIONIMPLEMENTATION_H
 #include <FFT.h>
 #include <iostream>
+#include <numeric>
 
 namespace gbLAB
 {

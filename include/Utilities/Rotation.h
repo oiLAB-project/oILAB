@@ -6,6 +6,7 @@
 #define OILAB_ROTATION_H
 
 #include<Eigen/Eigen>
+#include<numbers>
 
 template<int dim>
 class Rotation : public Eigen::Matrix<double,dim,dim>
@@ -16,7 +17,7 @@ class Rotation : public Eigen::Matrix<double,dim,dim>
     {
         Eigen::Matrix<double,dim,dim> output;
         output.row(0)= orthogonalVectors.col(0).normalized();
-        output.row(1)=Eigen::Rotation2D<double>(M_PI/2)*orthogonalVectors.col(0).normalized();
+        output.row(1)=Eigen::Rotation2D<double>(std::numbers::pi/2)*orthogonalVectors.col(0).normalized();
         return output;
     }
     template<int dm=dim>

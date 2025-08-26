@@ -5,6 +5,7 @@
 
 #include <LatticeModule.h>
 #include <TextFileParser.h>
+#include <numbers>
 
 using namespace gbLAB;
 
@@ -20,12 +21,12 @@ int main(int argc, char** argv)
         {
             const auto A(TextFileParser("bicrystal_2d.txt").readMatrix<double,2,2>("A",true));
             Lattice<2> L1(A);
-//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(38.04313507482*M_PI/180).matrix();
-//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(81.95686492519*M_PI/180).matrix();
-//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(38.05455500587*M_PI/180).matrix();
-//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(90.02872079759*M_PI/180).matrix();
-//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(43.89139748113*M_PI/180).matrix();
-            Eigen::Matrix2d R= Eigen::Rotation2D<double>( 143.0029103206*M_PI/180).matrix();
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(38.04313507482*std::numbers::pi/180).matrix();
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(81.95686492519*std::numbers::pi/180).matrix();
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(38.05455500587*std::numbers::pi/180).matrix();
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(90.02872079759*std::numbers::pi/180).matrix();
+//            Eigen::Matrix2d R= Eigen::Rotation2D<double>(43.89139748113*std::numbers::pi/180).matrix();
+            Eigen::Matrix2d R= Eigen::Rotation2D<double>( 143.0029103206*std::numbers::pi/180).matrix();
 
             Lattice<2> L2(A,R);
             BiCrystal<2> bc(L1,L2);
@@ -74,7 +75,7 @@ int main(int argc, char** argv)
             
             const Eigen::Matrix<double,3,3> R(A*T.asMatrix()*A.inverse());
             const double angle(acos(R.trace()/3.0));
-            std::cout<<"rot angle="<<angle*180.0/M_PI<<std::endl;
+            std::cout<<"rot angle="<<angle*180.0/(std::numbers::pi)<<std::endl;
 
             Eigen::Matrix<double,3,1> axis(Eigen::Matrix<double,3,1>::Zero());
             Eigen::EigenSolver< Eigen::Matrix<double,3,3> > es(R);

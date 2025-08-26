@@ -9,6 +9,7 @@
 #include <LatticeModule.h>
 #include <unsupported/Eigen/CXX11/Tensor>
 #include <FFT.h>
+#include <numbers>
 
 
 namespace gbLAB {
@@ -68,7 +69,7 @@ namespace gbLAB {
                         r << (i <= n[0] / 2 ? i : i - n[0]);
                     else
                         r << (i == n[0] / 2 ? 0 : -n[0] * (i / (n[0] / 2)) + i);
-                    factor = factor * std::pow(-2.0 * M_PI *
+                    factor = factor * std::pow(-2.0 * std::numbers::pi *
                                                dcomplex(0, 1) *
                                                r.cartesian()(k),
                                                d[k]);
@@ -123,7 +124,7 @@ namespace gbLAB {
                             else
                                 r << (i == n[0] / 2 ? 0 : -n[0] * (i / (n[0] / 2)) + i),
                                      (j == n[1] / 2 ? 0 : -n[1] * (j / (n[1] / 2)) + j);
-                            factor = factor * std::pow(-2.0 * M_PI *
+                            factor = factor * std::pow(-2.0 * std::numbers::pi *
                                                        dcomplex(0, 1) *
                                                        r.cartesian()(k),
                                                        d[k]);
@@ -182,7 +183,7 @@ namespace gbLAB {
                                 r << (i == n[0] / 2 ? 0 : -n[0] * (i / (n[0] / 2)) + i),
                                      (j == n[1] / 2 ? 0 : -n[1] * (j / (n[1] / 2)) + j),
                                      (k == n[2] / 2 ? 0 : -n[2] * (k / (n[2] / 2)) + k);
-                            factor = factor * std::pow(-2.0 * M_PI *
+                            factor = factor * std::pow(-2.0 * std::numbers::pi *
                                                        dcomplex(0, 1) *
                                                        r.cartesian()(l),
                                                        d[l]);

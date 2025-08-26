@@ -26,6 +26,10 @@ if(USE_OpenMP)
     find_package(OpenMP REQUIRED)
 endif()
 
+if(MSVC)
+    add_compile_options(/bigobj /MP)
+endif()
+
 # ---------- Dependencies ----------
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)

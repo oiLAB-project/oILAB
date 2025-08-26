@@ -6,6 +6,7 @@
 #define OILAB_GBCONTINUUMIMPLEMENTATION_H
 
 #include<Diff.h>
+#include <numbers>
 
 namespace gbLAB {
 
@@ -407,7 +408,7 @@ namespace gbLAB {
     {}
     double DisplacementKernel::operator()(const Eigen::Vector<double, Eigen::Dynamic> &x) const
     {
-        return -x.dot(normal) / (4 * M_PI * (std::pow(x.norm(), 3)));
+        return -x.dot(normal) / (4 * std::numbers::pi * (std::pow(x.norm(), 3)));
     }
     /*----------------------------*/
     ShiftedDisplacementKernelFT::ShiftedDisplacementKernelFT(const Eigen::VectorXd& x,
@@ -420,9 +421,9 @@ namespace gbLAB {
         double xNormalComponent=  x.dot(normal);
         auto xProjected= (x-xNormalComponent*normal).eval();
         double xiBar= xi.norm();
-        std::complex<double> output= -0.5*std::exp(-2*M_PI* std::complex<double>(0,1) *
+        std::complex<double> output= -0.5*std::exp(-2*std::numbers::pi* std::complex<double>(0,1) *
                                                    xProjected.dot(xi)
-        ) * std::exp(-2*M_PI*xiBar*abs(xNormalComponent));
+        ) * std::exp(-2*std::numbers::pi*xiBar*abs(xNormalComponent));
         if (abs(xNormalComponent) < DBL_EPSILON)
             return output;
         else
@@ -442,7 +443,7 @@ namespace gbLAB {
         double xi2= (xi-xi1*e1-xi3*e3).norm();
 
         output= tensorHhat(t,i,(Eigen::VectorXd(3) << xi1,xi2,xi3).finished());
-        output= -std::pow(2*M_PI,2) * output;
+        output= -std::pow(2*std::numbers::pi,2) * output;
         return output;
     }
     /*----------------------------*/

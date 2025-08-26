@@ -1,6 +1,7 @@
 #include <LatticeModule.h>
 #include <TextFileParser.h>
 #include <range.h>
+#include <numbers>
 
 using namespace gbLAB;
 int main()
@@ -26,7 +27,7 @@ int main()
             int S = pow(m,2)+axis.latticeVector().squaredNorm() * pow(n,2);
             std::cout<<"(m,n)=("<<m<<","<<n<<"): "
                      <<", S="<<S
-                     <<", theta="<<theta*180/M_PI << std::flush;
+                     <<", theta="<<theta*180/std::numbers::pi << std::flush;
 
 
 

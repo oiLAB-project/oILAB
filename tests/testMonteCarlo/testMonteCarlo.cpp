@@ -3,6 +3,7 @@
 #include <MonteCarlo.h>
 #include <CanonicalTP.h>
 #include <omp.h>
+#include <numbers>
 
 using namespace gbLAB;
 
@@ -20,7 +21,7 @@ void runMonteCarlo(const double& a0,
 
     // Sigma 29 [0-10](2 0 -5)
     VectorDimD axis(0,-1,0);
-    double theta= 43.60282*M_PI/180;       // misorientation angle
+    double theta= 43.60282*std::numbers::pi/180;       // misorientation angle
     VectorDimD gbNormal(2,0,5);            // Miller indices
     int heightScaling= 1;
     int periodScaling= 1;
@@ -30,7 +31,7 @@ void runMonteCarlo(const double& a0,
     /*
     // Sigma 123 [110](-5 5 14)
     VectorDimD axis(1,1,0);
-    double theta= 53.594515175286005615*M_PI/180;       // misorientation angle
+    double theta= 53.594515175286005615*std::numbers::pi/180;       // misorientation angle
     VectorDimD gbNormal(-5,5,14);                        // Miller indices
     int heightScaling= 2;
     int periodScaling= 1;
@@ -41,7 +42,7 @@ void runMonteCarlo(const double& a0,
     /*
     //Sigma 3[1-10](112)
     VectorDimD axis(1,-1,0);
-    double theta= 70.52878*M_PI/180;
+    double theta= 70.52878*std::numbers::pi/180;
     VectorDimD gbNormal(1,1,2);
     int heightScaling= 1;
     int periodScaling= 1;

@@ -36,7 +36,7 @@ namespace gbLAB
             
             if (md <= 1)
             { // *denom = 1; *num = (LongIntType) f; return;
-                return std::pair<LongIntType,LongIntType>(f,1);
+                return std::pair<LongIntType,LongIntType>((LongIntType) f,1);
             }
             
             if (f < 0.0)

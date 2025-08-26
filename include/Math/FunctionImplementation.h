@@ -6,6 +6,7 @@
 #define OILAB_FUNCTIONIMPLEMENTATION_H
 
 #include <iostream>
+#include <numbers>
 
 namespace gbLAB
 {
@@ -73,7 +74,7 @@ namespace gbLAB
     Exponential::Exponential(const Eigen::Vector<double,Eigen::Dynamic>& _x) : x(_x){}
     std::complex<double> Exponential::operator()(const Eigen::Vector<double,Eigen::Dynamic>& vec) const
     {
-        return exp(2*M_PI*std::complex<double>(0,1)*vec.dot(x));
+        return exp(2*std::numbers::pi*std::complex<double>(0,1)*vec.dot(x));
     }
 
     /* ******************************************** */

@@ -7,7 +7,7 @@
 
 #include<Lammps.h>
 #include <iostream>
-#include <Python.h>
+//#include <Python.h>
 #include <PeriodicFunctionImplementation.h>
 
 namespace gbLAB {
@@ -206,6 +206,7 @@ namespace gbLAB {
 
 
     /*-------------------------------------*/
+    /*
  template<int dim>
  std::pair<double,double> GbMesoState<dim>::densityEnergyPython() const
  {
@@ -241,6 +242,7 @@ namespace gbLAB {
 
      return std::make_pair(density,energy);
  }
+ */
 
  template<int dim>
  //template<int dm=dim>

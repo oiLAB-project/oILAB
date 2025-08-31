@@ -150,15 +150,15 @@ $(document).ready(function(){initNavTree('test_coincident_rotations_8cpp-example
 <div class="line">    <a id="_a3" name="_a3"></a><a class="code hl_class" href="classgb_l_a_b_1_1_reciprocal_lattice_vector.html">ReciprocalLatticeVector&lt;3&gt;</a> rv(axis,lattice);</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Miller indices of the tilt axis plane = &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">    std::cout &lt;&lt; rv &lt;&lt; std::endl;</div>
-<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; coincidentRotations= lattice.generateCoincidentLattices(rv);</div>
+<div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; coincidentRotations= lattice.<a id="a4" name="a4"></a><a class="code hl_function" href="classgb_l_a_b_1_1_lattice.html#a5e3e28068c4801d1d47f79ec6e8ac38f">generateCoincidentLattices</a>(rv);</div>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; rotation : coincidentRotations)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">try</span></div>
 <div class="line">        {</div>
 <div class="line">            <span class="keywordtype">double</span> theta= acos((rotation.trace()-1.0)/2.0)*180/std::numbers::pi;</div>
 <div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;angle = &quot;</span> &lt;&lt; theta &lt;&lt; <span class="stringliteral">&quot;; &quot;</span>;</div>
-<div class="line">            <a id="_a4" name="_a4"></a><a class="code hl_class" href="classgb_l_a_b_1_1_bi_crystal.html">BiCrystal&lt;3&gt;</a> bc(lattice,<a class="code hl_class" href="classgb_l_a_b_1_1_lattice.html">Lattice&lt;3&gt;</a>(lattice.latticeBasis,rotation),<span class="keyword">false</span>);</div>
-<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;Sigma = &quot;</span> &lt;&lt; bc.<a id="a5" name="a5"></a><a class="code hl_variable" href="classgb_l_a_b_1_1_bi_crystal.html#a91d185fabf605790db3897b6046ad5f1">sigma</a> &lt;&lt; std::endl;</div>
+<div class="line">            <a id="_a5" name="_a5"></a><a class="code hl_class" href="classgb_l_a_b_1_1_bi_crystal.html">BiCrystal&lt;3&gt;</a> bc(lattice,<a class="code hl_class" href="classgb_l_a_b_1_1_lattice.html">Lattice&lt;3&gt;</a>(lattice.<a id="a6" name="a6"></a><a class="code hl_variable" href="classgb_l_a_b_1_1_lattice.html#a41a4ba38812af3d18988ae4597a73fc0">latticeBasis</a>,rotation),<span class="keyword">false</span>);</div>
+<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;Sigma = &quot;</span> &lt;&lt; bc.<a id="a7" name="a7"></a><a class="code hl_variable" href="classgb_l_a_b_1_1_bi_crystal.html#a91d185fabf605790db3897b6046ad5f1">sigma</a> &lt;&lt; std::endl;</div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">catch</span>(std::runtime_error&amp; e)</div>
 <div class="line">        {</div>
@@ -172,6 +172,8 @@ $(document).ready(function(){initNavTree('test_coincident_rotations_8cpp-example
 <div class="ttc" id="aclassgb_l_a_b_1_1_bi_crystal_html"><div class="ttname"><a href="classgb_l_a_b_1_1_bi_crystal.html">gbLAB::BiCrystal</a></div><div class="ttdef"><b>Definition</b> <a href="_bi_crystal_8h_source.html#l00027">BiCrystal.h:29</a></div></div>
 <div class="ttc" id="aclassgb_l_a_b_1_1_bi_crystal_html_a91d185fabf605790db3897b6046ad5f1"><div class="ttname"><a href="classgb_l_a_b_1_1_bi_crystal.html#a91d185fabf605790db3897b6046ad5f1">gbLAB::BiCrystal::sigma</a></div><div class="ttdeci">const int sigma</div><div class="ttdoc">if , else</div><div class="ttdef"><b>Definition</b> <a href="_bi_crystal_8h_source.html#l00082">BiCrystal.h:82</a></div></div>
 <div class="ttc" id="aclassgb_l_a_b_1_1_lattice_html"><div class="ttname"><a href="classgb_l_a_b_1_1_lattice.html">gbLAB::Lattice</a></div><div class="ttdoc">Lattice class.</div><div class="ttdef"><b>Definition</b> <a href="_lattice_8h_source.html#l00033">Lattice.h:34</a></div></div>
+<div class="ttc" id="aclassgb_l_a_b_1_1_lattice_html_a41a4ba38812af3d18988ae4597a73fc0"><div class="ttname"><a href="classgb_l_a_b_1_1_lattice.html#a41a4ba38812af3d18988ae4597a73fc0">gbLAB::Lattice::latticeBasis</a></div><div class="ttdeci">const MatrixDimD latticeBasis</div><div class="ttdef"><b>Definition</b> <a href="_lattice_8h_source.html#l00046">Lattice.h:46</a></div></div>
+<div class="ttc" id="aclassgb_l_a_b_1_1_lattice_html_a5e3e28068c4801d1d47f79ec6e8ac38f"><div class="ttname"><a href="classgb_l_a_b_1_1_lattice.html#a5e3e28068c4801d1d47f79ec6e8ac38f">gbLAB::Lattice::generateCoincidentLattices</a></div><div class="ttdeci">std::enable_if&lt; dm==3, std::vector&lt; MatrixDimD &gt; &gt;::type generateCoincidentLattices(const ReciprocalLatticeDirection&lt; dim &gt; &amp;rd, const double &amp;maxDen=100, const int &amp;N=100) const</div><div class="ttdef"><b>Definition</b> <a href="_lattice_8cpp_source.html#l00312">Lattice.cpp:312</a></div></div>
 <div class="ttc" id="aclassgb_l_a_b_1_1_reciprocal_lattice_vector_html"><div class="ttname"><a href="classgb_l_a_b_1_1_reciprocal_lattice_vector.html">gbLAB::ReciprocalLatticeVector</a></div><div class="ttdef"><b>Definition</b> <a href="_reciprocal_lattice_vector_8h_source.html#l00014">ReciprocalLatticeVector.h:15</a></div></div>
 <div class="ttc" id="aclassgb_l_a_b_1_1_text_file_parser_html"><div class="ttname"><a href="classgb_l_a_b_1_1_text_file_parser.html">gbLAB::TextFileParser</a></div><div class="ttdef"><b>Definition</b> <a href="_text_file_parser_8h_source.html#l00125">TextFileParser.h:126</a></div></div>
 <div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="main_8cpp_source.html#l00012">main.cpp:12</a></div></div>
@@ -184,7 +186,7 @@ $(document).ready(function(){initNavTree('test_coincident_rotations_8cpp-example
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Aug 26 2025 05:37:41 for oILAB by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 23:22:50 for oILAB by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

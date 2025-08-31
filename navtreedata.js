@@ -68,9 +68,8 @@ var NAVTREEINDEX =
 "classgb_l_a_b_1_1_meso_state.html#a80e6cd5ae0c890741952e346eedac899",
 "classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a807ee42c0503ca3accfa38149f74cf45",
 "classpyoilab_1_1_py_lattice_vector.html",
-"functions_k.html",
-"structgb_l_a_b_1_1_lattice_core.html#a438db448c36e9ff1d068bf3431d45548",
-"test_gb_8cpp-example.html"
+"namespacegb_l_a_b.html#a086c8537309f72851f490f9ad2064c60",
+"structgb_l_a_b_1_1_rational_lattice_direction.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

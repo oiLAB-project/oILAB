@@ -11,6 +11,5 @@ var namespacepyoilab =
     [ "bind_ReciprocalLatticeDirection", "namespacepyoilab.html#a221429bb9626c00f438e95f74cedbd94", null ],
     [ "bind_ReciprocalLatticeVector", "namespacepyoilab.html#a2e337431a7b1699783021614cb58b0a8", null ],
     [ "operator*", "namespacepyoilab.html#a9558b5dae81c8bf2dafb91b60ba2863b", null ],
-    [ "operator*", "namespacepyoilab.html#a9a78ea3693e39197e5c41ae17aa27f98", null ],
-    [ "PYBIND11_MODULE", "namespacepyoilab.html#a6403c0bbc2ca42e5bf355c34105c5e14", null ]
+    [ "operator*", "namespacepyoilab.html#a9a78ea3693e39197e5c41ae17aa27f98", null ]
 ];

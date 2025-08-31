@@ -1,37 +1,6 @@
 var namespaces_dup =
 [
     [ "Eigen", "namespace_eigen.html", "namespace_eigen" ],
-    [ "example", "namespaceexample.html", [
-      [ "create", "namespaceexample.html#a0b03f2aa3ec0910666dbf42159a5abfe", null ],
-      [ "A", "namespaceexample.html#a09a307521e207bb56e27bedd97d22616", null ],
-      [ "angle", "namespaceexample.html#ae765e6bc4f2ececccb2fbc25076e3b3e", null ],
-      [ "axis", "namespaceexample.html#a88fe9864747c93be8d22a95c1e9e44ce", null ],
-      [ "bcslv1", "namespaceexample.html#a7e367956436d302f6c05cedc18e17241", null ],
-      [ "bcslv2", "namespaceexample.html#a74b74764c5dd8d5e232b907cb5c600eb", null ],
-      [ "bcslv3", "namespaceexample.html#a2048da6f93486185e293f063557936c6", null ],
-      [ "bicrystal", "namespaceexample.html#a8cc48327d9292090f7c558fa6666bcaf", null ],
-      [ "bv1", "namespaceexample.html#a6808da2a00e58d00db9c1401e4003f60", null ],
-      [ "bv2", "namespaceexample.html#a6ef442156254187686cd679454584e5c", null ],
-      [ "bv3", "namespaceexample.html#a597c5fcf8f41f8807ed4fd0ba5330593", null ],
-      [ "cartesianCoordinates", "namespaceexample.html#a43259948412766d9960b91a2de5978d4", null ],
-      [ "config", "namespaceexample.html#a0f94ee3c39059746f3e7e05c8ddb0561", null ],
-      [ "csl", "namespaceexample.html#a5b49d22ea3c8d3d43574bf669233b3f3", null ],
-      [ "half_rotvec", "namespaceexample.html#ad4725e15412b17d92c26666b1ac851ad", null ],
-      [ "lattice", "namespaceexample.html#a621210010f98a2163d1013a76dfee6df", null ],
-      [ "lattice1", "namespaceexample.html#a8e86aa14fc5c9e4c32fcdf4cde6d2c35", null ],
-      [ "lattice2", "namespaceexample.html#a0aaf375f3e7a5d5c2be01df488213b98", null ],
-      [ "ld", "namespaceexample.html#a8ab85fd165bd415c1e8a34a86e4cef32", null ],
-      [ "lv1", "namespaceexample.html#aec52b1f5107ecd768a05f4bc23c7f1fb", null ],
-      [ "lv2", "namespaceexample.html#aea353667d900d8544643532f7bcccc75", null ],
-      [ "lv3", "namespaceexample.html#a8e2829a7e081e5df5b8776ba20a8bfa9", null ],
-      [ "misorientationAxis", "namespaceexample.html#a281373bb4fb6e0c268e69b0136b0afe4", null ],
-      [ "negativeR", "namespaceexample.html#a3f835211d893ed8d1ca82d696761e01d", null ],
-      [ "positiveR", "namespaceexample.html#aed0ff709623a3d5977005dfea68620e2", null ],
-      [ "rlv1", "namespaceexample.html#aad3ba0d4999371284358f7a25de81109", null ],
-      [ "rlv2", "namespaceexample.html#a00a4a75ea415f2f22e3bc528ea8952b5", null ],
-      [ "rot", "namespaceexample.html#a7dbb57d9294b527410f7b8d2837c1e1c", null ],
-      [ "rotations", "namespaceexample.html#a1207d916053b8d4a905d0b1dd41e3329", null ]
-    ] ],
     [ "gbLAB", "namespacegb_l_a_b.html", "namespacegb_l_a_b" ],
     [ "pyoilab", "namespacepyoilab.html", "namespacepyoilab" ]
 ];

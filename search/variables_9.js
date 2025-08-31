@@ -6,15 +6,10 @@ var searchData=
   ['lambdab_3',['LambdaB',['../classgb_l_a_b_1_1_bi_crystal.html#a2f0c5024d816b96035f43cd4f179bc0c',1,'gbLAB::BiCrystal']]],
   ['lata_4',['latA',['../structgb_l_a_b_1_1oi_viewer_v_t_kwidget.html#aff4d7280bef6efe9b30abe9583992f8d',1,'gbLAB::oiViewerVTKwidget']]],
   ['latb_5',['latB',['../structgb_l_a_b_1_1oi_viewer_v_t_kwidget.html#a1d8f33f7f4b25edd93e16fbd99c72a0e',1,'gbLAB::oiViewerVTKwidget']]],
-  ['lattice_6',['lattice',['../classgb_l_a_b_1_1_lattice_vector.html#a2fb3dd5fadee38e8dac15d88bd882ec1',1,'gbLAB::LatticeVector::lattice'],['../classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a807ee42c0503ca3accfa38149f74cf45',1,'gbLAB::ReciprocalLatticeVector::lattice'],['../namespaceexample.html#a621210010f98a2163d1013a76dfee6df',1,'example.lattice']]],
-  ['lattice1_7',['lattice1',['../namespaceexample.html#a8e86aa14fc5c9e4c32fcdf4cde6d2c35',1,'example']]],
-  ['lattice2_8',['lattice2',['../namespaceexample.html#a0aaf375f3e7a5d5c2be01df488213b98',1,'example']]],
-  ['latticebasis_9',['latticebasis',['../classgb_l_a_b_1_1_integer_lattice.html#a478ebf3812b2f2ae75b6267d8971fcd9',1,'gbLAB::IntegerLattice::latticeBasis'],['../classgb_l_a_b_1_1_lattice.html#a41a4ba38812af3d18988ae4597a73fc0',1,'gbLAB::Lattice::latticeBasis']]],
-  ['ld_10',['ld',['../classpyoilab_1_1_py_lattice_direction.html#a13a95a8139c04e8cd896a44bf3613981',1,'pyoilab::PyLatticeDirection::ld'],['../namespaceexample.html#a8ab85fd165bd415c1e8a34a86e4cef32',1,'example.ld']]],
-  ['lmplocation_11',['lmplocation',['../classgb_l_a_b_1_1_landau_wang_t_p.html#af70580f0c9076eb8c432da4e707065e4',1,'gbLAB::LandauWangTP::lmpLocation'],['../classgb_l_a_b_1_1_canonical_t_p.html#adabfc6cca47efd973074f6ef147efe6f',1,'gbLAB::CanonicalTP::lmpLocation']]],
-  ['loadbicrystalbutton_12',['loadBicrystalButton',['../structgb_l_a_b_1_1oi_viewer_v_t_kwidget.html#a197de73b0bde74b729b7330b85d6d84c',1,'gbLAB::oiViewerVTKwidget']]],
-  ['lv_13',['lv',['../classpyoilab_1_1_py_lattice_vector.html#a201b61151f8014c336983f421f3f0867',1,'pyoilab::PyLatticeVector']]],
-  ['lv1_14',['lv1',['../namespaceexample.html#aec52b1f5107ecd768a05f4bc23c7f1fb',1,'example']]],
-  ['lv2_15',['lv2',['../namespaceexample.html#aea353667d900d8544643532f7bcccc75',1,'example']]],
-  ['lv3_16',['lv3',['../namespaceexample.html#a8e2829a7e081e5df5b8776ba20a8bfa9',1,'example']]]
+  ['lattice_6',['lattice',['../classgb_l_a_b_1_1_lattice_vector.html#a2fb3dd5fadee38e8dac15d88bd882ec1',1,'gbLAB::LatticeVector::lattice'],['../classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a807ee42c0503ca3accfa38149f74cf45',1,'gbLAB::ReciprocalLatticeVector::lattice']]],
+  ['latticebasis_7',['latticebasis',['../classgb_l_a_b_1_1_integer_lattice.html#a478ebf3812b2f2ae75b6267d8971fcd9',1,'gbLAB::IntegerLattice::latticeBasis'],['../classgb_l_a_b_1_1_lattice.html#a41a4ba38812af3d18988ae4597a73fc0',1,'gbLAB::Lattice::latticeBasis']]],
+  ['ld_8',['ld',['../classpyoilab_1_1_py_lattice_direction.html#a13a95a8139c04e8cd896a44bf3613981',1,'pyoilab::PyLatticeDirection']]],
+  ['lmplocation_9',['lmplocation',['../classgb_l_a_b_1_1_canonical_t_p.html#adabfc6cca47efd973074f6ef147efe6f',1,'gbLAB::CanonicalTP::lmpLocation'],['../classgb_l_a_b_1_1_landau_wang_t_p.html#af70580f0c9076eb8c432da4e707065e4',1,'gbLAB::LandauWangTP::lmpLocation']]],
+  ['loadbicrystalbutton_10',['loadBicrystalButton',['../structgb_l_a_b_1_1oi_viewer_v_t_kwidget.html#a197de73b0bde74b729b7330b85d6d84c',1,'gbLAB::oiViewerVTKwidget']]],
+  ['lv_11',['lv',['../classpyoilab_1_1_py_lattice_vector.html#a201b61151f8014c336983f421f3f0867',1,'pyoilab::PyLatticeVector']]]
 ];

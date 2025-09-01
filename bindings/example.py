@@ -83,7 +83,7 @@ for i, rotation in enumerate(rotations):
             bcslv1 = csl.latticeDirection(misorientationAxis.cartesian()).latticeVector()
             # box vector orthogonal to bcslv1
             #bcslv2 = csl.latticeDirection(np.array([1.0,0.0,-1.0])).latticeVector()
-            bcslv2 = csl.latticeDirection(bcslv1.cross()).cartesian()).latticeVector()
+            bcslv2 = csl.latticeDirection(bcslv1.cross().cartesian()).latticeVector()
             # box vector orthogonal to bcslv1 and bcslv2
             bcslv3 = csl.latticeDirection(bcslv1.cross(bcslv2).cartesian()).latticeVector()
             config = bicrystal.box([bcslv1,bcslv2,bcslv3],1,1,"bc"+str(i))

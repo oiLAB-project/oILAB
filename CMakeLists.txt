@@ -26,9 +26,14 @@ set(PROJECT_INCLUDE_DIRS
 
 # ---------- Subdirectories ----------
 add_subdirectory(src)
-add_subdirectory(tests)
 add_subdirectory(examples)
 add_subdirectory(userExamples)
+
+# ---------- Testing (optional) ----------
+option(ENABLE_TESTING "Build tests" OFF)
+if(ENABLE_TESTING)
+    add_subdirectory(tests)
+endif()
 
  # ---------- Python bindings (optional) ----------
 option(BUILD_PYBINDINGS "Build Python bindings (pyOILAB)" ON)

@@ -1,8 +1,5 @@
 import pyoilab as gb
 import numpy as np
-
-from ovito.io import import_file
-from ovito.vis import Viewport
 from scipy.spatial.transform import Rotation
 
 # construct lattice
@@ -93,10 +90,4 @@ for i, rotation in enumerate(rotations):
     except Exception as e:
         print(f"Caught an exception: {e}")
 
-def create(source,frame):
-    pipeline = import_file("/Users/Nikhil/Documents/Academic/Software/oILAB/build/src/config.txt")
-    pipeline.add_to_scene()
-    vp = Viewport()
-    vp.type = Viewport.Type.Perspective
-    return pipeline
 

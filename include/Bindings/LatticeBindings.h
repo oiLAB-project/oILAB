@@ -28,7 +28,9 @@ namespace pyoilab {
             .def_readonly("latticeBasis", &Lattice::latticeBasis)
             .def_readonly("reciprocalBasis", &Lattice::reciprocalBasis)
             .def_readonly("F", &Lattice::F)
-            .def("interPlanarSpacing", &Lattice::interPlanarSpacing)
+            .def("interPlanarSpacing", [](const Lattice& lattice, const PyReciprocalLatticeDirection& pyrlv) {
+                return lattice.interPlanarSpacing(pyrlv.rld);
+            })
             .def("latticeVector", [](const Lattice &lattice, const VectorDimD &p) {
                 return PyLatticeVector(lattice.latticeVector(p));
             })

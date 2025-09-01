@@ -39,6 +39,7 @@ build
 
 /build
 /.vscode
+/configure_local.sh
 /.idea
 /cmake-build-debug
 /cmake-build-release

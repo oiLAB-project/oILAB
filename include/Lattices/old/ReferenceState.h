@@ -8,31 +8,28 @@
 #include "Gb.h"
 #include "OrderedTuplet.h"
 
-namespace gbLAB {
+namespace oILAB {
 
-    template<int dim>
-    class ReferenceState
-    {
-        using IntScalarType= typename LatticeCore<dim>::IntScalarType;
-    public:
-        const Gb<dim>& gb;
-        const ReciprocalLatticeVector<dim>& axis;
-        const int periodScaling;
+template <int dim> class ReferenceState {
+  using IntScalarType = typename LatticeCore<dim>::IntScalarType;
 
-        std::map<Triplet> refState;
-        Eigen::VectorXd planeEnergies;
-        //std::map<LatticeVector<dim>,LatticeVector<dim>> coincidence;
+public:
+  const Gb<dim> &gb;
+  const ReciprocalLatticeVector<dim> &axis;
+  const int periodScaling;
 
-        // optionally include the cell U
-        explicit ReferenceState(const Gb<dim>& gb,
-                                const ReciprocalLatticeVector<dim>& axis,
-                                const int& periodScaling);
-        int numberOfPlanesOrthogonalToGB() const;
-        LatticeVector<dim> shiftLatticeVector() const;
+  std::map<Triplet> refState;
+  Eigen::VectorXd planeEnergies;
+  // std::map<LatticeVector<dim>,LatticeVector<dim>> coincidence;
+
+  // optionally include the cell U
+  explicit ReferenceState(const Gb<dim> &gb,
+                          const ReciprocalLatticeVector<dim> &axis,
+                          const int &periodScaling);
+  int numberOfPlanesOrthogonalToGB() const;
+  LatticeVector<dim> shiftLatticeVector() const;
     };
 
-
-
-} // gbLAB
+    } // namespace oILAB
 
 #endif //OILAB_REFERENCESTATE_H

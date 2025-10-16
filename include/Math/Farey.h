@@ -5,20 +5,20 @@
 #include <numeric>
 #include <vector>
 
-namespace gbLAB {
-    // Define a struct to store the current and previous mediant fractions
-    struct Fraction {
-        int n, d, N, D;
+namespace oILAB {
+// Define a struct to store the current and previous mediant fractions
+struct Fraction {
+  int n, d, N, D;
 
-        Fraction(int n_, int d_, int N_, int D_) {
-            n = n_;
-            d = d_;
-            N = N_;
-            D = D_;
-        }
+  Fraction(int n_, int d_, int N_, int D_) {
+    n = n_;
+    d = d_;
+    N = N_;
+    D = D_;
+  }
     };
     std::vector<std::pair<int, int>> farey(int limit, const bool firstQuadrant=true);
 
-}
+    } // namespace oILAB
 
 #endif

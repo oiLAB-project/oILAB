@@ -7,26 +7,29 @@
 #ifndef gbLAB_LatticeDirection_cpp_
 #define gbLAB_LatticeDirection_cpp_
 
-#include <LatticeModule.h>
-namespace gbLAB
-{
-    template <int dim>
-    LatticeDirection<dim>::LatticeDirection(const LatticeVector<dim>& v) :
-    /* base init */ LatticeVector<dim>(((v.squaredNorm()==0)? v : (v/IntegerMath<IntScalarType>::gcd(v)).eval()),v.lattice)
-    {
-    }
+#include "../../include/Lattices/LatticeModule.h"
+namespace oILAB {
+template <int dim>
+LatticeDirection<dim>::LatticeDirection(const LatticeVector<dim> &v)
+    : /* base init */ LatticeVector<dim>(
+          ((v.squaredNorm() == 0)
+               ? v
+               : (v / IntegerMath<IntScalarType>::gcd(v)).eval()),
+          v.lattice) {}
 
-    template <int dim>
-    LatticeDirection<dim>::LatticeDirection(const VectorDimI& v,
-                     const Lattice<dim>& lat) :
-    /* base init */ LatticeVector<dim>(((v.squaredNorm()==0)? v : (v/IntegerMath<IntScalarType>::gcd(v)).eval()),lat)
-    {
-    }
+template <int dim>
+LatticeDirection<dim>::LatticeDirection(const VectorDimI &v,
+                                        const Lattice<dim> &lat)
+    : /* base init */ LatticeVector<dim>(
+          ((v.squaredNorm() == 0)
+               ? v
+               : (v / IntegerMath<IntScalarType>::gcd(v)).eval()),
+          lat) {}
 
-    template<int dim>
-    basic_ostream<char>& operator<<(basic_ostream<char>& s, const LatticeDirection<dim>& m)
-    {
-        return s<<m.latticeVector().transpose();
+template <int dim>
+basic_ostream<char> &operator<<(basic_ostream<char> &s,
+                                const LatticeDirection<dim> &m) {
+  return s << m.latticeVector().transpose();
     }
 
     template struct LatticeDirection<1>;
@@ -40,5 +43,5 @@ namespace gbLAB
     template struct LatticeDirection<5>;
     template basic_ostream<char>& operator<<(basic_ostream<char>& s, const LatticeDirection<5>& m);
 
-} // end namespace
+    } // namespace oILAB
 #endif

@@ -6,93 +6,99 @@
 #ifndef gbLAB_LatticeVector_h_
 #define gbLAB_LatticeVector_h_
 
-#include <LatticeModule.h>
+#include "LatticeModule.h"
 
-namespace gbLAB
-{
-    /*! \brief LatticeVector class
-     *
-     *  The LatticeVector<dim> class describes a lattice vector in a lattice
-     * */
-    template <int dim>
-    class LatticeVector: public Eigen::Matrix<typename LatticeCore<dim>::IntScalarType,dim,1>
-    {
-        typedef Eigen::Matrix<typename LatticeCore<dim>::IntScalarType,dim,1> BaseType;
-        BaseType& base();
-        const BaseType& base() const;
+namespace oILAB {
+/*! \brief LatticeVector class
+ *
+ *  The LatticeVector<dim> class describes a lattice vector in a lattice
+ * */
+template <int dim>
+class LatticeVector
+    : public Eigen::Matrix<typename LatticeCore<dim>::IntScalarType, dim, 1> {
+  typedef Eigen::Matrix<typename LatticeCore<dim>::IntScalarType, dim, 1>
+      BaseType;
+  BaseType &base();
+  const BaseType &base() const;
 
-    public:
+public:
+  //        static constexpr double roundTol=FLT_EPSILON;
+  typedef typename LatticeCore<dim>::IntScalarType IntScalarType;
+  typedef typename LatticeCore<dim>::VectorDimD VectorDimD;
+  typedef typename LatticeCore<dim>::MatrixDimD MatrixDimD;
+  typedef typename LatticeCore<dim>::VectorDimI VectorDimI;
+  typedef typename LatticeCore<dim>::MatrixDimI MatrixDimI;
 
-//        static constexpr double roundTol=FLT_EPSILON;
-        typedef typename LatticeCore<dim>::IntScalarType IntScalarType;
-        typedef typename LatticeCore<dim>::VectorDimD VectorDimD;
-        typedef typename LatticeCore<dim>::MatrixDimD MatrixDimD;
-        typedef typename LatticeCore<dim>::VectorDimI VectorDimI;
-        typedef typename LatticeCore<dim>::MatrixDimI MatrixDimI;
+  const Lattice<dim> &lattice;
 
-        const Lattice<dim>& lattice;
-        
-        LatticeVector(const Lattice<dim>& lat) ;
-        LatticeVector(const VectorDimD& d, const Lattice<dim>& lat) ;
-        LatticeVector(const VectorDimI& d, const Lattice<dim>& lat) ;
-        LatticeVector(const LatticeVector<dim>& other) = default;
-        LatticeVector(LatticeVector<dim>&& other) =default;
+  LatticeVector(const Lattice<dim> &lat);
+  LatticeVector(const VectorDimD &d, const Lattice<dim> &lat);
+  LatticeVector(const VectorDimI &d, const Lattice<dim> &lat);
+  LatticeVector(const LatticeVector<dim> &other) = default;
+  LatticeVector(LatticeVector<dim> &&other) = default;
 
-        LatticeVector<dim>& operator=(const LatticeVector<dim>& other);
-        LatticeVector<dim>& operator=(LatticeVector<dim>&& other);
-        LatticeVector<dim> operator+(const LatticeVector<dim>& other) const;
-        LatticeVector<dim>& operator+=(const LatticeVector<dim>& other);
-        LatticeVector<dim> operator-(const LatticeVector<dim>& other) const;
-        LatticeVector<dim>& operator-=(const LatticeVector<dim>& other);
-        LatticeVector<dim> operator*(const IntScalarType& scalar) const;
+  LatticeVector<dim> &operator=(const LatticeVector<dim> &other);
+  LatticeVector<dim> &operator=(LatticeVector<dim> &&other);
+  LatticeVector<dim> operator+(const LatticeVector<dim> &other) const;
+  LatticeVector<dim> &operator+=(const LatticeVector<dim> &other);
+  LatticeVector<dim> operator-(const LatticeVector<dim> &other) const;
+  LatticeVector<dim> &operator-=(const LatticeVector<dim> &other);
+  LatticeVector<dim> operator*(const IntScalarType &scalar) const;
 
-        IntScalarType dot(const ReciprocalLatticeVector<dim>& other) const;
-        IntScalarType dot(const ReciprocalLatticeDirection<dim>& other) const;
-        VectorDimD cartesian() const;
+  IntScalarType dot(const ReciprocalLatticeVector<dim> &other) const;
+  IntScalarType dot(const ReciprocalLatticeDirection<dim> &other) const;
+  VectorDimD cartesian() const;
 
-        template<int dm=dim>
-        typename std::enable_if<dm==2,ReciprocalLatticeDirection<dm>>::type
-        cross(const LatticeVector<dm>& other) const
-        {
-            assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
-            return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>((VectorDimI() << 0,0).finished(), lattice));
-        }
-        template<int dm=dim>
-        typename std::enable_if<dm==3,ReciprocalLatticeDirection<dm>>::type
-        cross(const LatticeVector<dm>& other) const
-        {
-            assert(&lattice == &other.lattice && "LatticeVectors belong to different Lattices.");
-            return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>(static_cast<VectorDimI>(*this).cross(static_cast<VectorDimI>(other)), lattice));
-        }
+  template <int dm = dim>
+  typename std::enable_if<dm == 2, ReciprocalLatticeDirection<dm>>::type
+  cross(const LatticeVector<dm> &other) const {
+    assert(&lattice == &other.lattice &&
+           "LatticeVectors belong to different Lattices.");
+    return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>(
+        (VectorDimI() << 0, 0).finished(), lattice));
+  }
+  template <int dm = dim>
+  typename std::enable_if<dm == 3, ReciprocalLatticeDirection<dm>>::type
+  cross(const LatticeVector<dm> &other) const {
+    assert(&lattice == &other.lattice &&
+           "LatticeVectors belong to different Lattices.");
+    return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>(
+        static_cast<VectorDimI>(*this).cross(static_cast<VectorDimI>(other)),
+        lattice));
+  }
 
-        template<int dm=dim>
-        typename std::enable_if<dm==2,ReciprocalLatticeDirection<dm>>::type
-        cross() const
-        {
-            return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>((VectorDimI() << -(*this)(1),(*this)(0)).finished(), lattice));
-        }
-        template<int dm=dim>
-        typename std::enable_if<dm==3,ReciprocalLatticeDirection<dm>>::type
-        cross() const
-        {
-            return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>((VectorDimI() << -(*this)(1),(*this)(0),0).finished(), lattice));
-        }
+  template <int dm = dim>
+  typename std::enable_if<dm == 2, ReciprocalLatticeDirection<dm>>::type
+  cross() const {
+    return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>(
+        (VectorDimI() << -(*this)(1), (*this)(0)).finished(), lattice));
+  }
+  template <int dm = dim>
+  typename std::enable_if<dm == 3, ReciprocalLatticeDirection<dm>>::type
+  cross() const {
+    return ReciprocalLatticeDirection<dm>(ReciprocalLatticeVector<dm>(
+        (VectorDimI() << -(*this)(1), (*this)(0), 0).finished(), lattice));
+  }
 
-        template<int dm=dim>
-        typename std::enable_if<dm==2,void>::type
-        static modulo(LatticeVector<dim>& input, const std::vector<LatticeVector<dim>>& basis, const VectorDimD& shift= VectorDimD::Zero());
+  template <int dm = dim>
+  typename std::enable_if<dm == 2, void>::type static modulo(
+      LatticeVector<dim> &input, const std::vector<LatticeVector<dim>> &basis,
+      const VectorDimD &shift = VectorDimD::Zero());
 
-        template<int dm=dim>
-        typename std::enable_if<dm==2,void>::type
-        static modulo(VectorDimD& input, const std::vector<LatticeVector<dim>>& basis, const VectorDimD& shift= VectorDimD::Zero());
+  template <int dm = dim>
+  typename std::enable_if<dm == 2, void>::type static modulo(
+      VectorDimD &input, const std::vector<LatticeVector<dim>> &basis,
+      const VectorDimD &shift = VectorDimD::Zero());
 
-        template<int dm=dim>
-        typename std::enable_if<dm==3,void>::type
-        static modulo(LatticeVector<dim>& input, const std::vector<LatticeVector<dim>>& basis, const VectorDimD& shift= VectorDimD::Zero());
+  template <int dm = dim>
+  typename std::enable_if<dm == 3, void>::type static modulo(
+      LatticeVector<dim> &input, const std::vector<LatticeVector<dim>> &basis,
+      const VectorDimD &shift = VectorDimD::Zero());
 
-        template<int dm=dim>
-        typename std::enable_if<dm==3,void>::type
-        static modulo(VectorDimD& input, const std::vector<LatticeVector<dim>>& basis, const VectorDimD& shift= VectorDimD ::Zero());
+  template <int dm = dim>
+  typename std::enable_if<dm == 3, void>::type static modulo(
+      VectorDimD &input, const std::vector<LatticeVector<dim>> &basis,
+      const VectorDimD &shift = VectorDimD ::Zero());
 
     };
 
@@ -101,5 +107,5 @@ namespace gbLAB
 
     template<int dim>
     LatticeVector<dim> operator*(const int& scalar, const LatticeVector<dim>& L);
-} // end namespace
+    } // namespace oILAB
 #endif

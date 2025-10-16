@@ -10,8 +10,8 @@
 #include <pybind11/numpy.h>
 #include <pybind11/eigen.h>
 
-#include <LatticeModule.h>
-#include <PyLatticeModule.h>
+#include "../Lattices/LatticeModule.h"
+#include "PyLatticeModule.h"
 
 namespace py = pybind11;
 
@@ -20,14 +20,14 @@ namespace pyoilab {
 // Eigen base classes
     template<int dim>
     class PyReciprocalLatticeVector {
-        using Lattice = gbLAB::Lattice<dim>;
-        using ReciprocalLatticeVector = gbLAB::ReciprocalLatticeVector<dim>;
+      using Lattice = oILAB::Lattice<dim>;
+      using ReciprocalLatticeVector = oILAB::ReciprocalLatticeVector<dim>;
 
-        using IntScalarType = long long int;
-        using MatrixDimD = Eigen::Matrix<double, dim, dim>;
-        using VectorDimD = Eigen::Matrix<double, dim, 1>;
-        using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
-        using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
+      using IntScalarType = long long int;
+      using MatrixDimD = Eigen::Matrix<double, dim, dim>;
+      using VectorDimD = Eigen::Matrix<double, dim, 1>;
+      using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
+      using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
     public:
         ReciprocalLatticeVector rlv;
 
@@ -83,8 +83,9 @@ namespace pyoilab {
             return rlv.planeIndexOfPoint(p);
         }
 
-        IntScalarType planeIndexOfPoint(const gbLAB::LatticeVector<dim> &p) const {
-            return rlv.planeIndexOfPoint(p);
+        IntScalarType
+        planeIndexOfPoint(const oILAB::LatticeVector<dim> &p) const {
+          return rlv.planeIndexOfPoint(p);
         }
 
         IntScalarType closestPlaneIndexOfPoint(const VectorDimD &p) const {
@@ -111,36 +112,42 @@ namespace pyoilab {
 
     template<int dim>
     void bind_ReciprocalLatticeVector(py::module_ &m) {
-        using Lattice = gbLAB::Lattice<dim>;
-        using LatticeVector = gbLAB::LatticeVector<dim>;
-        using ReciprocalLatticeVector = gbLAB::ReciprocalLatticeVector<dim>;
-        using IntScalarType = long long int;
-        using MatrixDimD = Eigen::Matrix<double, dim, dim>;
-        using VectorDimD = Eigen::Matrix<double, dim, 1>;
-        using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
-        using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
-        using PyReciprocalLatticeVector = PyReciprocalLatticeVector<dim>;
+      using Lattice = oILAB::Lattice<dim>;
+      using LatticeVector = oILAB::LatticeVector<dim>;
+      using ReciprocalLatticeVector = oILAB::ReciprocalLatticeVector<dim>;
+      using IntScalarType = long long int;
+      using MatrixDimD = Eigen::Matrix<double, dim, dim>;
+      using VectorDimD = Eigen::Matrix<double, dim, 1>;
+      using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
+      using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
+      using PyReciprocalLatticeVector = PyReciprocalLatticeVector<dim>;
 
-        py::class_<PyReciprocalLatticeVector>(m, ("ReciprocalLatticeVector" + std::to_string(dim) + "D").c_str())
-                .def(py::init<const Lattice &>())
-                .def(py::init<const VectorDimD&, const Lattice&>())
-                .def(py::init<const VectorDimI&, const Lattice&>())
-                .def(py::init<const PyReciprocalLatticeVector&>())
-                .def("cartesian", &PyReciprocalLatticeVector::cartesian)
-                .def("integerCoordinates", &PyReciprocalLatticeVector::integerCoordinates)
-                .def(py::self + py::self)
-                .def(py::self - py::self)
-                .def("__mul__", [](const PyReciprocalLatticeVector& self, const IntScalarType& scalar) {
-                    return self * scalar;
-                }, py::is_operator())
-                .def("__rmul__", [](const PyReciprocalLatticeVector& self, const IntScalarType& scalar) {
-                    return scalar * self;
-                }, py::is_operator())
-                .def(py::self -= py::self)
-                .def(py::self += py::self)
-                .def("dot",&PyReciprocalLatticeVector::dot)
-                // note that cross is a template member function
-                .def("cross",&PyReciprocalLatticeVector::template cross<dim>);
+      py::class_<PyReciprocalLatticeVector>(
+          m, ("ReciprocalLatticeVector" + std::to_string(dim) + "D").c_str())
+          .def(py::init<const Lattice &>())
+          .def(py::init<const VectorDimD &, const Lattice &>())
+          .def(py::init<const VectorDimI &, const Lattice &>())
+          .def(py::init<const PyReciprocalLatticeVector &>())
+          .def("cartesian", &PyReciprocalLatticeVector::cartesian)
+          .def("integerCoordinates",
+               &PyReciprocalLatticeVector::integerCoordinates)
+          .def(py::self + py::self)
+          .def(py::self - py::self)
+          .def(
+              "__mul__",
+              [](const PyReciprocalLatticeVector &self,
+                 const IntScalarType &scalar) { return self * scalar; },
+              py::is_operator())
+          .def(
+              "__rmul__",
+              [](const PyReciprocalLatticeVector &self,
+                 const IntScalarType &scalar) { return scalar * self; },
+              py::is_operator())
+          .def(py::self -= py::self)
+          .def(py::self += py::self)
+          .def("dot", &PyReciprocalLatticeVector::dot)
+          // note that cross is a template member function
+          .def("cross", &PyReciprocalLatticeVector::template cross<dim>);
     }
 
 }

@@ -1,9 +1,9 @@
-#include <LatticeModule.h>
-#include <TextFileParser.h>
-#include <range.h>
+#include "../../include/Lattices/LatticeModule.h"
+#include "../../include/IO/TextFileParser.h"
+#include "../Utilities/range.h"
 #include <numbers>
 
-using namespace gbLAB;
+using namespace oILAB;
 int main()
 {
     const int m_max=10;

@@ -7,8 +7,8 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/operators.h>
-#include <LatticeModule.h>
-#include <PyLatticeModule.h>
+#include "../Lattices/LatticeModule.h"
+#include "PyLatticeModule.h"
 #include <pybind11/numpy.h>
 #include <pybind11/eigen.h>
 
@@ -19,16 +19,15 @@ namespace pyoilab{
 // Eigen base classes
     template<int dim>
     class PyLatticeVector {
-        using Lattice = gbLAB::Lattice<dim>;
-        using LatticeVector = gbLAB::LatticeVector<dim>;
-        using PyReciprocalLatticeDirection = PyReciprocalLatticeDirection<dim>;
+      using Lattice = oILAB::Lattice<dim>;
+      using LatticeVector = oILAB::LatticeVector<dim>;
+      using PyReciprocalLatticeDirection = PyReciprocalLatticeDirection<dim>;
 
-
-        using IntScalarType = long long int;
-        using MatrixDimD = Eigen::Matrix<double, dim, dim>;
-        using VectorDimD = Eigen::Matrix<double, dim, 1>;
-        using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
-        using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
+      using IntScalarType = long long int;
+      using MatrixDimD = Eigen::Matrix<double, dim, dim>;
+      using VectorDimD = Eigen::Matrix<double, dim, 1>;
+      using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
+      using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
     public:
         LatticeVector lv;
 
@@ -118,43 +117,60 @@ namespace pyoilab{
 
     template<int dim>
     void bind_LatticeVector(py::module_& m) {
-        using Lattice = gbLAB::Lattice<dim>;
-        using LatticeVector = gbLAB::LatticeVector<dim>;
-        using IntScalarType = long long int;
-        using MatrixDimD = Eigen::Matrix<double, dim, dim>;
-        using VectorDimD = Eigen::Matrix<double, dim, 1>;
-        using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
-        using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
-        using PyLatticeVector = PyLatticeVector<dim>;
-        using PyReciprocalLatticeDirection = PyReciprocalLatticeDirection<dim>;
+      using Lattice = oILAB::Lattice<dim>;
+      using LatticeVector = oILAB::LatticeVector<dim>;
+      using IntScalarType = long long int;
+      using MatrixDimD = Eigen::Matrix<double, dim, dim>;
+      using VectorDimD = Eigen::Matrix<double, dim, 1>;
+      using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
+      using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
+      using PyLatticeVector = PyLatticeVector<dim>;
+      using PyReciprocalLatticeDirection = PyReciprocalLatticeDirection<dim>;
 
-        py::class_<PyLatticeVector>(m, ("LatticeVector" + std::to_string(dim) + "D").c_str(),("LatticeVector" + std::to_string(dim) + "D class").c_str())
-                .def(py::init<const Lattice&>())
-                .def(py::init<const VectorDimD&, const Lattice&>())
-                .def(py::init<const VectorDimI&, const Lattice&>())
-                .def(py::init<const PyLatticeVector&>())
-                .def("lattice",[](const PyLatticeVector& self){
-                    return self.lv.lattice;
-                },py::return_value_policy::reference_internal)
-                .def("cartesian", &PyLatticeVector::cartesian)
-                .def("integerCoordinates", static_cast<VectorDimI (PyLatticeVector::*)() const>(&PyLatticeVector::integerCoordinates),
-                     "output the integer coordinates of the lattice vecctor")
-                .def("integerCoordinates", static_cast<void (PyLatticeVector::*)(const VectorDimI&)>(&PyLatticeVector::integerCoordinates),
-                    "input the integer coordinates of the lattice vector")
-                .def("dot", &PyLatticeVector::dot,
-                     "dot product with a reciprocal lattice vector")
-                .def(py::self + py::self)
-                .def(py::self - py::self)
-                .def("__mul__", [](const PyLatticeVector& self, const IntScalarType& scalar) {
-                    return self * scalar;
-                }, py::is_operator())
-                .def("__rmul__", [](const PyLatticeVector& self, const IntScalarType& scalar) {
-                    return scalar * self;
-                }, py::is_operator())
-                .def(py::self -= py::self)
-                .def(py::self += py::self)
-                .def("cross", static_cast<PyReciprocalLatticeDirection (PyLatticeVector::*)(const PyLatticeVector&) const> (&PyLatticeVector::cross))
-                .def("cross", static_cast<PyReciprocalLatticeDirection (PyLatticeVector::*)() const> (&PyLatticeVector::cross));
+      py::class_<PyLatticeVector>(
+          m, ("LatticeVector" + std::to_string(dim) + "D").c_str(),
+          ("LatticeVector" + std::to_string(dim) + "D class").c_str())
+          .def(py::init<const Lattice &>())
+          .def(py::init<const VectorDimD &, const Lattice &>())
+          .def(py::init<const VectorDimI &, const Lattice &>())
+          .def(py::init<const PyLatticeVector &>())
+          .def(
+              "lattice",
+              [](const PyLatticeVector &self) { return self.lv.lattice; },
+              py::return_value_policy::reference_internal)
+          .def("cartesian", &PyLatticeVector::cartesian)
+          .def("integerCoordinates",
+               static_cast<VectorDimI (PyLatticeVector::*)() const>(
+                   &PyLatticeVector::integerCoordinates),
+               "output the integer coordinates of the lattice vecctor")
+          .def("integerCoordinates",
+               static_cast<void (PyLatticeVector::*)(const VectorDimI &)>(
+                   &PyLatticeVector::integerCoordinates),
+               "input the integer coordinates of the lattice vector")
+          .def("dot", &PyLatticeVector::dot,
+               "dot product with a reciprocal lattice vector")
+          .def(py::self + py::self)
+          .def(py::self - py::self)
+          .def(
+              "__mul__",
+              [](const PyLatticeVector &self, const IntScalarType &scalar) {
+                return self * scalar;
+              },
+              py::is_operator())
+          .def(
+              "__rmul__",
+              [](const PyLatticeVector &self, const IntScalarType &scalar) {
+                return scalar * self;
+              },
+              py::is_operator())
+          .def(py::self -= py::self)
+          .def(py::self += py::self)
+          .def("cross",
+               static_cast<PyReciprocalLatticeDirection (PyLatticeVector::*)(
+                   const PyLatticeVector &) const>(&PyLatticeVector::cross))
+          .def("cross",
+               static_cast<PyReciprocalLatticeDirection (PyLatticeVector::*)()
+                               const>(&PyLatticeVector::cross));
     }
 }
 #endif //OILAB_LATTICEVECTORBINDINGS_H

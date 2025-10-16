@@ -4,16 +4,15 @@
 #ifndef OILAB_PERIODICFUNCTIONIMPLEMENTATION_H
 #define OILAB_PERIODICFUNCTIONIMPLEMENTATION_H
 //#include <PeriodicFunction.h>
-#include <FFT.h>
+#include "FFT.h"
 
-namespace gbLAB
-{
-    template<typename Scalar, int dim>
-    PeriodicFunction<Scalar,dim>::PeriodicFunction(const Eigen::array<Eigen::Index,dim>& n,
-                                                   const Eigen::Matrix<double,Eigen::Dynamic,dim>&  _unitCell) :
-            values(n), unitCell(_unitCell)
-    {
-        values.setZero();
+namespace oILAB {
+template <typename Scalar, int dim>
+PeriodicFunction<Scalar, dim>::PeriodicFunction(
+    const Eigen::array<Eigen::Index, dim> &n,
+    const Eigen::Matrix<double, Eigen::Dynamic, dim> &_unitCell)
+    : values(n), unitCell(_unitCell) {
+  values.setZero();
     }
 
     template<typename Scalar, int dim>
@@ -130,5 +129,5 @@ namespace gbLAB
         return output;
     }
 
-}
+    } // namespace oILAB
 #endif // OILAB_PERIODICFUNCTIONIMPLEMENTATION_H

@@ -37,69 +37,64 @@
 #include <vtkLabeledDataMapper.h>
 #include <vtkFloatArray.h>
 
-#include <BiCrystal.h>
+#include "../Lattices/BiCrystal.h"
 
-
-namespace gbLAB
-{
-    struct BicrystalActor : public QWidget
+namespace oILAB {
+struct BicrystalActor : public QWidget
 //: public DDconfigVtkBase
-    {
-        
-        Q_OBJECT
-        private slots:
-            void modify();
+{
 
-        private:
-        vtkGenericOpenGLRenderWindow* const renderWindow;
-        vtkRenderer* const renderer;
+  Q_OBJECT
+private slots:
+  void modify();
 
-        QGridLayout* mainLayout;
-        QCheckBox* showA;
-        QCheckBox* showB;
+private:
+  vtkGenericOpenGLRenderWindow *const renderWindow;
+  vtkRenderer *const renderer;
 
-//        std::shared_ptr<Lattice<3>> latticeA;
-//        std::shared_ptr<Lattice<3>> latticeB;
-        
-//        QCheckBox* showNodeLabels;
-//        QCheckBox* showVelocities;
-//        QLineEdit* velocityScaleEdit;
+  QGridLayout *mainLayout;
+  QCheckBox *showA;
+  QCheckBox *showB;
 
-        
-        public:
-                
-        vtkSmartPointer<vtkPolyData> aPolyData;
-        vtkSmartPointer<vtkGlyph3D> aGlyphs;
-        vtkSmartPointer<vtkPolyDataMapper> aMapper;
-        vtkSmartPointer<vtkActor> aActor;
+  //        std::shared_ptr<Lattice<3>> latticeA;
+  //        std::shared_ptr<Lattice<3>> latticeB;
 
-        vtkSmartPointer<vtkPolyData> bPolyData;
-        vtkSmartPointer<vtkGlyph3D> bGlyphs;
-        vtkSmartPointer<vtkPolyDataMapper> bMapper;
-        vtkSmartPointer<vtkActor> bActor;
+  //        QCheckBox* showNodeLabels;
+  //        QCheckBox* showVelocities;
+  //        QLineEdit* velocityScaleEdit;
 
-        
-//        vtkSmartPointer<vtkPolyData> labelPolyData;
-//        vtkSmartPointer<vtkLabeledDataMapper> labelMapper;
-//        vtkSmartPointer<vtkActor2D> labelActor;
-//
-//        vtkSmartPointer<vtkPolyData> velocityPolyData;
-//        vtkSmartPointer<vtkGlyph3D> velocityGlyphs;
-//        vtkSmartPointer<vtkPolyDataMapper> velocityMapper;
-//        vtkSmartPointer<vtkActor> velocityActor;
-//
-//        vtkSmartPointer<vtkPolyData> singleNodeLabelPolyData;
-//        vtkSmartPointer<vtkLabeledDataMapper> singleNodeLabelMapper;
-//        vtkSmartPointer<vtkActor2D> singleNodeLabelActor;
-//
-//        size_t singleNodeID;
-//        unsigned char nodeClr[4][3];
-        
-        BicrystalActor(vtkGenericOpenGLRenderWindow* const,vtkRenderer* const);
-        void updateConfiguration(const std::shared_ptr<BiCrystal<3>>& bc);
+public:
+  vtkSmartPointer<vtkPolyData> aPolyData;
+  vtkSmartPointer<vtkGlyph3D> aGlyphs;
+  vtkSmartPointer<vtkPolyDataMapper> aMapper;
+  vtkSmartPointer<vtkActor> aActor;
+
+  vtkSmartPointer<vtkPolyData> bPolyData;
+  vtkSmartPointer<vtkGlyph3D> bGlyphs;
+  vtkSmartPointer<vtkPolyDataMapper> bMapper;
+  vtkSmartPointer<vtkActor> bActor;
+
+  //        vtkSmartPointer<vtkPolyData> labelPolyData;
+  //        vtkSmartPointer<vtkLabeledDataMapper> labelMapper;
+  //        vtkSmartPointer<vtkActor2D> labelActor;
+  //
+  //        vtkSmartPointer<vtkPolyData> velocityPolyData;
+  //        vtkSmartPointer<vtkGlyph3D> velocityGlyphs;
+  //        vtkSmartPointer<vtkPolyDataMapper> velocityMapper;
+  //        vtkSmartPointer<vtkActor> velocityActor;
+  //
+  //        vtkSmartPointer<vtkPolyData> singleNodeLabelPolyData;
+  //        vtkSmartPointer<vtkLabeledDataMapper> singleNodeLabelMapper;
+  //        vtkSmartPointer<vtkActor2D> singleNodeLabelActor;
+  //
+  //        size_t singleNodeID;
+  //        unsigned char nodeClr[4][3];
+
+  BicrystalActor(vtkGenericOpenGLRenderWindow *const, vtkRenderer *const);
+  void updateConfiguration(const std::shared_ptr<BiCrystal<3>> &bc);
         
         
     };
-    
-} // namespace model
+
+    } // namespace oILAB
 #endif

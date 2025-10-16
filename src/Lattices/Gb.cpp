@@ -4,21 +4,29 @@
 #ifndef OILAB_GB_CPP
 #define OILAB_GB_CPP
 
-#include "Gb.h"
+#include "../../include/Lattices/Gb.h"
 
-namespace gbLAB
-{
-    template<int dim>
-    Gb<dim>::Gb(const BiCrystal<dim>& bc, const ReciprocalLatticeDirection<dim>& n)
-    try :
-    /* init */ bc(bc)
-    /* init */,nA(&n.lattice == &(bc.A) ? n : bc.getReciprocalLatticeDirectionInA(-1*n.reciprocalLatticeVector()))
-    /* init */,nB(&n.lattice == &(bc.B) ? n : bc.getReciprocalLatticeDirectionInB(-1*n.reciprocalLatticeVector()))
-    /* init */,basisT(getBasisT(bc,n))
-    /* init */,T(Lattice<dim>(bc.dscl.latticeBasis*getBasisT(bc,n).template cast<double>()))
-    {
-        if (&n.lattice != &(bc.A) && &n.lattice != &(bc.B))
-            throw std::runtime_error("The normal does not belong to the reciprocal lattices of A and B  \n");
+namespace oILAB {
+template <int dim>
+Gb<dim>::Gb(const BiCrystal<dim> &bc,
+            const ReciprocalLatticeDirection<dim> &n) try
+    : /* init */ bc(bc)
+      /* init */,
+      nA(&n.lattice == &(bc.A) ? n
+                               : bc.getReciprocalLatticeDirectionInA(
+                                     -1 * n.reciprocalLatticeVector()))
+      /* init */,
+      nB(&n.lattice == &(bc.B) ? n
+                               : bc.getReciprocalLatticeDirectionInB(
+                                     -1 * n.reciprocalLatticeVector()))
+      /* init */,
+      basisT(getBasisT(bc, n))
+      /* init */,
+      T(Lattice<dim>(bc.dscl.latticeBasis *
+                     getBasisT(bc, n).template cast<double>())) {
+  if (&n.lattice != &(bc.A) && &n.lattice != &(bc.B))
+    throw std::runtime_error(
+        "The normal does not belong to the reciprocal lattices of A and B  \n");
     }
     catch(std::runtime_error& e)
     {
@@ -252,7 +260,6 @@ namespace gbLAB
 
     template class Gb<4>;
     template class Gb<5>;
-}
-
+    } // namespace oILAB
 
 #endif //OILAB_GB_CPP

@@ -7,40 +7,40 @@
 #ifndef gbLAB_RationalReciprocalLatticeDirection_cpp_
 #define gbLAB_RationalReciprocalLatticeDirection_cpp_
 
-#include <LatticeModule.h>
-#include <RationalReciprocalLatticeDirection.h>
+#include "../../include/Lattices/RationalReciprocalLatticeDirection.h"
+#include "../../include/Lattices/LatticeModule.h"
 
-namespace gbLAB
-{
-    /**********************************************************************/
-    template <int dim>
-    RationalReciprocalLatticeDirection<dim>::RationalReciprocalLatticeDirection(const Rational<IntScalarType> &_rat, const ReciprocalLatticeDirection<dim> &_dir) : /* init */ rat(_rat)
-                                                                                        /* init */,
-                                                                                        dir(_dir)
-    {
-    }
+namespace oILAB {
+/**********************************************************************/
+template <int dim>
+RationalReciprocalLatticeDirection<dim>::RationalReciprocalLatticeDirection(
+    const Rational<IntScalarType> &_rat,
+    const ReciprocalLatticeDirection<dim> &_dir)
+    : /* init */ rat(_rat)
+      /* init */,
+      dir(_dir) {}
 
-    /**********************************************************************/
-    template <int dim>
-    RationalReciprocalLatticeDirection<dim>::RationalReciprocalLatticeDirection(const Rational<IntScalarType> &_rat, const ReciprocalLatticeVector<dim> &v) :
-    /* init */ RationalReciprocalLatticeDirection(_rat, ReciprocalLatticeDirection<dim>(v))
-    {
-    }
+/**********************************************************************/
+template <int dim>
+RationalReciprocalLatticeDirection<dim>::RationalReciprocalLatticeDirection(
+    const Rational<IntScalarType> &_rat, const ReciprocalLatticeVector<dim> &v)
+    : /* init */ RationalReciprocalLatticeDirection(
+          _rat, ReciprocalLatticeDirection<dim>(v)) {}
 
-    /**********************************************************************/
-    template <int dim>
-    RationalReciprocalLatticeDirection<dim>::RationalReciprocalLatticeDirection(const ReciprocalLatticeVector<dim> &v) :
-    /* init */ rat(Rational<IntScalarType>(IntegerMath<IntScalarType>::gcd(v), 1)),
-    /* init */ dir(v)
-    {
-    }
+/**********************************************************************/
+template <int dim>
+RationalReciprocalLatticeDirection<dim>::RationalReciprocalLatticeDirection(
+    const ReciprocalLatticeVector<dim> &v)
+    : /* init */ rat(
+          Rational<IntScalarType>(IntegerMath<IntScalarType>::gcd(v), 1)),
+      /* init */ dir(v) {}
 
-    /**********************************************************************/
+/**********************************************************************/
 
-    template <int dim>
-    typename RationalReciprocalLatticeDirection<dim>::VectorDimD RationalReciprocalLatticeDirection<dim>::cartesian() const
-    {
-        return dir.cartesian() * rat.asDouble();
+template <int dim>
+typename RationalReciprocalLatticeDirection<dim>::VectorDimD
+RationalReciprocalLatticeDirection<dim>::cartesian() const {
+  return dir.cartesian() * rat.asDouble();
     }
 
     /**********************************************************************/
@@ -128,5 +128,5 @@ namespace gbLAB
     template struct RationalReciprocalLatticeDirection<5>;
     template RationalReciprocalLatticeDirection<5> operator*(const typename RationalReciprocalLatticeDirection<5>::IntScalarType& scalar, const RationalReciprocalLatticeDirection<5>& L);
 
-} // end namespace
+    } // namespace oILAB
 #endif

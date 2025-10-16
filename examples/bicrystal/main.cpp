@@ -3,11 +3,11 @@
  * gbLAB is distributed without any warranty under the MIT License.
  */
 
-#include <LatticeModule.h>
-#include <TextFileParser.h>
+#include "../../include/IO/TextFileParser.h"
+#include "../../include/Lattices/LatticeModule.h"
 #include <numbers>
 
-using namespace gbLAB;
+using namespace oILAB;
 
 int main(int argc, char** argv)
 {

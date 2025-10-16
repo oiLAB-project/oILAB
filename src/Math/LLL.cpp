@@ -7,36 +7,29 @@
 #ifndef gbLAB_LLL_cpp_
 #define gbLAB_LLL_cpp_
 
-#include "LLL.h"
+#include "../../include/Math/LLL.h"
 // http://www.arageli.org/download
 // https://www.mathworks.com/matlabcentral/fileexchange/49457-lattice-reduction-mimo?focused=3859922&tab=function
 
-namespace gbLAB
-{
-    /*! An implementation of the  Lenstra–Lenstra–Lovász (LLL) lattice basis
-     *  reduction algorithm for integers.
-     */
+namespace oILAB {
+/*! An implementation of the  Lenstra–Lenstra–Lovász (LLL) lattice basis
+ *  reduction algorithm for integers.
+ */
 
-    /**********************************************************************/
-    void LLL::lll_gram_schmidt_int(const int &k)
-    {
+/**********************************************************************/
+void LLL::lll_gram_schmidt_int(const int &k) {
 
-        for (int j = 0; j <= k; j++)
-        {
-            int u = B.col(k).dot(B.col(j));
-            for (int i = 0; i < j; i++)
-            {
-                u = (d(i + 1) * u - Lambda(k, i) * Lambda(j, i)) / d(i);
-            }
-            if (j < k)
-            {
-                Lambda(k, j) = u;
-            }
-            else
-            {
-                d(k + 1) = u;
-            }
-        }
+  for (int j = 0; j <= k; j++) {
+    int u = B.col(k).dot(B.col(j));
+    for (int i = 0; i < j; i++) {
+      u = (d(i + 1) * u - Lambda(k, i) * Lambda(j, i)) / d(i);
+    }
+    if (j < k) {
+      Lambda(k, j) = u;
+    } else {
+      d(k + 1) = u;
+    }
+  }
     }
 
     /**********************************************************************/
@@ -159,5 +152,5 @@ namespace gbLAB
         std::cout << B << std::endl;
     }
 
-} // end namespace
+    } // namespace oILAB
 #endif

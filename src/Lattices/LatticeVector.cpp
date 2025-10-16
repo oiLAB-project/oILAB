@@ -7,16 +7,14 @@
 #ifndef gbLAB_LatticeVector_cpp_
 #define gbLAB_LatticeVector_cpp_
 
-#include<LatticeModule.h>
+#include "../../include/Lattices/LatticeModule.h"
 
-namespace gbLAB
-{
+namespace oILAB {
 
-    /**********************************************************************/
-    template <int dim>
-    typename LatticeVector<dim>::BaseType& LatticeVector<dim>::base()
-    {
-        return *this;
+/**********************************************************************/
+template <int dim>
+typename LatticeVector<dim>::BaseType &LatticeVector<dim>::base() {
+  return *this;
     }
 
     /**********************************************************************/
@@ -224,5 +222,5 @@ namespace gbLAB
     template class LatticeVector<5>;
     template LatticeVector<5>operator*(const typename LatticeVector<5>::IntScalarType& scalar, const LatticeVector<5>& L);
     template LatticeVector<5>operator*(const int& scalar, const LatticeVector<5>& L);
-} // end namespace
+    } // namespace oILAB
 #endif

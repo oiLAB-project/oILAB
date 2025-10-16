@@ -7,40 +7,34 @@
 #ifndef gbLAB_LatticeDirection_h_
 #define gbLAB_LatticeDirection_h_
 
-#include <LatticeModule.h>
+#include "LatticeModule.h"
 
-namespace gbLAB
-{
-    /*! \brief LatticeDirection class
-     *
-     *  The LatticeDirection<dim> class describes the smallest lattice vector in its direction
-     * */
-    template <int dim>
-    struct LatticeDirection : protected LatticeVector<dim>
-    {
-        using IntScalarType = typename LatticeCore<dim>::IntScalarType ;
-        using VectorDimI = typename LatticeCore<dim>::VectorDimI;
+namespace oILAB {
+/*! \brief LatticeDirection class
+ *
+ *  The LatticeDirection<dim> class describes the smallest lattice vector in its
+ * direction
+ * */
+template <int dim> struct LatticeDirection : protected LatticeVector<dim> {
+  using IntScalarType = typename LatticeCore<dim>::IntScalarType;
+  using VectorDimI = typename LatticeCore<dim>::VectorDimI;
 
-        
-        LatticeDirection(const LatticeVector<dim>& v);
-        LatticeDirection(const LatticeDirection<dim>& other) = default;
+  LatticeDirection(const LatticeVector<dim> &v);
+  LatticeDirection(const LatticeDirection<dim> &other) = default;
 
-        LatticeDirection(const VectorDimI& v,
-                         const Lattice<dim>& lat) ;
+  LatticeDirection(const VectorDimI &v, const Lattice<dim> &lat);
 
-        using LatticeVector<dim>::cartesian;
-        using LatticeVector<dim>::lattice;
-        using LatticeVector<dim>::dot;
+  using LatticeVector<dim>::cartesian;
+  using LatticeVector<dim>::lattice;
+  using LatticeVector<dim>::dot;
 
-        const LatticeVector<dim>& latticeVector() const
-        {
-            return static_cast<const LatticeVector<dim>&>(*this);
-        }
+  const LatticeVector<dim> &latticeVector() const {
+    return static_cast<const LatticeVector<dim> &>(*this);
+  }
     };
 
     template<int dim>
     basic_ostream<char> &operator<<(basic_ostream<char> &s, const LatticeDirection<dim>& m);
 
-
-} // end namespace
+    } // namespace oILAB
 #endif

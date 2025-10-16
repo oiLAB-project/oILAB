@@ -4,39 +4,40 @@
 
 #ifndef OILAB_ORDEREDTUPLET_H
 #define OILAB_ORDEREDTUPLET_H
-#include<Eigen/Eigen>
-#include<LatticeCore.h>
+#include <Eigen/Eigen>
+#include "LatticeCore.h"
 
-namespace gbLAB {
-    template <int dim>
-    class OrderedTuplet : public Eigen::Matrix<typename LatticeCore<dim>::IntScalarType,dim,1>
-    {
-    public:
+namespace oILAB {
+template <int dim>
+class OrderedTuplet
+    : public Eigen::Matrix<typename LatticeCore<dim>::IntScalarType, dim, 1> {
+public:
+  OrderedTuplet() = default;
 
-        OrderedTuplet() = default;
+  // Define < operator to use std::map<OrderedTuplet,std::vector<int>>
+  bool operator<(const OrderedTuplet &rhs) const {
+    for (int i = 0; i < dim - 1; ++i) {
+      if (this->operator()(i) < rhs(i))
+        return true;
+      if (rhs(i) < this->operator()(i))
+        return false;
+    }
+    if (this->operator()(dim - 1) < rhs(dim - 1))
+      return true;
+    return false;
+    /*
+    if (this->operator()(0) < rhs(0)) return true;
+    if (rhs(0) < this->operator()(0)) return false;
+    if (this->operator()(1) < rhs(1)) return true;
+    if (rhs(1) < this->operator()(1)) return false;
+    if (this->operator()(2) < rhs(2)) return true;
+    if (rhs(2) < this->operator()(2)) return false;
+    if (this->operator()(3) < rhs(3)) return true;
+    return false;
+     */
+  }
 
-        // Define < operator to use std::map<OrderedTuplet,std::vector<int>>
-        bool operator<(const OrderedTuplet &rhs) const {
-            for(int i=0; i<dim-1; ++i)
-            {
-                if (this->operator()(i) < rhs(i)) return true;
-                if (rhs(i) < this->operator()(i)) return false;
-            }
-            if (this->operator()(dim-1) < rhs(dim-1)) return true;
-            return false;
-            /*
-            if (this->operator()(0) < rhs(0)) return true;
-            if (rhs(0) < this->operator()(0)) return false;
-            if (this->operator()(1) < rhs(1)) return true;
-            if (rhs(1) < this->operator()(1)) return false;
-            if (this->operator()(2) < rhs(2)) return true;
-            if (rhs(2) < this->operator()(2)) return false;
-            if (this->operator()(3) < rhs(3)) return true;
-            return false;
-             */
-        }
-
-        virtual ~OrderedTuplet() {}
+  virtual ~OrderedTuplet() {}
     };
 
     class XTuplet : public Eigen::Matrix<int,Eigen::Dynamic,1>
@@ -144,6 +145,6 @@ namespace gbLAB {
     static std::basic_ostream<char>& operator<<(std::basic_ostream<char>& s, const XTuplet& m) {
         return s << m.transpose() ;
     }
-}
+    } // namespace oILAB
 
 #endif //OILAB_ORDEREDTUPLET_H

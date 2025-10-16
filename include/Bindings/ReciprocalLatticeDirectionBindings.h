@@ -7,7 +7,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/operators.h>
-#include <LatticeModule.h>
+#include "../Lattices/LatticeModule.h"
 #include <pybind11/numpy.h>
 #include <pybind11/eigen.h>
 
@@ -15,16 +15,16 @@ namespace pyoilab{
     template<int dim>
     class PyReciprocalLatticeDirection
     {
-        using Lattice = gbLAB::Lattice<dim>;
-        using ReciprocalLatticeDirection = gbLAB::ReciprocalLatticeDirection<dim>;
-        using ReciprocalLatticeVector = gbLAB::ReciprocalLatticeVector<dim>;
-        using PyReciprocalLatticeVector = pyoilab::PyReciprocalLatticeVector<dim>;
+      using Lattice = oILAB::Lattice<dim>;
+      using ReciprocalLatticeDirection = oILAB::ReciprocalLatticeDirection<dim>;
+      using ReciprocalLatticeVector = oILAB::ReciprocalLatticeVector<dim>;
+      using PyReciprocalLatticeVector = pyoilab::PyReciprocalLatticeVector<dim>;
 
-        using IntScalarType = long long int;
-        using MatrixDimD = Eigen::Matrix<double, dim, dim>;
-        using VectorDimD = Eigen::Matrix<double, dim, 1>;
-        using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
-        using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
+      using IntScalarType = long long int;
+      using MatrixDimD = Eigen::Matrix<double, dim, dim>;
+      using VectorDimD = Eigen::Matrix<double, dim, 1>;
+      using VectorDimI = Eigen::Matrix<IntScalarType, dim, 1>;
+      using MatrixDimI = Eigen::Matrix<IntScalarType, dim, dim>;
     public:
         ReciprocalLatticeDirection rld;
 
@@ -65,9 +65,10 @@ namespace pyoilab{
         using VectorDimD = Eigen::Matrix<double, dim, 1>;
         using VectorDimI = Eigen::Matrix<long long int, dim, 1>;
 
-        using Lattice = gbLAB::Lattice<dim>;
-        using ReciprocalLatticeDirection = gbLAB::ReciprocalLatticeDirection<dim>;
-        using LatticeVector = gbLAB::LatticeVector<dim>;
+        using Lattice = oILAB::Lattice<dim>;
+        using ReciprocalLatticeDirection =
+            oILAB::ReciprocalLatticeDirection<dim>;
+        using LatticeVector = oILAB::LatticeVector<dim>;
 
         using PyReciprocalLatticeDirection = PyReciprocalLatticeDirection<dim>;
         using PyReciprocalLatticeVector = PyReciprocalLatticeVector<dim>;

@@ -1,62 +1,64 @@
 //
 // Created by Nikhil Chandra Admal on 2/4/24.
 //
-#include <GbShifts.h>
-#include <randomInteger.h>
+#include "../../include/Lattices/GbShifts.h"
+#include "../../include/Utilities/randomInteger.h"
 
-namespace gbLAB
-{
-    template<int dim>
-    GbShifts<dim>::GbShifts(const Gb<dim>& gb,
-                            const ReciprocalLatticeVector<dim>& axis,
-                            const std::vector<LatticeVector<dim>>& gbCslVectors,
-                            const double& bhalfMax):
-            gb(gb),
-            axis(axis),
-            gbCslVectors(gbCslVectors),
-            bShiftPairs(getbShiftPairs(gb,gbCslVectors,bhalfMax))
-    {
-        std::cout << "--------------------GBShifts class construction ---------------------------" << std::endl;
-        std::cout << "GB CSL vectors = " << std::endl;
-        for(const auto& elem : gbCslVectors)
-            std::cout << elem.cartesian().transpose() << std::endl;
-        std::cout << std::endl;
+namespace oILAB {
+template <int dim>
+GbShifts<dim>::GbShifts(const Gb<dim> &gb,
+                        const ReciprocalLatticeVector<dim> &axis,
+                        const std::vector<LatticeVector<dim>> &gbCslVectors,
+                        const double &bhalfMax)
+    : gb(gb), axis(axis), gbCslVectors(gbCslVectors),
+      bShiftPairs(getbShiftPairs(gb, gbCslVectors, bhalfMax)) {
+  std::cout << "--------------------GBShifts class construction "
+               "---------------------------"
+            << std::endl;
+  std::cout << "GB CSL vectors = " << std::endl;
+  for (const auto &elem : gbCslVectors)
+    std::cout << elem.cartesian().transpose() << std::endl;
+  std::cout << std::endl;
 
-        std::cout << "GB reciprocal CSL vectors = " << std::endl;
-        Eigen::Matrix<double,dim,dim-1> gbCslBasis;
-        for(int i=0; i<dim-1; ++i)
-            gbCslBasis.col(i)= gbCslVectors[i].cartesian();
-        Eigen::Matrix<double,dim,dim-1> gbCslReciprocalBasis= gbCslBasis.completeOrthogonalDecomposition().pseudoInverse().transpose();
-        std::cout << gbCslReciprocalBasis.transpose() << std::endl;
-        std::cout << std::endl;
+  std::cout << "GB reciprocal CSL vectors = " << std::endl;
+  Eigen::Matrix<double, dim, dim - 1> gbCslBasis;
+  for (int i = 0; i < dim - 1; ++i)
+    gbCslBasis.col(i) = gbCslVectors[i].cartesian();
+  Eigen::Matrix<double, dim, dim - 1> gbCslReciprocalBasis =
+      gbCslBasis.completeOrthogonalDecomposition().pseudoInverse().transpose();
+  std::cout << gbCslReciprocalBasis.transpose() << std::endl;
+  std::cout << std::endl;
 
-        std::cout << "Maximum b < " << 2*bhalfMax*gb.bc.A.latticeBasis.col(0).norm() << std::endl;
-        std::cout << std::endl;
+  std::cout << "Maximum b < "
+            << 2 * bhalfMax * gb.bc.A.latticeBasis.col(0).norm() << std::endl;
+  std::cout << std::endl;
 
-        VectorDimD normal;
-        if (dim==3)
-            normal= gbCslVectors[0].cross(gbCslVectors[1]).cartesian().normalized();
-        else
-            normal= gbCslVectors[0].cross().cartesian().normalized();
+  VectorDimD normal;
+  if (dim == 3)
+    normal = gbCslVectors[0].cross(gbCslVectors[1]).cartesian().normalized();
+  else
+    normal = gbCslVectors[0].cross().cartesian().normalized();
 
-        std::cout << "Exploring the following translation-shift pairs:" << std::endl;
-        for(const auto& [b,s]: bShiftPairs)
-        {
-            std::cout << "b = " << b.cartesian().transpose();
-            std::cout << "; s = " << s.transpose() << std::endl;
-            //if (abs(s.dot(normal)) > FLT_EPSILON)
-            if (abs(s.dot(normal)) > 1e-6)
-                throw std::runtime_error("GBShifts construction failed - shifts are not parallel to the GB.");
+  std::cout << "Exploring the following translation-shift pairs:" << std::endl;
+  for (const auto &[b, s] : bShiftPairs) {
+    std::cout << "b = " << b.cartesian().transpose();
+    std::cout << "; s = " << s.transpose() << std::endl;
+    // if (abs(s.dot(normal)) > FLT_EPSILON)
+    if (abs(s.dot(normal)) > 1e-6)
+      throw std::runtime_error(
+          "GBShifts construction failed - shifts are not parallel to the GB.");
 
-            Eigen::MatrixXd shiftCoordinates= gbCslReciprocalBasis.transpose()*s;
-            if( (shiftCoordinates.array() < -FLT_EPSILON).any() || (shiftCoordinates.array() > 1+FLT_EPSILON).any()) {
-                std::cout << "Shift coordinates = " << shiftCoordinates.transpose() << std::endl;
-                throw std::runtime_error("GB shifts are not in the area spanned by the GB CSL vectors.");
-            }
-
-        }
-        std::cout << "----------------------------" << std::endl;
-        std::cout << std::endl;
+    Eigen::MatrixXd shiftCoordinates = gbCslReciprocalBasis.transpose() * s;
+    if ((shiftCoordinates.array() < -FLT_EPSILON).any() ||
+        (shiftCoordinates.array() > 1 + FLT_EPSILON).any()) {
+      std::cout << "Shift coordinates = " << shiftCoordinates.transpose()
+                << std::endl;
+      throw std::runtime_error(
+          "GB shifts are not in the area spanned by the GB CSL vectors.");
+    }
+  }
+  std::cout << "----------------------------" << std::endl;
+  std::cout << std::endl;
 
     }
 
@@ -133,4 +135,4 @@ namespace gbLAB
     //template class GbShifts<2>;
     template class GbShifts<3>;
 
-}
+    } // namespace oILAB

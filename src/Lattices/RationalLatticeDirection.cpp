@@ -7,40 +7,38 @@
 #ifndef gbLAB_RationalLatticeDirection_cpp_
 #define gbLAB_RationalLatticeDirection_cpp_
 
-#include <LatticeModule.h>
-#include <RationalLatticeDirection.h>
+#include "../../include/Lattices/RationalLatticeDirection.h"
+#include "../../include/Lattices/LatticeModule.h"
 
-namespace gbLAB
-{
-    /**********************************************************************/
-    template <int dim>
-    RationalLatticeDirection<dim>::RationalLatticeDirection(const Rational<IntScalarType> &_rat, const LatticeDirection<dim> &_dir) : /* init */ rat(_rat)
-                                                                                        /* init */,
-                                                                                        dir(_dir)
-    {
-    }
+namespace oILAB {
+/**********************************************************************/
+template <int dim>
+RationalLatticeDirection<dim>::RationalLatticeDirection(
+    const Rational<IntScalarType> &_rat, const LatticeDirection<dim> &_dir)
+    : /* init */ rat(_rat)
+      /* init */,
+      dir(_dir) {}
 
-    /**********************************************************************/
-    template <int dim>
-    RationalLatticeDirection<dim>::RationalLatticeDirection(const Rational<IntScalarType> &_rat, const LatticeVector<dim> &v) :
-    /* init */ RationalLatticeDirection(_rat, LatticeDirection<dim>(v))
-    {
-    }
+/**********************************************************************/
+template <int dim>
+RationalLatticeDirection<dim>::RationalLatticeDirection(
+    const Rational<IntScalarType> &_rat, const LatticeVector<dim> &v)
+    : /* init */ RationalLatticeDirection(_rat, LatticeDirection<dim>(v)) {}
 
-    /**********************************************************************/
-    template <int dim>
-    RationalLatticeDirection<dim>::RationalLatticeDirection(const LatticeVector<dim> &v) :
-    /* init */ rat(Rational<IntScalarType>(IntegerMath<IntScalarType>::gcd(v), 1)),
-    /* init */ dir(v)
-    {
-    }
+/**********************************************************************/
+template <int dim>
+RationalLatticeDirection<dim>::RationalLatticeDirection(
+    const LatticeVector<dim> &v)
+    : /* init */ rat(
+          Rational<IntScalarType>(IntegerMath<IntScalarType>::gcd(v), 1)),
+      /* init */ dir(v) {}
 
-    /**********************************************************************/
+/**********************************************************************/
 
-    template <int dim>
-    typename RationalLatticeDirection<dim>::VectorDimD RationalLatticeDirection<dim>::cartesian() const
-    {
-        return dir.cartesian() * rat.asDouble();
+template <int dim>
+typename RationalLatticeDirection<dim>::VectorDimD
+RationalLatticeDirection<dim>::cartesian() const {
+  return dir.cartesian() * rat.asDouble();
     }
 
     /**********************************************************************/
@@ -131,5 +129,5 @@ namespace gbLAB
     template struct RationalLatticeDirection<5>;
     template RationalLatticeDirection<5> operator*(const typename RationalLatticeDirection<5>::IntScalarType& scalar, const RationalLatticeDirection<5>& L);
 
-} // end namespace
+    } // namespace oILAB
 #endif

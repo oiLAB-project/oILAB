@@ -7,61 +7,58 @@
 #ifndef gbLAB_RationalMatrix_cpp_
 #define gbLAB_RationalMatrix_cpp_
 
-#include "RationalMatrix.h"
-#include <iostream>
-#include <iomanip>
-#include "IntegerMath.h"
-#include "BestRationalApproximation.h"
+#include "../../include/Math/RationalMatrix.h"
+#include "../../include/Math/BestRationalApproximation.h"
+#include "../../include/Math/IntegerMath.h"
 #include <cfloat> // FLT_EPSILON
+#include <iomanip>
+#include <iostream>
 
-namespace gbLAB
-{
+namespace oILAB {
 
-    /**********************************************************************/
-    template <int dim>
-    std::pair<typename RationalMatrix<dim>::MatrixDimI, typename RationalMatrix<dim>::IntScalarType> RationalMatrix<dim>::compute(const RationalMatrix<dim>::MatrixDimD &R)
-    {
+/**********************************************************************/
+template <int dim>
+std::pair<typename RationalMatrix<dim>::MatrixDimI,
+          typename RationalMatrix<dim>::IntScalarType>
+RationalMatrix<dim>::compute(const RationalMatrix<dim>::MatrixDimD &R) {
 
-        // Find the BestRationalApproximation of each entry
-        MatrixDimI nums(MatrixDimI::Zero());
-        MatrixDimI dens(MatrixDimI::Ones());
+  // Find the BestRationalApproximation of each entry
+  MatrixDimI nums(MatrixDimI::Zero());
+  MatrixDimI dens(MatrixDimI::Ones());
 
-        IntScalarType sigma = 1;
-        for (int i = 0; i < dim; ++i)
-        {
-            for (int j = 0; j < dim; ++j)
-            {
-                BestRationalApproximation bra(R(i, j), maxDen);
-                nums(i, j) = bra.num;
-                dens(i, j) = bra.den;
-                sigma = IntegerMath<IntScalarType>::lcm(sigma, bra.den);
-            }
-        }
+  IntScalarType sigma = 1;
+  for (int i = 0; i < dim; ++i) {
+    for (int j = 0; j < dim; ++j) {
+      BestRationalApproximation bra(R(i, j), maxDen);
+      nums(i, j) = bra.num;
+      dens(i, j) = bra.den;
+      sigma = IntegerMath<IntScalarType>::lcm(sigma, bra.den);
+    }
+  }
 
-        MatrixDimI im(MatrixDimI::Zero());
-        for (int i = 0; i < dim; ++i)
-        {
-            for (int j = 0; j < dim; ++j)
-            {
-                im(i, j) = nums(i, j) * (sigma / dens(i, j));
-            }
-        }
+  MatrixDimI im(MatrixDimI::Zero());
+  for (int i = 0; i < dim; ++i) {
+    for (int j = 0; j < dim; ++j) {
+      im(i, j) = nums(i, j) * (sigma / dens(i, j));
+    }
+  }
 
-        const double error = (im.template cast<double>() / sigma - R).norm() / (dim * dim);
-        if (error > FLT_EPSILON)
-        {
-            std::cout << "error=" << error << std::endl;
-            std::cout << "maxDen=" << maxDen << std::endl;
-            std::cout << "im=\n"
-                      << std::setprecision(15) << std::scientific << im.template cast<double>() / sigma << std::endl;
-            std::cout << "= 1/" << sigma << "*\n"
-                      << std::setprecision(15) << std::scientific << im << std::endl;
-            std::cout << "R=\n"
-                      << std::setprecision(15) << std::scientific << R << std::endl;
-            throw std::runtime_error("Rational Matrix failed, check maxDen");
-        }
+  const double error =
+      (im.template cast<double>() / sigma - R).norm() / (dim * dim);
+  if (error > FLT_EPSILON) {
+    std::cout << "error=" << error << std::endl;
+    std::cout << "maxDen=" << maxDen << std::endl;
+    std::cout << "im=\n"
+              << std::setprecision(15) << std::scientific
+              << im.template cast<double>() / sigma << std::endl;
+    std::cout << "= 1/" << sigma << "*\n"
+              << std::setprecision(15) << std::scientific << im << std::endl;
+    std::cout << "R=\n"
+              << std::setprecision(15) << std::scientific << R << std::endl;
+    throw std::runtime_error("Rational Matrix failed, check maxDen");
+  }
 
-        return std::make_pair(im, sigma);
+  return std::make_pair(im, sigma);
     }
 
     template <int dim>
@@ -145,5 +142,5 @@ namespace gbLAB
     template class RationalMatrix<4>;
     template class RationalMatrix<5>;
 
-} // end namespace
+    } // namespace oILAB
 #endif

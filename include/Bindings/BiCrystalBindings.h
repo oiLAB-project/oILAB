@@ -6,7 +6,7 @@
 #define OILAB_BICRYSTAL_BINDINGS_H
 
 #include <pybind11/pybind11.h>
-#include <LatticeModule.h>
+#include "../Lattices/LatticeModule.h"
 #include <pybind11/stl.h>
 namespace py = pybind11;
 
@@ -14,9 +14,9 @@ namespace pyoilab {
     template<int dim>
     void bind_BiCrystal(py::module_ &m) {
         using PyLatticeVector = PyLatticeVector<dim>;
-        using BiCrystal = gbLAB::BiCrystal<dim>;
-        using Lattice = gbLAB::Lattice<dim>;
-        using LatticeVector = gbLAB::LatticeVector<dim>;
+        using BiCrystal = oILAB::BiCrystal<dim>;
+        using Lattice = oILAB::Lattice<dim>;
+        using LatticeVector = oILAB::LatticeVector<dim>;
 
         using MatrixDimD = Eigen::Matrix<double, dim, dim>;
         using VectorDimD = Eigen::Matrix<double, dim, 1>;

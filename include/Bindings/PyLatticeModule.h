@@ -20,11 +20,11 @@ namespace pyoilab
     class PyReciprocalLatticeDirection;
 }
 
-#include <LatticeBindings.h>
-#include <LatticeVectorBindings.h>
-#include <LatticeDirectionBindings.h>
-#include <ReciprocalLatticeVectorBindings.h>
-#include <ReciprocalLatticeDirectionBindings.h>
-#include <BiCrystalBindings.h>
+#include "LatticeBindings.h"
+#include "LatticeVectorBindings.h"
+#include "LatticeDirectionBindings.h"
+#include "ReciprocalLatticeVectorBindings.h"
+#include "ReciprocalLatticeDirectionBindings.h"
+#include "BiCrystalBindings.h"
 
 #endif //OILAB_PYLATTICEMODULE_H

@@ -7,45 +7,38 @@
 #ifndef gbLAB_RLLL_cpp_
 #define gbLAB_RLLL_cpp_
 
-#include "RLLL.h"
+#include "../../include/Math/RLLL.h"
 #include <vector>
 
-namespace gbLAB
-{
+namespace oILAB {
 
+/**********************************************************************/
+void RLLL::update(VectorType &H, MatrixType &M, const int &k) {
+  const int n = B.cols();
 
-    /**********************************************************************/
-    void RLLL::update(VectorType &H,
-                MatrixType &M,
-                const int &k)
-    {
-        const int n = B.cols();
+  //            B1=B;
+  //            B1(:,k-1)=B(:,k);
+  //            B1(:,k)=B(:,k-1);
+  B.col(k).swap(B.col(k - 1));
 
-        //            B1=B;
-        //            B1(:,k-1)=B(:,k);
-        //            B1(:,k)=B(:,k-1);
-        B.col(k).swap(B.col(k - 1));
-
-        MatrixType H1 = H;
-        MatrixType M1 = M;
-        H1(k - 1) = H(k) + std::pow(M(k, k - 1), 2) * H(k - 1);
-        //        M1(k,k-1)=M(k,k-1)*H(k-1)/H1(k-1);
-        M1(k, k - 1) *= H(k - 1) / H1(k - 1);
-        H1(k) = H(k - 1) - std::pow(M1(k, k - 1), 2) * H1(k - 1);
-        //        for i=k+1:n
-        for (int i = k + 1; i < n; ++i)
-        {
-            M1(i, k - 1) = M(i, k - 1) * M1(k, k - 1) + M(i, k) * H(k) / H1(k - 1);
-            M1(i, k) = M(i, k - 1) - M(i, k) * M(k, k - 1);
-        }
-        //            for j=1:k-2
-        for (int j = 0; j <= k - 2; ++j)
-        {
-            M1(k - 1, j) = M(k, j);
-            M1(k, j) = M(k - 1, j);
-        }
-        H = H1;
-        M = M1;
+  MatrixType H1 = H;
+  MatrixType M1 = M;
+  H1(k - 1) = H(k) + std::pow(M(k, k - 1), 2) * H(k - 1);
+  //        M1(k,k-1)=M(k,k-1)*H(k-1)/H1(k-1);
+  M1(k, k - 1) *= H(k - 1) / H1(k - 1);
+  H1(k) = H(k - 1) - std::pow(M1(k, k - 1), 2) * H1(k - 1);
+  //        for i=k+1:n
+  for (int i = k + 1; i < n; ++i) {
+    M1(i, k - 1) = M(i, k - 1) * M1(k, k - 1) + M(i, k) * H(k) / H1(k - 1);
+    M1(i, k) = M(i, k - 1) - M(i, k) * M(k, k - 1);
+  }
+  //            for j=1:k-2
+  for (int j = 0; j <= k - 2; ++j) {
+    M1(k - 1, j) = M(k, j);
+    M1(k, j) = M(k - 1, j);
+  }
+  H = H1;
+  M = M1;
     }
 
     /**********************************************************************/
@@ -200,5 +193,5 @@ namespace gbLAB
         return U;
     }
 
-} // end namespace
+    } // namespace oILAB
 #endif

@@ -7,23 +7,22 @@
 #ifndef gbLAB_BiCrystal_cpp_
 #define gbLAB_BiCrystal_cpp_
 
-#include <LatticeModule.h>
+#include "../../include/Lattices/LatticeModule.h"
 #include <numbers>
 
-namespace gbLAB
-{
-        
-    template <int dim>
-    typename BiCrystal<dim>::MatrixDimI BiCrystal<dim>::getM(const RationalMatrix<dim>& rm,
-                        const SmithDecomposition<dim>& sd)
-    {
-        typename BiCrystal<dim>::MatrixDimI M=BiCrystal<dim>::MatrixDimI::Identity();
-        for(int i=0;i<dim;++i)
-        {
-            const auto& dii(sd.matrixD()(i,i));
-            M(i,i)=dii/IntegerMath<IntScalarType>::gcd(rm.mu,dii);
-        }
-        return M;
+namespace oILAB {
+
+template <int dim>
+typename BiCrystal<dim>::MatrixDimI
+BiCrystal<dim>::getM(const RationalMatrix<dim> &rm,
+                     const SmithDecomposition<dim> &sd) {
+  typename BiCrystal<dim>::MatrixDimI M =
+      BiCrystal<dim>::MatrixDimI::Identity();
+  for (int i = 0; i < dim; ++i) {
+    const auto &dii(sd.matrixD()(i, i));
+    M(i, i) = dii / IntegerMath<IntScalarType>::gcd(rm.mu, dii);
+  }
+  return M;
     }
 
     template <int dim>
@@ -696,6 +695,6 @@ namespace gbLAB
     template class BiCrystal<4>;
     template class BiCrystal<5>;
 
-} // end namespace
+    } // namespace oILAB
 #endif
 

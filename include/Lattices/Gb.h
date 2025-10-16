@@ -5,119 +5,125 @@
 #ifndef OILAB_GB_H
 #define OILAB_GB_H
 
+#include "../Utilities/Rotation.h"
 #include "BiCrystal.h"
 #include "ReciprocalLatticeDirection.h"
-#include "Rotation.h"
 
-namespace gbLAB
-{
-    template<int dim>
-    class Gb
-    {
-    using VectorDimI = typename LatticeCore<dim>::VectorDimI;
-    using VectorDimD = typename LatticeCore<dim>::VectorDimD;
-    using MatrixDimD = typename LatticeCore<dim>::MatrixDimD;
-    using MatrixDimI = typename LatticeCore<dim>::MatrixDimI;
-    using IntScalarType = typename LatticeCore<dim>::IntScalarType;
-    private:
-        MatrixDimI getBasisT(const BiCrystal<dim>& bc, const ReciprocalLatticeDirection<dim>& n);
+namespace oILAB {
+template <int dim> class Gb {
+  using VectorDimI = typename LatticeCore<dim>::VectorDimI;
+  using VectorDimD = typename LatticeCore<dim>::VectorDimD;
+  using MatrixDimD = typename LatticeCore<dim>::MatrixDimD;
+  using MatrixDimI = typename LatticeCore<dim>::MatrixDimI;
+  using IntScalarType = typename LatticeCore<dim>::IntScalarType;
 
-    public:
-        /*!
-         * Bicrystal formed by two lattices, say \f$\mathcal A\f$ and \f$\mathcal B\f$
-         */
-        const BiCrystal<dim>& bc;
-        /*!
-         * GB normal described with respect to lattice \f$\mathcal A\f$
-         */
-        const ReciprocalLatticeDirection<dim> nA;
-        /*!
-         * GB normal described with respect to lattice \f$\mathcal B\f$
-         */
-        const ReciprocalLatticeDirection<dim> nB;
+private:
+  MatrixDimI getBasisT(const BiCrystal<dim> &bc,
+                       const ReciprocalLatticeDirection<dim> &n);
 
-        const Lattice<dim> T;
+public:
+  /*!
+   * Bicrystal formed by two lattices, say \f$\mathcal A\f$ and \f$\mathcal B\f$
+   */
+  const BiCrystal<dim> &bc;
+  /*!
+   * GB normal described with respect to lattice \f$\mathcal A\f$
+   */
+  const ReciprocalLatticeDirection<dim> nA;
+  /*!
+   * GB normal described with respect to lattice \f$\mathcal B\f$
+   */
+  const ReciprocalLatticeDirection<dim> nB;
 
-        const MatrixDimI basisT;
+  const Lattice<dim> T;
 
-        LatticeVector<dim> getLatticeVectorInT(const LatticeVector<dim>& v) const;
+  const MatrixDimI basisT;
 
-        ReciprocalLatticeVector<dim> getReciprocalLatticeVectorInT(const ReciprocalLatticeVector<dim>& v) const;
+  LatticeVector<dim> getLatticeVectorInT(const LatticeVector<dim> &v) const;
 
-        ReciprocalLatticeDirection<dim> getReciprocalLatticeDirectionInT(const ReciprocalLatticeVector<dim>& v) const;
+  ReciprocalLatticeVector<dim>
+  getReciprocalLatticeVectorInT(const ReciprocalLatticeVector<dim> &v) const;
 
+  ReciprocalLatticeDirection<dim>
+  getReciprocalLatticeDirectionInT(const ReciprocalLatticeVector<dim> &v) const;
 
+  /*!
+   * \brief Computes the step height of a disconnection formed by displacing
+   * lattice \f$\mathcal A\f$ by a Burgers vector \f$\textbf d\f$.
+   * @param d - Burgers vector that belongs to the DSCL of the bicrystal
+   * @return step height
+   */
+  double stepHeightA(const LatticeVector<dim> &d) const;
+  /*!
+   * \brief Computes the step height of a disconnection formed by displacing
+   * lattice \f$\mathcal B\f$ by a Burgers vector \f$\textbf d\f$.
+   * @param d - Burgers vector that belongs to the DSCL of the bicrystal
+   * @return step height
+   */
+  double stepHeightB(const LatticeVector<dim> &d) const;
 
-        /*!
-         * \brief Computes the step height of a disconnection formed by displacing lattice \f$\mathcal A\f$
-         * by a Burgers vector \f$\textbf d\f$.
-         * @param d - Burgers vector that belongs to the DSCL of the bicrystal
-         * @return step height
-         */
-        double stepHeightA(const LatticeVector<dim>& d) const;
-        /*!
-         * \brief Computes the step height of a disconnection formed by displacing lattice \f$\mathcal B\f$
-         * by a Burgers vector \f$\textbf d\f$.
-         * @param d - Burgers vector that belongs to the DSCL of the bicrystal
-         * @return step height
-         */
-        double stepHeightB(const LatticeVector<dim>& d) const;
+  /*!
+   * \brief Computes the step height of a disconnection formed by displacing
+   * lattice \f$\mathcal A\f$ by \f$\textbf d/2\f$ and \f$\mathcal B\f$ by
+   * \f$-\textbf d/2\f$
+   * .
+   * @param d - Burgers vector that belongs to the DSCL of the bicrystal
+   * @return step height
+   */
+  double stepHeight(const LatticeVector<dim> &d) const;
 
-        /*!
-         * \brief Computes the step height of a disconnection formed by displacing lattice \f$\mathcal A\f$
-         * by \f$\textbf d/2\f$ and \f$\mathcal B\f$ by \f$-\textbf d/2\f$
-         * .
-         * @param d - Burgers vector that belongs to the DSCL of the bicrystal
-         * @return step height
-         */
-        double stepHeight(const LatticeVector<dim>& d) const;
+  /*!
+   * \brief Constructs a grain boundary of a given orientation in a bicrystal
+   * @param bc - Bicrystal formed by two lattices \f$\mathcal A\f$ and
+   * \f$\mathcal B\f$.
+   * @param n - Reciprocal lattice direction in dual lattices \f$\mathcal A^*\f$
+   * or \f$\mathcal B^*\f$.
+   */
+  Gb(const BiCrystal<dim> &bc, const ReciprocalLatticeDirection<dim> &n);
 
-        /*!
-         * \brief Constructs a grain boundary of a given orientation in a bicrystal
-         * @param bc - Bicrystal formed by two lattices \f$\mathcal A\f$ and \f$\mathcal B\f$.
-         * @param n - Reciprocal lattice direction in dual lattices \f$\mathcal A^*\f$ or \f$\mathcal B^*\f$.
-         */
-        Gb(const BiCrystal<dim>& bc, const ReciprocalLatticeDirection<dim>& n);
+  template <int dm = dim>
+  typename std::enable_if<dm == 2, LatticeVector<dim>>::type
+  getPeriodVector(const ReciprocalLatticeVector<dim> &axis) const;
 
-        template<int dm=dim>
-        typename std::enable_if<dm==2,LatticeVector<dim>>::type
-        getPeriodVector(const ReciprocalLatticeVector<dim>& axis) const;
+  template <int dm = dim>
+  typename std::enable_if<dm == 3, LatticeVector<dim>>::type
+  getPeriodVector(const ReciprocalLatticeVector<dm> &axis) const;
 
-        template<int dm=dim>
-        typename std::enable_if<dm==3,LatticeVector<dim>>::type
-        getPeriodVector(const ReciprocalLatticeVector<dm>& axis) const;
-
-        /*! This function outputs/prints a grain boundary (two lattices that form the GB,
-         * CSL, and the DSCL) bounded by a box defined using
-         * input box vectors. The box vectors have to be linearly independent lattice
-         * vectors. The \p boxVectors[0] is not parallel to the boundary plane while the
-         * remaining box vectors should lie in the GB plane. The function optimizes boxVectors[0]
-         * to make the box as orthogonal as possible depending on the \p orthogonality parameter.
-         * The length of the box along \p boxVectors[0] is equal to \p 2*boxVectors[0].norm,
-         * while the lengths along the remaining box vectors are equal to their norms.
-         *
-         * The function outputs DSCL lattice points in the GBs neighborhood, which can be controlled
-         * by the \p dsclFactor parameter.
-         *
-         * @tparam dm dimension (int)
-         * @param boxVectors three linearly independent lattice vectors. The first box vector
-         * is not parallel to the boundary plane, while the remaining box vectors span the GB plane.
-         * @param orthogonality (double) a value in the interval \f$[0,1]\f$.
-         * @param dsclFactor (int) a factor\f$ \ge 1\f$ to increase the number of outputted DSCL planes
-         * @param filename (optional) name of the output file
-         * @param orient (optional) While printing to a file, orient the system such that the box sides are along
-         * the global x, y, and z axes. The box vectors spanning the grain boundary have to be orthogonal
-         * if orient==true. This flag does not
-         * influence the returning configuration, only the configuration printed to the file.
-         * @return lattice points of the grain boundary bounded by the box (std::vector<LatticeVector<dim>>).
-         */
-        template<int dm=dim>
-        typename std::enable_if<dm==2 || dm==3,std::vector<LatticeVector<dim>>>::type
-        box(std::vector<LatticeVector<dim>>& boxVectors,
-            const double& orthogonality,
-            const int& dsclFactor,
-            std::string filename= "",
-            bool orient=false) const;
+  /*! This function outputs/prints a grain boundary (two lattices that form the
+   * GB, CSL, and the DSCL) bounded by a box defined using input box vectors.
+   * The box vectors have to be linearly independent lattice vectors. The \p
+   * boxVectors[0] is not parallel to the boundary plane while the remaining box
+   * vectors should lie in the GB plane. The function optimizes boxVectors[0] to
+   * make the box as orthogonal as possible depending on the \p orthogonality
+   * parameter. The length of the box along \p boxVectors[0] is equal to \p
+   * 2*boxVectors[0].norm, while the lengths along the remaining box vectors are
+   * equal to their norms.
+   *
+   * The function outputs DSCL lattice points in the GBs neighborhood, which can
+   * be controlled by the \p dsclFactor parameter.
+   *
+   * @tparam dm dimension (int)
+   * @param boxVectors three linearly independent lattice vectors. The first box
+   * vector is not parallel to the boundary plane, while the remaining box
+   * vectors span the GB plane.
+   * @param orthogonality (double) a value in the interval \f$[0,1]\f$.
+   * @param dsclFactor (int) a factor\f$ \ge 1\f$ to increase the number of
+   * outputted DSCL planes
+   * @param filename (optional) name of the output file
+   * @param orient (optional) While printing to a file, orient the system such
+   * that the box sides are along the global x, y, and z axes. The box vectors
+   * spanning the grain boundary have to be orthogonal if orient==true. This
+   * flag does not influence the returning configuration, only the configuration
+   * printed to the file.
+   * @return lattice points of the grain boundary bounded by the box
+   * (std::vector<LatticeVector<dim>>).
+   */
+  template <int dm = dim>
+  typename std::enable_if<dm == 2 || dm == 3,
+                          std::vector<LatticeVector<dim>>>::type
+  box(std::vector<LatticeVector<dim>> &boxVectors, const double &orthogonality,
+      const int &dsclFactor, std::string filename = "",
+      bool orient = false) const;
 
     };
 
@@ -237,6 +243,6 @@ namespace gbLAB
  *
  * Full code:
  */
-}
+    } // namespace oILAB
 
 #endif //OILAB_GB_H

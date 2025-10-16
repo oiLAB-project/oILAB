@@ -23,8 +23,19 @@ endif()
 
 target_include_directories(oILAB
     PUBLIC
-        ${PROJECT_INCLUDE_DIRS}
+        # For build tree: point to include/ and its subdirectories for current includes to work
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+        # For install tree: point to include/ so users can do #include <oILAB/Lattices/LatticeModule.h>
+        $<INSTALL_INTERFACE:include>
 )
-                            
+
 target_link_libraries(oILAB PUBLIC Eigen3::Eigen)
+
+# Install library
+install(TARGETS oILAB
+    EXPORT oILABTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 

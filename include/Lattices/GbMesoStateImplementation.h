@@ -5,36 +5,33 @@
 #ifndef OILAB_GBMESOSTATEIMPLEMENTATION_H
 #define OILAB_GBMESOSTATEIMPLEMENTATION_H
 
-#include<Lammps.h>
+#include "Lammps.h"
 #include <iostream>
 //#include <Python.h>
-#include <PeriodicFunctionImplementation.h>
+#include "PeriodicFunctionImplementation.h"
 
-namespace gbLAB {
-    template<int dim>
-    GbMesoState<dim>::GbMesoState(const Gb<dim>& gb,
-                                  const ReciprocalLatticeVector<dim>& axis,
-                                  const std::deque<std::tuple<LatticeVector<dim>,VectorDimD,int>>& bs,
-                                  const std::vector<LatticeVector<dim>>& mesoStateCslVectors,
-                                  const BicrystalLatticeVectors& bicrystalConfig)
-                                  try :
-          GbContinuum<dim>(getMesoStateGbDomain(mesoStateCslVectors),
-                           get_xuPairs(gb,mesoStateCslVectors,bs),
-                           discretize(mesoStateCslVectors,gb),
-                           bicrystalCoordsMap(gb,bicrystalConfig)),
-          gb(gb),
-          axis(axis),
-          mesoStateCslVectors(mesoStateCslVectors),
-          bicrystalConfig(bicrystalConfig),
-          bs(bs)
-    {
-        // check
-        /*
-        auto xuPairs= get_xuPairs(bs);
-        for(const auto& pair : xuPairs)
-            std::cout << (pair.second-this->displacement(pair.first)).norm() << std::endl;
-            */
-    }
+namespace oILAB {
+template <int dim>
+GbMesoState<dim>::GbMesoState(
+    const Gb<dim> &gb, const ReciprocalLatticeVector<dim> &axis,
+    const std::deque<std::tuple<LatticeVector<dim>, VectorDimD, int>> &bs,
+    const std::vector<LatticeVector<dim>> &mesoStateCslVectors,
+    const BicrystalLatticeVectors &bicrystalConfig) try
+    : GbContinuum
+  <dim>(getMesoStateGbDomain(mesoStateCslVectors),
+        get_xuPairs(gb, mesoStateCslVectors, bs),
+        discretize(mesoStateCslVectors, gb),
+        bicrystalCoordsMap(gb, bicrystalConfig)),
+      gb(gb), axis(axis), mesoStateCslVectors(mesoStateCslVectors),
+      bicrystalConfig(bicrystalConfig), bs(bs) {
+    // check
+    /*
+    auto xuPairs= get_xuPairs(bs);
+    for(const auto& pair : xuPairs)
+        std::cout << (pair.second-this->displacement(pair.first)).norm() <<
+    std::endl;
+        */
+  }
     catch(std::runtime_error& e)
     {
         //throw(std::runtime_error("GB Mesostate construction failed"));
@@ -378,6 +375,6 @@ namespace gbLAB {
      deformed.close();
  }
 
-}
+ } // namespace oILAB
 
 #endif

@@ -5,34 +5,34 @@
 #ifndef OILAB_GBMESOSTATEENSEMBLEIMPLEMENTATION_H
 #define OILAB_GBMESOSTATEENSEMBLEIMPLEMENTATION_H
 
-#include <randomInteger.h>
+#include "../Utilities/randomInteger.h"
 
-namespace gbLAB {
-    template<int dim>
-    GbMesoStateEnsemble<dim>::GbMesoStateEnsemble(const Gb<dim>& gb,
-                                                  const ReciprocalLatticeVector<dim>& axis,
-                                                  //const Eigen::Vector<int,dim>& scales) :
-                                                  std::vector<LatticeVector<dim>>& ensembleCslVectors,
-                                                  const double& bhalfMax):
-            GbShifts<dim>(gb,
-                          axis,
-                          std::vector<LatticeVector<dim>>(ensembleCslVectors.begin()+1,
-                                                          ensembleCslVectors.end()),
-                          bhalfMax),
-            ensembleCslVectors(ensembleCslVectors),
-            bicrystalConfig(getBicrystalConfig((const GbShifts<dim>&) *this,
-                                               ensembleCslVectors))
-    {
-        std::cout << "--------------------GBMesoStateEnsemble class construction ---------------------------" << std::endl;
-        std::cout << "Forming mesostate ensemble with material parameters: ";
-        std::cout << "lambda = " << GbMaterialTensors::lambda;
-        std::cout << "; mu = " << GbMaterialTensors::mu<< std::endl;
-        std::cout << std::endl;
+namespace oILAB {
+template <int dim>
+GbMesoStateEnsemble<dim>::GbMesoStateEnsemble(
+    const Gb<dim> &gb, const ReciprocalLatticeVector<dim> &axis,
+    // const Eigen::Vector<int,dim>& scales) :
+    std::vector<LatticeVector<dim>> &ensembleCslVectors, const double &bhalfMax)
+    : GbShifts<dim>(
+          gb, axis,
+          std::vector<LatticeVector<dim>>(ensembleCslVectors.begin() + 1,
+                                          ensembleCslVectors.end()),
+          bhalfMax),
+      ensembleCslVectors(ensembleCslVectors),
+      bicrystalConfig(getBicrystalConfig((const GbShifts<dim> &)*this,
+                                         ensembleCslVectors)) {
+  std::cout << "--------------------GBMesoStateEnsemble class construction "
+               "---------------------------"
+            << std::endl;
+  std::cout << "Forming mesostate ensemble with material parameters: ";
+  std::cout << "lambda = " << GbMaterialTensors::lambda;
+  std::cout << "; mu = " << GbMaterialTensors::mu << std::endl;
+  std::cout << std::endl;
 
-        std::cout << "Ensemble CSL vectors:"  << std::endl;
-        for(const auto& latticeVector : ensembleCslVectors)
-            std::cout << latticeVector.cartesian().transpose() <<  std::endl;
-        std::cout << std::endl;
+  std::cout << "Ensemble CSL vectors:" << std::endl;
+  for (const auto &latticeVector : ensembleCslVectors)
+    std::cout << latticeVector.cartesian().transpose() << std::endl;
+  std::cout << std::endl;
 
     }
 
@@ -322,5 +322,5 @@ namespace gbLAB {
         return initialConstraints;
     }
 
-}
+    } // namespace oILAB
 #endif

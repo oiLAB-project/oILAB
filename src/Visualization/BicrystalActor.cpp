@@ -35,32 +35,43 @@
 #include <vtkProperty2D.h>
 #include <vtkRenderer.h>
 
-#include <TerminalColors.h>
-#include <BicrystalActor.h>
+#include "../../include/IO/TerminalColors.h"
+#include "../../include/Visualization/BicrystalActor.h"
 
-namespace gbLAB
-{
-    
-        
-        /**********************************************************************/
-        BicrystalActor::BicrystalActor(vtkGenericOpenGLRenderWindow* const renWin,vtkRenderer* const rndr) :
-        /* init */ renderWindow(renWin)
-        /* init */,renderer(rndr)
-        /* init */,mainLayout(new QGridLayout(this))
-        /* init */,showA(new QCheckBox(this))
-        /* init */,showB(new QCheckBox(this))
+namespace oILAB {
 
-//        /* init */,showNodeLabels(new QCheckBox(this))
-//        /* init */,showVelocities(new QCheckBox(this))
-//        /* init */,velocityScaleEdit(new QLineEdit("1"))
-        /* init */,aPolyData(vtkSmartPointer<vtkPolyData>::New())
-        /* init */,aGlyphs(vtkSmartPointer<vtkGlyph3D>::New())
-        /* init */,aMapper(vtkSmartPointer<vtkPolyDataMapper>::New())
-        /* init */,aActor(vtkSmartPointer<vtkActor>::New())
-/* init */,bPolyData(vtkSmartPointer<vtkPolyData>::New())
-/* init */,bGlyphs(vtkSmartPointer<vtkGlyph3D>::New())
-/* init */,bMapper(vtkSmartPointer<vtkPolyDataMapper>::New())
-/* init */,bActor(vtkSmartPointer<vtkActor>::New())
+/**********************************************************************/
+BicrystalActor::BicrystalActor(vtkGenericOpenGLRenderWindow *const renWin,
+                               vtkRenderer *const rndr)
+    : /* init */ renderWindow(renWin)
+      /* init */,
+      renderer(rndr)
+      /* init */,
+      mainLayout(new QGridLayout(this))
+      /* init */,
+      showA(new QCheckBox(this))
+      /* init */,
+      showB(new QCheckBox(this))
+
+      //        /* init */,showNodeLabels(new QCheckBox(this))
+      //        /* init */,showVelocities(new QCheckBox(this))
+      //        /* init */,velocityScaleEdit(new QLineEdit("1"))
+      /* init */,
+      aPolyData(vtkSmartPointer<vtkPolyData>::New())
+      /* init */,
+      aGlyphs(vtkSmartPointer<vtkGlyph3D>::New())
+      /* init */,
+      aMapper(vtkSmartPointer<vtkPolyDataMapper>::New())
+      /* init */,
+      aActor(vtkSmartPointer<vtkActor>::New())
+      /* init */,
+      bPolyData(vtkSmartPointer<vtkPolyData>::New())
+      /* init */,
+      bGlyphs(vtkSmartPointer<vtkGlyph3D>::New())
+      /* init */,
+      bMapper(vtkSmartPointer<vtkPolyDataMapper>::New())
+      /* init */,
+      bActor(vtkSmartPointer<vtkActor>::New())
 
 //        /* init */,labelPolyData(vtkSmartPointer<vtkPolyData>::New())
 //        /* init */,labelMapper(vtkSmartPointer<vtkLabeledDataMapper>::New())
@@ -69,105 +80,109 @@ namespace gbLAB
 //        /* init */,velocityGlyphs(vtkSmartPointer<vtkGlyph3D>::New())
 //        /* init */,velocityMapper(vtkSmartPointer<vtkPolyDataMapper>::New())
 //        /* init */,velocityActor(vtkSmartPointer<vtkActor>::New())
-//        /* init */,singleNodeLabelPolyData(vtkSmartPointer<vtkPolyData>::New())
-//        /* init */,singleNodeLabelMapper(vtkSmartPointer<vtkLabeledDataMapper>::New())
+//        /* init
+//        */,singleNodeLabelPolyData(vtkSmartPointer<vtkPolyData>::New())
+//        /* init
+//        */,singleNodeLabelMapper(vtkSmartPointer<vtkLabeledDataMapper>::New())
 //        /* init */,singleNodeLabelActor(vtkSmartPointer<vtkActor2D>::New())
 //        /* init */,singleNodeID(0)
 //        /* init */,nodeClr{{100,100,100},{0,255,255},{255,0,255},{1,1,1}}
-        {
-            
-            showA->setText("lattice A");
-            showA->setChecked(true);
-            aActor->SetVisibility(true);
-            showB->setText("lattice B");
-            showB->setChecked(true);
-            bActor->SetVisibility(true);
+{
 
-//            showNodeLabels->setText("node labels");
-//            showNodeLabels->setChecked(false);
-//            labelActor->SetVisibility(false);
-//
-//            showVelocities->setText("velocities");
-//            showVelocities->setChecked(false);
-//            velocityActor->SetVisibility(false);
-//            velocityScaleEdit->setEnabled(false);
+  showA->setText("lattice A");
+  showA->setChecked(true);
+  aActor->SetVisibility(true);
+  showB->setText("lattice B");
+  showB->setChecked(true);
+  bActor->SetVisibility(true);
 
+  //            showNodeLabels->setText("node labels");
+  //            showNodeLabels->setChecked(false);
+  //            labelActor->SetVisibility(false);
+  //
+  //            showVelocities->setText("velocities");
+  //            showVelocities->setChecked(false);
+  //            velocityActor->SetVisibility(false);
+  //            velocityScaleEdit->setEnabled(false);
 
-            mainLayout->addWidget(showA,0,0,1,1);
-            mainLayout->addWidget(showB,1,0,1,1);
+  mainLayout->addWidget(showA, 0, 0, 1, 1);
+  mainLayout->addWidget(showB, 1, 0, 1, 1);
 
-//            mainLayout->addWidget(showNodeLabels,1,0,1,1);
-//            mainLayout->addWidget(showVelocities,2,0,1,1);
-//            mainLayout->addWidget(velocityScaleEdit,2,1,1,1);
-            this->setLayout(mainLayout);
+  //            mainLayout->addWidget(showNodeLabels,1,0,1,1);
+  //            mainLayout->addWidget(showVelocities,2,0,1,1);
+  //            mainLayout->addWidget(velocityScaleEdit,2,1,1,1);
+  this->setLayout(mainLayout);
 
-            connect(showA,SIGNAL(stateChanged(int)), this, SLOT(modify()));
-            connect(showB,SIGNAL(stateChanged(int)), this, SLOT(modify()));
+  connect(showA, SIGNAL(stateChanged(int)), this, SLOT(modify()));
+  connect(showB, SIGNAL(stateChanged(int)), this, SLOT(modify()));
 
-//            connect(showNodeLabels,SIGNAL(stateChanged(int)), this, SLOT(modify()));
-//            connect(showVelocities,SIGNAL(stateChanged(int)), this, SLOT(modify()));
-//            connect(velocityScaleEdit,SIGNAL(returnPressed()), this, SLOT(modify()));
+  //            connect(showNodeLabels,SIGNAL(stateChanged(int)), this,
+  //            SLOT(modify()));
+  //            connect(showVelocities,SIGNAL(stateChanged(int)), this,
+  //            SLOT(modify()));
+  //            connect(velocityScaleEdit,SIGNAL(returnPressed()), this,
+  //            SLOT(modify()));
 
-            
-            aGlyphs->SetInputData(aPolyData);
-            aGlyphs->SetSourceConnection(vtkSmartPointer<vtkSphereSource>::New()->GetOutputPort());
-            aGlyphs->ScalingOn();
-            aGlyphs->SetScaleModeToScaleByVector();
-            aGlyphs->SetScaleFactor(0.25);
-            aGlyphs->SetColorModeToColorByScalar();
-            aGlyphs->Update();
-            aMapper->SetInputConnection(aGlyphs->GetOutputPort());
-            aActor->SetMapper(aMapper);
-            aActor->GetProperty()->SetColor(1.0, 0.0, 0.0); //(R,G,B)
-            renderer->AddActor(aActor);
-            
-            bGlyphs->SetInputData(bPolyData);
-            bGlyphs->SetSourceConnection(vtkSmartPointer<vtkSphereSource>::New()->GetOutputPort());
-            bGlyphs->ScalingOn();
-            bGlyphs->SetScaleModeToScaleByVector();
-            bGlyphs->SetScaleFactor(0.25);
-            bGlyphs->SetColorModeToColorByScalar();
-            bGlyphs->Update();
-            bMapper->SetInputConnection(bGlyphs->GetOutputPort());
-            bActor->SetMapper(bMapper);
-            bActor->GetProperty()->SetColor(0.0, 0.0, 1.0); //(R,G,B)
-            renderer->AddActor(bActor);
+  aGlyphs->SetInputData(aPolyData);
+  aGlyphs->SetSourceConnection(
+      vtkSmartPointer<vtkSphereSource>::New()->GetOutputPort());
+  aGlyphs->ScalingOn();
+  aGlyphs->SetScaleModeToScaleByVector();
+  aGlyphs->SetScaleFactor(0.25);
+  aGlyphs->SetColorModeToColorByScalar();
+  aGlyphs->Update();
+  aMapper->SetInputConnection(aGlyphs->GetOutputPort());
+  aActor->SetMapper(aMapper);
+  aActor->GetProperty()->SetColor(1.0, 0.0, 0.0); //(R,G,B)
+  renderer->AddActor(aActor);
 
-            
-            // Labels
-//            labelMapper->SetInputData(labelPolyData);
-//            labelMapper->SetLabelModeToLabelScalars();
-//            labelMapper->SetLabelFormat("%1.0f");
-//            labelMapper->GetLabelTextProperty()->SetFontSize(20);
-//            labelActor->SetMapper(labelMapper);
-//            labelActor->GetProperty()->SetColor(0.0, 0.0, 0.0); //(R,G,B)
-//
-//            // Velocities
-//            velocityGlyphs->SetInputData(velocityPolyData);
-//            velocityGlyphs->SetSourceConnection(vtkSmartPointer<vtkArrowSource>::New()->GetOutputPort());
-//            velocityGlyphs->ScalingOn();
-//            velocityGlyphs->SetScaleModeToScaleByVector();
-//            velocityGlyphs->OrientOn();
-//            velocityGlyphs->ClampingOff();
-//            velocityGlyphs->SetVectorModeToUseVector();
-//            velocityGlyphs->SetIndexModeToOff();
-//            velocityMapper->SetInputConnection(velocityGlyphs->GetOutputPort());
-//            velocityMapper->ScalarVisibilityOff();
-//            velocityActor->SetMapper(velocityMapper);
-//            velocityActor->GetProperty()->SetColor(1.0, 0.0, 1.0); //(R,G,B)
-//
-//            // Single node Label
-//            singleNodeLabelMapper->SetInputData(singleNodeLabelPolyData);
-//            singleNodeLabelMapper->SetLabelModeToLabelScalars();
-//            singleNodeLabelMapper->SetLabelFormat("%1.0f");
-//            singleNodeLabelMapper->GetLabelTextProperty()->SetFontSize(20);
-//            singleNodeLabelActor->SetMapper(singleNodeLabelMapper);
-//            singleNodeLabelActor->GetProperty()->SetColor(1.0, 0.0, 0.0); //(R,G,B)
-//            singleNodeLabelActor->VisibilityOff();
-            
-//            renderer->AddActor(velocityActor);
-//            renderer->AddActor(labelActor);
-//            renderer->AddActor(singleNodeLabelActor);
+  bGlyphs->SetInputData(bPolyData);
+  bGlyphs->SetSourceConnection(
+      vtkSmartPointer<vtkSphereSource>::New()->GetOutputPort());
+  bGlyphs->ScalingOn();
+  bGlyphs->SetScaleModeToScaleByVector();
+  bGlyphs->SetScaleFactor(0.25);
+  bGlyphs->SetColorModeToColorByScalar();
+  bGlyphs->Update();
+  bMapper->SetInputConnection(bGlyphs->GetOutputPort());
+  bActor->SetMapper(bMapper);
+  bActor->GetProperty()->SetColor(0.0, 0.0, 1.0); //(R,G,B)
+  renderer->AddActor(bActor);
+
+  // Labels
+  //            labelMapper->SetInputData(labelPolyData);
+  //            labelMapper->SetLabelModeToLabelScalars();
+  //            labelMapper->SetLabelFormat("%1.0f");
+  //            labelMapper->GetLabelTextProperty()->SetFontSize(20);
+  //            labelActor->SetMapper(labelMapper);
+  //            labelActor->GetProperty()->SetColor(0.0, 0.0, 0.0); //(R,G,B)
+  //
+  //            // Velocities
+  //            velocityGlyphs->SetInputData(velocityPolyData);
+  //            velocityGlyphs->SetSourceConnection(vtkSmartPointer<vtkArrowSource>::New()->GetOutputPort());
+  //            velocityGlyphs->ScalingOn();
+  //            velocityGlyphs->SetScaleModeToScaleByVector();
+  //            velocityGlyphs->OrientOn();
+  //            velocityGlyphs->ClampingOff();
+  //            velocityGlyphs->SetVectorModeToUseVector();
+  //            velocityGlyphs->SetIndexModeToOff();
+  //            velocityMapper->SetInputConnection(velocityGlyphs->GetOutputPort());
+  //            velocityMapper->ScalarVisibilityOff();
+  //            velocityActor->SetMapper(velocityMapper);
+  //            velocityActor->GetProperty()->SetColor(1.0, 0.0, 1.0); //(R,G,B)
+  //
+  //            // Single node Label
+  //            singleNodeLabelMapper->SetInputData(singleNodeLabelPolyData);
+  //            singleNodeLabelMapper->SetLabelModeToLabelScalars();
+  //            singleNodeLabelMapper->SetLabelFormat("%1.0f");
+  //            singleNodeLabelMapper->GetLabelTextProperty()->SetFontSize(20);
+  //            singleNodeLabelActor->SetMapper(singleNodeLabelMapper);
+  //            singleNodeLabelActor->GetProperty()->SetColor(1.0, 0.0, 0.0);
+  //            //(R,G,B) singleNodeLabelActor->VisibilityOff();
+
+  //            renderer->AddActor(velocityActor);
+  //            renderer->AddActor(labelActor);
+  //            renderer->AddActor(singleNodeLabelActor);
 
         }
         
@@ -311,7 +326,6 @@ namespace gbLAB
 
             renderWindow->Render();
         }
-        
-    
-} // namespace model
+
+        } // namespace oILAB
 #endif

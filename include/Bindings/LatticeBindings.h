@@ -6,50 +6,62 @@
 #define OILAB_LATTICE_BINDINGS_H
 
 #include <pybind11/pybind11.h>
-#include <LatticeModule.h>
+#include "../Lattices/LatticeModule.h"
 #include <pybind11/stl.h>
 namespace py = pybind11;
 
 namespace pyoilab {
     template<int dim>
     void bind_Lattice(py::module_ &m) {
-        using Lattice = gbLAB::Lattice<dim>;
-        using PyLatticeVector = PyLatticeVector<dim>;
-        using PyReciprocalLatticeDirection= PyReciprocalLatticeDirection<dim>;
-        using PyLatticeDirection= PyLatticeDirection<dim>;
-        using LatticeVector = gbLAB::LatticeVector<dim>;
+      using Lattice = oILAB::Lattice<dim>;
+      using PyLatticeVector = PyLatticeVector<dim>;
+      using PyReciprocalLatticeDirection = PyReciprocalLatticeDirection<dim>;
+      using PyLatticeDirection = PyLatticeDirection<dim>;
+      using LatticeVector = oILAB::LatticeVector<dim>;
 
-        using MatrixDimD = Eigen::Matrix<double, dim, dim>;
-        using VectorDimD = Eigen::Matrix<double, dim, 1>;
+      using MatrixDimD = Eigen::Matrix<double, dim, dim>;
+      using VectorDimD = Eigen::Matrix<double, dim, 1>;
 
-        py::class_<Lattice> cls(m, ("Lattice" + std::to_string(dim) + "D").c_str());
-        cls.def(py::init<const MatrixDimD&, const MatrixDimD&>(),
-                py::arg("A"), py::arg("Q")=MatrixDimD::Identity())
-            .def_readonly("latticeBasis", &Lattice::latticeBasis)
-            .def_readonly("reciprocalBasis", &Lattice::reciprocalBasis)
-            .def_readonly("F", &Lattice::F)
-            .def("interPlanarSpacing", [](const Lattice& lattice, const PyReciprocalLatticeDirection& pyrlv) {
-                return lattice.interPlanarSpacing(pyrlv.rld);
-            })
-            .def("latticeVector", [](const Lattice &lattice, const VectorDimD &p) {
-                return PyLatticeVector(lattice.latticeVector(p));
-            })
-            .def("box",[](const Lattice& lattice, const std::vector<PyLatticeVector>& boxPyLatticeVectors, const std::string& filename){
+      py::class_<Lattice> cls(m,
+                              ("Lattice" + std::to_string(dim) + "D").c_str());
+      cls.def(py::init<const MatrixDimD &, const MatrixDimD &>(), py::arg("A"),
+              py::arg("Q") = MatrixDimD::Identity())
+          .def_readonly("latticeBasis", &Lattice::latticeBasis)
+          .def_readonly("reciprocalBasis", &Lattice::reciprocalBasis)
+          .def_readonly("F", &Lattice::F)
+          .def("interPlanarSpacing",
+               [](const Lattice &lattice,
+                  const PyReciprocalLatticeDirection &pyrlv) {
+                 return lattice.interPlanarSpacing(pyrlv.rld);
+               })
+          .def("latticeVector",
+               [](const Lattice &lattice, const VectorDimD &p) {
+                 return PyLatticeVector(lattice.latticeVector(p));
+               })
+          .def(
+              "box",
+              [](const Lattice &lattice,
+                 const std::vector<PyLatticeVector> &boxPyLatticeVectors,
+                 const std::string &filename) {
                 std::vector<LatticeVector> boxLatticeVectors;
                 for(const auto& v : boxPyLatticeVectors)
-                    boxLatticeVectors.push_back(v.lv);
+                  boxLatticeVectors.push_back(v.lv);
                 auto latticeVectors= lattice.box(boxLatticeVectors,filename);
 
                 std::vector<PyLatticeVector> pyLatticeVectors;
                 for(const auto& v : latticeVectors)
-                    pyLatticeVectors.push_back(PyLatticeVector(v));
+                  pyLatticeVectors.push_back(PyLatticeVector(v));
                 return pyLatticeVectors;
-            }, py::arg("boxVectors"),py::arg("filename")="");
-        if constexpr(dim==3) {
-            cls.def("generateCoincidentLattices",
-                 [](const Lattice &lattice, const PyReciprocalLatticeDirection& rd, const double& maxDen, const int& N) {
-                     return lattice.generateCoincidentLattices(rd.rld, maxDen, N);
-                 }, py::arg("rd"), py::arg("maxDen") = 100, py::arg("N") = 100);
+              },
+              py::arg("boxVectors"), py::arg("filename") = "");
+      if constexpr (dim == 3) {
+        cls.def(
+            "generateCoincidentLattices",
+            [](const Lattice &lattice, const PyReciprocalLatticeDirection &rd,
+               const double &maxDen, const int &N) {
+              return lattice.generateCoincidentLattices(rd.rld, maxDen, N);
+            },
+            py::arg("rd"), py::arg("maxDen") = 100, py::arg("N") = 100);
         }
         if constexpr(dim==2) {
             cls.def("generateCoincidentLattices",

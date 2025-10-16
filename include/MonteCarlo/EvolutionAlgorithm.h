@@ -7,17 +7,19 @@
 
 #include <utility>
 
-namespace gbLAB {
-    template<typename StateType, typename SystemType, typename TransitionProbabilityType>
-    class EvolutionAlgorithm {
-    public:
-        TransitionProbabilityType& transitionProbability;
+namespace oILAB {
+template <typename StateType, typename SystemType,
+          typename TransitionProbabilityType>
+class EvolutionAlgorithm {
+public:
+  TransitionProbabilityType &transitionProbability;
 
-        EvolutionAlgorithm();
+  EvolutionAlgorithm();
 
-        bool acceptMove(const std::pair<StateType,SystemType>& proposedStateSystem,
-                        const std::pair<StateType,SystemType>& currentStateSystem) const;
+  bool
+  acceptMove(const std::pair<StateType, SystemType> &proposedStateSystem,
+             const std::pair<StateType, SystemType> &currentStateSystem) const;
     };
-}
-#include <EvolutionAlgorithmImplementation.h>
+    } // namespace oILAB
+#include "EvolutionAlgorithmImplementation.h"
 #endif //OILAB_EVOLUTIONALGORITHM_H

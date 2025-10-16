@@ -13,17 +13,6 @@ endif()
 # ---------- Dependencies ----------
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
-# ---------- Project include directories ----------
-set(PROJECT_INCLUDE_DIRS
-    ${PROJECT_SOURCE_DIR}/include/IO
-    ${PROJECT_SOURCE_DIR}/include/Lattices
-    ${PROJECT_SOURCE_DIR}/include/MonteCarlo
-    ${PROJECT_SOURCE_DIR}/include/Math
-    ${PROJECT_SOURCE_DIR}/include/Utilities
-    ${PROJECT_SOURCE_DIR}/include/Visualization
-    ${PROJECT_SOURCE_DIR}/include/Bindings
-)
-
 # ---------- Subdirectories ----------
 add_subdirectory(src)
 add_subdirectory(examples)
@@ -40,3 +29,40 @@ option(BUILD_PYBINDINGS "Build Python bindings (pyOILAB)" ON)
 if(BUILD_PYBINDINGS)
     add_subdirectory(bindings)
 endif()
+
+# ---------- Installation ----------
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
+# Install header files (preserves subdirectory structure under oILAB/)
+install(DIRECTORY include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/oILAB
+    FILES_MATCHING PATTERN "*.h"
+)
+
+# Generate package config files
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/oILABConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/oILABConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/oILAB
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/oILABConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+# Install CMake config files
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/oILABConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/oILABConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/oILAB
+)
+
+# Export targets
+install(EXPORT oILABTargets
+    FILE oILABTargets.cmake
+    NAMESPACE oILAB::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/oILAB
+)

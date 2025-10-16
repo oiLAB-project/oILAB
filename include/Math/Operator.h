@@ -5,35 +5,35 @@
 #ifndef OILAB_OPERATOR_H
 #define OILAB_OPERATOR_H
 
-#include <LatticeModule.h>
+#include "../Lattices/LatticeModule.h"
 #include <unsupported/Eigen/CXX11/Tensor>
 
-namespace gbLAB {
-    template<typename Derived, int dim>
-    class Operator {
-    public:
-        using Scalar = double;
-        const Derived &derivedOperator;
-        const Lattice<dim> L;
-        const Eigen::array<Eigen::Index, dim> n;
+namespace oILAB {
+template <typename Derived, int dim> class Operator {
+public:
+  using Scalar = double;
+  const Derived &derivedOperator;
+  const Lattice<dim> L;
+  const Eigen::array<Eigen::Index, dim> n;
 
-        Operator(const Eigen::Matrix<double,dim,dim>& A,
-                 const Eigen::array<Eigen::Index,dim>& n_) : derivedOperator(static_cast<const Derived &>(*this)),
-                                                             L(A),
-                                                             n(n_)
-        {
-        }
+  Operator(const Eigen::Matrix<double, dim, dim> &A,
+           const Eigen::array<Eigen::Index, dim> &n_)
+      : derivedOperator(static_cast<const Derived &>(*this)), L(A), n(n_) {}
 
-        auto domain() const { return L.latticeBasis; }
+  auto domain() const { return L.latticeBasis; }
 
-        Eigen::Index rows() const { return std::accumulate(begin(n), end(n), 1, std::multiplies<>()); }
-        Eigen::Index cols() const { return std::accumulate(begin(n), end(n), 1, std::multiplies<>()); }
+  Eigen::Index rows() const {
+    return std::accumulate(begin(n), end(n), 1, std::multiplies<>());
+  }
+  Eigen::Index cols() const {
+    return std::accumulate(begin(n), end(n), 1, std::multiplies<>());
+  }
 
-        void perform_op(const double *x_in, double *y_out) const {
-            derivedOperator.perform_op(x_in, y_out);
-        }
+  void perform_op(const double *x_in, double *y_out) const {
+    derivedOperator.perform_op(x_in, y_out);
+  }
 
-        // implement expression templates for operators
+  // implement expression templates for operators
 
     };
 
@@ -89,5 +89,5 @@ namespace gbLAB {
         return OperatorScalarProduct<T, E, dim>(s, *static_cast<const E *>(&u));
     }
 
-}
+    } // namespace oILAB
 #endif //OILAB_OPERATOR_H

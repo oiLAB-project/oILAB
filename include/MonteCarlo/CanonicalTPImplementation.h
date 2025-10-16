@@ -5,23 +5,18 @@
 #define OILAB_CANONICALTPIMPLEMENTATION_H
 
 #include <algorithm>
-#include <OrderedTuplet.h>
+#include "../Lattices/OrderedTuplet.h"
 
-namespace gbLAB {
+namespace oILAB {
 
-    template<typename StateType, typename SystemType>
-    CanonicalTP<StateType,SystemType>::CanonicalTP(
-            const std::string& lmpLocation,
-            const std::string& potentialName,
-            const double& temperature,
-            const std::string& filename) :
-                lmpLocation(lmpLocation),
-                potentialName(potentialName),
-                temperature(temperature),
-                countTP(0)
-        {
-            if (!filename.empty())
-                output.open(filename);
+template <typename StateType, typename SystemType>
+CanonicalTP<StateType, SystemType>::CanonicalTP(
+    const std::string &lmpLocation, const std::string &potentialName,
+    const double &temperature, const std::string &filename)
+    : lmpLocation(lmpLocation), potentialName(potentialName),
+      temperature(temperature), countTP(0) {
+  if (!filename.empty())
+    output.open(filename);
         }
 
     template<typename StateType, typename SystemType>
@@ -70,5 +65,5 @@ namespace gbLAB {
         return std::min(1.0, exp(-delta / temperature));
     }
 
-}
+    } // namespace oILAB
 #endif

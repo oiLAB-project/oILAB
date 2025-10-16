@@ -9,47 +9,49 @@
 #include "unsupported/Eigen/CXX11/Tensor"
 #include <iomanip>
 
-namespace gbLAB {
+namespace oILAB {
 
-    template<typename Scalar, int dim>
-    class LatticeFunction;
+template <typename Scalar, int dim> class LatticeFunction;
 
-    template<typename Derived, typename Scalar>
-    class Function;
+template <typename Derived, typename Scalar> class Function;
 
-    template<typename Scalar, int dim>
-    class PeriodicFunction {
-    public:
-        using dcomplex= std::complex<double>;
-        const Eigen::Matrix<double,Eigen::Dynamic,dim> unitCell;
-        Eigen::Tensor<Scalar,dim> values;
+template <typename Scalar, int dim> class PeriodicFunction {
+public:
+  using dcomplex = std::complex<double>;
+  const Eigen::Matrix<double, Eigen::Dynamic, dim> unitCell;
+  Eigen::Tensor<Scalar, dim> values;
 
-        // Construct a zero periodic function
-        explicit PeriodicFunction(const Eigen::array<Eigen::Index,dim>& n,
-                                  const Eigen::Matrix<double,Eigen::Dynamic,dim>&  _unitCell);
+  // Construct a zero periodic function
+  explicit PeriodicFunction(
+      const Eigen::array<Eigen::Index, dim> &n,
+      const Eigen::Matrix<double, Eigen::Dynamic, dim> &_unitCell);
 
-        // generates a periodic function from a function centered at the center of a lattice
-        template<typename T, typename = T, typename=T, int dm=dim, typename = std::enable_if_t<dm==1>>
-        PeriodicFunction(const Eigen::array<Eigen::Index,dim>& n,
-                         const Eigen::Matrix<double,Eigen::Dynamic,dim>&  _unitCell,
-                         const Function<T,Scalar>& fun);
+  // generates a periodic function from a function centered at the center of a
+  // lattice
+  template <typename T, typename = T, typename = T, int dm = dim,
+            typename = std::enable_if_t<dm == 1>>
+  PeriodicFunction(const Eigen::array<Eigen::Index, dim> &n,
+                   const Eigen::Matrix<double, Eigen::Dynamic, dim> &_unitCell,
+                   const Function<T, Scalar> &fun);
 
-        template<typename T, typename = T, int dm=dim, typename = std::enable_if_t<dm==2>>
-        PeriodicFunction(const Eigen::array<Eigen::Index,dim>& n,
-                         const Eigen::Matrix<double,Eigen::Dynamic,dim>&  _unitCell,
-                         const Function<T,Scalar>& fun);
+  template <typename T, typename = T, int dm = dim,
+            typename = std::enable_if_t<dm == 2>>
+  PeriodicFunction(const Eigen::array<Eigen::Index, dim> &n,
+                   const Eigen::Matrix<double, Eigen::Dynamic, dim> &_unitCell,
+                   const Function<T, Scalar> &fun);
 
-        template<typename T, int dm=dim, typename = std::enable_if_t<dm==3>>
-        PeriodicFunction(const Eigen::array<Eigen::Index,dim>& n,
-                         const Eigen::Matrix<double,Eigen::Dynamic,dim>&  _unitCell,
-                         const Function<T,Scalar>& fun);
+  template <typename T, int dm = dim, typename = std::enable_if_t<dm == 3>>
+  PeriodicFunction(const Eigen::array<Eigen::Index, dim> &n,
+                   const Eigen::Matrix<double, Eigen::Dynamic, dim> &_unitCell,
+                   const Function<T, Scalar> &fun);
 
-        LatticeFunction<dcomplex,dim> fft() const;
+  LatticeFunction<dcomplex, dim> fft() const;
 
-        double dot(const PeriodicFunction<Scalar,dim>& other) const;
+  double dot(const PeriodicFunction<Scalar, dim> &other) const;
 
-        template <typename T>
-        PeriodicFunction<Scalar,dim> kernelConvolution(const Function<T,Scalar>& kernel);
+  template <typename T>
+  PeriodicFunction<Scalar, dim>
+  kernelConvolution(const Function<T, Scalar> &kernel);
     };
 
     template<typename Scalar, int dim, typename = std::enable_if_t<dim==2>>
@@ -93,7 +95,7 @@ namespace gbLAB {
         return s;
     }
 
-}
-#include <PeriodicFunctionImplementation.h>
+    } // namespace oILAB
+#include "PeriodicFunctionImplementation.h"
 
 #endif //OILAB_PERIODICFUNCTION_H

@@ -11,26 +11,26 @@
 
 #include <iostream>
 
-#include <oiViewerMainWindow.h>
+#include "../../include/Visualization/oiViewerMainWindow.h"
 #include <QMenu>
 #include <QMenuBar>
 
+namespace oILAB {
 
-namespace gbLAB
-{
-    
-    oiViewerMainWindow::oiViewerMainWindow() :
-    /* init */ viewerCount(0)
-    /* init */,tabWidget(new QTabWidget(this))
-    /* init */,newViewerAction(new QAction(tr("&New"), this))
-    {
-        resize(1920, 1080);
+oiViewerMainWindow::oiViewerMainWindow()
+    : /* init */ viewerCount(0)
+      /* init */,
+      tabWidget(new QTabWidget(this))
+      /* init */,
+      newViewerAction(new QAction(tr("&New"), this)) {
+  resize(1920, 1080);
 
-        QMenu* viewertMenu=menuBar()->addMenu(tr("&Viewer"));
-        viewertMenu->addAction(newViewerAction);
-        connect(newViewerAction, &QAction::triggered, this, &oiViewerMainWindow::newViewerTab);
-        
-        setCentralWidget(tabWidget);
+  QMenu *viewertMenu = menuBar()->addMenu(tr("&Viewer"));
+  viewertMenu->addAction(newViewerAction);
+  connect(newViewerAction, &QAction::triggered, this,
+          &oiViewerMainWindow::newViewerTab);
+
+  setCentralWidget(tabWidget);
     }
 
     void oiViewerMainWindow::newViewerTab()
@@ -46,7 +46,7 @@ namespace gbLAB
         }
     }
 
-} // namespace model
+    } // namespace oILAB
 #endif
 
 

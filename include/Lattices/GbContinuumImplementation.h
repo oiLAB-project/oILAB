@@ -5,43 +5,44 @@
 #ifndef OILAB_GBCONTINUUMIMPLEMENTATION_H
 #define OILAB_GBCONTINUUMIMPLEMENTATION_H
 
-#include<Diff.h>
+#include "Diff.h"
 #include <numbers>
 
-namespace gbLAB {
+namespace oILAB {
 
-    template<int dim>
-    GbContinuum<dim>::GbContinuum(const Eigen::Matrix<double,dim,dim-1>& domain,
-                                  const std::map<OrderedTuplet<dim+1>,VectorDimD>& xuPairs,
-                                  const std::array<Eigen::Index,dim-1>& n,
-                                  const std::map<OrderedTuplet<dim+1>,VectorDimD>& atoms,
-                                  const bool& verbosity):
-        gbDomain(domain),
-        xuPairs(xuPairs),
-        n(n),
-        bbhat(calculateb(domain,xuPairs,n,atoms)),
-        b(bbhat.first),
-        bhat(bbhat.second)
-   {
-       uAverage.setZero();
-       for (const auto &[x, u]: xuPairs) {
-           uAverage = uAverage + u;
-       }
-       if (xuPairs.size() != 0)
-           uAverage = uAverage / xuPairs.size();
+template <int dim>
+GbContinuum<dim>::GbContinuum(
+    const Eigen::Matrix<double, dim, dim - 1> &domain,
+    const std::map<OrderedTuplet<dim + 1>, VectorDimD> &xuPairs,
+    const std::array<Eigen::Index, dim - 1> &n,
+    const std::map<OrderedTuplet<dim + 1>, VectorDimD> &atoms,
+    const bool &verbosity)
+    : gbDomain(domain), xuPairs(xuPairs), n(n),
+      bbhat(calculateb(domain, xuPairs, n, atoms)), b(bbhat.first),
+      bhat(bbhat.second) {
+  uAverage.setZero();
+  for (const auto &[x, u] : xuPairs) {
+    uAverage = uAverage + u;
+  }
+  if (xuPairs.size() != 0)
+    uAverage = uAverage / xuPairs.size();
 
-       if (verbosity) {
-           std::cout << "------------------------------------------------------------------------------" << std::endl;
-           std::cout << "Constraints: " << std::endl;
-       }
-       for (const auto &[x, u]: xuPairs) {
-           if (verbosity)
-               std::cout << "x = " << atoms.at(x).transpose() << "; displacement = " << u.transpose() << std::endl;
-           if ((u - displacement(x) - uAverage).norm() > FLT_EPSILON)
-               throw std::runtime_error("GBContinuum construction failed - unable to impose constraints.");
-       }
-       if (verbosity)
-           std::cout << std::endl;
+  if (verbosity) {
+    std::cout << "-------------------------------------------------------------"
+                 "-----------------"
+              << std::endl;
+    std::cout << "Constraints: " << std::endl;
+  }
+  for (const auto &[x, u] : xuPairs) {
+    if (verbosity)
+      std::cout << "x = " << atoms.at(x).transpose()
+                << "; displacement = " << u.transpose() << std::endl;
+    if ((u - displacement(x) - uAverage).norm() > FLT_EPSILON)
+      throw std::runtime_error(
+          "GBContinuum construction failed - unable to impose constraints.");
+  }
+  if (verbosity)
+    std::cout << std::endl;
 
    }
 
@@ -448,6 +449,6 @@ namespace gbLAB {
     }
     /*----------------------------*/
 
-}
+    } // namespace oILAB
 
 #endif

@@ -7,16 +7,15 @@
 #ifndef gbLAB_ReciprocalLatticeVector_cpp_
 #define gbLAB_ReciprocalLatticeVector_cpp_
 
+#include "../../include/Lattices/LatticeModule.h"
 #include <iostream>
-#include <LatticeModule.h>
 
-namespace gbLAB
-{
+namespace oILAB {
 
-    template <int dim>
-    typename ReciprocalLatticeVector<dim>::BaseType& ReciprocalLatticeVector<dim>::base()
-    {
-        return *this;
+template <int dim>
+typename ReciprocalLatticeVector<dim>::BaseType &
+ReciprocalLatticeVector<dim>::base() {
+  return *this;
     }
 
     template <int dim>
@@ -217,5 +216,5 @@ template ReciprocalLatticeVector<4> operator*(const int& scalar, const Reciproca
 template class ReciprocalLatticeVector<5>;
 template ReciprocalLatticeVector<5> operator*(const typename ReciprocalLatticeVector<5>::IntScalarType& scalar, const ReciprocalLatticeVector<5> &L);
 template ReciprocalLatticeVector<5> operator*(const int& scalar, const ReciprocalLatticeVector<5> &L);
-} // end namespace
+} // namespace oILAB
 #endif

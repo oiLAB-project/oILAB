@@ -3,18 +3,17 @@
 //
 #ifndef OILAB_LATTICEFUNCTIONIMPLEMENTATION_H
 #define OILAB_LATTICEFUNCTIONIMPLEMENTATION_H
-#include <FFT.h>
+#include "../../include/Math/FFT.h"
 #include <iostream>
 #include <numeric>
 
-namespace gbLAB
-{
-    template<typename Scalar, int dim>
-    LatticeFunction<Scalar,dim>::LatticeFunction(const Eigen::array<Eigen::Index,dim>& n,
-                                                 const Eigen::Matrix<double,Eigen::Dynamic,dim>& _basisVectors) :
-            values(n), basisVectors(_basisVectors)
-    {
-        values.setZero();
+namespace oILAB {
+template <typename Scalar, int dim>
+LatticeFunction<Scalar, dim>::LatticeFunction(
+    const Eigen::array<Eigen::Index, dim> &n,
+    const Eigen::Matrix<double, Eigen::Dynamic, dim> &_basisVectors)
+    : values(n), basisVectors(_basisVectors) {
+  values.setZero();
     }
 
     template<typename Scalar, int dim>
@@ -109,5 +108,5 @@ namespace gbLAB
         output.values= lf1.values * lf2.values;
         return output;
     }
-}
+    } // namespace oILAB
 #endif // OILAB_LATTICEFUNCTIONIMPLEMENTATION_H

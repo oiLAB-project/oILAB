@@ -5,31 +5,31 @@
 #ifndef OILAB_MESOSTATE_H
 #define OILAB_MESOSTATE_H
 
-#include <Gb.h>
+#include "Gb.h"
 
-namespace gbLAB {
+namespace oILAB {
 
-    template<int dim>
-    class GbShifts
-    {
-        using VectorDimD = typename LatticeCore<dim>::VectorDimD;
-        using VectorDimI = typename LatticeCore<dim>::VectorDimI;
-    protected:
-        //static std::vector<LatticeVector<dim>> getGbCslVectors(const Gb<dim>& gb, const ReciprocalLatticeVector<dim>& axis);
-        static std::vector<std::pair<LatticeVector<dim>,VectorDimD>>  getbShiftPairs(const Gb<dim>& gb,
-                                                                                     const std::vector<LatticeVector<dim>>& gbCslVectors,
-                                                                                     const double& bhalfMax);
+template <int dim> class GbShifts {
+  using VectorDimD = typename LatticeCore<dim>::VectorDimD;
+  using VectorDimI = typename LatticeCore<dim>::VectorDimI;
 
-    public:
-        const Gb<dim>& gb;
-        const ReciprocalLatticeVector<dim>& axis;
-        const std::vector<LatticeVector<dim>> gbCslVectors;
-        std::vector<std::pair<LatticeVector<dim>,VectorDimD>> bShiftPairs;
-        explicit GbShifts(const Gb<dim>& gb,
-                          const ReciprocalLatticeVector<dim>& axis,
-                          const std::vector<LatticeVector<dim>>& gbCslVectors,
-                          const double& bhalfMax= 1);
+protected:
+  // static std::vector<LatticeVector<dim>> getGbCslVectors(const Gb<dim>& gb,
+  // const ReciprocalLatticeVector<dim>& axis);
+  static std::vector<std::pair<LatticeVector<dim>, VectorDimD>>
+  getbShiftPairs(const Gb<dim> &gb,
+                 const std::vector<LatticeVector<dim>> &gbCslVectors,
+                 const double &bhalfMax);
+
+public:
+  const Gb<dim> &gb;
+  const ReciprocalLatticeVector<dim> &axis;
+  const std::vector<LatticeVector<dim>> gbCslVectors;
+  std::vector<std::pair<LatticeVector<dim>, VectorDimD>> bShiftPairs;
+  explicit GbShifts(const Gb<dim> &gb, const ReciprocalLatticeVector<dim> &axis,
+                    const std::vector<LatticeVector<dim>> &gbCslVectors,
+                    const double &bhalfMax = 1);
 
     };
-}
+    } // namespace oILAB
 #endif //OILAB_MESOSTATE_H

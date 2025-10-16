@@ -7,27 +7,31 @@
 #ifndef gbLAB_ReciprocalLatticeDirection_cpp_
 #define gbLAB_ReciprocalLatticeDirection_cpp_
 
-#include <LatticeModule.h>
+#include "../../include/Lattices/LatticeModule.h"
 
-namespace gbLAB
-{
-    template <int dim>
-    ReciprocalLatticeDirection<dim>::ReciprocalLatticeDirection(const ReciprocalLatticeVector<dim>& v) :
-    /* init */ ReciprocalLatticeVector<dim>(((v.squaredNorm()==0)? v : (v/abs(IntegerMath<IntScalarType>::gcd(v))).eval()),v.lattice)
-    {
-    }
+namespace oILAB {
+template <int dim>
+ReciprocalLatticeDirection<dim>::ReciprocalLatticeDirection(
+    const ReciprocalLatticeVector<dim> &v)
+    : /* init */ ReciprocalLatticeVector<dim>(
+          ((v.squaredNorm() == 0)
+               ? v
+               : (v / abs(IntegerMath<IntScalarType>::gcd(v))).eval()),
+          v.lattice) {}
 
-    template <int dim>
-    ReciprocalLatticeDirection<dim>::ReciprocalLatticeDirection(const VectorDimI& v,
-                                                                const Lattice<dim>& lat) :
-    /* base init */ ReciprocalLatticeVector<dim>(((v.squaredNorm()==0)? v : (v/IntegerMath<IntScalarType>::gcd(v)).eval()),lat)
-    {
-    }
+template <int dim>
+ReciprocalLatticeDirection<dim>::ReciprocalLatticeDirection(
+    const VectorDimI &v, const Lattice<dim> &lat)
+    : /* base init */ ReciprocalLatticeVector<dim>(
+          ((v.squaredNorm() == 0)
+               ? v
+               : (v / IntegerMath<IntScalarType>::gcd(v)).eval()),
+          lat) {}
 
-    template<int dim>
-    basic_ostream<char>& operator<<(basic_ostream<char>& s, const ReciprocalLatticeDirection<dim>& m)
-    {
-        return s<<m.reciprocalLatticeVector().transpose();
+template <int dim>
+basic_ostream<char> &operator<<(basic_ostream<char> &s,
+                                const ReciprocalLatticeDirection<dim> &m) {
+  return s << m.reciprocalLatticeVector().transpose();
     }
 
     template <int dim>
@@ -62,5 +66,5 @@ namespace gbLAB
     template struct ReciprocalLatticeDirection<5>;
     template basic_ostream<char>& operator<<(basic_ostream<char>& s, const ReciprocalLatticeDirection<5>& m);
 
-} // end namespace
+    } // namespace oILAB
 #endif

@@ -11,28 +11,29 @@
 #include "unsupported/Eigen/CXX11/Tensor"
 #include <array>
 
-namespace gbLAB {
+namespace oILAB {
 
-    template<typename Scalar, int dim>
-    class LatticeFunction;
+template <typename Scalar, int dim> class LatticeFunction;
 
-    template<typename Scalar, int dim>
-    class PeriodicFunction;
+template <typename Scalar, int dim> class PeriodicFunction;
 
-    template<typename Derived, typename Scalar>
-    class Function {
-        using dcomplex= std::complex<double>;
-    private:
-        const Derived& derivedFunction;
-    public:
-        double domainSize;
-        explicit Function(double _domainSize = std::numeric_limits<double>::infinity());
-        Scalar operator()(const Eigen::Vector<double,Eigen::Dynamic>& vec) const;
+template <typename Derived, typename Scalar> class Function {
+  using dcomplex = std::complex<double>;
 
-        /*
-        template<int dim>
-        LatticeFunction<dcomplex,dim> fft(const std::array<Eigen::Index,dim>& n, const Eigen::Matrix<double,Eigen::Dynamic,dim>& basisVectors) const;
-         */
+private:
+  const Derived &derivedFunction;
+
+public:
+  double domainSize;
+  explicit Function(
+      double _domainSize = std::numeric_limits<double>::infinity());
+  Scalar operator()(const Eigen::Vector<double, Eigen::Dynamic> &vec) const;
+
+  /*
+  template<int dim>
+  LatticeFunction<dcomplex,dim> fft(const std::array<Eigen::Index,dim>& n, const
+  Eigen::Matrix<double,Eigen::Dynamic,dim>& basisVectors) const;
+   */
     };
 
     /* ******************************************** */
@@ -56,7 +57,7 @@ namespace gbLAB {
         Shift(const Eigen::Vector<double,Eigen::Dynamic>& t, const Function<T,Scalar>& fun);
         Scalar operator()(const Eigen::Vector<double,Eigen::Dynamic>& y) const;
     };
-}
+    } // namespace oILAB
 
-#include <FunctionImplementation.h>
+#include "FunctionImplementation.h"
 #endif //OILAB_POLYNOMIAL_H

@@ -7,10 +7,10 @@
 
 #include <iostream>
 #include <numeric>
-#include <GbMesoState.h>
+#include "../Lattices/GbMesoState.h"
 #include <iomanip>
 
-namespace gbLAB {
+namespace oILAB {
 /* ---------------------------------------------------*/
     template<typename StateType, typename SystemType>
     LandauWangTP<StateType,SystemType>::LandauWangTP(const std::tuple<double,double,int>& energyLimits,
@@ -332,5 +332,5 @@ namespace gbLAB {
         outputFileHandle.close();
     }
 
-}
+    } // namespace oILAB
 #endif

@@ -5,22 +5,24 @@
 #ifndef OILAB_GBPLASTICITY_H
 #define OILAB_GBPLASTICITY_H
 
-#include <LatticeCore.h>
+#include "LatticeCore.h"
 #include "Eigen/Dense"
-#include <PeriodicFunction.h>
-#include <LatticeFunction.h>
-#include <Function.h>
-#include <GbMaterialTensors.h>
-#include <OrderedTuplet.h>
+#include "PeriodicFunction.h"
+#include "LatticeFunction.h"
+#include "../Math/Function.h"
+#include "GbMaterialTensors.h"
+#include "OrderedTuplet.h"
 
-namespace gbLAB {
+namespace oILAB {
 
-    class DisplacementKernel : public Function<DisplacementKernel, double> {
-    private:
-        Eigen::Vector<double, Eigen::Dynamic> normal;
-    public:
-        explicit DisplacementKernel(const Eigen::Vector<double, Eigen::Dynamic>& _normal);
-        double operator()(const Eigen::Vector<double, Eigen::Dynamic> &x) const;
+class DisplacementKernel : public Function<DisplacementKernel, double> {
+private:
+  Eigen::Vector<double, Eigen::Dynamic> normal;
+
+public:
+  explicit DisplacementKernel(
+      const Eigen::Vector<double, Eigen::Dynamic> &_normal);
+  double operator()(const Eigen::Vector<double, Eigen::Dynamic> &x) const;
     };
 
     class ShiftedDisplacementKernelFT :  public Function<ShiftedDisplacementKernelFT, std::complex<double>>{
@@ -132,7 +134,7 @@ namespace gbLAB {
     template<int dim>
     thread_local std::map<OrderedTuplet<dim+1>,LatticeFunction<std::complex<double>, dim - 1>> GbContinuum<dim>::pihatLatticeFunctions;
 
-}
+    } // namespace oILAB
 
-#include <GbContinuumImplementation.h>
+#include "GbContinuumImplementation.h"
 #endif //OILAB_GBPLASTICITY_H

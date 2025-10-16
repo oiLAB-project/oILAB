@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
     QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat()); // needed to ensure appropriate OpenGL context is created for VTK rendering.
     QApplication a(argc, argv);
-    gbLAB::oiViewerMainWindow window;
+    oILAB::oiViewerMainWindow window;
     window.show();
     return a.exec();
 }

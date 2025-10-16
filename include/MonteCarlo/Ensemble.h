@@ -7,24 +7,23 @@
 
 #include <iostream>
 
-namespace gbLAB {
-    template<typename StateType, typename SystemType, typename Derived>
-    class Ensemble {
-    public:
-        const Derived &derived;
+namespace oILAB {
+template <typename StateType, typename SystemType, typename Derived>
+class Ensemble {
+public:
+  const Derived &derived;
 
-        Ensemble() : derived(static_cast<const Derived &>(*this)) {}
+  Ensemble() : derived(static_cast<const Derived &>(*this)) {}
 
-        SystemType constructSystem(const StateType &state) const
-        {
-            return derived.constructSystem(state);
-        }
+  SystemType constructSystem(const StateType &state) const {
+    return derived.constructSystem(state);
+  }
 
-        std::pair<StateType, SystemType> sampleNewState(const StateType &currentState)
-        {
-            return derived.sampleNewState(currentState);
-        }
+  std::pair<StateType, SystemType>
+  sampleNewState(const StateType &currentState) {
+    return derived.sampleNewState(currentState);
+  }
     };
-}
+    } // namespace oILAB
 
 #endif //OILAB_ENSEMBLE_H

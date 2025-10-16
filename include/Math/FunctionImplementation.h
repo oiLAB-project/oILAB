@@ -8,18 +8,16 @@
 #include <iostream>
 #include <numbers>
 
-namespace gbLAB
-{
-    template<typename Derived, typename Scalar>
-    Function<Derived,Scalar>::Function(double _domainSize) :
-        derivedFunction( static_cast<const Derived&>(*this)),
-        domainSize(_domainSize)
-    {}
+namespace oILAB {
+template <typename Derived, typename Scalar>
+Function<Derived, Scalar>::Function(double _domainSize)
+    : derivedFunction(static_cast<const Derived &>(*this)),
+      domainSize(_domainSize) {}
 
-    template<typename Derived, typename Scalar>
-    Scalar Function<Derived,Scalar>::operator()(const Eigen::Vector<double,Eigen::Dynamic>& vec) const
-    {
-        return derivedFunction(vec);
+template <typename Derived, typename Scalar>
+Scalar Function<Derived, Scalar>::operator()(
+    const Eigen::Vector<double, Eigen::Dynamic> &vec) const {
+  return derivedFunction(vec);
     }
 
     /*
@@ -90,5 +88,5 @@ namespace gbLAB
         //return fun(y+t);
         return fun(t-y);
     }
-}
+    } // namespace oILAB
 #endif

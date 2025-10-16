@@ -7,191 +7,206 @@
 #ifndef gbLAB_Lattice_h_
 #define gbLAB_Lattice_h_
 
-#include <IntegerLattice.h>
-#include <LatticeModule.h>
-#include <StaticID.h>
-#include <BestRationalApproximation.h>
-#include <vector>
-#include <range.h>
-#include <map>
-#include <unordered_map>
-#include "RLLL.h"
-#include <Rational.h>
-#include <Farey.h>
-#include <RationalApproximations.h>
+#include "../Math/BestRationalApproximation.h"
+#include "../Math/Farey.h"
+#include "../Math/RLLL.h"
+#include "../Math/Rational.h"
+#include "../Math/RationalApproximations.h"
+#include "../Utilities/StaticID.h"
+#include "../Utilities/range.h"
+#include "IntegerLattice.h"
+#include "LatticeCore.h"
+#include "LatticeModule.h"
 #include <algorithm>
 #include <fstream>
+#include <map>
+#include <unordered_map>
+#include <vector>
 
+namespace oILAB {
+/*! \brief Lattice class
+ *
+ *  The Lattice<dim> class describes a lattice in dim dimensions
+ * */
+template <int dim> class Lattice : public StaticID<Lattice<dim>> {
+  static constexpr double roundTol = FLT_EPSILON;
 
-namespace gbLAB
-{
-    /*! \brief Lattice class
-     *
-     *  The Lattice<dim> class describes a lattice in dim dimensions
-     * */
-    template <int dim>
-    class Lattice : public StaticID<Lattice<dim>>
-    {
-        static constexpr double roundTol=FLT_EPSILON;
+  using VectorDimD = typename LatticeCore<dim>::VectorDimD;
+  using MatrixDimD = typename LatticeCore<dim>::MatrixDimD;
+  using VectorDimI = typename LatticeCore<dim>::VectorDimI;
+  using MatrixDimI = typename LatticeCore<dim>::MatrixDimI;
+  using IntScalarType = typename LatticeCore<dim>::IntScalarType;
 
-        using VectorDimD = typename LatticeCore<dim>::VectorDimD;
-        using MatrixDimD = typename LatticeCore<dim>::MatrixDimD;
-        using VectorDimI = typename LatticeCore<dim>::VectorDimI;
-        using MatrixDimI = typename LatticeCore<dim>::MatrixDimI;
-        using IntScalarType = typename LatticeCore<dim>::IntScalarType;
+public:
+  const MatrixDimD latticeBasis;
+  const MatrixDimD reciprocalBasis;
+  const MatrixDimD F;
 
+  Lattice(const MatrixDimD &A, const MatrixDimD &Q = MatrixDimD::Identity());
 
-    public:
-        
-        const MatrixDimD    latticeBasis;
-        const MatrixDimD reciprocalBasis;
-        const MatrixDimD F;
+  /*! \brief Returns a lattice vector (in the current lattice) with Cartesian
+   * coordinates p
+   *
+   * @param[in] d cartesian coordinates of a vector
+   * @return Lattice vector
+   */
+  LatticeVector<dim> latticeVector(const VectorDimD &p) const;
 
-        Lattice(const MatrixDimD& A,const MatrixDimD& Q=MatrixDimD::Identity()) ;
+  /*! \brief Returns the lattice direction along a vector
+   *
+   * @param[in] d cartesian coordinates of a vector
+   * @return Lattice direction along d
+   */
+  LatticeDirection<dim> latticeDirection(const VectorDimD &d,
+                                         const double &tol = FLT_EPSILON) const;
 
+  /*! \brief Returns a reciprocal lattice vector (in the dual of the current
+   * lattice) with Cartesian coordinates p
+   *
+   * @param[in] p cartesian coordinates of a vector
+   * @return Reciprocal lattice vector
+   */
+  ReciprocalLatticeVector<dim>
+  reciprocalLatticeVector(const VectorDimD &p) const;
 
-        /*! \brief Returns a lattice vector (in the current lattice) with Cartesian coordinates p
-         *
-         * @param[in] d cartesian coordinates of a vector
-         * @return Lattice vector
-         */
-        LatticeVector<dim> latticeVector(const VectorDimD& p) const;
+  /*! \brief Returns the reciprocal lattice direction along a vector
+   *
+   * @param[in] d cartesian coordinates of a vector
+   * @return Reciprocal lattice direction along d
+   */
+  ReciprocalLatticeDirection<dim>
+  reciprocalLatticeDirection(const VectorDimD &d,
+                             const double &tol = FLT_EPSILON) const;
 
-        /*! \brief Returns the lattice direction along a vector
-         *
-         * @param[in] d cartesian coordinates of a vector
-         * @return Lattice direction along d
-         */
-        LatticeDirection<dim> latticeDirection(const VectorDimD& d, const double& tol=FLT_EPSILON) const;
+  /*! \brief Given a lattice direction \f$\textbf l\f$, this function returns a
+   * direction-orthogonal reciprocal lattice basis \f$[\textbf
+   * r_1,\cdots,\textbf r_{dim}]\f$, with the property
+   *  \f$\textbf r_1 \cdot \textbf l=1\f$ and the remaining reciprocal basis
+   * vectors are orthogonal to \f$\textbf l\f$, i.e.,
+   *  \f$\boldsymbol r_i \cdot \textbf l = 0\f$ for \f$i=2,\cdots,dim\f$.
+   *
+   * \param[in] l Lattice direction
+   *  \returns  a reciprocal lattice basis \f$[\textbf r_1,\cdots,\textbf
+   * r_{dim}]\f$
+   * */
+  std::vector<ReciprocalLatticeDirection<dim>>
+  directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim> &l,
+                                            const bool &useRLLL = false) const;
 
-        /*! \brief Returns a reciprocal lattice vector (in the dual of the current lattice) with Cartesian coordinates p
-         *
-         * @param[in] p cartesian coordinates of a vector
-         * @return Reciprocal lattice vector
-         */
-        ReciprocalLatticeVector<dim> reciprocalLatticeVector(const VectorDimD& p) const;
+  RationalLatticeDirection<dim> rationalLatticeDirection(
+      const VectorDimD &d,
+      const typename BestRationalApproximation::LongIntType &maxDen,
+      const double &magnitudeTol,
+      const double &directionTol = FLT_EPSILON) const;
+  RationalReciprocalLatticeDirection<dim> rationalReciprocalLatticeDirection(
+      const VectorDimD &d,
+      const typename BestRationalApproximation::LongIntType &maxDen,
+      const double &magnitudeTol,
+      const double &directionTol = FLT_EPSILON) const;
 
-        /*! \brief Returns the reciprocal lattice direction along a vector
-         *
-         * @param[in] d cartesian coordinates of a vector
-         * @return Reciprocal lattice direction along d
-         */
-        ReciprocalLatticeDirection<dim> reciprocalLatticeDirection(const VectorDimD& d, const double& tol= FLT_EPSILON) const;
+  /*! \brief Given a reciprocal lattice direction \f$\textbf l\f$, this function
+   * returns a plane-parallel lattice basis
+   * \f$[\textbf b_1,\cdots,\textbf b_{dim}]\f$, with the property
+   *  \f$\textbf b_1 \cdot \textbf l=1\f$ and the remaining basis vectors lie in
+   * the lattice plane represented by
+   *  \f$\textbf l\f$, i.e. \f$\textbf b_i \cdot \textbf l = 0\f$ for
+   * \f$i=2,\cdots,dim\f$.
+   *
+   * \param[in] l Reciprocal lattice direction
+   * \returns   A lattice basis \f$[\textbf b_1,\cdots,\textbf b_{dim}]\f$
+   * */
+  std::vector<LatticeDirection<dim>>
+  planeParallelLatticeBasis(const ReciprocalLatticeDirection<dim> &l,
+                            const bool &useRLLL = false) const;
 
-        /*! \brief Given a lattice direction \f$\textbf l\f$, this function returns a direction-orthogonal reciprocal
-         * lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$, with the property
-         *  \f$\textbf r_1 \cdot \textbf l=1\f$ and the remaining reciprocal basis vectors are orthogonal to \f$\textbf l\f$, i.e.,
-         *  \f$\boldsymbol r_i \cdot \textbf l = 0\f$ for \f$i=2,\cdots,dim\f$.
-         *
-         * \param[in] l Lattice direction
-         *  \returns  a reciprocal lattice basis \f$[\textbf r_1,\cdots,\textbf r_{dim}]\f$
-         * */
-        std::vector<ReciprocalLatticeDirection<dim>> directionOrthogonalReciprocalLatticeBasis(const LatticeDirection<dim>& l,
-                                                                                               const bool& useRLLL=false) const;
+  /*!
+   * \brief Computes the interplanar spacing
+   * @param r Reciprocal lattice direction
+   * @return interPlanarSpacing
+   */
+  double interPlanarSpacing(const ReciprocalLatticeDirection<dim> &r) const;
 
-        RationalLatticeDirection<dim> rationalLatticeDirection(const VectorDimD& d,
-                                                               const typename BestRationalApproximation::LongIntType& maxDen,
-                                                               const double& magnitudeTol,
-                                                               const double& directionTol= FLT_EPSILON) const;
-        RationalReciprocalLatticeDirection<dim> rationalReciprocalLatticeDirection(const VectorDimD& d,
-                                                                                   const typename BestRationalApproximation::LongIntType& maxDen,
-                                                                                   const double& magnitudeTol,
-                                                                                   const double& directionTol= FLT_EPSILON) const;
+  /*! This function generates rotations (about a given axis) that result in a
+   * coincident site lattice. It is specialized to dim=3
+   *
+   * @tparam dm dimension (int)
+   * @param rd axis (Reciprocal lattice direction)
+   * @param maxDen  integer parameter that determines the resolution for the
+   * search of rotations
+   * @param N integer parameter that determines the maximum size of the CSL
+   * @return A set of rotations that result in CSLs.
+   */
+  template <int dm = dim>
+  typename std::enable_if<dm == 3, std::vector<MatrixDimD>>::type
+  generateCoincidentLattices(const ReciprocalLatticeDirection<dim> &rd,
+                             const double &maxDen = 100,
+                             const int &N = 100) const;
 
-        /*! \brief Given a reciprocal lattice direction \f$\textbf l\f$, this function returns a plane-parallel lattice basis
-         * \f$[\textbf b_1,\cdots,\textbf b_{dim}]\f$, with the property
-         *  \f$\textbf b_1 \cdot \textbf l=1\f$ and the remaining basis vectors lie in the lattice plane represented by
-         *  \f$\textbf l\f$, i.e. \f$\textbf b_i \cdot \textbf l = 0\f$ for \f$i=2,\cdots,dim\f$.
-         *
-         * \param[in] l Reciprocal lattice direction
-         * \returns   A lattice basis \f$[\textbf b_1,\cdots,\textbf b_{dim}]\f$
-         * */
-        std::vector<LatticeDirection<dim>> planeParallelLatticeBasis(const ReciprocalLatticeDirection<dim>& l,
-                                                                     const bool& useRLLL=false) const;
+  /*! This function generates deformations \f$\mathbf F\f$ such that the
+   * deformations of *this lattice share moire supercells with the undeformed
+   * *this lattice
+   */
+  template <int dm = dim>
+  typename std::enable_if<dm == 2, std::vector<MatrixDimD>>::type
+  generateCoincidentLattices(const double &maxStrain, const int &maxDen = 50,
+                             const int &N = 30) const;
 
+  /*! This function generates deformations \f$\mathbf F\f$ such that the
+   * deformations of *this lattice share moire supercells with a given
+   * undeformed 2D lattice. It is specialized to dim=2.
+   *
+   *  The current algorithm betters the one given in Algorithm 2 of
+   *
+   *  [1] Admal, Nikhil Chandra, et al. "Interface dislocations and grain
+   * boundary disconnections using Smith normal bicrystallography." Acta
+   * materialia 240 (2022): 118340.
+   *
+   *  Note: There was a typo in Algorithm 2 in [1] - \f$\mathfrak q_1\f$ and
+   * \f$\mathfrak r_1\f$ should be replaced by the basis vectors \f$\mathbf
+   * q_1\f$ and \f$\mathbf r_1\f$ of lattice \f$\mathcal B\f$.
+   *
+   * @tparam undeformedLattice underformed lattice
+   * @tparam dm dimension (int)
+   * @param maxStrain maximum strain
+   * @param maxDen  integer parameter that determines the resolution for the
+   * search of rotations
+   * @param N integer parameter that determines the maximum size of the CSL
+   * @return A set of deformation gradients of *this lattice that result in
+   * moire superlattices with the undeformed lattice
+   */
+  template <int dm = dim>
+  typename std::enable_if<dm == 2, std::vector<MatrixDimD>>::type
+  generateCoincidentLattices(const Lattice<dim> &undeformedLattice,
+                             const double &maxStrain, const int &maxDen = 50,
+                             const int &N = 30) const;
 
+  /*! This function outputs/prints lattice points within a box bounded by the
+   * input box vectors. The box vectors have to be linearly independent lattice
+   * vectors. This function is specialized to dim=3.
+   *
+   * @tparam dm dimension (int)
+   * @param boxVectors three linearly independent lattice vectors
+   * @param filename (optional) name of the output file
+   * @return Lattice points bounded by the box vectors
+   */
+  template <int dm = dim>
+  typename std::enable_if<dm == 3, std::vector<LatticeVector<dim>>>::type
+  box(const std::vector<LatticeVector<dim>> &boxVectors,
+      const std::string &filename = "") const;
 
-        /*!
-         * \brief Computes the interplanar spacing
-         * @param r Reciprocal lattice direction
-         * @return interPlanarSpacing
-         */
-        double interPlanarSpacing(const ReciprocalLatticeDirection<dim>& r) const;
-
-        /*! This function generates rotations (about a given axis) that result in a coincident site lattice.
-         *  It is specialized to dim=3
-         *
-         * @tparam dm dimension (int)
-         * @param rd axis (Reciprocal lattice direction)
-         * @param maxDen  integer parameter that determines the resolution for the search of rotations
-         * @param N integer parameter that determines the maximum size of the CSL
-         * @return A set of rotations that result in CSLs.
-         */
-        template<int dm=dim>
-        typename std::enable_if<dm==3,std::vector<MatrixDimD>>::type
-        generateCoincidentLattices(const ReciprocalLatticeDirection<dim>& rd, const double& maxDen= 100, const int& N= 100) const;
-
-        /*! This function generates deformations \f$\mathbf F\f$ such that the deformations of *this lattice share moire supercells
-         *  with the undeformed *this lattice
-         */
-        template<int dm=dim>
-        typename std::enable_if<dm==2,std::vector<MatrixDimD>>::type
-        generateCoincidentLattices(const double& maxStrain,
-                                   const int& maxDen=50,
-                                   const int& N=30) const;
-
-        /*! This function generates deformations \f$\mathbf F\f$ such that the deformations of *this lattice share moire supercells
-         *  with a given undeformed 2D lattice. It is specialized to dim=2.
-         *
-         *  The current algorithm betters the one given in Algorithm 2 of
-         *
-         *  [1] Admal, Nikhil Chandra, et al. "Interface dislocations and grain boundary
-         *      disconnections using Smith normal bicrystallography."
-         *      Acta materialia 240 (2022): 118340.
-         *
-         *  Note: There was a typo in Algorithm 2 in [1] - \f$\mathfrak q_1\f$ and \f$\mathfrak r_1\f$ should
-         *  be replaced by the basis vectors \f$\mathbf q_1\f$ and \f$\mathbf r_1\f$ of lattice \f$\mathcal B\f$.
-         *
-         * @tparam undeformedLattice underformed lattice
-         * @tparam dm dimension (int)
-         * @param maxStrain maximum strain
-         * @param maxDen  integer parameter that determines the resolution for the search of rotations
-         * @param N integer parameter that determines the maximum size of the CSL
-         * @return A set of deformation gradients of *this lattice that result in moire superlattices with the undeformed
-         *         lattice
-         */
-        template<int dm=dim>
-        typename std::enable_if<dm==2,std::vector<MatrixDimD>>::type
-        generateCoincidentLattices(const Lattice<dim>& undeformedLattice,
-                                   const double& maxStrain,
-                                   const int& maxDen=50,
-                                   const int& N=30) const;
-
-        /*! This function outputs/prints lattice points within a box bounded by the
-         * input box vectors. The box vectors have to be linearly independent lattice
-         * vectors. This function is specialized to dim=3.
-         *
-         * @tparam dm dimension (int)
-         * @param boxVectors three linearly independent lattice vectors
-         * @param filename (optional) name of the output file
-         * @return Lattice points bounded by the box vectors
-         */
-        template<int dm=dim>
-        typename std::enable_if<dm==3,std::vector<LatticeVector<dim>>>::type
-        box(const std::vector<LatticeVector<dim>>& boxVectors, const std::string& filename= "") const;
-
-        /*! This function outputs/prints lattice points within a box bounded by the
-         * optional input box vectors. The box vectors have to be linearly independent lattice
-         * vectors. This function is specialized to dim=2.
-         *
-         * @tparam dm dimension (int)
-         * @param boxVectors two linearly independent lattice vectors
-         * @param filename (optional) name of the output file
-         * @return Lattice points bounded by the box vectors
-         */
-        template<int dm=dim>
-        typename std::enable_if<dm==2,std::vector<LatticeVector<dim>>>::type
-        box(const std::vector<LatticeVector<dim>>& boxVectors, const std::string& filename= "") const;
+  /*! This function outputs/prints lattice points within a box bounded by the
+   * optional input box vectors. The box vectors have to be linearly independent
+   * lattice vectors. This function is specialized to dim=2.
+   *
+   * @tparam dm dimension (int)
+   * @param boxVectors two linearly independent lattice vectors
+   * @param filename (optional) name of the output file
+   * @return Lattice points bounded by the box vectors
+   */
+  template <int dm = dim>
+  typename std::enable_if<dm == 2, std::vector<LatticeVector<dim>>>::type
+  box(const std::vector<LatticeVector<dim>> &boxVectors,
+      const std::string &filename = "") const;
 };
 /*! @example testPlaneParallelLatticeDirections.cpp
  *  This example demonstrates the computation of plane-parallel lattice basis and direction-orthogonal reciprocal
@@ -332,5 +347,5 @@ namespace gbLAB
  *
  * Full code:
  */
-}
+} // namespace oILAB
 #endif

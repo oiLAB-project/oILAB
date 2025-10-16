@@ -23,10 +23,9 @@
 
 
 
-#include <TerminalColors.h>
+#include "TerminalColors.h"
 
-namespace gbLAB
-{
+namespace oILAB {
 
 template<typename T>
 struct StringToScalar
@@ -491,5 +490,5 @@ public:
     
 };
 
-}
+} // namespace oILAB
 #endif

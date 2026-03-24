@@ -10,10 +10,11 @@ var searchData=
   ['nimages_7',['nimages',['../classgb_l_a_b_1_1_dislocation_dipole.html#a1b813c218c8780d4f2cd98cbc37e0bc7',1,'gbLAB::DislocationDipole::nImages'],['../classgb_l_a_b_1_1_dislocations.html#aa845eebce08e10379702579b96d192c2',1,'gbLAB::Dislocations::nImages']]],
   ['noninteger_8',['NonInteger',['../struct_eigen_1_1_num_traits_3_01gb_l_a_b_1_1_rational_3_01_int_scalar_type_01_4_01_4.html#a371d906c1b9cab929b8652bff33dd086',1,'Eigen::NumTraits&lt; gbLAB::Rational&lt; IntScalarType &gt; &gt;']]],
   ['normal_9',['normal',['../classgb_l_a_b_1_1_displacement_kernel.html#a3f2b672f50dc45cf2171b241dcaf722c',1,'gbLAB::DisplacementKernel::normal'],['../classgb_l_a_b_1_1_shifted_displacement_kernel_f_t.html#a201f168dca6ab66c4d75d9e1e79a7a62',1,'gbLAB::ShiftedDisplacementKernelFT::normal']]],
-  ['num_10',['num',['../classgb_l_a_b_1_1_best_rational_approximation.html#abd368c8e2ef99fb35d83e92a325df4a8',1,'gbLAB::BestRationalApproximation']]],
-  ['number_11',['number',['../classgb_l_a_b_1_1_rational_approximations.html#ad15d80cc7da86b3b1da8e705bd9e0039',1,'gbLAB::RationalApproximations']]],
-  ['numberofdensitystates_12',['numberOfDensityStates',['../classgb_l_a_b_1_1_landau_wang_t_p.html#a4028eb267de4f3158bc51c81139e1cfc',1,'gbLAB::LandauWangTP']]],
-  ['numberofenergystates_13',['numberOfEnergyStates',['../classgb_l_a_b_1_1_landau_wang_t_p.html#a3a5ca487197e60c09fa7c43fdb3700f0',1,'gbLAB::LandauWangTP']]],
-  ['numberofplanesorthogonaltogb_14',['numberOfPlanesOrthogonalToGB',['../classgb_l_a_b_1_1_reference_state.html#a2b2b6950ef4b831afc49a5e92e61a0a3',1,'gbLAB::ReferenceState']]],
-  ['numtraits_3c_20gblab_3a_3arational_3c_20intscalartype_20_3e_20_3e_15',['NumTraits&lt; gbLAB::Rational&lt; IntScalarType &gt; &gt;',['../struct_eigen_1_1_num_traits_3_01gb_l_a_b_1_1_rational_3_01_int_scalar_type_01_4_01_4.html',1,'Eigen']]]
+  ['note_10',['📌 Note',['../index.html#autotoc_md2',1,'']]],
+  ['num_11',['num',['../classgb_l_a_b_1_1_best_rational_approximation.html#abd368c8e2ef99fb35d83e92a325df4a8',1,'gbLAB::BestRationalApproximation']]],
+  ['number_12',['number',['../classgb_l_a_b_1_1_rational_approximations.html#ad15d80cc7da86b3b1da8e705bd9e0039',1,'gbLAB::RationalApproximations']]],
+  ['numberofdensitystates_13',['numberOfDensityStates',['../classgb_l_a_b_1_1_landau_wang_t_p.html#a4028eb267de4f3158bc51c81139e1cfc',1,'gbLAB::LandauWangTP']]],
+  ['numberofenergystates_14',['numberOfEnergyStates',['../classgb_l_a_b_1_1_landau_wang_t_p.html#a3a5ca487197e60c09fa7c43fdb3700f0',1,'gbLAB::LandauWangTP']]],
+  ['numberofplanesorthogonaltogb_15',['numberOfPlanesOrthogonalToGB',['../classgb_l_a_b_1_1_reference_state.html#a2b2b6950ef4b831afc49a5e92e61a0a3',1,'gbLAB::ReferenceState']]],
+  ['numtraits_3c_20gblab_3a_3arational_3c_20intscalartype_20_3e_20_3e_16',['NumTraits&lt; gbLAB::Rational&lt; IntScalarType &gt; &gt;',['../struct_eigen_1_1_num_traits_3_01gb_l_a_b_1_1_rational_3_01_int_scalar_type_01_4_01_4.html',1,'Eigen']]]
 ];

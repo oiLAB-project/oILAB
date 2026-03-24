@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "oILAB", "index.html", [
-    [ "oILAB - open Interface Lab", "index.html", null ],
+    [ "oILAB - open Interface Lab", "index.html", "index" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -68,8 +68,8 @@ var NAVTREEINDEX =
 "classgb_l_a_b_1_1_meso_state.html#a80e6cd5ae0c890741952e346eedac899",
 "classgb_l_a_b_1_1_reciprocal_lattice_vector.html#a807ee42c0503ca3accfa38149f74cf45",
 "classpyoilab_1_1_py_lattice_vector.html",
-"namespacegb_l_a_b.html#a086c8537309f72851f490f9ad2064c60",
-"structgb_l_a_b_1_1_rational_lattice_direction.html"
+"namespacegb_l_a_b.html#a02120e0c0ca9ae199f7503b1576910cc",
+"structgb_l_a_b_1_1_rational.html#af80d60e0de461b875f5b4ca7cd46a6e9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

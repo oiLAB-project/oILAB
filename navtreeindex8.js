@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"structgb_l_a_b_1_1_rational.html#af80d60e0de461b875f5b4ca7cd46a6e9":[2,0,1,43,15],
+"structgb_l_a_b_1_1_rational.html#af80d60e0de461b875f5b4ca7cd46a6e9":[1,0,1,43,15],
 "structgb_l_a_b_1_1_rational_lattice_direction.html":[2,0,1,45],
 "structgb_l_a_b_1_1_rational_lattice_direction.html":[1,0,1,45],
 "structgb_l_a_b_1_1_rational_lattice_direction.html#a062b7f4d6bee023f0c61518b03d57619":[1,0,1,45,4],

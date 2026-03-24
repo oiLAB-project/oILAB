@@ -1,6 +1,26 @@
 /*! \mainpage oILAB - open Interface Lab
 \image html Bicrystal_graph_abstract.pdf width=500px
 
+# ⚠️ Documentation Moved
+
+The oILAB project has moved to a new repository:
+
+👉 https://github.com/admal-research-group/oILAB
+
+The updated documentation is available here:
+
+👉 https://admal-research-group.github.io/oILAB/   
+
+---
+
+## 📌 Note
+
+This documentation site is **no longer actively maintained** and is preserved for archival purposes only.
+
+Please refer to the new repository for the latest features, fixes, and documentation.
+
+---
+
 oILAB is an open source C++ library to explore the crystallography of lattices and bicrystallography of interfaces. Some of its key features are
     -# Dimension-independent algorithms implemented using C++ templates
     -# Bicrystallography is explored using the Smith normal form for integer matrices
